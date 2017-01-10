@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-	<vis-figure src="/assets/paper1.png" width="640" height="360"></vis-figure>
+	<vis-figure src="./assets/paper1.png" width="640" height="360"></vis-figure>
   </div>
 </template>
 
 <script>
 import VisFigure from './VisFigure.vue';
-
 export default { components: { "vis-figure": VisFigure } };
 
 </script>
