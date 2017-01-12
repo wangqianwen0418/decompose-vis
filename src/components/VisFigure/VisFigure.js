@@ -27,7 +27,7 @@ function pretreatment(canvas) {
 			const b = data[(i * width + j << 2) + 2];
 			const hsl = color.rgbToHsl(r, g, b);
 			const h = Math.ceil(hsl[0] * 12);
-			if (h === 0) {
+			if (false && h === 0) {
 				data[(i * width + j << 2) + 0] =
 				data[(i * width + j << 2) + 1] =
 				data[(i * width + j << 2) + 2] = 255;
