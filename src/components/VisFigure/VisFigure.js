@@ -1,27 +1,14 @@
 import * as color from "../../utils/color.js";
-import decompose from "../../algorithm/decompose.js";
-import compose from "../../algorithm/compose.js";
+import { offset } from "../../utils/common-utils.js";
+import { decompose } from "../../algorithm/decompose.js";
+import { compose, findGroup } from "../../algorithm/compose.js";
 
-function offsetX(d) {
-	if (d === null) {
-		return 0;
-	} else {
-		return d.offsetLeft + offsetX(d.offsetParent);
-	}
-}
-function offsetY(d) {
-	if (d === null) {
-		return 0;
-	} else {
-		return d.offsetTop + offsetY(d.offsetParent);
-	}
-}
-
-let connectivityTag, isBorderLine, initalData, displayData, outerBox, tagChecked;
-let ratio;
+let group;
+let initalData, displayData;
+let zoom_ratio;
 
 function pretreatment(canvas) {
-	const last = new Date();
+	const start_time = new Date();
 
 	const ctx = canvas.getContext('2d');
 	const width = canvas.width;
@@ -46,9 +33,10 @@ function pretreatment(canvas) {
 	}
 	const decomposed = decompose(hsl_data, width, height);
 	compose(decomposed.elements, width, height);
+	group = decomposed.group;
 	ctx.putImageData(imgData, 0, 0);
 
-	console.log(`time used: ${(new Date()).getTime() - last.getTime()} ms`);
+	console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 }
 
 let lastTag = -1;
@@ -58,6 +46,8 @@ export default {
 		return {}
     },
 	props: ['src', 'width', 'height'],
+
+	/*
 	methods: {
 		onClick(event) {
 		},
@@ -66,21 +56,22 @@ export default {
 		onMouseout(event) {
 		}
 	},
-		/*
+		*/
 	methods: {
 		onClick(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const canvas2 = this.$el.getElementsByTagName('canvas')[1];
-			const x = Math.floor((event.pageX - offsetX(canvas)) * ratio);
-			const y = Math.floor((event.pageY - offsetY(canvas)) * ratio);
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
 			const width = canvas.width;
 			const height = canvas.height;
 			console.log(x, y, event);
-			const tag = connectivityTag[y * canvas.width + x];
+			const tag = group[y * canvas.width + x];
+			/*
 			if (tagChecked[tag]) {
 				tagChecked[tag] = 0;
 				for (let i = 0; i < height; ++i) {
-					for (let j = 0; j < width; ++j) if (connectivityTag[i * width + j] === tag) {
+					for (let j = 0; j < width; ++j) if (group[i * width + j] === tag) {
 						displayData.data[((i * width + j) << 2) + 0] = 255;
 						displayData.data[((i * width + j) << 2) + 1] = 255;
 						displayData.data[((i * width + j) << 2) + 2] = 255;
@@ -90,7 +81,7 @@ export default {
 			} else {
 				tagChecked[tag] = 1;
 				for (let i = 0; i < height; ++i) {
-					for (let j = 0; j < width; ++j) if (connectivityTag[i * width + j] === tag) {
+					for (let j = 0; j < width; ++j) if (group[i * width + j] === tag) {
 						displayData.data[((i * width + j) << 2) + 0] = initalData.data[((i * width + j) << 2) + 0];
 						displayData.data[((i * width + j) << 2) + 1] = initalData.data[((i * width + j) << 2) + 1];
 						displayData.data[((i * width + j) << 2) + 2] = initalData.data[((i * width + j) << 2) + 2];
@@ -98,21 +89,24 @@ export default {
 					}
 				}
 			}
+			*/
 			const ctx = canvas2.getContext('2d');
 			ctx.putImageData(displayData, 0, 0);
 		},
 		onMousemove(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
-			const x = Math.floor((event.pageX - offsetX(canvas)) * ratio);
-			const y = Math.floor((event.pageY - offsetY(canvas)) * ratio);
-			const k = y * canvas.width + x << 2;
-			const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
-			console.log(hsl);
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			// const k = y * canvas.width + x << 2;
+			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
+			// console.log(hsl);
 			// console.log(x, y, event);
-			const tag = connectivityTag[y * canvas.width + x];
+			const tag = group[y * canvas.width + x];
 			if ((tag === 1 && lastTag > 0) || (tag !== 1 && tag !== lastTag)) {
-				const last = new Date();
+				const start_time = new Date();
+
+				/*
 				ctx.putImageData(initalData, 0, 0);
 				const width = canvas.width;
 				const height = canvas.height;
@@ -120,7 +114,7 @@ export default {
 				const dark = 255;
 				const light = tag === 1 ? 255 : 50;
 				for (let i = 0; i < height; ++i) {
-					for (let j = 0; j < width; ++j) if (connectivityTag[i * width + j] === tag) {
+					for (let j = 0; j < width; ++j) if (group[i * width + j] === tag) {
 						imgData.data[((i * width + j) << 2) + 3] = dark;
 						if (false && isBorderLine[i * width + j]) {
 							imgData.data[((i * width + j) << 2) + 0] =
@@ -150,8 +144,8 @@ export default {
 						ctx.stroke();
 					}
 				}
-
-				console.log(`time used: ${(new Date()).getTime() - last.getTime()} ms`);
+				*/
+				console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 			}
 		},
 		onMouseout(event) {
@@ -161,7 +155,7 @@ export default {
 			ctx.putImageData(initalData, 0, 0);
 		}
 	},
-	*/
+	
 	mounted() {
 		const canvas = this.$el.getElementsByTagName('canvas')[0];
 		const canvas2 = this.$el.getElementsByTagName('canvas')[1];
@@ -171,8 +165,8 @@ export default {
 		img.onload = function() {
 			canvas.width = img.width;
 			canvas.height = img.height;
-			ratio = Math.max(img.width / 1280, img.height / 800); 
-			console.log(ratio);
+			zoom_ratio = Math.max(img.width / 1280, img.height / 800); 
+			console.log(zoom_ratio);
 			ctx.drawImage(img, 0, 0);
 			pretreatment(canvas);	
 			canvas2.width = img.width;

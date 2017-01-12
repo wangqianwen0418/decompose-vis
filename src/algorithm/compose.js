@@ -66,14 +66,14 @@ const ordered_elements = elements.sort((a, b) => {
 });
 */
 
-function findGroup(element, currentTime = Number.MAX_VALUE) {
+export function findGroup(element, currentTime = Number.MAX_VALUE) {
     while (element.father && element.timestamp <= currentTime) {
         element = element.father;
     }
     return element;
 }
 
-export default function compose(elements, width, height, gradient = [0.01, 0.01, 0.01]) {
+export function compose(elements, width, height, gradient = [0.01, 0.01, 0.01]) {
     const relations = Array.concat(
         findNearest(elements.sort((a, b) => a.centroid[0] - b.centroid[0]), gradient),
         findNearest(elements.sort((a, b) => b.centroid[0] - a.centroid[0]), gradient),

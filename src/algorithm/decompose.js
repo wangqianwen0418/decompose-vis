@@ -1,4 +1,4 @@
-export default function decompose(data, width, height, gradient = [0.01, 0.01, 0.01]) {
+export function decompose(data, width, height, gradient = [0.01, 0.01, 0.01]) {
 	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
 	const nth = new Uint16Array(width * height);
 	const Queue = new Array(width * height >> 3);

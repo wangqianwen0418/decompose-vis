@@ -7,7 +7,7 @@
 	</div>
 </template>
 
-<script src="./VisFigure.js"></script>
+<script type="text/javascript" src="./VisFigure.js"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
