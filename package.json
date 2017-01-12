@@ -9,7 +9,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "c3": "^0.4.11",
     "element-ui": "^1.1.3",
+    "kute": "^1.0.0",
     "vue": "^2.1.0"
   },
   "devDependencies": {
