@@ -1,6 +1,6 @@
-export function decompose(data, width, height, gradient = [0.01, 0.01, 0.01]) {
+export function decompose(data, width, height, gradient = [0.03, 0.03, 0.02]) {
 	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
-	const nth = new Uint16Array(width * height);
+	const nth = new Uint32Array(width * height);
 	const Queue = new Array(width * height >> 3);
 	let current_num = 0;
     const elements = [];
@@ -36,7 +36,7 @@ export function decompose(data, width, height, gradient = [0.01, 0.01, 0.01]) {
 					if (nth[y1 * width + x1] !== 0) continue;
 					if (Math.abs(d0 - data[z1 + 0]) <= gradient[0] &&
 						Math.abs(d1 - data[z1 + 1]) <= gradient[1] &&
-                    Math.abs(d2 - data[z1 + 2]) <= 100 * gradient[2]) {
+                    	Math.abs(d2 - data[z1 + 2]) <= gradient[2]) {
 							Queue[++tail] = [x1, y1];
 							nth[y1 * width + x1] = current_num;
 						}

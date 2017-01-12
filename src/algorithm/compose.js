@@ -32,7 +32,7 @@ function getOuterBox(element) {
     };
 }
 
-function findNearest(elements, gradient, maxDistance = 100) {
+function findNearest(elements, gradient, maxDistance = 50) {
     const tick_num = gradient.map(d => Math.ceil(1.0 / d));
     const maxDistanceSqr = maxDistance * maxDistance;
     const colorHash = (color) => (
@@ -48,6 +48,63 @@ function findNearest(elements, gradient, maxDistance = 100) {
             relations.push([last[hashcode], element]);
         }
         last[hashcode] = element;
+    }
+    return relations;
+}
+
+function findNearestNaive(elements, gradient, maxDistance = 75) {
+    const tick_num = gradient.map(d => Math.ceil(1.0 / d));
+    const maxDistanceSqr = maxDistance * maxDistance;
+    const f = (d) => {
+        if (d >= 0 && d < 0.2) {
+            return 0;
+        } else if (d >= 0.2 && d < 0.4) {
+            return 1;
+        } else if (d >= 0.4 && d < 0.55) {
+            return 2;
+        } else if (d >= 0.55 && d < 0.72) {
+            return 3;
+        } else if (d >= 0.72 && d < 0.81) {
+            return 3;
+        } else if (d >= 0.81 && d < 0.85) {
+            return 5;
+        } else if (d >= 0.85 && d < 0.88) {
+            return 6;
+        } else if (d >= 0.88 && d < 0.92) {
+            return 7;
+        } else if (d >= 0.92 && d < 0.96) {
+            return 8;
+        } else if (d >= 0.96) {
+            return 9;
+        }
+    }
+    const colorHash = (color) => (
+        Math.floor(color[0] / gradient[0]) * tick_num[1] * tick_num[2] +
+        Math.floor(color[1] / gradient[1]) * tick_num[2] +
+        f(color[2])
+    );
+    tick_num[2] = 10;
+    const n = tick_num[0] * tick_num[1] * tick_num[2];
+    const last = new Array(n);
+    const relations = new Array();
+    for (const element of elements) {
+        const hashcode = colorHash(element.color);
+        if (!last[hashcode]) {
+            last[hashcode] = [];
+        }
+        last[hashcode].push(element);
+    }
+    for (let k = 0; k < n; ++k) if (last[k] != null && last[k].length > 1) {
+        const el = last[k];
+        for (let i = 0; i < el.length; ++i) {
+            const a = el[i];
+            for (let j = i + 1; j < el.length; ++j) {
+                const b = el[j];
+                if (b.centroid[0] - a.centroid[0] > maxDistance) break;
+                if (distanceSqr(a, b) > maxDistanceSqr) continue;
+                relations.push([a, b]);
+            }
+        }
     }
     return relations;
 }
@@ -73,16 +130,16 @@ export function findGroup(element, currentTime = Number.MAX_VALUE) {
     return element;
 }
 
-export function compose(elements, width, height, gradient = [0.01, 0.01, 0.01]) {
+export function compose(elements, width, height, gradient = [0.03, 0.03, 0.19]) {
     const relations = Array.concat(
-        findNearest(elements.sort((a, b) => a.centroid[0] - b.centroid[0]), gradient),
-        findNearest(elements.sort((a, b) => b.centroid[0] - a.centroid[0]), gradient),
-        findNearest(elements.sort((a, b) => a.centroid[1] - b.centroid[1]), gradient),
-        findNearest(elements.sort((a, b) => b.centroid[1] - a.centroid[1]), gradient),
-        findNearest(elements.sort((a, b) => (a.centroid[0] + a.centroid[1] - b.centroid[0] - b.centroid[1])), gradient),
-        findNearest(elements.sort((a, b) => (b.centroid[0] + b.centroid[1] - a.centroid[0] - a.centroid[1])), gradient),
-        findNearest(elements.sort((a, b) => (a.centroid[0] - a.centroid[1] - b.centroid[0] + b.centroid[1])), gradient),
-        findNearest(elements.sort((a, b) => (a.centroid[1] - a.centroid[0] - b.centroid[1] + b.centroid[0])), gradient),
+        findNearestNaive(elements.sort((a, b) => a.centroid[0] - b.centroid[0]), gradient),
+        //findNearest(elements.sort((a, b) => b.centroid[0] - a.centroid[0]), gradient),
+        //findNearest(elements.sort((a, b) => a.centroid[1] - b.centroid[1]), gradient),
+        //findNearest(elements.sort((a, b) => b.centroid[1] - a.centroid[1]), gradient),
+        //findNearest(elements.sort((a, b) => (a.centroid[0] + a.centroid[1] - b.centroid[0] - b.centroid[1])), gradient),
+        //findNearest(elements.sort((a, b) => (b.centroid[0] + b.centroid[1] - a.centroid[0] - a.centroid[1])), gradient),
+        //findNearest(elements.sort((a, b) => (a.centroid[0] - a.centroid[1] - b.centroid[0] + b.centroid[1])), gradient),
+        //findNearest(elements.sort((a, b) => (a.centroid[1] - a.centroid[0] - b.centroid[1] + b.centroid[0])), gradient),
     ).map(d => ({
         dist: distanceSqr(d[0], d[1]),
         link: d,
@@ -91,10 +148,13 @@ export function compose(elements, width, height, gradient = [0.01, 0.01, 0.01]) 
     for (const element of elements) {
         element.father = null;
         element.rank = 0;
+        element.neighbor = [];
     }
     
     let timestamp = 0;
     for (const relation of relations) {
+        relation.link[0].neighbor.push(relation.link[1]);
+        relation.link[1].neighbor.push(relation.link[0]);
         const u = findGroup(relation.link[0]);
         const v = findGroup(relation.link[1]);
         if (u === v) {
@@ -113,5 +173,5 @@ export function compose(elements, width, height, gradient = [0.01, 0.01, 0.01]) 
             }
         }
     }
-    return timestamp;
+    return elements;
 }
