@@ -1,42 +1,68 @@
 <template>
-  <div id="app">
-	<vis-figure src="./assets/paper1.png" width="640" height="360"></vis-figure>
-  </div>
+	<div>
+		<el-row>
+			<el-col :xs="24">
+				<head-line> </head-line>
+			</el-col>
+		</el-row>
+		<el-row :gutter="10">
+			<el-col :span="18">
+				<!--<clips></clips>-->
+				<slider></slider>
+				<editor></editor>
+			</el-col>
+			<el-col :span="6">
+					<resource></resource>
+			</el-col>
+		</el-row>
+	</div>
 </template>
 
 <script>
-import VisFigure from './VisFigure.vue';
-export default { components: { "vis-figure": VisFigure } };
+    import HeadLine from './components/headline.vue';
+	import clips from './components/clips.vue';
+	import resource from './components/resource.vue';
+	import editor from './components/editor.vue'; 
+	import slider from './components/example1.vue';
+
+    export default { 
+		components: { 
+			HeadLine, 
+			clips,
+			resource,
+			editor,
+			slider
+			} 
+		}
 
 </script>
 
 <style>
-	html {
-		height: 100%;
+	.el-row {
+		margin-bottom: 20px;
+		&:last-child {
+			margin-bottom: 0;
+		}
 	}
-
-	body {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
+	
+	.el-col {
+		border-radius: 4px;
 	}
-
-	#app {
-		color: #2c3e50;
-		left: 10px;
-		top: 10px;
-		font-family: Source Sans Pro, Helvetica, sans-serif;
-		text-align: center;
+	
+	.bg-purple-dark {
+		background: #99a9bf;
 	}
-
-	#app a {
-		color: #42b983;
-		text-decoration: none;
+	
+	.bg-purple {
+		background: #d3dce6;
 	}
-
-	.logo {
-		width: 100px;
-		height: 100px
+	
+	.bg-purple-light {
+		background: #e5e9f2;
+	}
+	
+	.row-bg {
+		padding: 10px 0;
+		background-color: #f9fafc;
 	}
 </style>
