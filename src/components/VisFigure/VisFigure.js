@@ -4,7 +4,7 @@ import { decompose } from "../../algorithm/decompose.js";
 import { compose, findGroup } from "../../algorithm/compose.js";
 
 let pixelgroup, groups, maxtimestamp, currenttime, lastgroup;
-let initalData, displayData;
+let initalData, transparentData, displayData;
 let zoom_ratio;
 
 function pretreatment(canvas) {
@@ -19,31 +19,43 @@ function pretreatment(canvas) {
 	initalData = imgData;
 	displayData = ctx.createImageData(width, height);
 	const hsl_data = new Float32Array(width * height * 3);
+	console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 
-	for (let i = 0; i < height; ++i) {
-		for (let j = 0; j < width; ++j) {
-			const r = data[(i * width + j << 2) + 0];
-			const g = data[(i * width + j << 2) + 1];
-			const b = data[(i * width + j << 2) + 2];
-			const hsl = color.rgbToHsl(r, g, b);
-			const h = Math.ceil(hsl[0] * 12);
-			if (false && h === 0) {
-				data[(i * width + j << 2) + 0] =
-				data[(i * width + j << 2) + 1] =
-				data[(i * width + j << 2) + 2] = 255;
-				hsl[0] = 0;
-				hsl[1] = 0;
-				hsl[2] = 1;
-			}
-			hsl_data[(i * width + j) * 3 + 0] = hsl[0];
-			hsl_data[(i * width + j) * 3 + 1] = hsl[1];
-			hsl_data[(i * width + j) * 3 + 2] = hsl[2];
+	const h_count = new Array(60);
+	for (let i = 0; i < 60; ++i) {
+		h_count[i] = {
+			count: 0,
+			hsl: [0, 0, 0]
+		};
+	}
+
+	for (let i = 0; i < height * width; ++i) {
+		const r = data[(i << 2) + 0];// & 240;
+		const g = data[(i << 2) + 1];// & 240;
+		const b = data[(i << 2) + 2];// & 240;
+		const hsl = color.rgbToHsl(r, g, b);
+		const h = Math.ceil(hsl[0] * 12);
+		const l = Math.ceil(hsl[2] * 59);
+		const j = (l + 60 - 1) % 60;
+		h_count[j].count++;
+		h_count[j].hsl[0] += hsl[0];
+		h_count[j].hsl[1] += hsl[1];
+		h_count[j].hsl[2] += hsl[2];
+		hsl_data[i * 3 + 0] = hsl[0];
+		hsl_data[i * 3 + 1] = hsl[1];
+		hsl_data[i * 3 + 2] = hsl[2];
+	}
+	for (const h of h_count) {
+		for (let i = 0; i < 3; ++i) {
+			h.hsl[i] /= h.count;
 		}
 	}
+	console.log(h_count);
+	console.log(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const decomposed = decompose(hsl_data, width, height);
-	console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	console.log(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const elements = compose(decomposed.elements, width, height);
-	console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	console.log(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	pixelgroup = new Array(width * height);
 	groups = elements;
 	for (const element of elements) {
@@ -59,7 +71,9 @@ function pretreatment(canvas) {
 	currenttime = maxtimestamp;
 
 	ctx.putImageData(imgData, 0, 0);
-	console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+
+	transparentData = ctx.getImageData(0, 0, width, height);
+	console.log(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 }
 
 export default {
@@ -89,8 +103,8 @@ export default {
 			const group = pixelgroup[y * canvas.width + x];
 			console.log(group.color, group.centroid, color.rgbToHsl(
 				initalData.data[(y * canvas.width + x) * 4 + 0],
-				initalData.data[(y * canvas.width + x)* 4 + 1],
-				initalData.data[(y * canvas.width + x)*4 + 2],
+				initalData.data[(y * canvas.width + x) * 4 + 1],
+				initalData.data[(y * canvas.width + x) * 4 + 2],
 			));
 			// const k = y * canvas.width + x << 2;
 			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
@@ -161,13 +175,6 @@ export default {
 				}
 				const width = canvas.width;
 				const height = canvas.height;
-				const imgData = ctx.getImageData(0, 0, width, height);
-
-				for (let i = 0; i < height; ++i) {
-					for (let j = 0; j < width; ++j) {
-						imgData.data[((i * width + j) << 2) + 3] = 30;
-					}
-				}
 /*
 				const points = group0.points;
 				for (let i = 0; i < points.length; i += 2) {
@@ -187,14 +194,19 @@ export default {
 					if (findGroup(group, currenttime) === group0) {
 						const points = group.points;
 						for (let i = 0; i < points.length; i += 2) {
-							imgData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
+							transparentData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
+						}
+					} else if (findGroup(group, currenttime) === lastgroup) {
+						const points = group.points;
+						for (let i = 0; i < points.length; i += 2) {
+							transparentData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 30;
 						}
 					}
 				}
 				
 				lastgroup = group0;
 
-				ctx.putImageData(imgData, 0, 0);
+				ctx.putImageData(transparentData, 0, 0);
 			}
 			console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 
@@ -243,11 +255,30 @@ export default {
 			}
 			*/
 		},
+		onMouseenter(event) {
+			console.log("mouseenter");
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = transparentData.data;
+			for (let i = 0; i < width * height; ++i) {
+				data[(i << 2) + 3] = 30;
+			}
+			ctx.putImageData(transparentData, 0, 0);
+		},
 		onMouseout(event) {
+			console.log("mouseout");
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
 			lastgroup = null;
 			ctx.putImageData(initalData, 0, 0);
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = transparentData.data;
+			for (let i = 0; i < width * height; ++i) {
+				data[(i << 2) + 3] = 30;
+			}
 		}
 	},
 	

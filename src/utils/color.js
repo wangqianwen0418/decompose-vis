@@ -9,7 +9,14 @@
  * @param   Number  b       The blue color value
  * @return  Array           The HSL representation
  */
+const rgbToHslCache = [];
+
 export function rgbToHsl(r, g, b) {
+    /*
+    if (rgbToHslCache[(r << 16) + (g << 8) + b]) {
+        return rgbToHslCache[(r << 16) + (g << 8) + b];
+    }
+    */
     r /= 255, g /= 255, b /= 255;
 
     var max = Math.max(r, g, b), min = Math.min(r, g, b);
@@ -30,7 +37,7 @@ export function rgbToHsl(r, g, b) {
         h /= 6;
     }
 
-    return [h, s, l];
+    return [h, s, l]; //rgbToHslCache[(r << 16) + (g << 8) + b] = [h, s, l];
 }
 
 /**

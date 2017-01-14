@@ -1,6 +1,6 @@
 <template>
 	<div class="vis-figure">
-		<canvas @mouseout="onMouseout" @mousemove="onMousemove" @click="onClick">
+		<canvas @mouseout="onMouseout" @mousemove="onMousemove" @mouseenter="onMouseenter" @click="onClick">
 		</canvas>
 		<canvas>
 		</canvas>
