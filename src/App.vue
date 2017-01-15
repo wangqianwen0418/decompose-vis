@@ -8,7 +8,7 @@
 		<el-row :gutter="10">
 			<el-col :span="18">
 				<!--<clips></clips>-->
-				<slider></slider>
+				<slides @remove-item="remove(index)"></slides>
 				<editor></editor>
 			</el-col>
 			<el-col :span="6">
@@ -23,7 +23,7 @@
 	import clips from './components/clips.vue';
 	import resource from './components/resource.vue';
 	import editor from './components/editor.vue'; 
-	import slider from './components/example1.vue';
+	import slides from './components/slides.vue';
 
     export default { 
 		components: { 
@@ -31,7 +31,7 @@
 			clips,
 			resource,
 			editor,
-			slider
+			slides
 			} 
 		}
 
