@@ -40,11 +40,12 @@
 </script>
 
 <style>
+    
 #slides{
   overflow-x:scroll ; 
   overflow-y:hidden;
-  height:350px;
-  margin: 10px, 10px;
+  height:35vw;
+  margin: 0px, 10px;
 }
 
 #slides::-webkit-scrollbar {

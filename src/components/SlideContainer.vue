@@ -1,5 +1,5 @@
 <template>
-	<div class="container" :gutter="10" :style="{width:calculatedWidth+'px'}">
+	<div class="container"  :style="{width:calculatedWidth+'px'}">
 		<ul>
 			<li>
 				<draggable :list='items'>
@@ -27,7 +27,7 @@
         computed: {
             calculatedWidth: function () {
             // `this` points to the vm instance
-            return (this.items.length+1)*430;
+            return (this.items.length+1)*screen.width*0.4;
             }
         },
         methods:{
@@ -35,7 +35,7 @@
 			    this.items.push({content: "i am new new new", done: false})
 			},
             removeItem(index){
-                this.items.splice(index,1);
+                this.items.splice(index-1,1);
                 console.log(index);
             }
         },
@@ -54,9 +54,9 @@
 	.newclip {
 		float: left;
 		border-radius: 8px;
-		margin: 10px 10px;
-		height: 300px;
-		width: 400px;
+		margin: 0px 10px;
+		width: 40vw;
+        height:30vw;
 		border: 5px dashed gray;
 		border-radius: 5px;
 		text-align: center;
@@ -65,13 +65,13 @@
 	
 	.el-icon-plus {
 		position: relative;
-		top: 120px;
+		top: 10vw;
 		color: white;
-		font-size: 40px;
+		font-size: 5vw;
 	}
 	
 	.el-icon-plus:hover {
-		font-size: 50px;
+		font-size: 7vw;
 	}
 	
 	ul {

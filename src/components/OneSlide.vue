@@ -32,20 +32,18 @@ export default {
 <style scoped>
 	.clip{
         border-radius: 8px;
-            margin: 10px 10px;
-            height: 300px;
-            width: 400px;
+            margin: 0px 10px;
+            width: 40vw;
+            height:30vw;
             float: left;
     }
 	.el-icon-circle-close {
-		position: relative;
-		left: 375px;
-		top: 5px;
+		float:right;
 		color: white;
-		font-size: 20px;
+		font-size: 3vw;
 	}
 	
 	.el-icon-circle-close:hover {
-		font-size: 25px;
+		font-size: 4vw;
 	}
 </style>

@@ -5,13 +5,13 @@
 				<head-line> </head-line>
 			</el-col>
 		</el-row>
-		<el-row :gutter="10">
-			<el-col :span="18">
+		<el-row >
+			<el-col :span="16">
 				<!--<clips></clips>-->
 				<slides @remove-item="remove(index)"></slides>
 				<editor></editor>
 			</el-col>
-			<el-col :span="6">
+			<el-col :span="8">
 					<resource></resource>
 			</el-col>
 		</el-row>
@@ -39,7 +39,7 @@
 
 <style>
 	.el-row {
-		margin-bottom: 20px;
+		margin-bottom: 10px;
 		&:last-child {
 			margin-bottom: 0;
 		}
