@@ -77,7 +77,7 @@ function findNearestNaive(elements, gradient, maxDistance = 75) {
         } else if (d >= 0.96) {
             return 9;
         }
-    }
+    };
     const colorHash = (color) => (
         Math.floor(color[0] / gradient[0]) * tick_num[1] * tick_num[2] +
         Math.floor(color[1] / gradient[1]) * tick_num[2] +
@@ -132,14 +132,7 @@ export function findGroup(element, currentTime = Number.MAX_VALUE) {
 
 export function compose(elements, width, height, gradient = [0.03, 0.03, 0.19]) {
     const relations = Array.concat(
-        findNearestNaive(elements.sort((a, b) => a.centroid[0] - b.centroid[0]), gradient),
-        //findNearest(elements.sort((a, b) => b.centroid[0] - a.centroid[0]), gradient),
-        //findNearest(elements.sort((a, b) => a.centroid[1] - b.centroid[1]), gradient),
-        //findNearest(elements.sort((a, b) => b.centroid[1] - a.centroid[1]), gradient),
-        //findNearest(elements.sort((a, b) => (a.centroid[0] + a.centroid[1] - b.centroid[0] - b.centroid[1])), gradient),
-        //findNearest(elements.sort((a, b) => (b.centroid[0] + b.centroid[1] - a.centroid[0] - a.centroid[1])), gradient),
-        //findNearest(elements.sort((a, b) => (a.centroid[0] - a.centroid[1] - b.centroid[0] + b.centroid[1])), gradient),
-        //findNearest(elements.sort((a, b) => (a.centroid[1] - a.centroid[0] - b.centroid[1] + b.centroid[0])), gradient),
+        findNearestNaive(elements.sort((a, b) => a.centroid[0] - b.centroid[0]), gradient)
     ).map(d => ({
         dist: distanceSqr(d[0], d[1]),
         link: d,
