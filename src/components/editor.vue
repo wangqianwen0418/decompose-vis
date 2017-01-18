@@ -13,7 +13,7 @@
 <style scoped>
 	.editor {
 		border-radius: 8px;
-		height: 25vh;
+		height: 35vh;
 		margin: 10px 0px 0px 10px;
 	}
 </style>

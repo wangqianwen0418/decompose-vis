@@ -12,13 +12,7 @@
       "plugins": [
         "istanbul",
     [
-      "component",
-      [
-        {
-          "libraryName": "element-ui",
-          "styleLibraryName": "~theme"
-        }
-      ]
+      "component"
     ]
       ]
     }

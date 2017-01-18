@@ -56,7 +56,7 @@
 		border-radius: 8px;
 		margin: 0px 10px;
 		width: 40vw;
-        height:30vw;
+        height:40vh;
 		border: 5px dashed gray;
 		border-radius: 5px;
 		text-align: center;
@@ -65,7 +65,7 @@
 	
 	.el-icon-plus {
 		position: relative;
-		top: 10vw;
+		top: 7vw;
 		color: white;
 		font-size: 5vw;
 	}

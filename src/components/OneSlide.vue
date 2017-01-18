@@ -30,15 +30,16 @@ export default {
 </script>
 
 <style scoped>
-	.clip{
-        border-radius: 8px;
-            margin: 0px 10px;
-            width: 40vw;
-            height:30vw;
-            float: left;
-    }
+	.clip {
+		border-radius: 8px;
+		margin: 0px 10px;
+		width: 40vw;
+		height: 40vh;
+		float: left;
+	}
+	
 	.el-icon-circle-close {
-		float:right;
+		float: right;
 		color: white;
 		font-size: 3vw;
 	}

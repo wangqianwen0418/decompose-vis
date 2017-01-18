@@ -1,15 +1,17 @@
 <template>
     <div class="resource bg-purple-light">
-        resource
+		<fig-source></fig-source>
 		<text-source></text-source>
     </div>
 </template>
 
 <script>
 import TextSource from './TextSource'
+import FigSource from './FigSource'
 	export default{
 		components:{
-			TextSource
+			TextSource,
+			FigSource
 		}
 	}
 </script>

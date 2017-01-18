@@ -1,4 +1,4 @@
-import '../element-variables.css'
+import '../theme/index.css'
 import ElementUI from 'element-ui'
 import Vue from 'vue'
 import VueMaterial from 'vue-material'

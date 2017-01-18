@@ -13436,10 +13436,10 @@
     list-style: none;
 }
 .el-tabs__item {
-    padding: 0 16px;
-    height: 42px;
+    padding: 0 6px;
+    height: 32px;
     box-sizing: border-box;
-    line-height: 42px;
+    line-height: 32px;
     float: left;
     list-style: none;
     font-size: 14px;
@@ -18095,6 +18095,7 @@
   -------------------------- */
     /* Colors
   -------------------------- */
+    /*--color-primary: red;*/
     /* Link
   -------------------------- */
     /* Border

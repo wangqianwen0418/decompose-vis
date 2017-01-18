@@ -44,16 +44,16 @@
 #slides{
   overflow-x:scroll ; 
   overflow-y:hidden;
-  height:35vw;
+  height:45vh;
   margin: 0px, 10px;
 }
 
 #slides::-webkit-scrollbar {
     -webkit-appearance: none;
-    width: 7px;
+    width: 3px;
 }
 #slides::-webkit-scrollbar-thumb {
-    border-radius: 4px;
+    border-radius: 1px;
     background-color: rgba(0,0,0,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
 }
