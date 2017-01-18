@@ -1,6 +1,7 @@
+import 'element-ui/lib/theme-default/index.css'
+import '../element-variables.css'
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.css'
 import App from './App.vue'

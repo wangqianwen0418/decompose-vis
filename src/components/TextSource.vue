@@ -1,9 +1,9 @@
 <template>
   <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
-    <el-tab-pane label="encoding" name="first"></el-tab-pane>
-    <el-tab-pane label="design task" name="second"></el-tab-pane>
-    <el-tab-pane label="case study" name="third"></el-tab-pane>
-    <el-tab-pane label="agorithm" name="fourth"></el-tab-pane>
+    <el-tab-pane label="encoding" name="first">hhhhhh</el-tab-pane>
+    <el-tab-pane label="design task" name="second">wwwwwwww</el-tab-pane>
+    <el-tab-pane label="case study" name="third">wwwwww</el-tab-pane>
+    <el-tab-pane label="agorithm" name="fourth">iilioo</el-tab-pane>
   </el-tabs>
 </template>
 <script>
@@ -27,7 +27,6 @@
         font-family:Helvetica;
         border: solid 1px;
     }
-
 
     
 </style>
