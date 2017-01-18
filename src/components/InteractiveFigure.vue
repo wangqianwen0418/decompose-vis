@@ -1,19 +1,23 @@
 <template>
 	<div class="vis-figure">
-		<canvas @mouseout="onMouseout" @mousemove="onMousemove" @mouseenter="onMouseenter" @click="onClick">
+		<canvas class="interactive" @mouseout="onMouseout" @mousemove="onMousemove" @mouseenter="onMouseenter" @click="onClick">
 		</canvas>
-		<canvas>
+		<canvas class="display">
 		</canvas>
 	</div>
 </template>
 
-<script type="text/javascript" src="./VisFigure.js"></script>
+<script type="text/javascript" src="./InteractiveFigure.js"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-	canvas {
+	.interactive {
 		max-width: 1280px;
 		max-height: 800px;
+	}
+	.display {
+		max-width: 0px;
+		max-height: 0px;
 	}
 	.vis-figure {
 		position: relative; 

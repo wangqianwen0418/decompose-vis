@@ -1,9 +1,9 @@
-import * as color from "../../utils/color.js";
-import { offset } from "../../utils/common-utils.js";
-import { decompose } from "../../algorithm/decompose.js";
-import { compose, findGroup } from "../../algorithm/compose.js";
-import { color_space_divide } from "../../algorithm/color-space-divide.js";
-import { random_sampling_seq } from "../../algorithm/sampling.js";
+import * as color from "../utils/color.js";
+import { offset } from "../utils/common-utils.js";
+import { decompose } from "../algorithm/decompose.js";
+import { compose, findGroup } from "../algorithm/compose.js";
+import color_space_divide from "../algorithm/color-space-divide.js";
+import { random_sampling_seq } from "../algorithm/sampling.js";
 
 let pixelgroup, groups, maxtimestamp, currenttime, lastgroup;
 let initalData, transparentData, displayData;
@@ -23,6 +23,7 @@ function preprocessing(canvas) {
 	const hsl_data = new Float32Array(width * height * 3);
 	console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 
+	const seq = random_sampling_seq(height * width);
 	for (let i = 0; i < height * width; ++i) {
 		const r = data[(i << 2) + 0];
 		const g = data[(i << 2) + 1];
@@ -32,6 +33,20 @@ function preprocessing(canvas) {
 		hsl_data[i * 3 + 1] = hsl[1];
 		hsl_data[i * 3 + 2] = hsl[2];
 	}
+	for (let i = 0; i < seq.length; ++i) {
+		const t = seq[i] * 3;
+		seq[i] = [hsl_data[t], hsl_data[t + 1], hsl_data[t + 2]];
+	}
+	const color2tag = color_space_divide(seq);
+	const count = [];
+	for (let i = 0; i < height * width * 3; i += 3) {
+		const tag = color2tag([hsl_data[i], hsl_data[i + 1], hsl_data[i + 2]]);
+		if (!count[tag]) {
+			count[tag] = 0;
+		}
+		count[tag] += 1;
+	}
+	console.log(count);
 
 	console.log(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const decomposed = decompose(hsl_data, width, height);
