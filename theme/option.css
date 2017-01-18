@@ -91,7 +91,7 @@
 .el-select-dropdown{}
 
 .el-select-dropdown__item{
-    font-size: 10px;
+    font-size: 8px;
     padding: 8px 10px;
     position: relative;
     white-space: nowrap;

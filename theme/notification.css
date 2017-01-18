@@ -132,7 +132,7 @@
 }
 
 .el-notification__content{
-    font-size: 10px;
+    font-size: 8px;
     line-height: 21px;
     margin: 10px 0 0 0;
     color: rgb(131, 145, 165);
@@ -154,7 +154,7 @@
     position: absolute;
     cursor: pointer;
     color: rgb(191, 203, 217);
-    font-size: 10px;
+    font-size: 8px;
 }
 
 .el-notification__closeBtn:hover{

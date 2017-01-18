@@ -506,7 +506,7 @@
     line-height: 36px;
     padding: 0 10px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 8px;
 }
 
 .el-table-filter__list-item:hover{
@@ -533,7 +533,7 @@
     border: none;
     color: rgb(131, 145, 165);
     cursor: pointer;
-    font-size: 10px;
+    font-size: 8px;
     padding: 0 3px
 }
 

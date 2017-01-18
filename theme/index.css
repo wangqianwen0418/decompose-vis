@@ -900,7 +900,7 @@
 }
 .el-input {
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -1094,7 +1094,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -1334,7 +1334,7 @@
     margin: 0;
     text-align: center;
     color: #999;
-    font-size: 10px;
+    font-size: 8px;
 }
 .el-select-dropdown__wrap {
     max-height: 274px;
@@ -1437,7 +1437,7 @@
 }
 .el-input {
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -1631,7 +1631,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -1929,7 +1929,7 @@
 }
 .el-select-dropdown {}
 .el-select-dropdown__item {
-    font-size: 10px;
+    font-size: 8px;
     padding: 8px 10px;
     position: relative;
     white-space: nowrap;
@@ -2096,7 +2096,7 @@
     transition: 0s;
     width: 16px;
     height: 16px;
-    font-size: 10px;
+    font-size: 8px;
     right: 8px;
     text-align: center;
     transform: translateY(-50%) rotateZ(180deg);
@@ -2131,7 +2131,7 @@
     padding: 0;
     margin-left: 10px;
     color: #666;
-    font-size: 10px;
+    font-size: 8px;
     vertical-align: baseline;
     -webkit-appearance: none;
        -moz-appearance: none;
@@ -2167,7 +2167,7 @@
     display: inline-block;
     height: 24px;
     line-height: 24px;
-    font-size: 10px;
+    font-size: 8px;
     border-radius: 4px;
     color: #fff;
     background-color: #20a0ff;
@@ -2459,7 +2459,7 @@
     color: rgb(31, 45, 61);
 }
 .el-notification__content {
-    font-size: 10px;
+    font-size: 8px;
     line-height: 21px;
     margin: 10px 0 0 0;
     color: rgb(131, 145, 165);
@@ -2479,7 +2479,7 @@
     position: absolute;
     cursor: pointer;
     color: rgb(191, 203, 217);
-    font-size: 10px;
+    font-size: 8px;
 }
 .el-notification__closeBtn:hover {
     color: rgb(151, 168, 190);
@@ -2584,7 +2584,7 @@
 }
 .el-input {
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -2778,7 +2778,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -3975,7 +3975,7 @@
 .el-switch {
     display: inline-block;
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     line-height: 22px;
     height: 22px;
     vertical-align: middle;
@@ -4010,7 +4010,7 @@
     left: 0;
     top: 0;
     display: inline-block;
-    font-size: 10px;
+    font-size: 8px;
     cursor: pointer;
     -webkit-user-select: none;
        -moz-user-select: none;
@@ -4021,7 +4021,7 @@
     line-height: 1;
     top: 4px;
     position: absolute;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     color: #fff;
 }
@@ -4638,7 +4638,7 @@
     display: inline-block;
     position: relative;
     color: rgb(72, 87, 106);
-    font-size: 10px;
+    font-size: 8px;
 }
 .el-dropdown .el-button-group {
     display: block;
@@ -6383,7 +6383,7 @@
     line-height: 36px;
     padding: 0 10px;
     cursor: pointer;
-    font-size: 10px;
+    font-size: 8px;
 }
 .el-table-filter__list-item:hover {
     background-color: rgb(228, 232, 241);
@@ -6405,7 +6405,7 @@
     border: none;
     color: rgb(131, 145, 165);
     cursor: pointer;
-    font-size: 10px;
+    font-size: 8px;
     padding: 0 3px;
 }
 .el-table-filter__bottom button:hover {
@@ -6643,7 +6643,7 @@
     margin: 0;
     text-align: center;
     color: #999;
-    font-size: 10px;
+    font-size: 8px;
 }
 .el-select-dropdown__wrap {
     max-height: 274px;
@@ -6746,7 +6746,7 @@
 }
 .el-input {
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -6940,7 +6940,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -7238,7 +7238,7 @@
 }
 .el-select-dropdown {}
 .el-select-dropdown__item {
-    font-size: 10px;
+    font-size: 8px;
     padding: 8px 10px;
     position: relative;
     white-space: nowrap;
@@ -7405,7 +7405,7 @@
     transition: 0s;
     width: 16px;
     height: 16px;
-    font-size: 10px;
+    font-size: 8px;
     right: 8px;
     text-align: center;
     transform: translateY(-50%) rotateZ(180deg);
@@ -7440,7 +7440,7 @@
     padding: 0;
     margin-left: 10px;
     color: #666;
-    font-size: 10px;
+    font-size: 8px;
     vertical-align: baseline;
     -webkit-appearance: none;
        -moz-appearance: none;
@@ -7476,7 +7476,7 @@
     display: inline-block;
     height: 24px;
     line-height: 24px;
-    font-size: 10px;
+    font-size: 8px;
     border-radius: 4px;
     color: #fff;
     background-color: #20a0ff;
@@ -8230,7 +8230,7 @@
 }
 .el-input {
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -8424,7 +8424,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -8722,7 +8722,7 @@
     height: 20px;
 }
 .el-message__group p {
-    font-size: 10px;
+    font-size: 8px;
     line-height: 20px;
     margin: 0 34px 0 0;
     white-space: nowrap;
@@ -8751,7 +8751,7 @@
     position: absolute;
     cursor: pointer;
     color: rgb(191, 203, 217);
-    font-size: 10px;
+    font-size: 8px;
 }
 .el-message__closeBtn:hover {
     color: rgb(151, 168, 190);
@@ -9442,7 +9442,7 @@
 }
 .el-input {
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -9636,7 +9636,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -12488,7 +12488,7 @@
 }
 .el-input {
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -12682,7 +12682,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -17156,7 +17156,7 @@
     overflow: hidden;
 }
 .el-rate__text {
-    font-size: 10px;
+    font-size: 8px;
     vertical-align: middle;
 }
 @charset "UTF-8";

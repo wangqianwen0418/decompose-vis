@@ -218,7 +218,7 @@
     margin: 0;
     text-align: center;
     color: #999;
-    font-size: 10px;
+    font-size: 8px;
 }
 .el-select-dropdown__wrap{
     max-height: 274px;
@@ -321,7 +321,7 @@
 }
 .el-input{
     position: relative;
-    font-size: 10px;
+    font-size: 8px;
     display: inline-block;
     width: 100%;
 }
@@ -515,7 +515,7 @@
     line-height: 1.5;
     box-sizing: border-box;
     width: 100%;
-    font-size: 10px;
+    font-size: 8px;
     color: rgb(31, 45, 61);
     background-color: #fff;
     background-image: none;
@@ -813,7 +813,7 @@
 }
 .el-select-dropdown{}
 .el-select-dropdown__item{
-    font-size: 10px;
+    font-size: 8px;
     padding: 8px 10px;
     position: relative;
     white-space: nowrap;
@@ -980,7 +980,7 @@
     transition: 0s;
     width: 16px;
     height: 16px;
-    font-size: 10px;
+    font-size: 8px;
     right: 8px;
     text-align: center;
     transform: translateY(-50%) rotateZ(180deg);
@@ -1015,7 +1015,7 @@
     padding: 0;
     margin-left: 10px;
     color: #666;
-    font-size: 10px;
+    font-size: 8px;
     vertical-align: baseline;
     -webkit-appearance: none;
        -moz-appearance: none;
@@ -1051,7 +1051,7 @@
     display: inline-block;
     height: 24px;
     line-height: 24px;
-    font-size: 10px;
+    font-size: 8px;
     border-radius: 4px;
     color: #fff;
     background-color: #20a0ff;
