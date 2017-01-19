@@ -5,57 +5,75 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
   state: {
-    items: [],
-    newItem: ""
+    items: [
+      {
+        content: 'Get Milk one',
+        selected: false
+      },
+      {
+        content: 'Get Water two',
+        selected: false
+      },
+      {
+        content: 'Get Bread three',
+        selected: false
+      },
+      {
+        content: 'Get shampoo four',
+        selected: false
+      },
+      {
+        content: 'Get juice five',
+        selected: false
+      }
+    ],
+    newItem: {
+      content: 'be new new new',
+      selected: false
+    },
+    selectedItem:{
+    }
   },
 
   mutations: {
-    GET_ITEM(state, item) {
-      state.newItem = item
-    },
-    ADD_Item(state) {
-      state.items.push({
-        content: state.newItem,
-        done: false
-      })
-    },
-    EDIT_ITEM(state, item) {
+    ADD_ITEM(state) {
+      state.items.push(state.newItem)
     },
     REMOVE_ITEM(state, item) {
-      var items = state.items
-      items.splice(items.indexOf(Item), 1)
-      state.items = items
+      let index=state.items.indexOf(item)
+      state.items.splice(index, 1)
     },
     SELECT_ITEM(state, item) {
-      item.done = !item.done
+      state.items.forEach(function(i){
+        i.selected=false
+      })
+      item.selected =true
+      state.selectedItem=item
     },
-    CLEAR_ITEM(state) {
-      state.newItem = ''
+    EDIT_ITEM(state, text) {
+      let i=state.items.indexOf(state.selectedItem)
+      let item=state.items[i]
+      item.content=text;
     }
   },
 
   actions: {
-    getItem({commit}, Item) {
-      commit('GET_Item', Item)
-    },
     addItem({commit}) {
-      commit('ADD_Item')
+      commit('ADD_ITEM')
     },
-    editItem({commit}, Item) {
-      commit('EDIT_Item', Item)
+    removeItem({commit}, item) {
+      commit('REMOVE_ITEM', item)
     },
-    removeItem({commit}, Item) {
-      commit('REMOVE_Item', Item)
+    selectItem({commit},item) {
+      commit('SELECT_ITEM',item)
     },
-    completeItem({commit}, Item) {
-      commit('COMPLETE_Item', Item)
-    },
-    clearItem({commit}) {
-      commit('CLEAR_Item')
-    },
-    getters: {
-      newItem: state => state.newItem,
-      items: state => state.items.filter((item) => { return !todo.done }),
+    editItem({commit}, text) {
+      commit('EDIT_ITEM',text)
     }
+  },
+  getters: {
+    newItem: state => state.newItem,
+    items: state => state.items,
+    selectedItem: state => state.selectedItem
   }
 })

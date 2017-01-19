@@ -1,11 +1,9 @@
 <template>
-	<div class="container"  :style="{width:calculatedWidth+'px'}">
+	<div class="container" :style="{width:calculatedWidth+'px'}">
 		<ul>
 			<li>
 				<draggable :list='items'>
-					<one-slide v-for='(item,index) in items' 
-                    :item='item' :index='index+1' 
-                    @remove='removeItem'>
+					<one-slide v-for='(item,index) in items' :item='item' :index='index+1' >
 					</one-slide>
 				</draggable>
 			</li>
@@ -23,21 +21,19 @@
     import draggable from 'vuedraggable'
 
     export default{
-        props:['items'],
         computed: {
-            calculatedWidth: function () {
+            calculatedWidth() {
             // `this` points to the vm instance
-            return (this.items.length+1)*screen.width*0.4;
+            return (this.$store.getters.items.length+1)*screen.width*0.4;
+            },
+			items(){
+            return this.$store.getters.items
             }
         },
         methods:{
 			addItem() {
-			    this.items.push({content: "i am new new new", done: false})
-			},
-            removeItem(index){
-                this.items.splice(index-1,1);
-                console.log(index);
-            }
+			    this.$store.dispatch('addItem')
+			}
         },
         components:{
             OneSlide,
@@ -56,7 +52,7 @@
 		border-radius: 8px;
 		margin: 0px 10px;
 		width: 40vw;
-        height:40vh;
+		height: 40vh;
 		border: 5px dashed gray;
 		border-radius: 5px;
 		text-align: center;

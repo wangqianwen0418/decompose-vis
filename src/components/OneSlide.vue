@@ -1,6 +1,6 @@
 <template>
-	<div class="clip bg-purple-dark" @click="print(item,index)" :style="styleObject">
-		<i class="el-icon-circle-close" v-on:click="removeItem(index)"></i> i am a cute slider {{index}}
+	<div class="clip bg-purple-dark" @click="selectItem(item)" :style="styleObject">
+		<i class="el-icon-circle-close" v-on:click="removeItem(item)"></i> i am a cute slider {{index}}
 		<br/> {{item.content}}
 		<div>
 </template>
@@ -9,18 +9,16 @@
 export default {
     props: ['item','index'],
     methods:{
-        removeItem(index) {
-            this.$emit('remove',index);
+        removeItem(item) {
+            this.$store.dispatch('removeItem',item)
         },
-        print(item,index){
-            console.log("i am the "+index+" st slider");
-            console.log("i want to "+item.content);
-            this.item.done=!this.item.done;
+        selectItem(item){
+            this.$store.dispatch('selectItem', item);
         }
     },
     computed:{
-        styleObject: function(){
-            if(!this.item.done)
+        styleObject(){
+            if(this.item.selected)
             return {
             border: '5px solid #1499CC'
             };

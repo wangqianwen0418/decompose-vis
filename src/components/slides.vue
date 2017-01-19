@@ -1,38 +1,12 @@
 <template>
 	<div id="slides" >
-		<slide-container :items='items' ></slide-container>
+		<slide-container ></slide-container>
 	</div>			
 </template>
 
 <script>
   import SlideContainer from './SlideContainer.vue'
   export default {
-      data(){
-      return{
-          items: [
-          {
-              content: 'Get Milk one',
-              done: true
-          },
-          {
-              content: 'Get Water two',
-              done: true
-          },
-          {
-              content: 'Get Bread three',
-              done: true
-          },
-          {
-              content: 'Get shampoo four',
-              done: true
-          },
-          {
-              content: 'Get juice five',
-              done: true
-          }
-          ]
-      }
-    },
     components:{
       SlideContainer
     },
