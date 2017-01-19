@@ -1,12 +1,10 @@
 <template>
 	<el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
-        <el-tab-pane label="coordinates" name="first">iilioo
-        <img src="src/assets/logo.png" alt="Smiley face" ></img>
-        </el-tab-pane>
-        <el-tab-pane label="node" name="second">hhhhhh</el-tab-pane>
-        <el-tab-pane label="line" name="third">hhhhhh</el-tab-pane>
-		<el-tab-pane label="area" name="forth">wwwwwwww</el-tab-pane>
-		<el-tab-pane label="glyph" name="fivth">wwwwww</el-tab-pane>
+        <el-tab-pane label="coordinates" name="first"><b>h</b>hhhh</el-tab-pane>
+        <el-tab-pane label="node" name="second">h<b>h</b>hhh</el-tab-pane>
+        <el-tab-pane label="line" name="third">hh<b>h</b>hh</el-tab-pane>
+		<el-tab-pane label="area" name="forth">hhh<b>h</b>h</el-tab-pane>
+		<el-tab-pane label="glyph" name="fivth">hhhh<b>h</b></el-tab-pane>
 
 	</el-tabs>
 </template>
