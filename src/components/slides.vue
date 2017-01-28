@@ -17,7 +17,7 @@
     
 #slides{
   overflow-x:scroll ; 
-  overflow-y:hidden;
+ /* overflow-y:hidden;*/
   height:45vh;
   margin: 0px, 10px;
 }

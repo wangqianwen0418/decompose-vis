@@ -7,28 +7,39 @@ export default new Vuex.Store({
   state: {
     items: [
       {
-        content: 'Get Milk one',
+        content: 'Get Milk two',
+        attachedEle:[],
+        positions:[],
         selected: false
       },
       {
-        content: 'Get Water two',
+        content: 'Get Water one',
+        attachedEle:[],
+        positions:[],
         selected: false
       },
       {
         content: 'Get Bread three',
+        attachedEle:[],
+        positions:[],
         selected: false
       },
       {
         content: 'Get shampoo four',
+        attachedEle:[],
+        positions:[],
         selected: false
       },
       {
-        content: 'Get juice five',
+        content: 'Get juice three',
+        attachedEle:[],
+        positions:[],
         selected: false
       }
     ],
     newItem: {
       content: 'be new new new',
+      attachedEle:[],
       selected: false
     },
     selectedItem:{
