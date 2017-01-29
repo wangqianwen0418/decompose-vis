@@ -10,14 +10,14 @@ export default {
             this.$store.dispatch('selectItem', item);
         },
         drag(event) {
-            console.log(event.target);
+            console.info(event.target);
             event.dataTransfer.setData('dragTarget', event.target.id);
         },
         allowDrop(ev) {
             ev.preventDefault();
         },
         drop(ev) {
-            console.log(ev.target);
+            console.info(ev.target);
             ev.preventDefault();
             const data = ev.dataTransfer.getData('dragTarget');
             const itm = document.getElementById(data);
@@ -33,6 +33,7 @@ export default {
                     border: '5px solid #1499CC',
                 };
             }
+            return null;
         },
     },
     components: {

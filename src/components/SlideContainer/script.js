@@ -1,20 +1,19 @@
+import { mapState, mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 import OneSlide from '../OneSlide';
+import { ADD_ITEM } from '../../store';
 
 export default {
     computed: {
-        calculatedWidth() {
-            // `this` points to the vm instance
-            return (this.$store.getters.items.length + 1) * screen.width * 0.4;
-        },
-        items() {
-            return this.$store.getters.items;
-        },
+        ...mapState({
+            items: 'items',
+            calculatedWidth: state => (state.items.length + 1) * screen.width * 0.4,
+        }),
     },
     methods: {
-        addItem() {
-            this.$store.dispatch('addItem');
-        },
+        ...mapActions({
+            addItem: ADD_ITEM,
+        }),
     },
     components: {
         OneSlide,
