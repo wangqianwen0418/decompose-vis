@@ -1,14 +1,10 @@
+import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
+import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
 
 export default {
     props: ['item', 'index'],
     methods: {
-        removeItem(item) {
-            this.$store.dispatch('removeItem', item);
-        },
-        selectItem(item) {
-            this.$store.dispatch('selectItem', item);
-        },
         drag(event) {
             console.info(event.target);
             event.dataTransfer.setData('dragTarget', event.target.id);
@@ -25,6 +21,10 @@ export default {
             ev.target.appendChild(cln);
             // this.item.attachedEle.push(data);
         },
+        ...mapActions({
+            removeItem: REMOVE_ITEM,
+            selectItem: SELECT_ITEM,
+        }),
     },
     computed: {
         styleObject() {

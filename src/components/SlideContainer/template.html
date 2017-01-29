@@ -1,9 +1,10 @@
-<div class="container" :style="{width:calculatedWidth+'px'}">
+<div id="slides">
+<div  class="container" :style="{width:calculatedWidth+'px'}">
     <ul>
         <li>
             <draggable :list='items'>
-                <one-slide v-for='(item,index) in items' :item='item' :index='index+1'>
-                </one-slide>
+                <slide v-for='(item,index) in items' :item='item' :index='index+1'>
+                </slide>
             </draggable>
         </li>
         <li>
@@ -12,4 +13,5 @@
             </div>
         </li>
     </ul>
+</div>
 </div>

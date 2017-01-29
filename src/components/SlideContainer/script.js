@@ -1,6 +1,6 @@
 import { mapState, mapActions } from 'vuex';
 import draggable from 'vuedraggable';
-import OneSlide from '../OneSlide';
+import slide from '../Slide';
 import { ADD_ITEM } from '../../store';
 
 export default {
@@ -16,7 +16,7 @@ export default {
         }),
     },
     components: {
-        OneSlide,
+        slide,
         draggable,
     },
 };

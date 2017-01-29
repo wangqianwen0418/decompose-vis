@@ -1,5 +1,5 @@
 <div class="clip bg-purple-dark" @click="selectItem(item)" :style="styleObject" @drop="drop" @dragover="allowDrop">
-    <i class="el-icon-circle-close" v-on:click="removeItem(item)"></i> i am a cute slider {{index}}
+    <i class="el-icon-circle-close" @click="removeItem(item)" /> i am a cute slider {{index}}
     <br/> {{item.content}}
     <div class='attachedEle' v-for="img in item.attachedEle">
         <img :src="img" alt="hhh" height="122" width="62" draggable="true" @dragstart="drag">
