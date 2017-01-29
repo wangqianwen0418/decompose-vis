@@ -1,0 +1,17 @@
+<div>
+    <el-row>
+        <el-col :span="24">
+            <head-line> </head-line>
+        </el-col>
+    </el-row>
+    <el-row>
+        <el-col :span="16">
+            <!--<clips></clips>-->
+            <slides @remove-item="remove(index)"></slides>
+            <editor></editor>
+        </el-col>
+        <el-col :span="8">
+            <resource></resource>
+        </el-col>
+    </el-row>
+</div>

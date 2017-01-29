@@ -5,16 +5,7 @@
     </div>
 </template>
 
-<script>
-import TextSource from './TextSource'
-import FigSource from './FigSource'
-	export default{
-		components:{
-			TextSource,
-			FigSource
-		}
-	}
-</script>
+<script src="./script.js"></script>
 
 <style scoped>
 	.resource {

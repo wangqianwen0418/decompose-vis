@@ -1,0 +1,17 @@
+#slides {
+    overflow-x: scroll;
+    /* overflow-y:hidden;*/
+    height: 45vh;
+    margin: 0px, 10px;
+}
+
+#slides::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 3px;
+}
+
+#slides::-webkit-scrollbar-thumb {
+    border-radius: 1px;
+    background-color: rgba(0, 0, 0, .2);
+    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
