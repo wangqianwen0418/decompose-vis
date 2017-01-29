@@ -3,6 +3,7 @@ import {
     REMOVE_ITEM,
     SELECT_ITEM,
     EDIT_ITEM,
+    UPDATE_ITEM,
 } from './types';
 
 const actions = {
@@ -17,6 +18,9 @@ const actions = {
     },
     [EDIT_ITEM]({ commit }, text) {
         commit(EDIT_ITEM, text);
+    },
+    [UPDATE_ITEM]({ commit }, items) {
+        commit(UPDATE_ITEM, items);
     },
 };
 

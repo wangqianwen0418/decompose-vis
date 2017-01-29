@@ -3,6 +3,7 @@ import {
     REMOVE_ITEM,
     SELECT_ITEM,
     EDIT_ITEM,
+    UPDATE_ITEM,
 } from './types';
 
 const mutations = {
@@ -24,6 +25,9 @@ const mutations = {
         const i = state.items.indexOf(state.selectedItem);
         const item = state.items[i];
         item.content = text;
+    },
+    [UPDATE_ITEM](state, items) {
+        state.items = items;
     },
 };
 

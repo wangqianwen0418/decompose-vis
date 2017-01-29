@@ -16,4 +16,5 @@ export {
     REMOVE_ITEM,
     SELECT_ITEM,
     EDIT_ITEM,
+    UPDATE_ITEM,
 } from './types';
