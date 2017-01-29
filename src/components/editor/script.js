@@ -1,11 +1,11 @@
+import { mapState } from 'vuex';
+
 export default {
     computed: {
-        selectedItem() {
-            return this.$store.getters.selectedItem
-        },
-        message() {
-            return this.$store.getters.selectedItem.content
-        }
+        ...mapState({
+            selectedItem: 'selectedItem',
+            message: state => state.selectedItem.content,
+        })
     },
     methods: {
         editItem(event) {

@@ -2,6 +2,7 @@ var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
 var projectRoot = path.resolve(__dirname, '../')
+const eslintFormatter = require('eslint-friendly-formatter');
 
 var env = process.env.NODE_ENV
 // check env & config/index.js to decide whether to enable CSS source maps for the
@@ -33,6 +34,20 @@ module.exports = {
     fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.vue$/,
+        loader: 'eslint',
+        include: projectRoot,
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.js$/,
+        loader: 'eslint',
+        include: projectRoot,
+        exclude: /node_modules/,
+      },
+    ],
     loaders: [
       {
         test: /\.vue$/,
@@ -75,5 +90,13 @@ module.exports = {
         browsers: ['last 2 versions']
       })
     ]
-  }
+  },
+  babel: {
+        presets: ['es2015', 'stage-2'],
+        plugins: ['transform-runtime'],
+        comments: false,
+    },
+  eslint: {
+        formatter: eslintFormatter,
+    },
 }

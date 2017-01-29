@@ -1,20 +1,4 @@
-<template>
-	<div class="container" :style="{width:calculatedWidth+'px'}">
-		<ul>
-			<li>
-				<draggable :list='items'>
-					<one-slide v-for='(item,index) in items' :item='item' :index='index+1' >
-					</one-slide>
-				</draggable>
-			</li>
-			<li>
-				<div class="newclip bg-purple">
-					<i class="el-icon-plus" v-on:click="addItem()"></i>
-				</div>
-			</li>
-		</ul>
-	</div>
-</template>
+<template src="./template.html"> </template>
 
 <script>
     import OneSlide from './OneSlide'

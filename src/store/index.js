@@ -7,9 +7,7 @@ import {
     EDIT_ITEM
 } from './types';
 
-
-Vue.use(Vuex)
-
+Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         items: [{
@@ -85,9 +83,4 @@ export default new Vuex.Store({
             commit(EDIT_ITEM, text)
         }
     },
-    getters: {
-        newItem: state => state.newItem,
-        items: state => state.items,
-        selectedItem: state => state.selectedItem
-    }
-})
+});

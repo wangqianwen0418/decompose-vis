@@ -1,4 +1,4 @@
-import OneClip from './OneClip.vue'
+import OneClip from '../OneClip.vue'
 
 export default {
     data() {
