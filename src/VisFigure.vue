@@ -49,7 +49,7 @@ function connectivityDetection(data, width, height) {
 				b = data[(i * width + j) + 2];
 				*/
 			Q[++tail] = [i, j];
-			
+
 			while (head <= tail) {
 				const x0 = Q[head][0];
 				const y0 = Q[head][1];
@@ -72,7 +72,7 @@ function connectivityDetection(data, width, height) {
 					if (connectivityTag[z1 >> 2] !== 0) continue;
 					if (Math.abs(data[z0 + 0] - data[z1 + 0]) < threshold0 &&
 						Math.abs(data[z0 + 1] - data[z1 + 1]) < threshold0 &&
-						Math.abs(data[z0 + 2] - data[z1 + 2]) < threshold0 
+						Math.abs(data[z0 + 2] - data[z1 + 2]) < threshold0
 						//&& Math.abs(ar - data[z1 + 0]) < threshold1
 						//&& Math.abs(ag - data[z1 + 1]) < threshold1
 						//&& Math.abs(ab - data[z1 + 2]) < threshold1
@@ -128,7 +128,7 @@ function pretreatment(canvas) {
 	for (let i = 0; i < height; ++i) {
 		for (let j = 0; j < width; ++j) {
 			const tag = connectivityTag[i * width + j];
-			isBorderLine[i * width + j] = 
+			isBorderLine[i * width + j] =
 				(i > 0 && connectivityTag[(i - 1) * width + j] !== tag) ||
 				(j > 0 && connectivityTag[(i) * width + j - 1] !== tag) ||
 				(i + 1 < height && connectivityTag[(i + 1) * width + j] !== tag) ||
@@ -221,7 +221,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 	.vis-figure {
-		position: relative; 
+		position: relative;
 		top: 10px;
 		left: 10px;
 	}

@@ -1,35 +1,35 @@
-import OneClip from '../OneClip.vue'
+import OneClip from '../OneClip';
 
 export default {
     data() {
         return {
             newItem: '',
             items: [{
-                    content: 'Get Milk',
-                    done: true
-                },
-                {
-                    content: 'Get Water',
-                    done: true
-                },
-                {
-                    content: 'Get Bread',
-                    done: true
-                },
-                {
-                    content: 'Get Milk',
-                    done: true
-                },
-                {
-                    content: 'Get Water',
-                    done: true
-                },
-                {
-                    content: 'Get Bread',
-                    done: true
-                }
-            ]
-        }
+                content: 'Get Milk',
+                done: true,
+            },
+            {
+                content: 'Get Water',
+                done: true,
+            },
+            {
+                content: 'Get Bread',
+                done: true,
+            },
+            {
+                content: 'Get Milk',
+                done: true,
+            },
+            {
+                content: 'Get Water',
+                done: true,
+            },
+            {
+                content: 'Get Bread',
+                done: true,
+            },
+            ],
+        };
     },
     methods: {
         removeItem(index) {
@@ -37,13 +37,13 @@ export default {
         },
         addItem() {
             this.items.push({
-                content: "add new",
-                done: false
-            })
-            this.newItem = ''
+                content: 'add new',
+                done: false,
+            });
+            this.newItem = '';
         },
     },
     components: {
-        OneClip
-    }
-}
+        OneClip,
+    },
+};

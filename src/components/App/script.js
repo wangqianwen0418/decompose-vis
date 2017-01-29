@@ -10,6 +10,6 @@ export default {
         clips,
         resource,
         editor,
-        slides
-    }
-}
+        slides,
+    },
+};

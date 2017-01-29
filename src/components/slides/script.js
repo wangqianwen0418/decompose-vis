@@ -1,6 +1,7 @@
- import SlideContainer from '../SlideContainer.vue'
+ import SlideContainer from '../SlideContainer';
+
  export default {
      components: {
-         SlideContainer
+         SlideContainer,
      },
- }
+ };

@@ -3,7 +3,7 @@
      margin: 5px 20px 0px;
      color: white;
  }
- 
+
  i.el-icon-circle-close {
      position: absolute;
      right: 10px;
@@ -11,15 +11,15 @@
      color: white;
      font-size: 20px;
  }
- 
+
  i.el-icon-circle-plus {
      font-size: 20px;
  }
- 
+
  .el-carousel__item:nth-child(2n) {
      background-color: #99a9bf;
  }
- 
+
  .el-carousel__item:nth-child(2n+1) {
      background-color: #d3dce6;
  }

@@ -1,0 +1,17 @@
+.clip {
+		border-radius: 8px;
+		margin: 0px 10px;
+		width: 35vw;
+		height: 40vh;
+		float: left;
+	}
+
+	.el-icon-circle-close {
+		float: right;
+		color: white;
+		font-size: 3vw;
+	}
+
+	.el-icon-circle-close:hover {
+		font-size: 4vw;
+	}
