@@ -1,6 +1,5 @@
 <template>
     <div class="headline bg-purple-dark">
-        <br/>
        <span> how to explain encoding scheme</span>
     </div>
 </template>
@@ -12,5 +11,5 @@
     font-size:40px;
     color:white;
   }
-  
+
 </style>

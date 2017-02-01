@@ -1,0 +1,30 @@
+	.app{
+        font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+    }
+    .el-row {
+	    margin-bottom: 10px;
+	    &:last-child {
+	        margin-bottom: 0;
+	    }
+	}
+
+	.el-col {
+	    border-radius: 4px;
+	}
+
+	.bg-purple-dark {
+	    background: #99a9bf;
+	}
+
+	.bg-purple {
+	    background: #d3dce6;
+	}
+
+	.bg-purple-light {
+	    background: #e5e9f2;
+	}
+
+	.row-bg {
+	    padding: 10px 0;
+	    background-color: #f9fafc;
+	}

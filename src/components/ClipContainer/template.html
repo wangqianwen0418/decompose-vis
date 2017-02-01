@@ -1,0 +1,8 @@
+<el-carousel :autoplay="false" type="card" height="340px">
+    <el-carousel-item v-for="(item, index) in items">
+        <h3>{{index+1}}</h3>
+        <i class="el-icon-circle-close" v-on:click="removeItem(index)"></i>
+        <clip :item="item"></clip>
+        <i class="el-icon-circle-plus"></i>
+    </el-carousel-item>
+</el-carousel>

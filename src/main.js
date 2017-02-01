@@ -1,18 +1,14 @@
-import '../theme/index.css'
-import ElementUI from 'element-ui'
-import Vue from 'vue'
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.css'
-import store from './components/store/store'
-import App from './App.vue'
+import ElementUI from 'element-ui';
+import Vue from 'vue';
+import './styles/index.css';
+import store from './store';
+import App from './components/App';
 
-Vue.use(VueMaterial)
-Vue.use(ElementUI)
+Vue.use(ElementUI);
 
-
+/* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  store,
-  render: h => h(App)
+    el: '#app',
+    store,
+    render: h => h(App),
 });
-
