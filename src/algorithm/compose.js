@@ -32,7 +32,7 @@ function getOuterBox(element) {
     };
 }
 
-function findNearest(elements, gradient, maxDistance = 50) {
+function findNearest(elements, gradient, maxDistance = 75) {
     const tick_num = gradient.map(d => Math.ceil(1.0 / d));
     const maxDistanceSqr = maxDistance * maxDistance;
     const colorHash = (color) => (
@@ -52,7 +52,7 @@ function findNearest(elements, gradient, maxDistance = 50) {
     return relations;
 }
 
-function findNearestNaive(elements, gradient, maxDistance = 75) {
+function findNearestNaive(elements, gradient, maxDistance = 50) {
     const tick_num = gradient.map(d => Math.ceil(1.0 / d));
     const maxDistanceSqr = maxDistance * maxDistance;
     const f = (d) => {

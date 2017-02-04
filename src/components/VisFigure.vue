@@ -2,7 +2,7 @@
 	<div class="vis-figure">
 		<el-row>
 			<el-col :span="24">
-				<canvas @mouseout="onMouseout" @mousemove="onMousemove" @mouseenter="onMouseenter">
+				<canvas @mouseout="onMouseout" @mousemove="onMousemove" @click="onClick" @mouseenter="onMouseenter">
 				</canvas>
 			</el-col>
 		</el-row>
@@ -30,7 +30,7 @@ import * as d3 from "d3";
 
 let pixelgroup, groups, maxtimestamp, currenttime, lastgroup, tags;
 let initalData, transparentData, color_spaces = [];
-let zoom_ratio;
+let zoom_ratio, svg;
 
 function preprocessing(canvas) {
 	const start_time = new Date();
@@ -47,9 +47,19 @@ function preprocessing(canvas) {
 
 	const seq = random_sampling_seq(height * width);
 	for (let i = 0; i < height * width; ++i) {
-		const r = data[(i << 2) + 0];
-		const g = data[(i << 2) + 1];
-		const b = data[(i << 2) + 2];
+		let r = data[(i << 2) + 0];
+		let g = data[(i << 2) + 1];
+		let b = data[(i << 2) + 2];
+		const a = data[(i << 2) + 3];
+		if (a !== 255) {
+			r = Math.floor(r / 255 * a);
+			g = Math.floor(g / 255 * a);
+			b = Math.floor(b / 255 * a);
+			data[(i << 2) + 0] = r;
+			data[(i << 2) + 1] = g;
+			data[(i << 2) + 2] = b;
+			data[(i << 2) + 3] = 255;
+		}
 		const hsl = color.rgbToHsl(r, g, b);
 		hsl_data[i * 3 + 0] = hsl[0];
 		hsl_data[i * 3 + 1] = hsl[1];
@@ -117,6 +127,120 @@ export default {
     },
 	props: ['src', 'width', 'height'],
 	methods: {
+		onClick(event) {
+			const start_time = new Date();
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			// const k = y * canvas.width + x << 2;
+			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
+			// console.log(hsl);
+			// console.log(x, y, event);
+			
+			let group0 = pixelgroup[y * canvas.width + x];
+			const top = [], btm = [];
+			const contour = [];
+
+			if (group0 != null) {
+				group0 = findGroup(group0, currenttime);
+				const width = canvas.width;
+				const height = canvas.height;
+				
+				let n = 0, r = 0, g = 0, b = 0, x0 = Number.MAX_VALUE, y0 = Number.MAX_VALUE, x1 = 0, y1 = 0;
+				for (const group of groups) {
+					if (findGroup(group, currenttime) === group0) {
+						const points = group.points;
+						for (let i = 0; i < points.length; i += 2) {
+							const x = Math.floor(points[i] / zoom_ratio);
+							const y = points[i + 1] / zoom_ratio;
+							n += 1;
+							r += transparentData.data[((points[i + 1] * width + points[i]) << 2) + 0];
+							g += transparentData.data[((points[i + 1] * width + points[i]) << 2) + 1];
+							b += transparentData.data[((points[i + 1] * width + points[i]) << 2) + 2];
+							if (!btm[x]) {
+								btm[x] = y;
+							} else if (y > btm[x]) {
+								btm[x] = y;
+							}
+							if (!top[x]) {
+								top[x] = y;
+							} else if (y < top[x]) {
+								top[x] = y;
+							}
+							if (x < x0) {
+								x0 = x;
+							} else if (x > x1) {
+								x1 = x;
+							}
+							if (y < y0) {
+								y0 = y;
+							} else if (y > y1) {
+								y1 = y;
+							}
+						}
+					}
+				}
+				r = Math.floor(r / n);
+				g = Math.floor(g / n);
+				b = Math.floor(b / n);
+
+				for (var i = 0; i < top.length; ++i) if (top[i] !== undefined) {
+					contour.push([i, top[i]]);
+				}
+				for (var i = btm.length - 1; i >= 0; --i) if (btm[i] !== undefined) {
+					contour.push([i, btm[i]]);
+				}
+				contour.push(contour[0]);
+				const line = d3.line().curve(d3.curveCardinal.tension(0.5)).x(d => d[0] - x0).y(d => d[1] - y0);
+				const contour_sample = 
+					contour.length < 100 ?
+					contour :
+					contour.filter((d, i) => i === 0 || i === (contour.length - 1) || (i % 8 === 0));
+
+				d3.select(this.$el).selectAll("svg").remove();
+
+				const svg = d3.select(this.$el)
+					.append("svg");
+
+				let left0 = -1, top0 = -1;
+
+				svg.call(d3.drag()
+						.on("start", function(d){
+							const el = d3.select(this);
+							left0 = parseInt(el.style('left'));
+							top0 = parseInt(el.style('top'));
+						})
+						.on("drag", function(d){
+							const el = d3.select(this);
+							const left = parseInt(el.style('left'));
+							const top = parseInt(el.style('top'));
+							el.style('left', `${left + d3.event.dx}px`);
+							el.style('top', `${top + d3.event.dy}px`);
+						})
+						.on("end", function(d){
+							const el = d3.select(this);
+							el.transition().duration(400)
+								.style('left', `${left0}px`)
+								.style('top', `${top0}px`);
+						})
+					);
+
+				svg.attr("width", x1 - x0)
+					.attr("height", y1 - y0);
+
+				svg.append("path")
+					.datum(contour_sample)
+					.attr('d', line)
+					.attr("stroke-width", 2)
+					.attr("fill", `rgb(${r},${g},${b})`);
+
+				svg.style("position", "absolute")
+					.style("left", `${x0 + offset.x(canvas) - 10}px`)
+					.style("top", `${y0}px`);
+			}
+			console.log(`click time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+		},
 		onMousemove(event) {
 			const start_time = new Date();
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
@@ -137,20 +261,6 @@ export default {
 				}
 				const width = canvas.width;
 				const height = canvas.height;
-/*
-				const points = group0.points;
-				for (let i = 0; i < points.length; i += 2) {
-					imgData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
-				}
-
-				for (const group of group0.neighbor) {
-					//if (findGroup(group, currenttime) === group0) {
-					const points = group.points;
-					for (let i = 0; i < points.length; i += 2) {
-						imgData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
-					}
-				}
-				*/
 				
 				for (const group of groups) {
 					if (findGroup(group, currenttime) === group0) {
@@ -165,11 +275,11 @@ export default {
 						}
 					}
 				}
-				
 				lastgroup = group0;
 
 				ctx.putImageData(transparentData, 0, 0);
 			}
+
 			console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onMouseenter(event) {
@@ -199,21 +309,23 @@ export default {
 		},
 		onButtonMouseenter(event) {
 			const tag = ~~event.target.getAttribute("tag");
-			console.log("mouseenter");
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
 			const width = canvas.width;
 			const height = canvas.height;
 			const data = transparentData.data;
+			let count = 0;
 			for (let i = 0; i < width * height; ++i) if (tags[i] === tag) {
 				data[(i << 2) + 3] = 255;
+				++count;
+
 			} else {
 				data[(i << 2) + 3] = 50;
 			}
+			console.log(tag, count);
 			ctx.putImageData(transparentData, 0, 0);
 		},
 		onButtonMouseout(event) {
-			console.log("mouseout");
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
 			lastgroup = null;
@@ -237,7 +349,9 @@ export default {
 			canvas.height = img.height;
 			zoom_ratio = Math.max(img.width / 1280, img.height / 800); 
 			ctx.drawImage(img, 0, 0);
-			preprocessing(canvas);	
+			preprocessing(canvas);
+			//svg.attr('width', img.width / zoom_ratio)
+			//	.attr('height', img.height / zoom_ratio);
 		};
 	}
 };
@@ -246,6 +360,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 	canvas {
+		position: relative;
+		left: 0px;
+		top: 0px;
 		max-width: 1280px;
 		max-height: 800px;
 	}

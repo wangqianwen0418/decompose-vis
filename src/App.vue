@@ -2,7 +2,7 @@
 	<div id="app">
 		<el-row>
 			<el-col :span="24">
-				<vis-figure :src="require('assets/paper2.png')" width="640" height="360"></vis-figure>
+				<vis-figure :src="require('assets/WX20170119-170531@2x.png')" width="640" height="360"></vis-figure>
 			</el-col>
 		</el-row>
 	</div>

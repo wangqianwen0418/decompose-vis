@@ -1,5 +1,5 @@
 export function decompose(data, width, height, gradient = [0.03, 0.03, 0.02]) {
-	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-3, -3], [-3, 3], [3, -3], [3, 3]];
 	const nth = new Uint32Array(width * height);
 	const Queue = new Array(width * height >> 3);
 	let current_num = 0;
