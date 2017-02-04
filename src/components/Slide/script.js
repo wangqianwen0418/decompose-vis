@@ -2,6 +2,7 @@ import { mapActions } from 'vuex';
 import draggable from 'vuedraggable';
 import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
 
+// {'b':2, 'a':1}
 export default {
     props: ['item', 'index'],
     methods: {

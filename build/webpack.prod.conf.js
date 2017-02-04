@@ -64,7 +64,7 @@ const webpackConfig = merge(baseWebpackConfig, {
                     module.resource &&
                     /\.js$/.test(module.resource) &&
                     module.resource.indexOf(
-                        path.join(__dirname, '../node_modules'),
+                        path.join(__dirname, '../node_modules')
                     ) === 0
                 );
             },
@@ -87,11 +87,11 @@ if (config.build.productionGzip) {
             test: new RegExp(
                 `\\.(${
                 config.build.productionGzipExtensions.join('|')
-                })$`,
+                })$`
             ),
             threshold: 10240,
             minRatio: 0.8,
-        }),
+        })
     );
 }
 

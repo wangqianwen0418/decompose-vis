@@ -21,13 +21,13 @@ export default {
     },
     methods: {
         move(evt) {
-            console.log(evt);
+            console.info(evt);
         },
         endDrag(evt) {
             this.updateItem(this.items);
         },
         startDrag(evt) {
-            console.log(evt);
+            console.info(evt);
         },
         ...mapActions({
             addItem: ADD_ITEM,
