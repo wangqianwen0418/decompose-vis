@@ -22,6 +22,10 @@
         {
             "taskName": "test",
             "args": ["run", "test"]
+        },
+        {
+            "taskName": "lint",
+            "args": ["run", "lint"]
         }
     ]
 }
