@@ -1,15 +1,28 @@
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+import { EDIT_ITEM } from '../../store';
+
 
 export default {
+    data() {
+        return { message: '' };
+    },
     computed: {
         ...mapState({
-            selectedItem: 'selectedItem',
-            message: state => state.selectedItem.content,
+            mesWatcher: (state) => {
+                const selectedItem = state.items.filter(item => item.selected)[0];
+                if (selectedItem) return selectedItem.content;
+                return null;
+            },
         }),
     },
     methods: {
-        editItem(event) {
-            this.$store.dispatch('editItem', event.target.value);
+        ...mapActions({
+            editItem: EDIT_ITEM,
+        }),
+    },
+    watch: {
+        mesWatcher(val) {
+            this.message = val;
         },
     },
 };
