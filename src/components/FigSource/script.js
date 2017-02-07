@@ -1,4 +1,7 @@
+import VisFigure from '../VisFigure';
+
 export default {
+	components: { "vis-figure": VisFigure },
     data() {
         return {
             activeName: 'first',
