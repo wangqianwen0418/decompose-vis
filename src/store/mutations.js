@@ -6,6 +6,7 @@ import {
     UPDATE_ITEM,
 } from './types';
 
+
 const mutations = {
     [ADD_ITEM](state) {
         state.items.push(state.newItem);
@@ -19,12 +20,12 @@ const mutations = {
             i.selected = false;
         });
         item.selected = true;
-        state.selectedItem = item;
     },
-    [EDIT_ITEM](state, text) {
-        const i = state.items.indexOf(state.selectedItem);
-        const item = state.items[i];
-        item.content = text;
+    [EDIT_ITEM](state, message) {
+        // console.info(message);
+        const selectedItem = state.items.filter(item => item.selected)[0];
+        // const i = state.items.indexOf(selectedItem);
+        selectedItem.content = message;
     },
     [UPDATE_ITEM](state, items) {
         state.items = items;

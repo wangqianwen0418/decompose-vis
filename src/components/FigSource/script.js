@@ -1,3 +1,5 @@
+import * as d3 from 'd3';
+
 export default {
     data() {
         return {
@@ -6,9 +8,9 @@ export default {
     },
     methods: {
         drag(event) {
-            console.log(event.target);
+            console.info(event.target);
             event.dataTransfer.setData('dragTarget', event.target.id);
             // event.dataTransfer.setData("dragTarget", event.target.src);
         },
-    },
+    }
 };
