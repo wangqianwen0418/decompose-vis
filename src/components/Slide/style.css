@@ -6,12 +6,16 @@
 		float: left;
 	}
 
-	.el-icon-circle-close {
+.el-icon-circle-close {
 		float: right;
 		color: white;
 		font-size: 3vw;
 	}
 
-	.el-icon-circle-close:hover {
+.el-icon-circle-close:hover {
 		font-size: 4vw;
 	}
+
+circle{
+  fill: #76BF8A;
+  }

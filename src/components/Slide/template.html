@@ -3,12 +3,15 @@
     @click="selectItem(item)"
     @drop="ondrop"
 >
-    <i class="el-icon-circle-close" @click="removeItem(item)" /> i am a cute slider {{index}}
-    <br/> {{item.content}}
-    <div class="attachedEle" v-for="img in item.attachedEle">
-        <img :src="img" alt="hhh" height="122" width="62">
+    <div id="slideText">
+        <i class="el-icon-circle-close" @click="removeItem(item)" /> i am a cute slider {{index}}
+        <br/> {{item.content}}
+        <!--<div class="attachedEle" v-for="img in item.attachedEle">
+            <img :src="img" alt="hhh" height="122" width="62">
+        </div>-->
+        <br/># of attached elements {{item.attachedEles.length}}
     </div>
     
     <br/># of attached elements {{item.attachedEle.length}}
-    <svg width="600" height="400" class="svg-stage"></svg>
+    <svg width="width" height="height" class="svg-stage"></svg>
 </div>
