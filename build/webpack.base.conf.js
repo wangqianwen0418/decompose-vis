@@ -91,7 +91,6 @@ module.exports = {
                 browsers: ['last 2 versions'],
             }),
         ],
-<<<<<<< HEAD
     },
     babel: {
         presets: ['es2015', 'stage-2'],
@@ -102,41 +101,3 @@ module.exports = {
         formatter: eslintFormatter,
     },
 };
-=======
-        exclude: /node_modules/
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        loader: 'url',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[ext]')
-        }
-      },
-      {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-        loader: 'url',
-        query: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
-        }
-      }
-    ]
-  },
-  vue: {
-    loaders: utils.cssLoaders({ sourceMap: useCssSourceMap }),
-    html: {
-      root: path.resolve(__dirname, '../src/assets')
-    },
-    postcss: [
-      require('autoprefixer')({
-        browsers: ['last 2 versions']
-      })
-    ]
-  }
-}
->>>>>>> dev
