@@ -1,8 +1,6 @@
 <el-tabs v-model="activeName" type="border-card">
-    <el-tab-pane label="coordinates" name="first"><b>h</b>hhhh
-        <div>
-            <img id="drag1" src="../../assets/paper1.png" draggable="true" @dragstart="drag" width="336" height="69">
-        </div>
+    <el-tab-pane label="coordinates" name="first">
+        <vis-figure :src="require('assets/WX20170119-170531@2x.png')" width="640" height="360"></vis-figure>
     </el-tab-pane>
     <el-tab-pane label="node" name="second">h<b>h</b>hhh
         <svg id='node'></svg>

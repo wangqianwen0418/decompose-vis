@@ -1,6 +1,7 @@
 <div class="clip bg-purple-dark"
     :style="styleObject"
     @click="selectItem(item)"
+    @drop="ondrop"
 >
     <div id="slideText">
         <i class="el-icon-circle-close" @click="removeItem(item)" /> i am a cute slider {{index}}
@@ -10,9 +11,7 @@
         </div>-->
         <br/># of attached elements {{item.attachedEles.length}}
     </div>
-    <svg :width="width" :height="height">
-        <g style="transform: translate(0, 10px)">
-            <!--<path :d="line" />-->
-        </g>
-  </svg>
+    
+    <br/># of attached elements {{item.attachedEle.length}}
+    <svg width="width" height="height" class="svg-stage"></svg>
 </div>

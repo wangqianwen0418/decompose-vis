@@ -1,15 +1,18 @@
 <template>
 	<div class="vis-figure">
 		<el-row>
-			<el-col :span="12">
-				<canvas @mouseout="onMouseout" @mousemove="onMousemove" @click="onClick" @mouseenter="onMouseenter">
-				</canvas>
-			</el-col>
+			<!--
 			<el-col :span="12">
 				<svg class="svg-stage" @drop="ondrop">
 				</svg>
 			</el-col>
+			!-->
+			<el-col :span="24">
+				<canvas @mouseout="onMouseout" @mousemove="onMousemove" @click="onClick" @mouseenter="onMouseenter">
+				</canvas>
+			</el-col>
 		</el-row>
+		<!--
 		<el-row>
 			<el-col :span="3" v-for="item in color_spaces">
 				<div class="circle-button"
@@ -20,6 +23,7 @@
 				</div>
 			</el-col>
 		</el-row>
+		!-->
 	</div>
 </template>
 
@@ -143,9 +147,18 @@ export default {
 	methods: {
 		ondrop(event) {
 			const id = event.dataTransfer.getData('text');
-			const item = document.getElementById(id).getElementsByTagName('path')[0];
+			const item = document.getElementById(id);
+			const geo = item.getElementsByTagName('svg')[0].firstChild;
+			const x = item.getAttribute('x');
+			const y = item.getAttribute('y');
+			const width = item.getAttribute('width');
 			const svg = this.$el.getElementsByClassName('svg-stage')[0];
-			svg.appendChild(item);
+			const ratio = svg.width / width;
+			d3.select(geo)
+				.attr('transform', `translate(${x}, ${y})`)
+				.attr('transform', `scale(${ratio})`);
+			svg.appendChild(geo);
+			item.remove();
 		},
 		onClick(event) {
 			const start_time = new Date();
@@ -239,10 +252,15 @@ export default {
 					.attr("stroke-width", 2)
 					.attr("fill", `rgb(${r},${g},${b})`);
 
-				div.style("z-index", 1)
-					.style("position", "absolute")
-					.style("left", `${x0}px`)
-					.style("top", `${y0}px`)
+				console.log(offset.x(canvas), offset.y(canvas));
+				div.attr('x', x0)
+					.attr('y', y0)
+					.attr('width', canvas.width / zoom_ratio)
+					.attr('height', canvas.height / zoom_ratio)
+					.style("z-index", 1)
+					.style("position", "fixed")
+					.style("left", `${x0 + offset.x(canvas)}px`)
+					.style("top", `${y0 + offset.y(canvas)}px`)
 					.style("opacity", 1);
 			}
 			console.log(`click time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
@@ -354,7 +372,9 @@ export default {
 		img.onload = function() {
 			canvas.width = img.width;
 			canvas.height = img.height;
-			zoom_ratio = Math.max(img.width / 900, img.height / 800); 
+			const realWidth = canvas.parentNode.clientWidth;
+			const realHeight = canvas.parentNode.clientHeight;
+			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight); 
 			d3.select(svg)
 				.attr('width', img.width / zoom_ratio)
 				.attr('height', img.height / zoom_ratio);
@@ -374,8 +394,8 @@ export default {
 		position: relative;
 		left: 0px;
 		top: 0px;
-		max-width: 900px;
-		max-height: 800px;
+		max-width: 100%;
+		max-height: 100%;
 	}
 	svg {
 		position: relative;

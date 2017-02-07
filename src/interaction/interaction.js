@@ -5,6 +5,7 @@ export function interactionInit() {
     document.addEventListener('drag', onDrag);
     document.addEventListener('dragstart', onDragstart);
     document.addEventListener('dragend', onDragend);
+    document.addEventListener('drop', onDrop);
     document.addEventListener('dragover', onDragover);
     document.addEventListener('mouseup', onmouseenter);
 }
@@ -31,6 +32,7 @@ function onDragstart(event) {
 }
 
 function onDragend(event) {
+    event.preventDefault();
     if (event.target.tagName === "DIV") {
         console.log(event);
     }
@@ -46,3 +48,8 @@ function onDrag(event) {
 function onDragover(event) {
     event.preventDefault();
 }
+
+function onDrop(event) {
+    event.preventDefault();
+}
+
