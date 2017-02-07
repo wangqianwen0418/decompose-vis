@@ -3,13 +3,13 @@ import { mapActions, mapState } from 'vuex';
 import draggable from 'vuedraggable';
 import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
 
-
+console.info(document.getElementById('slideText'));
 // {'b':2, 'a':1}
 export default {
     props: ['item', 'index'],
     data() {
         return {
-            height: window.innerHeight * 0.35,
+            height: window.innerHeight * 0.4,
             width: window.innerWidth * 0.35,
             line: '',
         };

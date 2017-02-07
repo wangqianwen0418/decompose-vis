@@ -20,13 +20,12 @@ const mutations = {
             i.selected = false;
         });
         item.selected = true;
-        state.selectedItem = item;
-        state.selectedIndex = state.items.indexOf(item);
     },
     [EDIT_ITEM](state, message) {
         // console.info(message);
-        const i = state.items.indexOf(state.selectedItem);
-        state.items[i].content = message;
+        const selectedItem = state.items.filter(item => item.selected)[0];
+        // const i = state.items.indexOf(selectedItem);
+        selectedItem.content = message;
     },
     [UPDATE_ITEM](state, items) {
         state.items = items;
