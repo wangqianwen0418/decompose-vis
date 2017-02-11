@@ -1,36 +1,157 @@
 const state = {
-    items: [{
-        content: 'Get Milk two',
-        attachedEles: [{ i: 0, x: 100, y: 219, r: 30 }, { i: 1, x: 202, y: 129, r: 25 }],
-        selected: false,
-    },
-    {
-        content: 'Get Water one',
-        attachedEles: [{ i: 0, x: 310, y: 201, r: 100 }, { i: 1, x: 332, y: 112, r: 23 }],
-        selected: false,
-    },
-    {
-        content: 'Get Bread three',
-        attachedEles: [{ i: 0, x: 310, y: 201, r: 20 }, { i: 1, x: 332, y: 112, r: 21 }],
-        selected: false,
-    },
-    {
-        content: 'Get shampoo four',
-        attachedEles: [{ i: 0, x: 100, y: 219, r: 13 }, { i: 1, x: 202, y: 129, r: 15 }],
-        selected: false,
-    },
-    {
-        content: 'Get juice three',
-        attachedEles: [{ i: 0, x: 100, y: 219, r: 13 }, { i: 1, x: 202, y: 129, r: 15 }],
-        selected: false,
-    },
-    ],
     newItem: {
         content: 'be new new new',
-        attachedEles: [{ i: 0, x: 100, y: 219, r: 13 }, { i: 1, x: 202, y: 129, r: 15 }],
+        attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
         selected: false,
+        removed: false,
+        block: 'node',
+        mark: 'node',
+        channel: 'position',
     },
-    figureSource: [{ i: 0, x: 100, y: 219, r: 30 }, { i: 1, x: 202, y: 129, r: 25 }],
+    blocks: [
+        {
+            name: 'block1',
+            marks: [
+                {
+                    name: 'mark11',
+                    channels: [
+                        {
+                            name: 'channel111',
+                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+                            removed: false,
+                            block: 'node',
+                            mark: 'node',
+                            channel: 'position',
+                        },
+                        {
+                            name: 'channel112',
+                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'position',
+                        },
+                        {
+                            name: 'channel113',
+                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'color',
+                        },
+                    ],
+                },
+                {
+                    name: 'mark12',
+                    channels: [
+                        {
+                            name: 'channel121',
+                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'position',
+                        },
+                        {
+                            name: 'channel122',
+                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'color',
+                        },
+                    ],
+                }],
+        },
+        {
+            name: 'block2',
+            marks: [
+                {
+                    name: 'mark21',
+                    channels: [
+                        {
+                            name: 'channel 211',
+                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'color',
+                        },
+                        {
+                            name: 'channel 212',
+                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'position',
+                        },
+                        {
+                            name: 'channel 213',
+                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'color',
+                        },
+                    ],
+                },
+                {
+                    name: 'mark22',
+                    channels: [
+                        {
+                            name: 'channel221',
+                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+                            removed: false,
+                            block: 'node',
+                            mark: 'node',
+                            channel: 'position',
+                        },
+                        {
+                            name: 'channel222',
+                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'position',
+                        },
+                        {
+                            name: 'channel223',
+                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'color',
+                        },
+                        {
+                            name: 'channel224',
+                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'color',
+                        },
+                    ],
+                }],
+        },
+    ],
+    figureSource: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
     // selectedItem: {},
     // selectedIndex: '',
 };

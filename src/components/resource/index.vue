@@ -2,6 +2,7 @@
     <div class="resource bg-purple-light">
 		<fig-source></fig-source>
 		<text-source></text-source>
+        <unit-tree/>
     </div>
 </template>
 
