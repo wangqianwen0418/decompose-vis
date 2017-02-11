@@ -4,6 +4,7 @@ import {
     SELECT_ITEM,
     EDIT_ITEM,
     UPDATE_ITEM,
+    SELECT_BLOCK,
 } from './types';
 
 
@@ -25,11 +26,25 @@ const mutations = {
         });
         item.selected = true;
     },
+    [SELECT_BLOCK](state, block) {
+        state.blocks.forEach((blk) => {
+            blk.selelcted = false;
+        });
+        block.selected = true;
+        console.info('select a block');
+    },
     [EDIT_ITEM](state, message) {
-        const selectedItem = state.items.filter(item => item.selected);
-        const eles = selectedItem[0].attachedEles;
-        const selectedEle = eles.filter(ele => ele.selected)[0];
-        selectedEle.description.text = message;
+        state.blocks.forEach((block) => {
+            block.marks.forEach((mark) => {
+                mark.channels.forEach((channel) => {
+                    if (channel.selected) {
+                        channel.attachedEles.forEach((ele) => {
+                            if (ele.selected) { ele.description.text = message; }
+                        });
+                    }
+                });
+            });
+        });
     },
     [UPDATE_ITEM](state, items) {
         state.items = items;

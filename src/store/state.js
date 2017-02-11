@@ -11,6 +11,7 @@ const state = {
     blocks: [
         {
             name: 'block1',
+            selected: true,
             marks: [
                 {
                     name: 'mark11',
@@ -71,6 +72,7 @@ const state = {
         },
         {
             name: 'block2',
+            selected: false,
             marks: [
                 {
                     name: 'mark21',

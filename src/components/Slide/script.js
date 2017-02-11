@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 import { mapActions, mapState } from 'vuex';
 import draggable from 'vuedraggable';
 import { REMOVE_ITEM, SELECT_ITEM } from '../../store';

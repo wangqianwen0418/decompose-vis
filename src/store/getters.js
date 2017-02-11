@@ -1,5 +1,13 @@
 const getters =
     {
+        selectedBlock:
+        (state) => {
+            let block = null;
+            state.blocks.forEach((blk) => {
+                if (blk.selected) block = blk;
+            });
+            return block;
+        },
         selectedItem:
         (state) => {
             let item = null;

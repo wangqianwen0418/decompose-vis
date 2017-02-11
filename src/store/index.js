@@ -19,4 +19,5 @@ export {
     SELECT_ITEM,
     EDIT_ITEM,
     UPDATE_ITEM,
+    SELECT_BLOCK,
 } from './types';

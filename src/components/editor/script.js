@@ -2,27 +2,6 @@ import * as d3 from 'd3';
 import { mapActions, mapGetters } from 'vuex';
 import { EDIT_ITEM } from '../../store';
 
-
-// function edit(d) {
-//     // console.info(d);
-//     const frm = d3.select(this).append('foreignObject')
-//             .attr('id', 'editor')
-//             .attr('x', 10)
-//             .attr('y', 10)
-//             .attr('width', 300)
-//             .attr('height', 25);
-
-//     const el = frm.append('xhtml:div')
-//                 // .append('textarea')
-//                 // .attr('input', 'test');
-//                     .html("<textarea name='myTextBox' v-model='message' @input='editItem(message)' cols='50' rows='5' style='background-color:#FCF5D8;'>" +
-//                     'edit here....</textarea>')
-//                     .on('keypress', () => {
-//                         console.info(event.keycode);
-//                         document.getElementById('#editor').remove();
-//                     });
-//     // console.info(el.value);
-// }
 export default {
     computed: {
         message: {
