@@ -8,8 +8,7 @@
 	</div>
 </template>
 <script>
-import VisFigure from './components/VisFigure';
-
+import VisFigure from './components/VisFigure.vue';
 export default {
 	components: { "vis-figure": VisFigure }
 };

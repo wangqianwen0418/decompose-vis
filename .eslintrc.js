@@ -38,9 +38,6 @@ module.exports = {
                 "args": "none"
             }
         ],
-        "no-tab": [
-            "off",
-        ],
         "no-console": [
             "error",
             {
