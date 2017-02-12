@@ -23,9 +23,9 @@ export default {
         styleObject() {
             if (this.item.selected) {
                 return {
-                    border: '1vh solid #1499CC',
-                    height: '18vh',
-                    width: '18vw',
+                    border: '0.5vh dashed #417378',
+                    height: '19vh',
+                    width: '19vw',
                 };
             }
             return null;

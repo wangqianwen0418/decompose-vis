@@ -1,6 +1,6 @@
 <template>
-    <div class="headline bg-purple-dark">
-       <span> how to explain encoding scheme</span>
+    <div class="headline">
+       <span style='margin-left: 30px'> how to explain encoding scheme</span>
     </div>
 </template>
 
@@ -9,7 +9,9 @@
     height: 10vh;
     border-radius: 8px;
     font-size:40px;
-    color:white;
+    color:var(--color-0);
+    background-color: var(--color-2);
+    font-family: 'Pangolin', cursive;
   }
 
 </style>

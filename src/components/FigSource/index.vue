@@ -4,13 +4,15 @@
 <style scoped>
 	.el-tabs {
 		height: 40vh;
-		font-family: Helvetica;
-		border-style: groove 1px;
+		font-family: 'Source Sans Pro', sans-serif;;
 		margin: 5px;
 		border-radius: 8px;
+        background-color:var(--color-0);
 	}
+    .el-tabs_header{
+        background-color:var(--color-3);
+    }
 
-	.el-tab-pane {
-		border-radius: 8px;
-	}
+
+
 </style>

@@ -10,7 +10,22 @@
 <script src='./script.js'></script>
 
 <style scoped>
-    ul {
-        list-style-type: none;
-    }
+button {
+    background-color: var(--color-0);
+    color:var(--color-3);
+    margin: 5px;
+    border:none;
+    border-radius: 3px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+button:focus {
+    outline:none;
+    border:3px solid var(--color-3);
+    border-radius: 3px;
+}
+
 </style>

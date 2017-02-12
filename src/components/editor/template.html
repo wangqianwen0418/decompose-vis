@@ -1,7 +1,7 @@
-<div class="editor bg-purple-light">
+<div class="editor">
     <textarea v-if='selectedEle' rows="4" cols="30"
     id='dragme'
-    @keyup.enter='exit()'
+    @keydown.enter='exit()'
     draggable='true' @dragstart='dragstart' @drag = 'drag'
     :style="{position: 'absolute', left: selectedEle.x+'px', top: selectedEle.y+'px'}"
     v-model="message" @input='editItem(message)'
