@@ -1,7 +1,7 @@
 import { mapState, mapActions } from 'vuex';
-import draggable from 'vuedraggable';
+// import draggable from 'vuedraggable';
 import slide from '../Slide';
-import { ADD_ITEM, UPDATE_ITEM } from '../../store';
+import { ADD_ITEM } from '../../store';
 
 export default {
     data() {
@@ -11,27 +11,26 @@ export default {
     },
     components: {
         slide,
-        draggable,
+        // draggable,
     },
     computed: {
         ...mapState({
-            items: 'items',
-            calculatedWidth: state => (state.items.length + 1) * screen.width * 0.4,
+            blocks: 'blocks',
+            calculatedWidth: (state) => {
+                let len = 0;
+                const blocks = state.blocks;
+                for (const i in blocks) {
+                    for (const j in blocks[i].marks) {
+                        len += blocks[i].marks[j].channels.length;
+                    }
+                }
+                return (len + 1) * screen.width * 0.4;
+            },
         }),
     },
     methods: {
-        move(evt) {
-            console.info(evt);
-        },
-        endDrag(evt) {
-            this.updateItem(this.items);
-        },
-        startDrag(evt) {
-            console.info(evt);
-        },
         ...mapActions({
             addItem: ADD_ITEM,
-            updateItem: UPDATE_ITEM,
         }),
     },
 };
