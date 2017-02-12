@@ -1,6 +1,8 @@
+import VisFigure from '../VisFigure';
 import * as d3 from 'd3';
 
 export default {
+	components: { "vis-figure": VisFigure },
     data() {
         return {
             activeName: 'first',

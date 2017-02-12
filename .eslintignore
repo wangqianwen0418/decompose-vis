@@ -1,3 +1,9 @@
 build/*.js
 config/*.js
 src/VisFigure.vue
+src/algorithm/*.js
+src/utils/*.js
+src/interaction/*.js
+src/components/VisFigure.vue
+src/VisFigure.vue
+src/App.vue
