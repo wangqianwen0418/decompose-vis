@@ -1,4 +1,3 @@
-import * as d3 from 'd3';
 import { mapActions, mapState } from 'vuex';
 import draggable from 'vuedraggable';
 import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
@@ -7,7 +6,7 @@ import * as d3 from 'd3';
 console.info(document.getElementById('slideText'));
 // {'b':2, 'a':1}
 export default {
-    props: ['item', 'index'],
+    props: ['item', 'mark', 'block'],
     data() {
         return {
             height: window.innerHeight * 0.4,
@@ -81,21 +80,20 @@ export default {
         styleObject() {
             if (this.item.selected) {
                 return {
-                    border: '5px solid #1499CC',
+                    border: '1vh solid #1499CC',
+                    height: '18vh',
+                    width: '18vw',
                 };
             }
             return null;
         },
         ...mapState({
-            attachedEles: (state) => {
-                const selectedItem = state.items.filter(item => item.selected)[0];
-                return selectedItem.attachedEles;
-            },
+            selectedEle: 'selectedEle',
         }),
     },
-    mounted() {
-        this.calculatePath();
-    },
+    // mounted() {
+    //     this.calculatePath();
+    // },
     components: {
         draggable,
     },

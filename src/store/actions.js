@@ -4,6 +4,7 @@ import {
     SELECT_ITEM,
     EDIT_ITEM,
     UPDATE_ITEM,
+    SELECT_BLOCK,
 } from './types';
 
 const actions = {
@@ -15,6 +16,9 @@ const actions = {
     },
     [SELECT_ITEM]({ commit }, item) {
         commit(SELECT_ITEM, item);
+    },
+    [SELECT_BLOCK]({ commit }, block) {
+        commit(SELECT_BLOCK, block);
     },
     [EDIT_ITEM]({ commit }, text) {
         commit(EDIT_ITEM, text);
