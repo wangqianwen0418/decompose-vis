@@ -5,7 +5,7 @@ export default {
 	components: { "vis-figure": VisFigure },
     data() {
         return {
-            activeName: 'first',
+            activeName: '1',
         };
     },
     methods: {

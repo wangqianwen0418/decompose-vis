@@ -1,5 +1,5 @@
 import { mapState, mapActions } from 'vuex';
-// import draggable from 'vuedraggable';
+import draggable from 'vuedraggable';
 import slide from '../Slide';
 import { ADD_ITEM } from '../../store';
 
@@ -11,7 +11,7 @@ export default {
     },
     components: {
         slide,
-        // draggable,
+        draggable,
     },
     computed: {
         ...mapState({
