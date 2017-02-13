@@ -1,16 +1,25 @@
 const state = {
-    newItem: {
-        content: 'be new new new',
-        attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-        selected: false,
-        removed: false,
-        block: 'node',
-        mark: 'node',
-        channel: 'position',
-    },
+    tree: [
+        {
+            name: 'b1',
+            parent: [],
+            children: ['b2', 'b3'],
+        },
+        {
+            name: 'b2',
+            parent: ['b1'],
+            children: [],
+        },
+        {
+            name: 'b3',
+            parent: ['b1'],
+            children: [],
+        }],
     blocks: [
         {
             name: 'block1',
+            parent: [],
+            children: ['block2', 'block3'],
             selected: true,
             marks: [
                 {
@@ -72,6 +81,8 @@ const state = {
         },
         {
             name: 'block2',
+            parent: ['block1'],
+            children: [],
             selected: false,
             marks: [
                 {
@@ -151,6 +162,13 @@ const state = {
                         },
                     ],
                 }],
+        },
+        {
+            name: 'block3',
+            parent: ['block1'],
+            children: [],
+            selected: false,
+            marks: [],
         },
     ],
     figureSource: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],

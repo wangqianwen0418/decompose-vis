@@ -1,7 +1,7 @@
 .editor {
     border-radius: 8px;
-    width:56.6vw;
-    height: 58vh;
+    width:56.4vw;
+    height: 60vh;
     border: 0.4vw solid var(--color-2);
     /*background-color:var(--color-0);*/
     /*margin: 1vh 1vw;*/
@@ -16,6 +16,7 @@ textarea{
     border: 2px solid var(--color-2);
     border-radius: 8px;
 }
+
 /*svg {
  position: float;
 }*/

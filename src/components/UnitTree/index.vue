@@ -1,10 +1,11 @@
 <template>
+    <div id='bTree'>
         <draggable :list="blocks">
                 <button v-for="block in blocks" @click='selectBlock(block)'>
                     {{block.name}}
                 </button>
         </draggable>
-
+    </div>
 </template>
 
 <script src='./script.js'></script>
@@ -17,7 +18,7 @@ button {
     border:none;
     border-radius: 3px;
     text-align: center;
-    text-decoration: none;
+    /*text-decoration: none;*/
     display: inline-block;
     font-size: 16px;
 }
@@ -25,7 +26,7 @@ button {
 button:focus {
     outline:none;
     border:3px solid var(--color-3);
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 </style>

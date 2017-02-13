@@ -6,11 +6,12 @@
 		float: left;
         background-color: var(--color-2);
         color:var(--color-5);
+        /*font-family: 'Source Sans Pro', sans-serif;*/
 	}
 
 .el-icon-close {
 		float: right;
-		color: white;
+		color: var(--color-0);
 		font-size: 1vw;
 	}
 

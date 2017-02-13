@@ -79,6 +79,7 @@ export default {
                     group.append('text')
                     .attr('id', 'editTag')
                     .style('fill', 'red')
+                    .attr('font-size', 14)
                     .attr('x', 0)
                     .attr('y', 0)
                     .text('editing...');
@@ -136,6 +137,8 @@ export default {
             .attr('id', 'description')
             .attr('transform', d => `translate(${d.description.dx},${d.description.dy})`)
             .attr('class', 'description')
+            .attr('font-family', 'Source Sans Pro')
+            .attr('font-size', 20)
             .text(d => d.description.text)
             // .on('mouseover', function (d) {
             //     d3.select(this)

@@ -1,6 +1,6 @@
 <template>
     <div class="headline">
-       <span style='margin-left: 30px'> how to explain encoding scheme</span>
+       <p id='name'> how to explain encoding scheme</p>
     </div>
 </template>
 
@@ -13,5 +13,14 @@
     background-color: var(--color-2);
     font-family: 'Pangolin', cursive;
   }
+#name{
+    margin: 0;
+    margin-left: 30px;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    -ms-transform: translate(0%, -50%);
+    transform: translate(0%, -50%);
+}
 
 </style>
