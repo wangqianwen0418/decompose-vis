@@ -9,10 +9,17 @@
   --border-transition-base: border-color .2s cubic-bezier(.645,.045,.355,1);
   --color-transition-base: color .2s cubic-bezier(.645,.045,.355,1);
 
+
   /* Colors
   -------------------------- */
   --color-primary: #20a0ff;
   /*--color-primary: red;*/
+  --color-0:#FFFCF0;
+  --color-1:#F4F7D9;
+  --color-2:#A4CFBE;
+  --color-3:#417378;
+  --color-4:#6C6E58;
+  --color-5:#3E423A;
 
   --color-success: #13ce66;
   --color-warning: #f7ba2a;
@@ -312,15 +319,15 @@
   /* Tab
   -------------------------- */
   --tab-font-size: var(--font-size-base);
-  --tab-border-line: 1px solid #e4e4e4;
-  --tab-header-color-active: var(--color-secondary);
-  --tab-header-color-hover: var(--font-color-base);
-  --tab-header-color: var(--font-color-base);
-  --tab-header-fill-active: rgba(var(--color-black), 0.06);
-  --tab-header-fill-hover: rgba(var(--color-black), 0.06);
+  --tab-border-line: 1px solid var(--color-3);
+  --tab-header-color-active: var(--color-3);
+  --tab-header-color-hover: var(--color-0);
+  --tab-header-color: var(--color-0);
+  --tab-header-fill-active:var(--color-0);
+  --tab-header-fill-hover: var(--color-3);
   --tab-vertical-header-width: 20px;
-  --tab-vertical-header-count-color: var(--color-white);
-  --tab-vertical-header-count-fill: var(--color-secondary);
+  --tab-vertical-header-count-color: var(--color-0);
+  --tab-vertical-header-count-fill: var(--color-3);
 
   /* Button
   -------------------------- */

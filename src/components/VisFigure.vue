@@ -52,7 +52,7 @@ function preprocessing(canvas) {
 	const data = imgData.data;
 	initalData = imgData;
 	const hsl_data = new Float32Array(width * height * 3);
-	console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 
 	const seq = random_sampling_seq(height * width);
 	for (let i = 0; i < height * width; ++i) {
@@ -80,7 +80,7 @@ function preprocessing(canvas) {
 	}
 	const division = color_space_divide(seq);
 	const color2tag = division.color2tag;
-	console.log(division.tagcount);
+	console.info(division.tagcount);
 	const count = [];
 	tags = new Uint16Array(width * height);
 	for (let i = 0; i < height * width * 3; i += 3) {
@@ -91,7 +91,7 @@ function preprocessing(canvas) {
 		count[tag] += 1;
 		tags[i / 3] = tag;
 	}
-	console.log(count);
+	console.info(count);
 	for (let i = 0; i < count.length; ++i) if (count[i] / (width * height) * 100 > 0.5) {
 		color_spaces.push({
 			text: `${(count[i] / (width * height) * 100).toFixed(2)}%\n
@@ -102,13 +102,13 @@ function preprocessing(canvas) {
 			index: i
 		});
 	}
-	console.log(color_spaces);
+	console.info(color_spaces);
 
-	console.log(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	console.info(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const decomposed = decompose(hsl_data, width, height);
-	console.log(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	console.info(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const elements = compose(decomposed.elements, width, height);
-	console.log(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	pixelgroup = new Array(width * height);
 
 	groups = elements;
@@ -125,7 +125,7 @@ function preprocessing(canvas) {
 	currenttime = maxtimestamp;
 	ctx.putImageData(imgData, 0, 0);
 	transparentData = ctx.getImageData(0, 0, width, height);
-	console.log(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 }
 
 function ondragstart() {
@@ -168,9 +168,9 @@ export default {
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
 			// const k = y * canvas.width + x << 2;
 			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
-			// console.log(hsl);
-			// console.log(x, y, event);
-			
+			// console.info(hsl);
+			// console.info(x, y, event);
+
 			let group0 = pixelgroup[y * canvas.width + x];
 			const top = [], btm = [];
 			const contour = [];
@@ -179,7 +179,7 @@ export default {
 				group0 = findGroup(group0, currenttime);
 				const width = canvas.width;
 				const height = canvas.height;
-				
+
 				let n = 0, r = 0, g = 0, b = 0, x0 = Number.MAX_VALUE, y0 = Number.MAX_VALUE, x1 = 0, y1 = 0;
 				for (const group of groups) {
 					if (findGroup(group, currenttime) === group0) {
@@ -226,7 +226,7 @@ export default {
 				}
 				contour.push(contour[0]);
 				const line = d3.line().curve(d3.curveCardinal.tension(0.5)).x(d => d[0] - x0).y(d => d[1] - y0);
-				const contour_sample = 
+				const contour_sample =
 					contour.length < 100 ?
 					contour :
 					contour.filter((d, i) => i === 0 || i === (contour.length - 1) || (i % 4 === 0));
@@ -252,7 +252,7 @@ export default {
 					.attr("stroke-width", 2)
 					.attr("fill", `rgb(${r},${g},${b})`);
 
-				console.log(offset.x(canvas), offset.y(canvas));
+				console.info(offset.x(canvas), offset.y(canvas));
 				div.attr('x', x0)
 					.attr('y', y0)
 					.attr('width', canvas.width / zoom_ratio)
@@ -263,7 +263,7 @@ export default {
 					.style("top", `${y0 + offset.y(canvas)}px`)
 					.style("opacity", 1);
 			}
-			console.log(`click time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+			console.info(`click time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onMousemove(event) {
 			const start_time = new Date();
@@ -273,9 +273,9 @@ export default {
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
 			// const k = y * canvas.width + x << 2;
 			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
-			// console.log(hsl);
-			// console.log(x, y, event);
-			
+			// console.info(hsl);
+			// console.info(x, y, event);
+
 			let group0 = pixelgroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
@@ -285,7 +285,7 @@ export default {
 				}
 				const width = canvas.width;
 				const height = canvas.height;
-				
+
 				for (const group of groups) {
 					if (findGroup(group, currenttime) === group0) {
 						const points = group.points;
@@ -304,10 +304,10 @@ export default {
 				ctx.putImageData(transparentData, 0, 0);
 			}
 
-			console.log(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+			console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onMouseenter(event) {
-			console.log("mouseenter");
+			console.info("mouseenter");
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
 			const width = canvas.width;
@@ -319,7 +319,7 @@ export default {
 			ctx.putImageData(transparentData, 0, 0);
 		},
 		onMouseout(event) {
-			console.log("mouseout");
+			console.info("mouseout");
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
 			lastgroup = null;
@@ -346,7 +346,7 @@ export default {
 			} else {
 				data[(i << 2) + 3] = 50;
 			}
-			console.log(tag, count);
+			console.info(tag, count);
 			ctx.putImageData(transparentData, 0, 0);
 		},
 		onButtonMouseout(event) {
@@ -362,7 +362,7 @@ export default {
 			}
 		}
 	},
-	
+
 	mounted() {
 		const canvas = this.$el.getElementsByTagName('canvas')[0];
 		const svg = this.$el.getElementsByTagName('svg')[0];
@@ -374,7 +374,7 @@ export default {
 			canvas.height = img.height;
 			const realWidth = canvas.parentNode.clientWidth;
 			const realHeight = canvas.parentNode.clientHeight;
-			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight); 
+			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight);
 			d3.select(svg)
 				.attr('width', img.width / zoom_ratio)
 				.attr('height', img.height / zoom_ratio);

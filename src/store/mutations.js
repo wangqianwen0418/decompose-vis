@@ -28,10 +28,9 @@ const mutations = {
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
-            blk.selelcted = false;
+            blk.selected = false;
         });
         block.selected = true;
-        console.info('select a block');
     },
     [EDIT_ITEM](state, message) {
         state.blocks.forEach((block) => {

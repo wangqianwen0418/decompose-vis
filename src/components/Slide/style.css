@@ -1,14 +1,17 @@
-.clip {
+.slide {
 		border-radius: 8px;
-		margin: 0px 1vw;
+		margin: 0px 0.5vw;
 		width: 20vw;
 		height: 20vh;
 		float: left;
+        background-color: var(--color-2);
+        color:var(--color-5);
+        /*font-family: 'Source Sans Pro', sans-serif;*/
 	}
 
 .el-icon-close {
 		float: right;
-		color: white;
+		color: var(--color-0);
 		font-size: 1vw;
 	}
 
