@@ -27,10 +27,12 @@ const mutations = {
         item.selected = true;
     },
     [SELECT_BLOCK](state, block) {
-        state.blocks.forEach((blk) => {
-            blk.selected = false;
-        });
-        block.selected = true;
+        // maybe the field `selected` is unnecessary
+        state.selectedBlock = block;
+        // state.blocks.forEach((blk) => {
+        //     blk.selected = false;
+        // });
+        // block.selected = true;
     },
     [EDIT_ITEM](state, message) {
         state.blocks.forEach((block) => {

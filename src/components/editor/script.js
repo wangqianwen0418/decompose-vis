@@ -11,7 +11,7 @@ export default {
             },
             set(value) {
                 // this.$store.commit(EDIT_ITEM, value);
-                // use action instead of commit directly
+                // use action instead of commit directly -- by czt
                 this.editItem(value);
             },
         },
@@ -20,8 +20,7 @@ export default {
             selectedEle: 'selectedEle',
         }),
         currentText() {
-            if (this.selectedEle) { return this.selectedEle.description.text; }
-            return '';
+            return this.selectedEle ? this.selectedEle.description.text : '';
         },
     },
     methods: {
@@ -58,45 +57,45 @@ export default {
             const svg = d3.select('#svgEditor');
 
             svg.selectAll('*')
-            .remove();
+                .remove();
 
             const g = svg.selectAll('circle')
-            .data(val.attachedEles)
-            .enter()
-            .append('g')
-            .attr('transform', d => `translate(${d.x},${d.y})`)
-            .on('click', function (d) {
-                d.selected = !d.selected;
-                const group = d3.select(this);
-                if (d.selected) {
-                    group.classed('current', true);
+                .data(val.attachedEles)
+                .enter()
+                .append('g')
+                .attr('transform', d => `translate(${d.x},${d.y})`)
+                .on('click', function (d) {
+                    d.selected = !d.selected;
+                    const group = d3.select(this);
+                    if (d.selected) {
+                        group.classed('current', true);
 
-                //     group.selectAll('#description').style('fill', 'yellow');
+                        //     group.selectAll('#description').style('fill', 'yellow');
 
-                //     group.selectAll('path')
-                //   .style('stroke', 'yellow')
-                //   .style('stroke-width', '2');
+                        //     group.selectAll('path')
+                        //   .style('stroke', 'yellow')
+                        //   .style('stroke-width', '2');
 
-                    group.append('text')
-                    .attr('id', 'editTag')
-                    .style('fill', 'red')
-                    .attr('font-size', 14)
-                    .attr('x', 0)
-                    .attr('y', 0)
-                    .text('editing...');
-                } else {
-                    group.classed('current', false);
+                        group.append('text')
+                            .attr('id', 'editTag')
+                            .style('fill', 'red')
+                            .attr('font-size', 14)
+                            .attr('x', 0)
+                            .attr('y', 0)
+                            .text('editing...');
+                    } else {
+                        group.classed('current', false);
 
-                    // group.selectAll('path')
-                    // .style('stroke', 'none');
+                        // group.selectAll('path')
+                        // .style('stroke', 'none');
 
-                    // group.select('text')
-                    // .style('fill', 'black');
+                        // group.select('text')
+                        // .style('fill', 'black');
 
-                    group.select('#editTag').remove();
-                }
-            })
-            .call(d3.drag()
+                        group.select('#editTag').remove();
+                    }
+                })
+                .call(d3.drag()
                     // .on('start', function () {
                     //     // console.info('drag start');
                     //     d3.selectAll(this).style('fill', 'yellow');
@@ -107,22 +106,22 @@ export default {
                         d.x = d3.event.x;
                         d.y = d3.event.y;
                     }),
-                    // .on('end', function () {
-                    //     // console.info('drag end');
-                    //     d3.selectAll(this).style('fill', 'white');
-                    // })
-                    );
+                // .on('end', function () {
+                //     // console.info('drag end');
+                //     d3.selectAll(this).style('fill', 'white');
+                // })
+            );
 
             const path = d3.arc()
-                        .innerRadius(10)
-                        .outerRadius(24)
-                        .startAngle(0)
-                        .endAngle(7);
+                .innerRadius(10)
+                .outerRadius(24)
+                .startAngle(0)
+                .endAngle(7);
 
             g.append('path')
                 // .attr('d', d => d.path)
                 .attr('d', path)
-            .style('fill', 'var(--color-3)');
+                .style('fill', 'var(--color-3)');
             // .on('mouseover', function (d) {
             //     d3.select(this)
             //     .style('stroke', 'var(--color-1)')
@@ -134,27 +133,27 @@ export default {
             // });
 
             g.attr('text-anchor', 'start')
-            .append('text')
-            .attr('id', 'description')
-            .attr('transform', d => `translate(${d.description.dx},${d.description.dy})`)
-            .attr('class', 'description')
-            .attr('font-family', 'Source Sans Pro')
-            .attr('font-size', 20)
-            .text(d => d.description.text)
-            // .on('mouseover', function (d) {
-            //     d3.select(this)
-            //     .style('fill', 'yellow');
-            // })
-            // .on('mouseout', function (d) {
-            //     d3.select(this)
-            //     .style('fill', 'black');
-            // })
-            .call(d3.drag()
-            .on('drag', function (d) {
-                d3.select(this).attr('transform', `translate(${d3.event.x - d.x},${d3.event.y - d.y})`);
-                d.description.dx = d3.event.x - d.x;
-                d.description.dy = d3.event.y - d.y;
-            }));
+                .append('text')
+                .attr('id', 'description')
+                .attr('transform', d => `translate(${d.description.dx},${d.description.dy})`)
+                .attr('class', 'description')
+                .attr('font-family', 'Source Sans Pro')
+                .attr('font-size', 20)
+                .text(d => d.description.text)
+                // .on('mouseover', function (d) {
+                //     d3.select(this)
+                //     .style('fill', 'yellow');
+                // })
+                // .on('mouseout', function (d) {
+                //     d3.select(this)
+                //     .style('fill', 'black');
+                // })
+                .call(d3.drag()
+                    .on('drag', function (d) {
+                        d3.select(this).attr('transform', `translate(${d3.event.x - d.x},${d3.event.y - d.y})`);
+                        d.description.dx = d3.event.x - d.x;
+                        d.description.dy = d3.event.y - d.y;
+                    }));
             // .call(d3.drag()
             //     .on('drag'), function (d) {
             //         console.info(this);

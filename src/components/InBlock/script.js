@@ -1,10 +1,10 @@
 import draggable from 'vuedraggable';
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import { REMOVE_ITEM } from '../../store';
 
 export default {
     computed: {
-        ...mapGetters({
+        ...mapState({
             block: 'selectedBlock',
         }),
     },
