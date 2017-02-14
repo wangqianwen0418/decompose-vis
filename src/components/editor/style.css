@@ -1,10 +1,22 @@
 .editor {
     border-radius: 8px;
-    height: 35vh;
-    margin: 10px 0px 0px 10px;
+    width:56.4vw;
+    height: 60vh;
+    border: 0.4vw solid var(--color-2);
+    /*background-color:var(--color-0);*/
+    /*margin: 1vh 1vw;*/
 }
 
 textarea:active,
 textarea:focus {
     outline: none;
 }
+textarea{
+    position: float;
+    border: 2px solid var(--color-2);
+    border-radius: 8px;
+}
+
+/*svg {
+ position: float;
+}*/

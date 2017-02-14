@@ -1,13 +1,11 @@
-import headLine from '../Headline';
-import clips from '../ClipContainer';
+import HeadLine from '../Headline';
 import resource from '../Resource';
 import editor from '../Editor';
 import slides from '../SlideContainer';
 
 export default {
     components: {
-        headLine,
-        clips,
+        HeadLine,
         resource,
         editor,
         slides,

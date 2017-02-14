@@ -1,6 +1,7 @@
-import ElementUI from 'element-ui';
 import Vue from 'vue';
-import './styles/index.css';
+import ElementUI from 'element-ui';
+import '../theme/index.css';
+// import './styles/index.css';
 import store from './store';
 import App from './components/App';
 

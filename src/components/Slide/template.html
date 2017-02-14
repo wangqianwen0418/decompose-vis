@@ -1,11 +1,13 @@
-<div class="clip bg-purple-dark"
+<div class="slide"
     :style="styleObject"
     @click="selectItem(item)"
 >
-    <i class="el-icon-circle-close" @click="removeItem(item)" /> i am a cute slider {{index}}
-    <br/> {{item.content}}
-    <div class="attachedEle" v-for="img in item.attachedEle">
-        <img :src="img" alt="hhh" height="122" width="62">
+    <div id="slideText">
+        <i class="el-icon-close" @click="removeItem(item)" ></i>
+        <br/> block: {{block.name}}
+        <br/> mark: {{mark.name}}
+        <br/> channel: {{item.name}}
+
     </div>
-    <br/># of attached elements {{item.attachedEle.length}}
+    <svg width="width" height="height" class="svg-stage"></svg>
 </div>

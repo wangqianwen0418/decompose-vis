@@ -1,17 +1,20 @@
-.clip {
+.slide {
 		border-radius: 8px;
-		margin: 0px 10px;
-		width: 35vw;
-		height: 40vh;
+		margin: 0px 0.5vw;
+		width: 20vw;
+		height: 20vh;
 		float: left;
+        background-color: var(--color-2);
+        color:var(--color-5);
+        /*font-family: 'Source Sans Pro', sans-serif;*/
 	}
 
-	.el-icon-circle-close {
+.el-icon-close {
 		float: right;
-		color: white;
-		font-size: 3vw;
+		color: var(--color-0);
+		font-size: 1vw;
 	}
 
-	.el-icon-circle-close:hover {
-		font-size: 4vw;
+.el-icon-close:hover {
+		font-size: 1.2vw;
 	}
