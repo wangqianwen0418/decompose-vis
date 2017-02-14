@@ -7,7 +7,7 @@
 	</div>
 </template>
 
-<script type="text/javascript" src="./InteractiveFigure.js"></script>
+<script type="text/javascript" src="./script.js"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -20,7 +20,7 @@
 		max-height: 0px;
 	}
 	.vis-figure {
-		position: relative; 
+		position: relative;
 		top: 10px;
 		left: 10px;
 	}

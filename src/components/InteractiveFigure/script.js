@@ -1,9 +1,9 @@
-import * as color from "../utils/color.js";
-import { offset } from "../utils/common-utils.js";
-import { decompose } from "../algorithm/decompose.js";
-import { compose, findGroup } from "../algorithm/compose.js";
-import color_space_divide from "../algorithm/color-space-divide.js";
-import { random_sampling_seq } from "../algorithm/sampling.js";
+import * as color from '../../utils/color';
+import { offset } from '../../utils/common-utils';
+import { decompose } from '../../algorithm/decompose';
+import { compose, findGroup } from '../../algorithm/compose';
+import color_space_divide from '../../algorithm/color-space-divide';
+import { random_sampling_seq } from '../../algorithm/sampling';
 
 let pixelgroup, groups, maxtimestamp, currenttime, lastgroup;
 let initalData, transparentData, displayData;
@@ -106,7 +106,7 @@ export default {
 			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
 			// console.log(hsl);
 			// console.log(x, y, event);
-			
+
 			let group0 = pixelgroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
@@ -131,7 +131,7 @@ export default {
 					}
 				}
 				*/
-				
+
 				for (const group of groups) {
 					if (findGroup(group, currenttime) === group0) {
 						const points = group.points;
@@ -147,7 +147,7 @@ export default {
 					}
 				}
 			}
-				
+
 			const ctx = canvas2.getContext('2d');
 			ctx.putImageData(displayData, 0, 0);
 		},
@@ -161,7 +161,7 @@ export default {
 			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
 			// console.log(hsl);
 			// console.log(x, y, event);
-			
+
 			let group0 = pixelgroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
@@ -185,7 +185,7 @@ export default {
 					}
 				}
 				*/
-				
+
 				for (const group of groups) {
 					if (findGroup(group, currenttime) === group0) {
 						const points = group.points;
@@ -199,7 +199,7 @@ export default {
 						}
 					}
 				}
-				
+
 				lastgroup = group0;
 
 				ctx.putImageData(transparentData, 0, 0);
@@ -232,7 +232,7 @@ export default {
 			}
 		}
 	},
-	
+
 	mounted() {
 		const canvas = this.$el.getElementsByTagName('canvas')[0];
 		const canvas2 = this.$el.getElementsByTagName('canvas')[1];
@@ -242,10 +242,10 @@ export default {
 		img.onload = function() {
 			canvas.width = img.width;
 			canvas.height = img.height;
-			zoom_ratio = Math.max(img.width / 1280, img.height / 800); 
+			zoom_ratio = Math.max(img.width / 1280, img.height / 800);
 			console.log(zoom_ratio);
 			ctx.drawImage(img, 0, 0);
-			preprocessing(canvas);	
+			preprocessing(canvas);
 			canvas2.width = img.width;
 			canvas2.height = img.height;
 		};
