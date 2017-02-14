@@ -143,7 +143,7 @@ export function compose(elements, width, height, gradient = [0.03, 0.03, 0.19]) 
         element.rank = 0;
         element.neighbor = [];
     }
-    
+
     let timestamp = 0;
     for (const relation of relations) {
         relation.link[0].neighbor.push(relation.link[1]);

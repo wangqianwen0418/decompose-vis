@@ -1,13 +1,13 @@
-import HeadLine from '../Headline';
-import resource from '../Resource';
-import editor from '../Editor';
-import slides from '../SlideContainer';
+import HeadLine from '../HeadLine';
+import Resource from '../Resource';
+import Editor from '../Editor';
+import Slides from '../SlideContainer';
 
 export default {
     components: {
         HeadLine,
-        resource,
-        editor,
-        slides,
+        Resource,
+        Editor,
+        Slides,
     },
 };

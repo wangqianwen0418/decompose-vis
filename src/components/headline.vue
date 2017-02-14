@@ -1,6 +1,6 @@
 <template>
     <div class="headline">
-       <p id='name'> how to explain encoding scheme</p>
+       <p id="name"> how to explain encoding scheme</p>
     </div>
 </template>
 

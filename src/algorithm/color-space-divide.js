@@ -15,7 +15,7 @@ export default function color_space_divide(data, options = {}) {
 
     function divide(data, k = 0, last = 0) {
         const d = order[k];
-        const count = new Array(base);        
+        const count = new Array(base);
         for (let i = 0; i < base; ++i) {
             count[i] = 0;
         }
@@ -23,7 +23,7 @@ export default function color_space_divide(data, options = {}) {
             count[val[d]] += 1;
         }
 
-        const ordered_count = 
+        const ordered_count =
             count.map((d, i) => [d, i])
                 .sort((a, b) => (b[0] - a[0]));
         const lbound = threshold_dimension[d] * data.length;
