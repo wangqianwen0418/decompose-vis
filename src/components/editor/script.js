@@ -7,11 +7,12 @@ export default {
         message: {
             get() {
                 const selectedEle = this.$store.getters.selectedEle;
-                if (selectedEle) { return selectedEle.description.text; }
-                return '';
+                return selectedEle ? selectedEle.description.text : '';
             },
             set(value) {
-                this.$store.commit('EDIT_ITEM', value);
+                // this.$store.commit(EDIT_ITEM, value);
+                // use action instead of commit directly
+                this.editItem(value);
             },
         },
         ...mapGetters({

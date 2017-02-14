@@ -1,7 +1,7 @@
 import { mapActions, mapState } from 'vuex';
 import draggable from 'vuedraggable';
-import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
 import * as d3 from 'd3';
+import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
 
 console.info(document.getElementById('slideText'));
 // {'b':2, 'a':1}
