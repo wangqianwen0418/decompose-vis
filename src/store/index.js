@@ -18,6 +18,6 @@ export {
     REMOVE_ITEM,
     SELECT_ITEM,
     EDIT_ITEM,
-    UPDATE_ITEM,
+    UPDATE_BLOCKS,
     SELECT_BLOCK,
 } from './types';

@@ -1,5 +1,5 @@
 .editor {
-    border-radius: 8px;
+    border-radius: 6px;
     width:56.4vw;
     height: 60vh;
     border: 0.4vw solid var(--color-2);
@@ -14,7 +14,7 @@ textarea:focus {
 textarea{
     position: float;
     border: 2px solid var(--color-2);
-    border-radius: 8px;
+    border-radius: 6px;
 }
 
 /*svg {

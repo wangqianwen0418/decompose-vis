@@ -3,7 +3,7 @@ import {
     REMOVE_ITEM,
     SELECT_ITEM,
     EDIT_ITEM,
-    UPDATE_ITEM,
+    UPDATE_BLOCKS,
     SELECT_BLOCK,
 } from './types';
 
@@ -23,8 +23,8 @@ const actions = {
     [EDIT_ITEM]({ commit }, text) {
         commit(EDIT_ITEM, text);
     },
-    [UPDATE_ITEM]({ commit }, items) {
-        commit(UPDATE_ITEM, items);
+    [UPDATE_BLOCKS]({ commit }, blocks) {
+        commit(UPDATE_BLOCKS, blocks);
     },
 };
 

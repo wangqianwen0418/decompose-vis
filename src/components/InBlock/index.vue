@@ -26,15 +26,16 @@
 
 <style scoped>
     .inBlock {
-        border-radius: 8px;
-        min-height: 38vh;
-        width: 20vw;
-        /*margin: 10px 10px;*/
-        /*border:2px solid var(--color-3);*/
         border-radius: 6px;
+        height: 43vh;
+        width: 20vw;
+        margin: 4px 0px;
+        /*border:2px solid var(--color-3);*/
+        /*border-radius: 6px;*/
         background-color:var(--color-0);
         color: var(--color-3);
-        font-family: 'Pangolin', cursive;
+        box-shadow: 2px 2px 1px var(--color-3);
+        /*font-family: 'Pangolin', cursive;*/
     }
     #mark_list{
         margin: 0px;
@@ -44,7 +45,7 @@
     #mark_list li{
         border:3px solid var(--color-2);
         margin:3px;
-        border-radius:6px;
+        /*border-radius:6px;*/
     }
     #mark_list li:before{
         content:' ◦ ';
@@ -64,7 +65,7 @@
     #channel_list li{
         background-color: var(--color-2);
         margin:2px;
-        border-radius:3px;
+        /*border-radius:3px;*/
     }
 
     .el-icon-close{

@@ -19,8 +19,8 @@
 
 <style scoped>
 	.resource {
-		border-radius: 8px;
-		height:83vh;
+		border-radius: 6px;
+		height:84.4vh;
         background-color: var(--color-2);
         margin: 0vh 0 0 0.4vw;
 		/*margin: 10px 10px;*/
