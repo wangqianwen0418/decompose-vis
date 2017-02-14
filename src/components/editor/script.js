@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import { EDIT_ITEM } from '../../store';
 
 export default {
@@ -16,8 +16,10 @@ export default {
             },
         },
         ...mapGetters({
-            selectedItem: 'selectedItem',
             selectedEle: 'selectedEle',
+        }),
+        ...mapState({
+            selectedItem: 'selectedItem',
         }),
         currentText() {
             return this.selectedEle ? this.selectedEle.description.text : '';

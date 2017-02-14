@@ -16,23 +16,24 @@ const mutations = {
         item.removed = true;
     },
     [SELECT_ITEM](state, item) {
-        const blocks = state.blocks;
-        blocks.forEach((block) => {
-            block.marks.forEach((mark) => {
-                mark.channels.forEach((channel) => {
-                    channel.selected = false;
-                });
-            });
-        });
-        item.selected = true;
+        // const blocks = state.blocks;
+        // blocks.forEach((block) => {
+        //     block.marks.forEach((mark) => {
+        //         mark.channels.forEach((channel) => {
+        //             channel.selected = false;
+        //         });
+        //     });
+        // });
+        // item.selected = true;
+        state.selectedItem = item;
     },
     [SELECT_BLOCK](state, block) {
         // maybe the field `selected` is unnecessary
-        state.selectedBlock = block;
         // state.blocks.forEach((blk) => {
         //     blk.selected = false;
         // });
         // block.selected = true;
+        state.selectedBlock = block;
     },
     [EDIT_ITEM](state, message) {
         state.blocks.forEach((block) => {
