@@ -1,6 +1,6 @@
 <div class="slide"
     :class="{selected:isSelected}"
-    @click="()=>{isSelected =!isSelected;selectChannel(channel)}"
+    @click="()=>{isSelected =!isSelected;selectChannel(channel.id)}"
 >
     <div id="slideText">
         <i class="el-icon-close" @click="removeChannel(channel)" ></i>

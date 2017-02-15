@@ -1,10 +1,10 @@
 import draggable from 'vuedraggable';
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { REMOVE_CHANNEL } from '../../store';
 
 export default {
     computed: {
-        ...mapState({
+        ...mapGetters({
             block: 'selectedBlock',
         }),
     },

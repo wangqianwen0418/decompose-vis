@@ -1,3 +1,41 @@
+function flattern(blocks) {
+    const blocksDict = {};
+    const marksDict = {};
+    const channelsDict = {};
+    const elesDict = {};
+    blocks.forEach((block, bidx) => {
+        const markIds = [];
+        block.marks.forEach((mark, midx) => {
+            const channelIds = [];
+            mark.channels.forEach((channel, cidx) => {
+                const eleIds = [];
+                channel.attachedEles.forEach((ele, eidx) => {
+                    ele.id = `bid${bidx}_mid${midx}_cid${cidx}_eid${eidx}`;
+                    elesDict[ele.id] = ele;
+                    eleIds.push(ele.id);
+                });
+                channel.id = `bid${bidx}_mid${midx}_cid${cidx}`;
+                channelsDict[channel.id] = channel;
+                channelIds.push(channel.id);
+                channel.attachedEles = eleIds;
+            });
+            mark.id = `bid${bidx}_mid${midx}`;
+            marksDict[mark.id] = mark;
+            markIds.push(mark.id);
+            mark.channels = channelIds;
+        });
+        block.id = `bid${bidx}`;
+        blocksDict[block.id] = block;
+        block.marks = markIds;
+    });
+    return {
+        blocks: blocksDict,
+        marks: marksDict,
+        channels: channelsDict,
+        eles: elesDict,
+    };
+}
+
 const blocks = [{
     name: 'block1',
     parent: ['root'],
@@ -144,10 +182,11 @@ const blocks = [{
 }];
 
 const state = {
-    selectedBlock: blocks[0],
-    selectedChannel: null,
-    selectedEle: null,
-    blocks,
+    selectedBlockId: 'bid0',
+    selectedMarkId: null,
+    selectedChannelId: null,
+    selectedEleId: null,
+    ...flattern(blocks),
     figureSource: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
     // selectedIndex: '',
 };

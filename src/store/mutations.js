@@ -1,52 +1,34 @@
 import {
     REMOVE_CHANNEL,
     SELECT_CHANNEL,
-    EDIT_CHANNEL,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
+    SELECT_ELE,
+    EDIT_SELECTED_ELE,
 } from './types';
 
 
 const mutations = {
-    [REMOVE_CHANNEL](state, channel) {
-        channel.removed = true;
-    },
-    [SELECT_CHANNEL](state, channel) {
-        // maybe the field `selected` is unnecessary -- by czt
-        // const blocks = state.blocks;
-        // blocks.forEach((block) => {
-        //     block.marks.forEach((mark) => {
-        //         mark.channels.forEach((channel) => {
-        //             channel.selected = false;
-        //         });
-        //     });
-        // });
-        // CHANNEL.selected = true;
-        state.selectedChannel = channel;
-    },
-    [SELECT_BLOCK](state, block) {
-        // maybe the field `selected` is unnecessary -- by czt
-        // state.blocks.forEach((blk) => {
-        //     blk.selected = false;
-        // });
-        // block.selected = true;
-        state.selectedBlock = block;
-    },
-    [EDIT_CHANNEL](state, message) {
-        state.blocks.forEach((block) => {
-            block.marks.forEach((mark) => {
-                mark.channels.forEach((channel) => {
-                    if (channel.selected) {
-                        channel.attachedEles.forEach((ele) => {
-                            if (ele.selected) { ele.description.text = message; }
-                        });
-                    }
-                });
-            });
-        });
+    [SELECT_BLOCK](state, blockId) {
+        state.selectedBlockId = blockId;
     },
     [UPDATE_BLOCKS](state, blocks) {
         state.blocks = blocks;
+    },
+    [REMOVE_CHANNEL](state, channel) {
+        channel.removed = true;
+    },
+    [SELECT_CHANNEL](state, channelId) {
+        state.selectedChannelId = channelId;
+    },
+    [SELECT_ELE](state, eleId) {
+        state.selectedEleId = eleId;
+    },
+    [EDIT_SELECTED_ELE](state, playload) {
+        state.selectedEle = {
+            ...state.selectedEle,
+            [playload.name]: playload.value,
+        };
     },
 };
 

@@ -1,4 +1,4 @@
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import draggable from 'vuedraggable';
 import { REMOVE_CHANNEL, SELECT_CHANNEL } from '../../store';
 
@@ -76,8 +76,7 @@ export default {
         }),
     },
     computed: {
-        ...mapState({
-            selectedEle: 'selectedEle',
+        ...mapGetters({
             selectedChannel: 'selectedChannel',
         }),
         isSelected() {

@@ -1,19 +1,8 @@
 const getters = {
-    selectedEle: (state) => {
-        let returnEle = null;
-        state.blocks.forEach((block) => {
-            block.marks.forEach((mark) => {
-                mark.channels.forEach((channel) => {
-                    if (channel.selected) {
-                        channel.attachedEles.forEach((ele) => {
-                            if (ele.selected) returnEle = ele;
-                        });
-                    }
-                });
-            });
-        });
-        return returnEle;
-    },
+    selectedBlock: state => state.blocks[state.selectedBlockId],
+    selectedMarks: state => state.marks[state.selectedMardId],
+    selectedChannel: state => state.channels[state.selectedChannelId],
+    selectedEle: state => state.eles[state.selectedEleId],
     bTree: (state) => {
         // function findChild(node) {
         //     // const returnNode = {};
@@ -30,9 +19,10 @@ const getters = {
         //     return returnChildren;
         // }
         let index = 0;
+        const blocksArr = Object.keys(state.blocks).map(k => state.blocks[k]);
 
         function insertChildren(node) {
-            state.blocks.forEach((blk) => {
+            blocksArr.forEach((blk) => {
                 if (blk.parent[0] === node.name) {
                     const copy = {};
                     copy.name = blk.name;
@@ -60,9 +50,9 @@ const getters = {
     },
     sortedBlocks: (state) => {
         let index = 0;
-
+        const blocksArr = Object.keys(state.blocks).map(k => state.blocks[k]);
         function insertChildren(node) {
-            state.blocks.forEach((blk) => {
+            blocksArr.forEach((blk) => {
                 if (blk.parent[0] === node.name) {
                     const copy = {};
                     copy.name = blk.name;
@@ -86,9 +76,8 @@ const getters = {
         };
 
         insertChildren(bTree);
-        return state.blocks.sort((a, b) => a.index - b.index);
+        return blocksArr.sort((a, b) => a.index - b.index);
     },
-
 };
 
 export default getters;

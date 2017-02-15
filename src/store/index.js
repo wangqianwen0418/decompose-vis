@@ -17,7 +17,8 @@ export {
     ADD_CHANNEL,
     REMOVE_CHANNEL,
     SELECT_CHANNEL,
-    EDIT_CHANNEL,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
+    SELECT_ELE,
+    EDIT_SELECTED_ELE,
 } from './types';

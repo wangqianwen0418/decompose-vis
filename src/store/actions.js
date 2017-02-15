@@ -2,9 +2,10 @@ import {
     ADD_CHANNEL,
     REMOVE_CHANNEL,
     SELECT_CHANNEL,
-    EDIT_CHANNEL,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
+    SELECT_ELE,
+    EDIT_SELECTED_ELE,
 } from './types';
 
 const actions = {
@@ -20,11 +21,14 @@ const actions = {
     [SELECT_BLOCK]({ commit }, block) {
         commit(SELECT_BLOCK, block);
     },
-    [EDIT_CHANNEL]({ commit }, text) {
-        commit(EDIT_CHANNEL, text);
-    },
     [UPDATE_BLOCKS]({ commit }, blocks) {
         commit(UPDATE_BLOCKS, blocks);
+    },
+    [SELECT_ELE]({ commit }, ele) {
+        commit(SELECT_ELE, ele);
+    },
+    [EDIT_SELECTED_ELE]({ commit }, playload) {
+        commit(EDIT_SELECTED_ELE, playload);
     },
 };
 

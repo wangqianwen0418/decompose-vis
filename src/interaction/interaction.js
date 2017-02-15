@@ -21,7 +21,7 @@ function onmouseenter(event) {
 }
 
 function onClick(event) {
-    //console.log(event);
+    console.log(event);
     return;
 }
 

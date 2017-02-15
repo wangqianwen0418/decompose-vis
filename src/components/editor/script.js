@@ -1,34 +1,11 @@
 import * as d3 from 'd3';
-import { mapActions, mapGetters, mapState } from 'vuex';
-import { EDIT_CHANNEL } from '../../store';
+import { mapActions, mapState, mapGetters } from 'vuex';
+import { EDIT_SELECTED_ELE, SELECT_ELE } from '../../store';
 
 export default {
-    computed: {
-        message: {
-            get() {
-                const selectedEle = this.$store.getters.selectedEle;
-                return selectedEle ? selectedEle.description.text : '';
-            },
-            set(value) {
-                // this.$store.commit(EDIT_ITEM, value);
-                // EDIT_ITEM renamed to EDIT_CHANNEL -- by czt
-                // use action instead of commit directly -- by czt
-                this.editChannel(value);
-            },
-        },
-        ...mapGetters({
-            selectedEle: 'selectedEle',
-        }),
-        ...mapState({
-            selectedChannel: 'selectedChannel',
-        }),
-        currentText() {
-            return this.selectedEle ? this.selectedEle.description.text : '';
-        },
-    },
     methods: {
         exit() {
-            this.selectedEle.selected = false;
+            this.selectEle(null);
             d3.select('#editTag').remove();
         },
         dragstart(event) {
@@ -44,127 +21,152 @@ export default {
             }
         },
         ...mapActions({
-            editChannel: EDIT_CHANNEL,
+            editEle: EDIT_SELECTED_ELE,
+            selectEle: SELECT_ELE,
         }),
     },
-    watch: {
-        currentText(val) {
-            if (this.selectedEle) {
-                d3.select('.current')
-                    .select('#description')
-                    .text(val);
-            }
+    computed: {
+        message: {
+            get() {
+                const selectedEle = this.$store.getters.selectedEle;
+                const msg = selectedEle ? selectedEle.description.text : '';
+                d3.select('.current #description').text(msg);
+                return msg;
+            },
+            set(value) {
+                // this.$store.commit(EDIT_CHANNEL, value);
+                // use action instead of commit directly -- by czt
+                const playload = {
+                    name: 'description',
+                    value: { ...this.selectedEle.description, text: value },
+                };
+                this.editEle(playload);
+            },
         },
-        selectedChannel(val) {
-            // console.info(val.attachedEles);
-            const svg = d3.select('#svgEditor');
+        currentText() {
+            return this.selectedEle ? this.selectedEle.description.text : '';
+        },
+        ...mapState({
+            selectedChannelId(state) {
+                // use any attribute to trigger computed so that no need to use watch
+                const selectedChannel = state.channels[state.selectedChannelId];
 
-            svg.selectAll('*')
-                .remove();
+                const svg = d3.select('#svgEditor');
 
-            const g = svg.selectAll('circle')
-                .data(val.attachedEles)
-                .enter()
-                .append('g')
-                .attr('transform', d => `translate(${d.x},${d.y})`)
-                .on('click', function (d) {
-                    d.selected = !d.selected;
-                    const group = d3.select(this);
-                    if (d.selected) {
-                        group.classed('current', true);
+                svg.selectAll('*')
+                    .remove();
+                if (!selectedChannel) return null;
+                const eles = selectedChannel.attachedEles.map(eid => state.eles[eid]);
+                const self = this;
+                const g = svg.selectAll('g.ele')
+                    .data(eles)
+                    .enter()
+                    .append('g')
+                    .attr('class', 'ele')
+                    .attr('transform', d => `translate(${d.x},${d.y})`)
+                    .on('click', function (d) {
+                        d.selected = !d.selected;
+                        const group = d3.select(this);
+                        if (d.selected) {
+                            self.selectEle(d);
+                            group.classed('current', true);
 
-                        //     group.selectAll('#description').style('fill', 'yellow');
+                            //     group.selectAll('#description').style('fill', 'yellow');
+                            //     group.selectAll('path')
+                            //   .style('stroke', 'yellow')
+                            //   .style('stroke-width', '2');
 
-                        //     group.selectAll('path')
-                        //   .style('stroke', 'yellow')
-                        //   .style('stroke-width', '2');
+                            group.append('text')
+                                .attr('id', 'editTag')
+                                .style('fill', 'red')
+                                .attr('font-size', 14)
+                                .attr('x', 0)
+                                .attr('y', 0)
+                                .text('editing...');
+                        } else {
+                            group.classed('current', false);
 
-                        group.append('text')
-                            .attr('id', 'editTag')
-                            .style('fill', 'red')
-                            .attr('font-size', 14)
-                            .attr('x', 0)
-                            .attr('y', 0)
-                            .text('editing...');
-                    } else {
-                        group.classed('current', false);
+                            // group.selectAll('path')
+                            // .style('stroke', 'none');
 
-                        // group.selectAll('path')
-                        // .style('stroke', 'none');
+                            // group.select('text')
+                            // .style('fill', 'black');
 
-                        // group.select('text')
-                        // .style('fill', 'black');
-
-                        group.select('#editTag').remove();
-                    }
-                })
-                .call(d3.drag()
-                    // .on('start', function () {
-                    //     // console.info('drag start');
-                    //     d3.selectAll(this).style('fill', 'yellow');
+                            group.select('#editTag').remove();
+                        }
+                    })
+                    .call(d3.drag()
+                        // .on('start', function () {
+                        //     // console.info('drag start');
+                        //     d3.selectAll(this).style('fill', 'yellow');
+                        // })
+                        .on('drag', function (d) {
+                            // console.info('draging');
+                            d3.select(this).attr('transform', `translate(${d3.event.x},${d3.event.y})`);
+                            d.x = d3.event.x;
+                            d.y = d3.event.y;
+                        }),
+                    // .on('end', function () {
+                    //     // console.info('drag end');
+                    //     d3.selectAll(this).style('fill', 'white');
                     // })
-                    .on('drag', function (d) {
-                        // console.info('draging');
-                        d3.select(this).attr('transform', `translate(${d3.event.x},${d3.event.y})`);
-                        d.x = d3.event.x;
-                        d.y = d3.event.y;
-                    }),
-                // .on('end', function () {
-                //     // console.info('drag end');
-                //     d3.selectAll(this).style('fill', 'white');
-                // })
-            );
+                    );
 
-            const path = d3.arc()
-                .innerRadius(10)
-                .outerRadius(24)
-                .startAngle(0)
-                .endAngle(7);
+                const path = d3.arc()
+                    .innerRadius(10)
+                    .outerRadius(24)
+                    .startAngle(0)
+                    .endAngle(7);
 
-            g.append('path')
-                // .attr('d', d => d.path)
-                .attr('d', path)
-                .style('fill', 'var(--color-3)');
-            // .on('mouseover', function (d) {
-            //     d3.select(this)
-            //     .style('stroke', 'var(--color-1)')
-            //     .style('stroke-width', '2px');
-            // })
-            // .on('mouseout', function (d) {
-            //     d3.select(this)
-            //     .style('stroke', 'none');
-            // });
-
-            g.attr('text-anchor', 'start')
-                .append('text')
-                .attr('id', 'description')
-                .attr('transform', d => `translate(${d.description.dx},${d.description.dy})`)
-                .attr('class', 'description')
-                .attr('font-family', 'Source Sans Pro')
-                .attr('font-size', 20)
-                .text(d => d.description.text)
+                g.append('path')
+                    // .attr('d', d => d.path)
+                    .attr('d', path)
+                    .style('fill', 'var(--color-3)');
                 // .on('mouseover', function (d) {
                 //     d3.select(this)
-                //     .style('fill', 'yellow');
+                //     .style('stroke', 'var(--color-1)')
+                //     .style('stroke-width', '2px');
                 // })
                 // .on('mouseout', function (d) {
                 //     d3.select(this)
-                //     .style('fill', 'black');
-                // })
-                .call(d3.drag()
-                    .on('drag', function (d) {
-                        d3.select(this).attr('transform', `translate(${d3.event.x - d.x},${d3.event.y - d.y})`);
-                        d.description.dx = d3.event.x - d.x;
-                        d.description.dy = d3.event.y - d.y;
-                    }));
-            // .call(d3.drag()
-            //     .on('drag'), function (d) {
-            //         console.info(this);
-            //         // d3.select(this).attr('transform', `translate(${d3.event.x},${d3.event.y})`);
-            //         // d.description.dx = d3.event.x - d.x;
-            //         // d.description.dy = d3.event.y - d.y;
-            // });
-        },
+                //     .style('stroke', 'none');
+                // });
+
+                g.attr('text-anchor', 'start')
+                    .append('text')
+                    .attr('id', 'description')
+                    .attr('transform', d => `translate(${d.description.dx},${d.description.dy})`)
+                    .attr('class', 'description')
+                    .attr('font-family', 'Source Sans Pro')
+                    .attr('font-size', 20)
+                    .text(d => d.description.text)
+                    // .on('mouseover', function (d) {
+                    //     d3.select(this)
+                    //     .style('fill', 'yellow');
+                    // })
+                    // .on('mouseout', function (d) {
+                    //     d3.select(this)
+                    //     .style('fill', 'black');
+                    // })
+                    .call(d3.drag()
+                        .on('drag', function (d) {
+                            d3.select(this).attr('transform', `translate(${d3.event.x - d.x},${d3.event.y - d.y})`);
+                            d.description.dx = d3.event.x - d.x;
+                            d.description.dy = d3.event.y - d.y;
+                        }));
+                // .call(d3.drag()
+                //     .on('drag'), function (d) {
+                //         console.info(this);
+                //         // d3.select(this).attr('transform', `translate(${d3.event.x},${d3.event.y})`);
+                //         // d.description.dx = d3.event.x - d.x;
+                //         // d.description.dy = d3.event.y - d.y;
+                // });
+                return state.selectedChannelId;
+            },
+        }),
+        ...mapGetters({
+            selectedEle: 'selectedEle',
+        }),
     },
 };
 

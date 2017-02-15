@@ -17,15 +17,13 @@ export default {
             // blocks: 'blocks',
             calculatedWidth: (state) => {
                 let len = 0;
-                state.blocks.forEach((blk) => {
-                    blk.marks.forEach((mark) => {
-                        mark.channels.forEach((channel) => {
-                            if (!channel.removed) len += 1;
-                        });
-                    });
+                Object.keys(state.channels).forEach((channelKey) => {
+                    if (!state.channels[channelKey].removed) len += 1;
                 });
                 return (len + 1) * screen.width * 0.4;
             },
+            marks: 'marks',
+            channels: 'channels',
         }),
         ...mapGetters({
             blocks: 'sortedBlocks',
