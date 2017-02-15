@@ -1,18 +1,18 @@
 <template>
     <div class="inBlock">
-        <ul id='mark_list'>
-            <span class='block'>{{block.name}}</span>
+        <ul id="mark_list">
+            <span class="block">{{block.name}}</span>
             <draggable :list="block.marks">
-                <li v-for='(mark, index) in block.marks'>
-                    <span class='mark'>{{mark.name}}</span>
+                <li v-for="markId in block.marks">
+                    <span class="mark">{{marks[markId].name}}</span>
                     <i class="el-icon-close" />
-                    <ol id='channel_list'>
-                        <draggable :list="mark.channels">
-                            <li v-for="(channel, index) in mark.channels"
-                            v-if='!channel.removed'
-                            class='bg-purple'>
-                                <span class='channel'>{{channel.name}}</span>
-                                <i class="el-icon-close" @click="removeChannel(channel)"/>
+                    <ol id="channel_list">
+                        <draggable :list="marks[markId].channels">
+                            <li v-for="channelId in marks[markId].channels"
+                            v-if="!channels[channelId].removed"
+                            class="bg-purple">
+                                <span class="channel">{{channels[channelId].name}}</span>
+                                <i class="el-icon-close" @click="removeChannel(channels[channelId])"/>
                             </li>
                         </draggable>
                     </ol>
@@ -35,7 +35,7 @@
         background-color:var(--color-0);
         color: var(--color-3);
         box-shadow: 2px 2px 1px var(--color-3);
-        /*font-family: 'Pangolin', cursive;*/
+        /*font-family: "Pangolin", cursive;*/
     }
     #mark_list{
         margin: 0px;
@@ -48,7 +48,7 @@
         /*border-radius:6px;*/
     }
     #mark_list li:before{
-        content:' ◦ ';
+        content:" ◦ ";
         color:var(--color-3);
         padding-left:6px;
     }
@@ -58,7 +58,7 @@
         padding:0px;
     }
     #channel_list li:before{
-        content:'•  ';
+        content:"•  ";
         color:var(--color-3);
         padding-left: 6px;
     }

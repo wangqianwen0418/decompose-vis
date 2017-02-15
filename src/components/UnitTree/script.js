@@ -81,7 +81,7 @@ function updateTree(nodes) {
         .attr('rx', 3)
         .attr('ry', 3)
         .attr('opacity', 0.0) // change this to non-zero to see the target area
-        // .attr('pointer-events', 'mouseover')
+        .attr('pointer-events', 'mouseover')
         .on('mouseover', overCircle)
         .on('mouseout', outCircle);
 
@@ -175,9 +175,7 @@ const overCircle = function (d) {
 };
 const outCircle = function (d) {
     selectedNode = null;
-
-    d3.select(this)
-        .attr('opacity', 0);
+    d3.select(this).attr('opacity', 0);
 };
 
 
@@ -250,7 +248,7 @@ const myVue = {
 
 
         const svg = d3.select('#bTree');
-        blocks = this.blocks;
+        blocks = Object.keys(this.blocks).map(k => this.blocks[k]);
 
         svg.append('g').attr('class', 'svgGroup');
         updateTree(nodes);

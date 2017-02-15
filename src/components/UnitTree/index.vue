@@ -11,7 +11,7 @@
 
 <script src='./script.js'></script>
 
-<style scoped>
+<style>
     button {
         background-color: var(--color-0);
         color: var(--color-3);
