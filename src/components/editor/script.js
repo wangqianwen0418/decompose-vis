@@ -58,42 +58,44 @@ export default {
                     .append('g')
                     .attr('class', 'ele')
                     .attr('transform', d => `translate(${d.x},${d.y})`)
-                    .on('click', function (d) {
-                        if (d3.event.defaultPrevented) return; // dragged
-                        console.log('click');
-                        d.selected = !d.selected;
-                        const group = d3.select(this);
-                        if (d.selected) {
-                            self.selectEle(d.id);
-                            group.classed('current', true);
-
-                            //     group.selectAll('#description').style('fill', 'yellow');
-                            //     group.selectAll('path')
-                            //   .style('stroke', 'yellow')
-                            //   .style('stroke-width', '2');
-
-                            group.append('text')
-                                .attr('id', 'editTag')
-                                .style('fill', 'red')
-                                .attr('font-size', 14)
-                                .attr('x', 0)
-                                .attr('y', 0)
-                                .text('editing...');
-                        } else {
-                            group.classed('current', false);
-
-                            // group.selectAll('path')
-                            // .style('stroke', 'none');
-
-                            // group.select('text')
-                            // .style('fill', 'black');
-
-                            group.select('#editTag').remove();
-                        }
-                    })
                     .call(d3.drag()
+                        .on('start', function (d) {
+                            if (d3.event.defaultPrevented) return; // dragged
+                            console.log('click');
+                            d.selected = !d.selected;
+                            const group = d3.select(this);
+                            if (d.selected) {
+                                self.selectEle(d.id);
+                                group.classed('current', true);
+
+                                //     group.selectAll('#description').style('fill', 'yellow');
+                                //     group.selectAll('path')
+                                //   .style('stroke', 'yellow')
+                                //   .style('stroke-width', '2');
+
+                                group.append('text')
+                                    .attr('id', 'editTag')
+                                    .style('fill', 'red')
+                                    .attr('font-size', 14)
+                                    .attr('x', 0)
+                                    .attr('y', 0)
+                                    .text('editing...');
+                            } else {
+                                self.selectEle(null);
+                                group.classed('current', false);
+
+                                // group.selectAll('path')
+                                // .style('stroke', 'none');
+
+                                // group.select('text')
+                                // .style('fill', 'black');
+
+                                group.select('#editTag').remove();
+                            }
+                        })
                         .on('drag', function (d) {
                             console.info('draging');
+                            self.selectEle(null);
                             d3.select(this).attr('transform', `translate(${d3.event.x},${d3.event.y})`);
                             d.x = d3.event.x;
                             d.y = d3.event.y;
