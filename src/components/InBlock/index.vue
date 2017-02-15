@@ -12,7 +12,7 @@
                             v-if='!channel.removed'
                             class='bg-purple'>
                                 <span class='channel'>{{channel.name}}</span>
-                                <i class="el-icon-close" @click="removeItem(channel)"/>
+                                <i class="el-icon-close" @click="removeChannel(channel)"/>
                             </li>
                         </draggable>
                     </ol>

@@ -1,12 +1,11 @@
 import { mapActions, mapState } from 'vuex';
 import draggable from 'vuedraggable';
-import * as d3 from 'd3';
-import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
+import { REMOVE_CHANNEL, SELECT_CHANNEL } from '../../store';
 
 console.info(document.getElementById('slideText'));
 // {'b':2, 'a':1}
 export default {
-    props: ['item', 'mark', 'block'],
+    props: ['channel', 'mark', 'block'],
     data() {
         return {
             height: window.innerHeight * 0.4,
@@ -72,24 +71,18 @@ export default {
         //             );
         // },
         ...mapActions({
-            removeItem: REMOVE_ITEM,
-            selectItem: SELECT_ITEM,
+            removeChannel: REMOVE_CHANNEL,
+            selectChannel: SELECT_CHANNEL,
         }),
     },
     computed: {
-        styleObject() {
-            if (this.item.selected) {
-                return {
-                    border: '0.5vh dashed #417378',
-                    height: '19vh',
-                    width: '19vw',
-                };
-            }
-            return null;
-        },
         ...mapState({
             selectedEle: 'selectedEle',
+            selectedChannel: 'selectedChannel',
         }),
+        isSelected() {
+            return this.channel === this.selectedChannel;
+        },
     },
     // mounted() {
     //     this.calculatePath();

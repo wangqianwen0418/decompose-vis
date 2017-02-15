@@ -58,9 +58,7 @@ const getters = {
         insertChildren(bTree);
         return bTree;
     },
-
-    sortedBlocks:
-    (state) => {
+    sortedBlocks: (state) => {
         let index = 0;
 
         function insertChildren(node) {

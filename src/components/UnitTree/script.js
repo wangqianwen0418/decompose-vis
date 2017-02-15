@@ -1,9 +1,7 @@
 import draggable from 'vuedraggable';
 import * as d3 from 'd3';
 import { mapState, mapActions, mapGetters } from 'vuex';
-import { SELECT_BLOCK, UPDATE_BLOCKS } from '../../store';
-import store from '../../store';
-
+import store, { SELECT_BLOCK, UPDATE_BLOCKS } from '../../store';
 
 let draggingNode = null;
 let selectedNode = null;

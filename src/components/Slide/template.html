@@ -1,12 +1,12 @@
 <div class="slide"
-    :style="styleObject"
-    @click="selectItem(item)"
+    :class="{selected:isSelected}"
+    @click="()=>{isSelected =!isSelected;selectChannel(channel)}"
 >
     <div id="slideText">
-        <i class="el-icon-close" @click="removeItem(item)" ></i>
+        <i class="el-icon-close" @click="removeChannel(channel)" ></i>
         <br/> block: {{block.name}}
         <br/> mark: {{mark.name}}
-        <br/> channel: {{item.name}}
+        <br/> channel: {{channel.name}}
 
     </div>
 </div>

@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import { mapActions, mapGetters, mapState } from 'vuex';
-import { EDIT_ITEM } from '../../store';
+import { EDIT_CHANNEL } from '../../store';
 
 export default {
     computed: {
@@ -11,15 +11,16 @@ export default {
             },
             set(value) {
                 // this.$store.commit(EDIT_ITEM, value);
+                // EDIT_ITEM renamed to EDIT_CHANNEL -- by czt
                 // use action instead of commit directly -- by czt
-                this.editItem(value);
+                this.editChannel(value);
             },
         },
         ...mapGetters({
             selectedEle: 'selectedEle',
         }),
         ...mapState({
-            selectedItem: 'selectedItem',
+            selectedChannel: 'selectedChannel',
         }),
         currentText() {
             return this.selectedEle ? this.selectedEle.description.text : '';
@@ -43,7 +44,7 @@ export default {
             }
         },
         ...mapActions({
-            editItem: EDIT_ITEM,
+            editChannel: EDIT_CHANNEL,
         }),
     },
     watch: {
@@ -54,7 +55,7 @@ export default {
                     .text(val);
             }
         },
-        selectedItem(val) {
+        selectedChannel(val) {
             // console.info(val.attachedEles);
             const svg = d3.select('#svgEditor');
 

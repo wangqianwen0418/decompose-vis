@@ -1,6 +1,6 @@
 import draggable from 'vuedraggable';
 import { mapActions, mapState } from 'vuex';
-import { REMOVE_ITEM } from '../../store';
+import { REMOVE_CHANNEL } from '../../store';
 
 export default {
     computed: {
@@ -13,7 +13,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            removeItem: REMOVE_ITEM,
+            removeChannel: REMOVE_CHANNEL,
         }),
     },
 };

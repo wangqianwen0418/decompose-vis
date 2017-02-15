@@ -1,21 +1,18 @@
 import {
-    ADD_ITEM,
-    REMOVE_ITEM,
-    SELECT_ITEM,
-    EDIT_ITEM,
+    REMOVE_CHANNEL,
+    SELECT_CHANNEL,
+    EDIT_CHANNEL,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
 } from './types';
 
 
 const mutations = {
-    [ADD_ITEM](state) {
-        state.items.push(state.newItem);
+    [REMOVE_CHANNEL](state, channel) {
+        channel.removed = true;
     },
-    [REMOVE_ITEM](state, item) {
-        item.removed = true;
-    },
-    [SELECT_ITEM](state, item) {
+    [SELECT_CHANNEL](state, channel) {
+        // maybe the field `selected` is unnecessary -- by czt
         // const blocks = state.blocks;
         // blocks.forEach((block) => {
         //     block.marks.forEach((mark) => {
@@ -24,18 +21,18 @@ const mutations = {
         //         });
         //     });
         // });
-        // item.selected = true;
-        state.selectedItem = item;
+        // CHANNEL.selected = true;
+        state.selectedChannel = channel;
     },
     [SELECT_BLOCK](state, block) {
-        // maybe the field `selected` is unnecessary
+        // maybe the field `selected` is unnecessary -- by czt
         // state.blocks.forEach((blk) => {
         //     blk.selected = false;
         // });
         // block.selected = true;
         state.selectedBlock = block;
     },
-    [EDIT_ITEM](state, message) {
+    [EDIT_CHANNEL](state, message) {
         state.blocks.forEach((block) => {
             block.marks.forEach((mark) => {
                 mark.channels.forEach((channel) => {

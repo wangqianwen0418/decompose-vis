@@ -1,27 +1,27 @@
 import {
-    ADD_ITEM,
-    REMOVE_ITEM,
-    SELECT_ITEM,
-    EDIT_ITEM,
+    ADD_CHANNEL,
+    REMOVE_CHANNEL,
+    SELECT_CHANNEL,
+    EDIT_CHANNEL,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
 } from './types';
 
 const actions = {
-    [ADD_ITEM]({ commit }) {
-        commit(ADD_ITEM);
+    [ADD_CHANNEL]({ commit }) {
+        commit(ADD_CHANNEL);
     },
-    [REMOVE_ITEM]({ commit }, item) {
-        commit(REMOVE_ITEM, item);
+    [REMOVE_CHANNEL]({ commit }, channel) {
+        commit(REMOVE_CHANNEL, channel);
     },
-    [SELECT_ITEM]({ commit }, item) {
-        commit(SELECT_ITEM, item);
+    [SELECT_CHANNEL]({ commit }, channel) {
+        commit(SELECT_CHANNEL, channel);
     },
     [SELECT_BLOCK]({ commit }, block) {
         commit(SELECT_BLOCK, block);
     },
-    [EDIT_ITEM]({ commit }, text) {
-        commit(EDIT_ITEM, text);
+    [EDIT_CHANNEL]({ commit }, text) {
+        commit(EDIT_CHANNEL, text);
     },
     [UPDATE_BLOCKS]({ commit }, blocks) {
         commit(UPDATE_BLOCKS, blocks);

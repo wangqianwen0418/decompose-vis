@@ -1,7 +1,6 @@
-import { mapState, mapActions, mapGetters } from 'vuex';
-import draggable from 'vuedraggable';
-import slide from '../Slide';
-import { ADD_ITEM } from '../../store';
+import { mapState, mapGetters } from 'vuex';
+import Draggable from 'vuedraggable';
+import Slide from '../Slide';
 
 export default {
     data() {
@@ -10,8 +9,8 @@ export default {
         };
     },
     components: {
-        slide,
-        draggable,
+        Slide,
+        Draggable,
     },
     computed: {
         ...mapState({
@@ -30,11 +29,6 @@ export default {
         }),
         ...mapGetters({
             blocks: 'sortedBlocks',
-        }),
-    },
-    methods: {
-        ...mapActions({
-            addItem: ADD_ITEM,
         }),
     },
     watch: {

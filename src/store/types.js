@@ -1,6 +1,6 @@
-export const ADD_ITEM = 'ADD_ITEM';
-export const REMOVE_ITEM = 'REMOVE_ITEM';
-export const SELECT_ITEM = 'SELECT_ITEM';
-export const EDIT_ITEM = 'EDIT_ITEM';
+export const ADD_CHANNEL = 'ADD_CHANNEL';
+export const REMOVE_CHANNEL = 'REMOVE_CHANNEL';
+export const SELECT_CHANNEL = 'SELECT_CHANNEL';
+export const EDIT_CHANNEL = 'EDIT_CHANNEL';
 export const UPDATE_BLOCKS = 'UPDATE_BLOCKS';
 export const SELECT_BLOCK = 'SELECT_BLOCK';

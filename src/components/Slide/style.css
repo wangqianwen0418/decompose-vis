@@ -1,20 +1,26 @@
 .slide {
-		border-radius: 6px;
-		margin: 0px 0.5vw;
-		width: 20vw;
-		height: 20vh;
-		float: left;
-        background-color: var(--color-2);
-        color:var(--color-5);
-        /*font-family: 'Source Sans Pro', sans-serif;*/
-	}
+    border-radius: 6px;
+    margin: 0px 0.5vw;
+    width: 20vw;
+    height: 20vh;
+    float: left;
+    background-color: var(--color-2);
+    color:var(--color-5);
+    /*font-family: 'Source Sans Pro', sans-serif;*/
+}
+
+.selected {
+    border: 0.5vh dashed #417378;
+    height: 19vh;
+    width: 19vw;
+}
 
 .el-icon-close {
-		float: right;
-		color: var(--color-0);
-		font-size: 1vw;
-	}
+    float: right;
+    color: var(--color-0);
+    font-size: 1vw;
+}
 
 .el-icon-close:hover {
-		font-size: 1.2vw;
-	}
+    font-size: 1.2vw;
+}
