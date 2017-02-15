@@ -8,6 +8,8 @@
     --color-5:#3E423A;
     --font-1:'Pangolin', cursive;
     --font-2:'Source Sans Pro', sans-serif;
+    --font-3: 'Playfair Display', serif;
+    --font-4:'Dancing Script', cursive;
 }
 .app{
     font-family: var(--font-1);

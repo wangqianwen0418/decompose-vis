@@ -7,11 +7,11 @@
 <style scoped>
  .headline{
     height: 10vh;
-    border-radius: 8px;
+    border-radius: 6px;
     font-size:40px;
     color:var(--color-0);
     background-color: var(--color-2);
-    font-family: 'Pangolin', cursive;
+    /*font-family: var(--font-4);*/
   }
 #name{
     margin: 0;

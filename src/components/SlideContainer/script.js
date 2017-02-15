@@ -1,4 +1,4 @@
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import draggable from 'vuedraggable';
 import slide from '../Slide';
 import { ADD_ITEM } from '../../store';
@@ -15,22 +15,34 @@ export default {
     },
     computed: {
         ...mapState({
-            blocks: 'blocks',
+            // blocks: 'blocks',
             calculatedWidth: (state) => {
                 let len = 0;
-                const blocks = state.blocks;
-                for (const i in blocks) {
-                    for (const j in blocks[i].marks) {
-                        len += blocks[i].marks[j].channels.length;
-                    }
-                }
+                state.blocks.forEach((blk) => {
+                    blk.marks.forEach((mark) => {
+                        mark.channels.forEach((channel) => {
+                            if (!channel.removed) len += 1;
+                        });
+                    });
+                });
                 return (len + 1) * screen.width * 0.4;
             },
+        }),
+        ...mapGetters({
+            blocks: 'sortedBlocks',
         }),
     },
     methods: {
         ...mapActions({
             addItem: ADD_ITEM,
         }),
+    },
+    watch: {
+        blocks(val) {
+            console.info(val);
+        },
+        calculatedWidth(val) {
+            console.info(this.$store.getters.bTree);
+        },
     },
 };

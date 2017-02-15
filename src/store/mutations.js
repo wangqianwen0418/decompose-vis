@@ -3,7 +3,7 @@ import {
     REMOVE_ITEM,
     SELECT_ITEM,
     EDIT_ITEM,
-    UPDATE_ITEM,
+    UPDATE_BLOCKS,
     SELECT_BLOCK,
 } from './types';
 
@@ -48,8 +48,8 @@ const mutations = {
             });
         });
     },
-    [UPDATE_ITEM](state, items) {
-        state.items = items;
+    [UPDATE_BLOCKS](state, blocks) {
+        state.blocks = blocks;
     },
 };
 
