@@ -25,10 +25,7 @@ const mutations = {
         state.selectedEleId = eleId;
     },
     [EDIT_SELECTED_ELE](state, playload) {
-        state.selectedEle = {
-            ...state.selectedEle,
-            [playload.name]: playload.value,
-        };
+        state.eles[playload.id] = playload;
     },
 };
 
