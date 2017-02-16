@@ -22,6 +22,16 @@ export default {
             if (this.selectedEle) { return this.selectedEle.description.text; }
             return '';
         },
+        styleObject() {
+            const offsets = document.getElementById('positionTag').getBoundingClientRect();
+            const top = offsets.top;
+            const left = offsets.left;
+            return {
+                position: 'absolute',
+                left: `${this.selectedEle.x + left}px`,
+                top: `${this.selectedEle.y + top}px`,
+            };
+        },
     },
     methods: {
         exit() {

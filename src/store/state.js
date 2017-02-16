@@ -1,25 +1,9 @@
 const state = {
-    tree: [
-        {
-            name: 'b1',
-            parent: [],
-            children: ['b2', 'b3'],
-        },
-        {
-            name: 'b2',
-            parent: ['b1'],
-            children: [],
-        },
-        {
-            name: 'b3',
-            parent: ['b1'],
-            children: [],
-        }],
     blocks: [
         {
             name: 'block1',
-            parent: [],
-            children: ['block2', 'block3'],
+            parent: ['root'],
+            children: [],
             selected: true,
             marks: [
                 {
@@ -168,7 +152,23 @@ const state = {
             parent: ['block1'],
             children: [],
             selected: false,
-            marks: [],
+            marks: [
+                {
+                    name: 'mark31',
+                    channels: [
+                        {
+                            name: 'channel 311',
+                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                            selected: false,
+
+                            removed: false,
+                            block: 'theme river',
+                            mark: 'strip',
+                            channel: 'color',
+                        },
+                    ],
+                },
+            ],
         },
     ],
     figureSource: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
