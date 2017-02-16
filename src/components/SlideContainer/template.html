@@ -1,14 +1,21 @@
+<div class="shadow">
+
+<!--<div class="shadow-left"></div>
+<div class="shadow-right"></div>-->
+
 <div id="slides">
     <div class="container" :style="{width:calculatedWidth+'px'}">
-        <span v-for='(block, index) in blocks' >
-            <span v-for='(mark, index) in block.marks' >
+        <template v-for='(block, index) in blocks' >
+            <template v-for='(mark, index) in block.marks' >
             <draggable :list="mark.channels" >
                 <slide v-for="(channel, index) in mark.channels" v-if='!channel.removed'
                 :block='block'
                 :mark='mark'
                 :item="channel" />
             </draggable>
-            </span>
-        </span>
+            </template>
+        </template>
     </div>
+</div>
+
 </div>

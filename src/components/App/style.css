@@ -1,9 +1,9 @@
-:root{
+/*version 1*/
+/*:root{
     --color-0:#FFFCF0;
     --color-1:#F4F7D9;
     --color-2:#A4CFBE;
     --color-3:#417378;
-    /*--color-3:4F8C91;*/
     --color-4:#6C6E58;
     --color-5:#3E423A;
     --font-1:'Pangolin', cursive;
@@ -17,11 +17,44 @@
     height:100vh;
     width:98vw;
     margin:0vh 1vw 0 0vw;
-    /*font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;*/
-}
+  }
 .el-row {
     margin-bottom: 10px;
 }
+
+.el-col {
+    border-radius: 4px;
+}
+
+.el-icon-close{
+    margin: 5px 5px 0px 0px;
+}
+*/
+
+/*version 2*/
+
+:root{
+    --color-blue-light:#A4CFBE;
+    --color-blue:#78C0AE;;
+    /*--color-blue-dark:#4F8C91;*/
+    --color-blue-dark:#73969c;
+    --color-gray-light:#eeeeee;
+    --color-blue-gray:#94bab0;
+    --color-gray:#e0e0e0;
+    --color-white: #ffffff;
+    --font-1:'Pangolin', cursive;
+    --font-2:'Source Sans Pro', sans-serif;
+    --font-3: 'Playfair Display', serif;
+    --font-4:'Dancing Script', cursive;
+}
+.app{
+    /*font-family: var(--font-1);*/
+    background-color:var(--color-gray-light);
+    height:100vh;
+    width:100vw;
+    margin:0;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    }
 
 .el-col {
     border-radius: 4px;

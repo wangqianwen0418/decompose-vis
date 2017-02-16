@@ -2,7 +2,7 @@ import draggable from 'vuedraggable';
 import * as d3 from 'd3';
 import { mapState, mapActions, mapGetters } from 'vuex';
 import { SELECT_BLOCK, UPDATE_BLOCKS } from '../../store';
-import store from '../../store';
+// import store from '../../store';
 
 
 let draggingNode = null;
@@ -49,13 +49,13 @@ function updateTree(nodes) {
 
     link.enter().append('path')
         .attr('class', 'link')
-        .style('stroke', 'var(--color-0)')
+        .style('stroke', 'var(--color-blue)')
         .style('stroke-width', '2')
         .attr('d', d => `M${d.y},${d.x
             }C${(d.y + d.parent.y) / 2},${d.x
             } ${(d.y + d.parent.y) / 2},${d.parent.x
             } ${d.parent.y},${d.parent.x}`)
-        .style('fill', 'var(--color-2)');
+        .style('fill', 'none');
 
     link.attr('d', d => `M${d.y},${d.x
             }C${(d.y + d.parent.y) / 2},${d.x
@@ -94,13 +94,14 @@ function updateTree(nodes) {
         .attr('rx', 3)
         .attr('ry', 3)
         .attr('y', '-10')
-        .style('fill', 'var(--color-0)');
+        .style('fill', 'var(--color-blue)');
 
     nodeGroup1.append('text')
         .text(d => d.data.name)
         .attr('y', '10')
         .attr('x', '2')
-        .attr('font-size', '15px');
+        .attr('font-size', '15px')
+        .style('fill', 'var(--color-white)');
 
     nodeGroup1.call(circleDragger);
 
@@ -124,13 +125,14 @@ function updateTree(nodes) {
         .attr('y', '-10')
         .attr('rx', 3)
         .attr('ry', 3)
-        .style('fill', 'var(--color-0)');
+        .style('fill', 'var(--color-blue)');
 
     nodeGroup2.append('text')
         .text(d => d.data.name)
         .attr('y', '10')
         .attr('x', '2')
-        .attr('font-size', '15px');
+        .attr('font-size', '15px')
+        .style('fill', 'var(--color-white)');
 
     nodeGroup2.call(circleDragger);
 
@@ -142,7 +144,7 @@ function updateTree(nodes) {
         .attr('y', -20)
         .attr('rx', 3)
         .attr('ry', 3)
-        .attr('opacity', 0.0) // change this to non-zero to see the target area
+        .attr('opacity', 0.0)
         // .attr('pointer-events', 'mouseover')
         .on('mouseover', overCircle)
         .on('mouseout', outCircle);
@@ -154,13 +156,14 @@ function updateTree(nodes) {
         .attr('y', '-10')
         .attr('rx', 3)
         .attr('ry', 3)
-        .style('fill', 'var(--color-0)');
+        .style('fill', 'var(--color-blue)');
 
     nodeGroup3.append('text')
         .text(d => d.data.name)
         .attr('y', '10')
         .attr('x', '2')
-        .attr('font-size', '15px');
+        .attr('font-size', '15px')
+        .style('fill', 'var(--color-white)');
 
     nodeGroup3.call(circleDragger);
 }
@@ -171,7 +174,7 @@ const overCircle = function (d) {
         d3.select(this)
         .attr('opacity', 0.3)
         .style('fill', 'var(--color-1)')
-        .style('stroke', 'var(--color-3)')
+        .style('stroke', 'var(--color-blue)')
         .style('stroke-width', '3px');
     }
 };
@@ -196,22 +199,29 @@ const circleDragger =
             updateTree(nodes);
         })
         .on('end', function (d) {
-            blocks.forEach((block) => {
-                if (block.name === draggingNode.data.name && selectedNode) {
-                    block.parent = [`${selectedNode.data.name}`];
-                }
-            });
+            if (selectedNode) {
+                blocks.forEach((block) => {
+                    if (block.name === draggingNode.data.name) {
+                        block.parent = [`${selectedNode.data.name}`];
+                    }
+
+                    if (block.name === selectedNode.data.name && draggingNode.data.parent[0] === 'root') {
+                        block.parent = ['root'];
+                    }
+                });
+            }
 
             d3.select(this).attr('pointer-events', '');
             draggingNode = null;
-            updateTree(nodes);
 
-            if (click) {
+            updateTree(nodes);
+            if (click && d.data.name !== 'root') {
                 d3.selectAll('.fgrect').style('stroke', 'none');
+
                 d3.select(this)
                 .select('.fgrect')
-                .style('stroke', 'var(--color-3)')
-                .style('stroke-width', '3px');
+                .style('stroke', 'var(--color-blue-dark)')
+                .style('stroke-width', '5px');
 
                 blocks.forEach((blk) => {
                     if (blk.name === d.data.name) {
@@ -226,6 +236,12 @@ const circleDragger =
         });
 
 const myVue = {
+    data() {
+        return {
+            height: 300,
+            width: 250,
+        };
+    },
     computed: {
         ...mapState({
             blocks: 'blocks',
@@ -245,7 +261,7 @@ const myVue = {
     },
     mounted() {
         const tree = d3.tree()
-                .size([100, 200]);
+                .size([this.height, this.width * 0.7]);
 
         nodes = d3.hierarchy(this.bTree, d => d.children);
         nodes = tree(nodes);
@@ -262,7 +278,7 @@ const myVue = {
             bTree = val;
 
             const tree = d3.tree()
-                .size([100, 200]);
+                .size([(this.height), this.width * 0.7]);
             nodes = d3.hierarchy(bTree, d => d.children);
             nodes = tree(nodes);
             updateTree(nodes);

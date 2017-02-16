@@ -5,21 +5,22 @@
                     {{block.name}}
                 </button>
         </draggable>-->
-        <svg id='bTree'></svg>
+        <svg id='bTree' :width="width" :height="height"></svg>
     </div>
 </template>
 
 <script src='./script.js'></script>
 
 <style scoped>
-button {
+
+/*button {
     background-color: var(--color-0);
     color:var(--color-3);
     margin: 2px;
     border:none;
     border-radius: 3px;
     text-align: center;
-    /*text-decoration: none;*/
+    text-decoration: none;
     display: inline-block;
     font-size: 16px;
 }
@@ -28,10 +29,16 @@ button:focus {
     outline:none;
     border:3px solid var(--color-3);
     border-radius: 5px;
-}
+}*/
 
 .unitTree {
-    margin:4px ;
+    margin: 5px 8px 5px 10px;
+    height:40vh;
+    box-shadow: 2px 2px 1px var(--color-blue-dark);
+    background-color: var(--color-white);
+}
+#bTree{
+    margin: 5px 10px;
 }
 
 </style>

@@ -13421,13 +13421,13 @@
     /*border: none;*/
 }
 .el-tabs__header {
-    border-bottom: 0px solid var(--color-3);
+    border-bottom: 0px solid var(--color-blue-gray);
     padding: 0;
     position: relative;
     margin: 0 0 15px;
-    border-radius:6px 6px 0px 0px;
+    /*border-radius:6px 6px 0px 0px;*/
     /*color:var(--color-3);*/
-    background-color: var(--color-3);
+    background-color: var(--color-blue-gray);
 }
 .el-tabs__header:before, .el-tabs__header:after {
     display: table;
@@ -13523,7 +13523,7 @@
     width: 14px;
 }
 .el-tabs--card>.el-tabs__header>.el-tabs__item.is-active {
-    border: 1px solid var(--color-3);
+    border: 1px solid var(--color-white);
     /*border-radius: 4px 4px 0 0;*/
 }
 .el-tabs--card>.el-tabs__header>.el-tabs__item.is-active.is-closable {
@@ -13542,29 +13542,29 @@
 .el-tabs--border-card>.el-tabs__content {
     padding: 15px;
 }
-.el-tabs--border-card>.el-tabs__header {
-    background-color: var(--color-3);
+/*.el-tabs--border-card>.el-tabs__header {
+    background-color: var(--color-gray-drak);
     margin: 0;
-}
+}*/
 .el-tabs--border-card>.el-tabs__header>.el-tabs__item {
-    /*transition: all .3s cubic-bezier(.645,.045,.355,1);*/
-    /*border: 1px solid var(--color-3);
-    border-bottom: 0px;*/
-    /*margin-right: -1px;*/
-    /*margin-left: -1px;*/
+    background-color: var(--color-blue-gray);
+    color: var(--color-white);
+
 }
 .el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active {
-    background-color: var(--color-0);
+    color: var(--color-gray-dark);
+    background-color: var(--color-white);
     /*border-right-color: var(--color-3);
     border-left-color: var(--color-3);*/
 }
-.el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active:first-child {
-    /*border-left: 1px solid var(--color-3);*/
-    border-radius: 6px 0px 0px 0px;
+/*.el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active:first-child {
+    border-left: 1px solid var(--color-3);
+    border-radius: 0px;
 }
 .el-tabs--border-card>.el-tabs__header>.el-tabs__item.is-active:last-child {
-    /*border-right-color: var(--color-3);*/
+    border-right-color: var(--color-3);
 }
+*/
 .slideInRight-transition, .slideInLeft-transition {
     display: inline-block;
 }
