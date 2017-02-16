@@ -18,7 +18,7 @@
 	.el-tabs {
 		height: 43vh;
 		/*font-family: 'Source Sans Pro', sans-serif;;*/
-		margin: 0px 3px;
+		margin: 1vh 0.5vw 1vh 1vw;
 		border-radius: 0px;
         border:none;
         /*border: 0.3px solid var(--color-gray-dark);*/
