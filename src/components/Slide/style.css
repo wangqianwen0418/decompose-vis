@@ -1,17 +1,39 @@
-.slide {
-		border-radius: 8px;
+/*.slide {
+		border-radius: 6px;
 		margin: 0px 0.5vw;
 		width: 20vw;
 		height: 20vh;
 		float: left;
         background-color: var(--color-2);
         color:var(--color-5);
-        /*font-family: 'Source Sans Pro', sans-serif;*/
 	}
 
 .el-icon-close {
 		float: right;
 		color: var(--color-0);
+		font-size: 1vw;
+	}
+
+.el-icon-close:hover {
+		font-size: 1.2vw;
+	}*/
+
+
+/*version 2*/
+.slide {
+		margin: 3px 6px;
+		width: 20vw;
+		height: 20vh;
+		float: left;
+        background-color: var(--color-white);
+        border: 1px solid var(--color-gray-light);
+        color:var(--color-blue-dark);
+        box-shadow: 2px 2px 1px var(--color-blue-dark);
+	}
+
+.el-icon-close {
+		float: right;
+		color: var(--color-blue-dark);
 		font-size: 1vw;
 	}
 

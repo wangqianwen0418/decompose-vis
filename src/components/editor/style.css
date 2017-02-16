@@ -1,10 +1,8 @@
-.editor {
-    border-radius: 8px;
+/*.editor {
+    border-radius: 6px;
     width:56.4vw;
     height: 60vh;
     border: 0.4vw solid var(--color-2);
-    /*background-color:var(--color-0);*/
-    /*margin: 1vh 1vw;*/
 }
 
 textarea:active,
@@ -14,9 +12,35 @@ textarea:focus {
 textarea{
     position: float;
     border: 2px solid var(--color-2);
-    border-radius: 8px;
+    border-radius: 6px;
+}*/
+
+/*version 2*/
+.editor {
+    /*border-radius: 6px;*/
+    width:57vw;
+    height: 60vh;
+    /*border: 0.4vw solid var(--color-2);*/
+    border:none;
+    background-color:var(--color-white);
+    box-shadow: 2px 2px 1px var(--color-blue-dark);
+    margin:15px 5px 5px 5px;
 }
 
-/*svg {
- position: float;
-}*/
+textarea:active,textarea:focus {
+    outline: none;
+}
+textarea{
+    position: float;
+    margin:5px;
+    height:10vh;
+}
+.editPanel{
+    border-radius:4px;
+    height:20vh;
+    width:15vw;
+    background-color: var(--color-blue-gray);
+    box-shadow: 1px 1px 0.5px var(--color-gray);
+}
+
+
