@@ -34,7 +34,7 @@
     font-size:40px;
     color:var(--color-white);
     background-color: var(--color-blue);
-    box-shadow: 1px 1px 0.5px var(--color-blue-dark);
+    box-shadow: 2px 2px 1px var(--color-blue-dark);
     margin-bottom: 5px
     /*font-family: var(--font-4);*/
   }

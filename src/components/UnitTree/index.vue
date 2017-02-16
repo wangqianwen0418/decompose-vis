@@ -32,7 +32,7 @@ button:focus {
 }*/
 
 .unitTree {
-    margin: 5px 8px 5px 10px;
+    margin: 1vh 0.5vw 1vh 1vw;
     height:40vh;
     box-shadow: 2px 2px 1px var(--color-blue-dark);
     background-color: var(--color-white);
