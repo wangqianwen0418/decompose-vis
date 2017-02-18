@@ -1,6 +1,6 @@
 <template>
     <div class="resource bg-purple-light">
-		<fig-source></fig-source>
+		<fig-source :src="require('assets/textflow.png')"></fig-source>
 		<!--<text-source></text-source>-->
         <el-row>
             <el-col :span='12'>

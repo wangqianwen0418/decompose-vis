@@ -1,6 +1,6 @@
 <div class="editor" id='positionTag'>
     <div class='editPanel' v-if='selectedEle'
-    draggable='true' @dragstart='dragstart' @drag = 'drag'
+    draggable='true' @dragstart='dragstart' @drag='drag' 
     :style="styleObject"
     >
     <textarea
@@ -9,5 +9,5 @@
     placeholder="edit the selected element here">
     </textarea>
     </div>
-    <svg id='svgEditor' width="55vw" height="55vh" ></svg>
+    <svg class='svgEditor' width="55vw" height="55vh" @drop.prevent='ondrop'></svg>
 </div>
