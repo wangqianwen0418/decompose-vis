@@ -2,7 +2,7 @@
     <div class="inBlock">
         <div>
         <ul id='mark_list'>
-            <span class='block'>{{block.name}}</span>
+            <div class='block'>{{block.name}}<hr/></div>
             <draggable :list="block.marks">
                 <li v-for='(mark, index) in block.marks'>
                     <span class='mark'>{{mark.name}}</span>

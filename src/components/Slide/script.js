@@ -81,8 +81,8 @@ export default {
             if (this.item.selected) {
                 return {
                     border: '0.5vh dashed #417378',
-                    height: '19vh',
-                    width: '19vw',
+                    height: '11vh',
+                    width: '11vw',
                 };
             }
             return null;

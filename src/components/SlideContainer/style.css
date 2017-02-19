@@ -50,7 +50,7 @@ ul {
 #slides {
     overflow-x: scroll;
      overflow-y:hidden;
-    height: 22.5vh;
+    height: 14.5vh;
     /*width:58vw;*/
     margin: 1vh 1vw 1.5vh 0.5vw;
     background-color: var(--color-white);
@@ -100,14 +100,15 @@ ul {
     list-style-type: none;
 }
 
-/*.shadow-left {
+.shadow-left {
     position: absolute;
     z-index: 2;
     box-shadow: 10px 3px 10px -7px var(--color-blue-dark) inset;
-    height: 22.5vh;
+    height: 12.5vh;
     width:15px;
     margin-left: 5px;
 }
+/*
 .shadow-right {
     float:right;
     z-index: 2;
