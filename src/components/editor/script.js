@@ -58,10 +58,10 @@ export default {
 			const y = item.getAttribute('y');
 			const width = item.getAttribute('width');
 			const svg = this.$el.getElementsByClassName('svgEditor')[0];
-			const ratio = svg.width / width;
+			const ratio = svg.clientWidth / width;
+            console.log('svg', width, svg, svg.width, d3.select(svg).attr('width'));
 			d3.select(geo)
-				.attr('transform', `translate(${x}, ${y})`)
-				.attr('transform', `scale(${ratio})`);
+				.attr('transform', `translate(${x}, ${y}), scale(${ratio})`);
 			svg.appendChild(geo);
 			item.remove();
 		},
@@ -79,9 +79,9 @@ export default {
         },
         selectedItem(val) {
             // console.info(val.attachedEles);
-            const svg = d3.select('#svgEditor');
-            const dsvg = this.$el.children[0];
-            console.log(dsvg, dsvg.clientWidth);
+            console.log(this.$el.getElementsByClassName('svgEditor'));
+            const svg = d3.select(this.$el).select('svg');
+            console.log(svg);
 
             svg.selectAll('*')
             .remove();
