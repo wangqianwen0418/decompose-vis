@@ -49,8 +49,12 @@
     font-family: var(--font-4);
 }
 .iconGroup{
-    float: right;
-    margin: 10px 15px;
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    margin-right:20px;
+    -ms-transform: translate(0%, -50%);
+    transform: translate(0%, -50%);
     font-size: 30px;
 }
 .icon{

@@ -94,8 +94,8 @@
         padding:0px;
     }
     #mark_list li{
-        border:3px solid var(--color-blue);
-        margin:5px 3px;
+        border:3px solid var(--color-blue-gray);
+        margin: 0.5vh 0.5vw 0.5vh 1vw;
     }
     #mark_list li:before{
         content:' ◦ ';
@@ -113,9 +113,9 @@
         padding-left: 6px;
     }
     #channel_list li{
-        background-color: var(--color-blue);
+        background-color: var(--color-blue-gray);
         color:var(--color-white);
-        margin:2px;
+        margin:0.5vh 0.5vw ;
     }
 
     .el-icon-close{
@@ -131,7 +131,15 @@
         font-size: 18px;
     }
     .block{
-        margin-left:10px;
-        margin-bottom: 0px;
-        font-size: 20px;
+        margin:1vw;
+        color:var(--color-blue-dark);
+        font-size:20px;
+    }
+    hr {
+        background: var(--color-blue-dark);
+        width: 120%;
+        height: 0.3vh;
+        border:none;
+        margin:0px;
+        margin-left: -1vw;
     }

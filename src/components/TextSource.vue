@@ -1,32 +1,22 @@
 <template>
-    <el-tabs v-model="activeName" type="border-card">
-        <el-tab-pane label="encoding" name="first">hhhhhh</el-tab-pane>
-        <el-tab-pane label="design task" name="second">wwwwwwww</el-tab-pane>
-        <el-tab-pane label="case study" name="third">wwwwww</el-tab-pane>
-        <el-tab-pane label="agorithm" name="fourth">iilioo</el-tab-pane>
-    </el-tabs>
+    <div class="textSource">
+          here is the corresponding text description
+    </div>
 </template>
+
 <script>
-    export default {
-        data() {
-            return {
-                activeName: 'first',
-            };
-        },
-    };
 </script>
 
 <style>
-	.el-tabs {
-		height: 40vh;
-		font-family: Helvetica;
-		border-style: groove 1px;
-    margin:5px;
-    border-radius: 8px;
-	}
-  .el-tab-pane{
-    border-radius: 8px;
-  }
+.textSource{
+    height: 13vh;
+    background-color: var(--color-white);
+    color:var(--color-blue-dark);
+    margin:0vh 1vw 0vh 0.5vw;
+    border-top: 2px solid var(--color-blue-gray);
+    box-shadow: 2px 2px 1px var(--color-blue-dark);
+    text-align: center
+}
 
 
 </style>
