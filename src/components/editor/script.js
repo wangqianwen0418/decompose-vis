@@ -50,6 +50,21 @@ export default {
                 event.target.style.top = `${(this.top + event.clientY) - this.iy}px`;
             }
         },
+		ondrop(event) {
+			const id = event.dataTransfer.getData('text');
+			const item = document.getElementById(id);
+			const geo = item.getElementsByTagName('svg')[0].firstChild;
+			const x = item.getAttribute('x');
+			const y = item.getAttribute('y');
+			const width = item.getAttribute('width');
+			const svg = this.$el.getElementsByClassName('svgEditor')[0];
+			const ratio = svg.clientWidth / width;
+            console.log('svg', width, svg, svg.width, d3.select(svg).attr('width'));
+			d3.select(geo)
+				.attr('transform', `translate(${x}, ${y}), scale(${ratio})`);
+			svg.appendChild(geo);
+			item.remove();
+		},
         ...mapActions({
             editItem: EDIT_ITEM,
         }),
@@ -64,7 +79,9 @@ export default {
         },
         selectedItem(val) {
             // console.info(val.attachedEles);
-            const svg = d3.select('#svgEditor');
+            console.log(this.$el.getElementsByClassName('svgEditor'));
+            const svg = d3.select(this.$el).select('svg');
+            console.log(svg);
 
             svg.selectAll('*')
             .remove();

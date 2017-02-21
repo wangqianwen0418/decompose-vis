@@ -7,7 +7,7 @@ export default function color_space_divide(data, options = {}) {
     const Int = (d) => Math.ceil((d - Number.EPSILON) * n);
     const order = options.dimension_order || [0, 1, 2];
     const threshold_dimension =
-        options.main_part_proportion || [0.95, 0.95, 0.9];
+        options.main_part_proportion || [0.90, 0.95, 0.99];
     const total_len = data.length;
     const min_space_size = 0.001 * total_len;
     let tag_num = 0;

@@ -375,9 +375,6 @@ export default {
 			const realWidth = canvas.parentNode.clientWidth;
 			const realHeight = canvas.parentNode.clientHeight;
 			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight);
-			d3.select(svg)
-				.attr('width', img.width / zoom_ratio)
-				.attr('height', img.height / zoom_ratio);
 			ctx.drawImage(img, 0, 0);
 			preprocessing(canvas);
 			//svg.attr('width', img.width / zoom_ratio)

@@ -13424,7 +13424,7 @@
     border-bottom: 0px solid var(--color-blue-gray);
     padding: 0;
     position: relative;
-    margin: 0 0 15px;
+    margin: 0 0 0px;
     /*border-radius:6px 6px 0px 0px;*/
     /*color:var(--color-3);*/
     background-color: var(--color-blue-gray);
@@ -13540,7 +13540,7 @@
     /*box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.12), 0px 0px 6px 0px rgba(0,0,0,0.04);*/
 }
 .el-tabs--border-card>.el-tabs__content {
-    padding: 15px;
+    padding: 0px;
 }
 /*.el-tabs--border-card>.el-tabs__header {
     background-color: var(--color-gray-drak);

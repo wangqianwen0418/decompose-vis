@@ -1,5 +1,12 @@
 export function decompose(data, width, height, gradient = [0.03, 0.03, 0.02]) {
-	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-3, -3], [-3, 3], [3, -3], [3, 3]];
+	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1],
+		[-1, -1], [-1, 1], [1, -1], [1, 1],
+		[3, 0], [-3, 0], [0, 3], [0, -3],
+		//[-4, 2], [4, -2], [-2, -4], [2, 4],
+		//[-4, 0], [4, 0], [0, -4], [0, 4],
+		//[-7, 0], [7, 0], [0, -7], [0, 7],
+		//[-10, 0], [10, 0], [0, -10], [0, 10],
+		];
 	const nth = new Uint32Array(width * height);
 	const Queue = new Array(width * height >> 3);
 	let current_num = 0;
@@ -44,7 +51,7 @@ export function decompose(data, width, height, gradient = [0.03, 0.03, 0.02]) {
 			}
 			const n = tail + 1;
 
-            if (n >= 3) {
+            if (n >= 1) {
 				const points = new Int16Array(n * 2);
 				for (let i = 0; i <= tail; ++i) {
 					points[(i << 1)] = Queue[i][0];
