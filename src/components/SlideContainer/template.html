@@ -1,0 +1,18 @@
+<div id="slides">
+    <div class="container" :style="{width:calculatedWidth+'px'}">
+        <ul>
+            <li>
+                <draggable :list="items"
+                    @end="endDrag"
+                >
+                    <slide v-for="(item, index) in items" :item="item" :index="index+1" :key="item.content" />
+                </draggable>
+            </li>
+            <li>
+                <div class="newclip bg-purple">
+                    <i class="el-icon-plus" v-on:click="addItem()"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
