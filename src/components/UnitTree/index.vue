@@ -5,6 +5,9 @@
                     {{block.name}}
                 </button>
         </draggable>-->
+        <div class="tittle">Tree of Visual Units
+        <hr/>
+        </div>
         <svg id='bTree' :width="width" :height="height"></svg>
     </div>
 </template>
@@ -41,6 +44,23 @@ button:focus {
     margin: 5px 10px;
     height: 100%;
     width: 100%;
+    position:absolute;
+    top:0px;
+    left:1vw;
+}
+.tittle{
+    float:left;
+    margin:1vw;
+    color:var(--color-blue-dark);
+    font-size:20px;
+}
+hr {
+     background: var(--color-blue-dark);
+     width: 120%;
+     height: 0.3vh;
+     border:none;
+     margin:0px;
+     margin-left: -1vw;
 }
 
 </style>

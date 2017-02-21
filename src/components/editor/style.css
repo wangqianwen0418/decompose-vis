@@ -19,7 +19,7 @@ textarea{
 .editor {
     /*border-radius: 6px;*/
     /*width:57vw;*/
-    height: 60vh;
+    height: 55vh;
     /*border: 0.4vw solid var(--color-2);*/
     border:none;
     background-color:var(--color-white);
@@ -31,9 +31,16 @@ textarea:active,textarea:focus {
     outline: none;
 }
 textarea{
-    position: float;
-    margin:5px;
-    height:10vh;
+    /*position: float;*/
+    margin:2px;
+    height:5vh;
+    width:95%;
+    border-radius: 5px;
+    border:1px solid var(--color-gray);
+}
+.el-select{
+    width:95%;
+    margin:2px;
 }
 .editPanel{
     border-radius:4px;
@@ -41,6 +48,7 @@ textarea{
     width:15vw;
     background-color: var(--color-blue-gray);
     box-shadow: 1px 1px 0.5px var(--color-gray);
+    z-index:1;
 }
 .svgEditor {
     width: 100%;
