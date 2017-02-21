@@ -1,14 +1,23 @@
 <template>
-    <el-tabs v-model="activeName" type="border-card" @tab-click="onTabClick">
+
+	<div class="figure-source">
+		<div class="figure-tabs_header">
+			<div v-for="item in blocks" :class='figure_tabs_class(item)' @click='onTabClick(item)'>
+				{{item.name}}
+			</div>
+		</div>
+		<canvas class="figure-main-view"
+		@mouseenter="onMouseenter" @mouseout="onMouseout" @mousemove="onMousemove"
+		@click.prevent="onClick" @contextmenu.prevent="onRightClick"
+		>
+		</canvas>
+	</div>
+	<!--
+    <el-tabs v-model="activeBlock" type="border-card" @tab-click="onTabClick">
         <el-tab-pane v-for="(item, index) in color_spaces.slice(0, 14)" :label="index.toString()" :name="index.toString()" :tag="item.index">
 			<span slot="label" :style="item.style">{{index.toString()}}</span>
         </el-tab-pane>
-        <div class="vis-figure">
-			<canvas width="1000" height="500"
-			@mouseenter="onMouseenter" @mouseout="onMouseout" @mousemove="onMousemove"
-			@click.prevent="onClick" @contextmenu.prevent="onRightClick"
-			>
-			</canvas>
+		!-->
 			<!--
             <el-row>
                 <el-col :span="3" v-for="item in color_spaces">
@@ -21,8 +30,9 @@
                 </el-col>
             </el-row>
 			!-->
-        </div>
+		<!--
     </el-tabs>
+	!-->
 </template>
 <script>
 import * as color from "../../utils/color.js";
@@ -34,48 +44,82 @@ import { random_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
 import * as d3 from "d3";
 
-let pixelgroup, groups, maxtimestamp, currenttime, lastgroup, tags;
-let initalData, transparentData, color_spaces = [];
-let zoom_ratio, svg, imgWidth, imgHeight;
-
-let is_roping = false;
-let rope = [];
+let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
+let initalData, currentData, color_spaces = [];
+let zoom_ratio, bgtag;
 
 export default {
     data() {
+		const blocks = ['overview', 'river', 'line', 'add'].map(d => ({
+				name: d,
+				selectedItems: [],
+			}));
 		return {
-            activeName: '1',
-			color_spaces
+			blocks,
+			activeBlock: blocks[0]
 		};
     },
 	props: ['src', 'width', 'height'],
-	watch: {
-		color_spaces() {
-
-		}
+	computed: {
 	},
 	methods: {
-		/*
-		ondrop(event) {
-			const id = event.dataTransfer.getData('text');
-			const item = document.getElementById(id);
-			const geo = item.getElementsByTagName('svg')[0].firstChild;
-			const x = item.getAttribute('x');
-			const y = item.getAttribute('y');
-			const width = item.getAttribute('width');
-			const svg = this.$el.getElementsByClassName('svg-stage')[0];
-			const ratio = svg.width / width;
-			d3.select(geo)
-				.attr('transform', `translate(${x}, ${y})`)
-				.attr('transform', `scale(${ratio})`);
-			svg.appendChild(geo);
-			item.remove();
-		},*/
+		figure_tabs_class(item, activeBlock) {
+			return {
+				"figure-tabs_item": true, 
+				"active": item == this.activeBlock
+			};
+		},
+		canvasRender(event) {
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const width = canvas.width;
+			const height = canvas.height;
+
+			const data = currentData.data;
+			if (this.activeBlock.name === 'overview') {
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 3] = 255;
+				}
+				ctx.putImageData(currentData, 0, 0);
+				return;
+			} else {
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 3] = 30;
+				}
+			}
+
+			for (const group of groups) {
+				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
+					const points = group.points;
+					for (let i = 0; i < points.length; i += 2) {
+						currentData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
+						if (points[i + 1] > 0)
+							currentData.data[((points[i + 1] * width - width + points[i]) << 2) + 3] = 255;
+						if (points[i + 1] + 1 < height)
+							currentData.data[((points[i + 1] * width + width + points[i]) << 2) + 3] = 255;
+						if (points[i] > 0)
+							currentData.data[((points[i + 1] * width + points[i] - 1) << 2) + 3] = 255;
+						if (points[i] + 1 < width)
+							currentData.data[((points[i + 1] * width + points[i] + 1) << 2) + 3] = 255;
+					}
+				}
+			}
+			ctx.putImageData(currentData, 0, 0);
+		},
 		onRightClick(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
 			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			let group0 = ngroup[y * canvas.width + x];
+			if (group0 != null) {
+				group0 = findGroup(group0, currenttime);
+				const i = this.activeBlock.selectedItems.indexOf(group0);
+				if (i != -1) {
+					this.activeBlock.selectedItems.splice(i, 1);
+					this.canvasRender(event);
+				}
+			}
 		},
 		onClick(event) {
 			const start_time = new Date();
@@ -83,8 +127,21 @@ export default {
 			const ctx = canvas.getContext('2d');
 			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
-
-			if (event.shiftKey && !event.ctrlKey && !event.altKey) {
+			if (tags[y * canvas.width + x] === bgtag) {
+				return;
+			}
+			console.log(event, event.shiftKey, event.ctrlKey, event.altKey);
+			
+			if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
+				let group0 = ngroup[y * canvas.width + x];
+				if (group0 != null) {
+					group0 = findGroup(group0, currenttime);
+					this.activeBlock.selectedItems.push(group0);
+					this.canvasRender(event);
+				}
+			}
+			else if (event.shiftKey && !event.ctrlKey && !event.altKey) {
+				/*
 				if (!is_roping) {
 					is_roping = true;
 					rope = [];
@@ -93,10 +150,21 @@ export default {
 				} else {
 					rope.push([x, y]);
 				}
-			} else if (event.ctrlKey) {
-
-			} else if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
-				let group0 = pixelgroup[y * canvas.width + x];
+				*/
+				let group0 = ngroup[y * canvas.width + x];
+				if (group0 != null) {
+					group0 = findGroup(group0, currenttime);
+					this.activeBlock.selectedItems.push(group0);
+					for (const group of groups) {
+						if (group.tag === group0.tag && group.points.length > 50) {
+							this.activeBlock.selectedItems.push(group);
+						}
+					}
+					this.canvasRender(event);
+				}
+			} else if (event.altKey && !event.shiftKey && !event.ctrlKey) {
+				console.log('convert to svg');
+				let group0 = ngroup[y * canvas.width + x];
 				const top = [], btm = [];
 				const contour = [];
 
@@ -113,9 +181,9 @@ export default {
 								const x = Math.floor(points[i] / zoom_ratio);
 								const y = points[i + 1] / zoom_ratio;
 								n += 1;
-								r += transparentData.data[((points[i + 1] * width + points[i]) << 2) + 0];
-								g += transparentData.data[((points[i + 1] * width + points[i]) << 2) + 1];
-								b += transparentData.data[((points[i + 1] * width + points[i]) << 2) + 2];
+								r += currentData.data[((points[i + 1] * width + points[i]) << 2) + 0];
+								g += currentData.data[((points[i + 1] * width + points[i]) << 2) + 1];
+								b += currentData.data[((points[i + 1] * width + points[i]) << 2) + 2];
 								if (!btm[x]) {
 									btm[x] = y;
 								} else if (y > btm[x]) {
@@ -198,47 +266,28 @@ export default {
 			const ctx = canvas.getContext('2d');
 			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
-			console.log(x, y);
-			console.log(zoom_ratio, event);
 			if (false) {
 				ctx.beginPath();
 				ctx.strokeStyle = "red";
 				ctx.arc(x, y, 100, 0, Math.PI * 2, true); 
 				ctx.stroke();
 			}
+			if (tags[y * canvas.width + x] === bgtag) {
+				return;
+			}
 			// const k = y * canvas.width + x << 2;
 			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
 			// console.info(hsl);
 			// console.info(x, y, event);
 
-			let group0 = pixelgroup[y * canvas.width + x];
+			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-
-				if (group0 === lastgroup) {
-					return;
-				}
-				const width = canvas.width;
-				const height = canvas.height;
-
-				for (const group of groups) {
-					if (findGroup(group, currenttime) === group0) {
-						const points = group.points;
-						for (let i = 0; i < points.length; i += 2) {
-							transparentData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
-						}
-					} else if (findGroup(group, currenttime) === lastgroup) {
-						const points = group.points;
-						for (let i = 0; i < points.length; i += 2) {
-							transparentData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 30;
-						}
-					}
-				}
-				lastgroup = group0;
-
-				ctx.putImageData(transparentData, 0, 0);
+				this.activeBlock.selectedItems.push(group0);
+				this.canvasRender(event);
+				this.activeBlock.selectedItems.pop();
 			}
-
+/*
 			if (is_roping) {
 				if (event.shiftKey) {
 					rope[rope.length - 1][0] = x;
@@ -256,22 +305,26 @@ export default {
 					// roping end here
 				}
 			}
+			*/
 
 			console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onMouseenter(event) {
+			/*
 			console.info("mouseenter");
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
 			const width = canvas.width;
 			const height = canvas.height;
-			const data = transparentData.data;
+			const data = currentData.data;
 			for (let i = 0; i < width * height; ++i) {
 				data[(i << 2) + 3] = 30;
 			}
-			ctx.putImageData(transparentData, 0, 0);
+			ctx.putImageData(currentData, 0, 0);
+			*/
 		},
 		onMouseout(event) {
+			/*
 			console.info("mouseout");
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
@@ -279,30 +332,15 @@ export default {
 			ctx.putImageData(initalData, 0, 0);
 			const width = canvas.width;
 			const height = canvas.height;
-			const data = transparentData.data;
+			const data = currentData.data;
 			for (let i = 0; i < width * height; ++i) {
 				data[(i << 2) + 3] = 30;
 			}
+			*/
 		},
-		onTabClick(event) {
-			console.log(event, event.target);
-			const tag = ~~event.$el.getAttribute("tag");
-			console.log(event,tag);
-			const canvas = this.$el.getElementsByTagName('canvas')[0];
-			const ctx = canvas.getContext('2d');
-			const width = canvas.width;
-			const height = canvas.height;
-			const data = transparentData.data;
-			let count = 0;
-			for (let i = 0; i < width * height; ++i) if (tags[i] === tag) {
-				data[(i << 2) + 3] = 255;
-				++count;
-
-			} else {
-				data[(i << 2) + 3] = 50;
-			}
-			console.info(tag, count);
-			ctx.putImageData(transparentData, 0, 0);
+		onTabClick(item) {
+			this.activeBlock = item;
+			this.canvasRender();
 		},
 		onButtonMouseenter(event) {
 			const tag = ~~event.target.getAttribute("tag");
@@ -310,7 +348,7 @@ export default {
 			const ctx = canvas.getContext('2d');
 			const width = canvas.width;
 			const height = canvas.height;
-			const data = transparentData.data;
+			const data = currentData.data;
 			let count = 0;
 			for (let i = 0; i < width * height; ++i) if (tags[i] === tag) {
 				data[(i << 2) + 3] = 255;
@@ -320,7 +358,7 @@ export default {
 				data[(i << 2) + 3] = 50;
 			}
 			console.info(tag, count);
-			ctx.putImageData(transparentData, 0, 0);
+			ctx.putImageData(currentData, 0, 0);
 		},
 		onButtonMouseout(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
@@ -329,7 +367,7 @@ export default {
 			ctx.putImageData(initalData, 0, 0);
 			const width = canvas.width;
 			const height = canvas.height;
-			const data = transparentData.data;
+			const data = currentData.data;
 			for (let i = 0; i < width * height; ++i) {
 				data[(i << 2) + 3] = 30;
 			}
@@ -343,14 +381,11 @@ export default {
 		const img = new Image();
 		img.src = this.src;
 		img.onload = function() {
-			imgHeight = img.height;
-			imgWidth = img.width;
 			canvas.width = img.width;
 			canvas.height = img.height;
 			const realWidth = canvas.parentNode.clientWidth;
 			const realHeight = canvas.parentNode.clientHeight;
 			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight);
-			console.log('canvas width', zoom_ratio, canvas.width, canvas.clientWidth, canvas);
 			ctx.drawImage(img, 0, 0);
 			preprocessing(canvas);
 			//svg.attr('width', img.width / zoom_ratio)
@@ -359,10 +394,48 @@ export default {
 		interactionInit();
 	}
 };
+/*
+function figurePanelRender(svg) {
+	const width = svg.clientWidth;
+	const height = svg.clientHeight;
 
-function canvasRender() {
+	svg = d3.select(svg);
+	svg.attr('width', width)
+		.attr('height', height);
 
+	svg.append('rect')
+		.attr('x', 0)
+		.attr('y', 0)
+		.attr('width', width)
+		.attr('height', height)
+		.style('fill', 'var(--color-blue)')
+		.style('stroke', 'none');
+
+	var g = svg.selectAll('.block')
+		.data(blocks)
+		.enter()
+		.append('g')
+		.attr('class', 'block')
+		.attr('transform', function(d, i){
+			return `translate(${i * 100}, 0)`;
+		});
+
+	var fontSize = "15px";
+		
+	g.append('rect')
+		.attr('width', 100)
+		.attr('height', height)
+		.style('fill', 'var(--color-blue)')
+		.style('stroke', 'var(--color-white)')
+		.style('stroke-width', 1);
+	
+	g.append('text')
+		.attr('transform', 'translate(20, 30)')
+		.style('font-size', '18px')
+		.style('fill', 'var(--color-white)')
+		.text(function(d){ return d; });
 }
+*/
 
 function preprocessing(canvas) {
 	const start_time = new Date();
@@ -426,32 +499,35 @@ function preprocessing(canvas) {
 		});
 	}
 	color_spaces.sort((a, b) => b.count - a.count);
-
-	console.info(color_spaces);
+	bgtag = color_spaces[0].index;
+	for (let i = 0; i < height * width; ++i) {
+		if (tags[i] === bgtag) {
+			hsl_data[i * 3] = -1;
+		}
+	}
 
 	console.info(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const decomposed = decompose(hsl_data, width, height);
 	console.info(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
-	// const elements = compose(decomposed.elements, width, height);
-	const elements = decomposed.elements;
+	const elements = compose(decomposed.elements, width, height);
 	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
-	pixelgroup = new Array(width * height);
-	console.log(elements);
-
+	ngroup = new Array(width * height);
 	groups = elements;
 	for (const element of elements) {
 		const points = element.points;
 		for (let i = 0; i < points.length; i += 2) {
-			pixelgroup[points[i] + points[i + 1] * width] = element;
+			ngroup[points[i] + points[i + 1] * width] = element;
 		}
 		if (element.timestamp > maxtimestamp) {
 			maxtimestamp = element.timestamp;
 		}
+		element.tag = color2tag(element.color);
 	}
+	console.log(elements);
 
 	currenttime = maxtimestamp;
 	ctx.putImageData(imgData, 0, 0);
-	transparentData = ctx.getImageData(0, 0, width, height);
+	currentData = ctx.getImageData(0, 0, width, height);
 	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 }
 
@@ -480,8 +556,43 @@ function ondragend() {
         background-color:var(--color-3);
     }*/
     /*version 2*/
+
+
+	.figure-tabs_header {
+		border-bottom: 0px solid var(--color-blue-gray);
+		padding: 0;
+		position: relative;
+		margin: 0 0 15px;
+		width: 100%;
+		height: 4vh;
+		/* border-radius: 6px 6px 0px 0px; */
+		/* color: var(--color-3); */
+		background-color: var(--color-blue-gray);
+		float: inherit;
+	}
+
+	.figure-tabs_item {   
+		padding: 0 14px;
+		height: 4vh;
+		/* box-sizing: border-box; */
+		line-height: 42px;
+		float: left;
+		list-style: none;
+		font-size: 18px;
+		font-family: var(--font-1);
+		/* color: rgb(131, 145, 165); */    
+		background-color: var(--color-blue-gray);
+		color: var(--color-white);
+		/* margin-bottom: -1px; */
+		position: relative;
+	}
+
+	.figure-tabs_item.active {
+		color: var(--color-gray-dark);
+		background-color: var(--color-white);
+	}
     
-    .el-tabs {
+    .figure-source {
         height: 43vh;
         /*font-family: 'Source Sans Pro', sans-serif;;*/
         margin: 1vh 0.5vw 1vh 1vw;
@@ -494,23 +605,9 @@ function ondragend() {
         color: var(--color-3);
         box-shadow: 2px 2px 1px var(--color-blue-dark);
     }
-	canvas {
-		position: relative;
-		left: 0px;
-		top: 0px;
+	.figure-main-view {
 		max-width: 100%;
 		min-width: 100%;
-		max-height: 100%;
+		float: inherit;
 	}
-	.vis-figure {
-		position: relative;
-	}
-    .circle-button {
-		font-size: 5px;
-		height: 30px;
-        opacity: 0.6;
-    }
-    .circle-button:hover {
-        opacity: 1.0;
-    }
 </style>
