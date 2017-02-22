@@ -26,7 +26,7 @@
         /*box-shadow: 2px 2px 1px var(--color-gray-dark);*/
         background-color:var(--color-white);
         color: var(--color-3);
-        box-shadow: 2px 2px 1px var(--color-blue-dark);
+        box-shadow: 2px 2px 1px var(--color-gray);
 	}
 
 
