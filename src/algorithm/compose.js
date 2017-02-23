@@ -101,6 +101,43 @@ const ordered_elements = elements.sort((a, b) => {
 });
 */
 
+
+
+function findNearestP(elements, gradient, maxDistance = 20) {
+    const tick_num = gradient.map(d => Math.ceil(1.0 / d));
+    const maxDistanceSqr = maxDistance * maxDistance;
+    const f = (d) => Math.floor(d * 10);
+    const colorHash = (color) => (
+        Math.floor(color[0] / gradient[0]) * tick_num[1] * tick_num[2] +
+        Math.floor(color[1] / gradient[1]) * tick_num[2] +
+        f(color[2])
+    );
+    tick_num[2] = 10;
+    const n = tick_num[0] * tick_num[1] * tick_num[2];
+    const last = new Array(n);
+    const relations = new Array();
+    for (const element of elements) {
+        const hashcode = colorHash(element.color);
+        if (!last[hashcode]) {
+            last[hashcode] = [];
+        }
+        last[hashcode].push(element);
+    }
+    for (let k = 0; k < n; ++k) if (last[k] != null && last[k].length > 1) {
+        const el = last[k];
+        for (let i = 0; i < el.length; ++i) {
+            const a = el[i];
+            for (let j = i + 1; j < el.length; ++j) {
+                const b = el[j];
+                if (b.centroid[0] - a.centroid[0] > maxDistance) break;
+                if (distanceSqr(a, b) > maxDistanceSqr) continue;
+                relations.push([a, b]);
+            }
+        }
+    }
+    return relations;
+}
+
 export function findGroup(element, currentTime = Number.MAX_VALUE) {
     while (element.father && element.timestamp <= currentTime) {
         element = element.father;
