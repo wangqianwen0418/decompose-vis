@@ -1,6 +1,7 @@
-export function decompose(data, width, height, gradient = [0.03, 0.03, 0.02]) {
+export function decompose(data, width, height, gradient = [0.03, 0.03, 0.03]) {
 	const directions = [[-1, 0], [1, 0], [0, -1], [0, 1],
 		[-1, -1], [-1, 1], [1, -1], [1, 1],
+		[-2, -2], [2, 2], [2, -2], [-2, 2],
 		[3, 0], [-3, 0], [0, 3], [0, -3],
 		//[-4, 2], [4, -2], [-2, -4], [2, 4],
 		//[-4, 0], [4, 0], [0, -4], [0, 4],
