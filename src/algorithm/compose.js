@@ -52,7 +52,7 @@ function findNearest(elements, gradient, maxDistance = 75) {
     return relations;
 }
 
-function findNearestNaive(elements, gradient, maxDistance = 30) {
+function findNearestNaive(elements, gradient, maxDistance = 20) {
     const tick_num = gradient.map(d => Math.ceil(1.0 / d));
     const maxDistanceSqr = maxDistance * maxDistance;
     const f = (d) => Math.floor(d * 10);

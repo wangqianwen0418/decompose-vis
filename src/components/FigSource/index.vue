@@ -181,12 +181,18 @@ export default {
 			const data = currentData.data;
 			if (this.activeBlock.name === 'overview') {
 				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 0] = initalData.data[(i << 2) + 0];
+					data[(i << 2) + 1] = initalData.data[(i << 2) + 1];
+					data[(i << 2) + 2] = initalData.data[(i << 2) + 2];
 					data[(i << 2) + 3] = 255;
 				}
 				ctx.putImageData(currentData, 0, 0);
 				return;
 			} else {
 				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 0] = initalData.data[(i << 2) + 0];
+					data[(i << 2) + 1] = initalData.data[(i << 2) + 1];
+					data[(i << 2) + 2] = initalData.data[(i << 2) + 2];
 					data[(i << 2) + 3] = 30;
 				}
 			}
@@ -195,18 +201,57 @@ export default {
 				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
 					const points = group.points;
 					for (let i = 0; i < points.length; i += 2) {
-						currentData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
+						data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
 						if (points[i + 1] > 0)
-							currentData.data[((points[i + 1] * width - width + points[i]) << 2) + 3] = 255;
+							data[((points[i + 1] * width - width + points[i]) << 2) + 3] = 255;
 						if (points[i + 1] + 1 < height)
-							currentData.data[((points[i + 1] * width + width + points[i]) << 2) + 3] = 255;
+							data[((points[i + 1] * width + width + points[i]) << 2) + 3] = 255;
 						if (points[i] > 0)
-							currentData.data[((points[i + 1] * width + points[i] - 1) << 2) + 3] = 255;
+							data[((points[i + 1] * width + points[i] - 1) << 2) + 3] = 255;
 						if (points[i] + 1 < width)
-							currentData.data[((points[i + 1] * width + points[i] + 1) << 2) + 3] = 255;
+							data[((points[i + 1] * width + points[i] + 1) << 2) + 3] = 255;
 					}
 				}
 			}
+			
+			// then make it smooth
+			for (let i = 0; i < height; ++i) {
+				let last = -width;
+				for (let j = 0; j < width; ++j) {
+					if (data[((i * width + j) << 2) + 3] === 255) {
+						if (data[((i * width + j - 1) << 2) + 3] !== 255 && j - last < 13) {
+							const g = ngroup[i * width + last];
+							if (g !== null)
+							for (let k = last + 1; k < j; ++k) {
+								data[((i * width + k) << 2) + 0] = g.r;
+								data[((i * width + k) << 2) + 1] = g.g;
+								data[((i * width + k) << 2) + 2] = g.b;
+								data[((i * width + k) << 2) + 3] = 255;
+							}
+						}
+						last = j;
+					}
+				}
+			}
+			for (let j = 0; j < width; ++j) {
+				let last = -height;
+				for (let i = 0; i < height; ++i) {
+					if (data[((i * width + j) << 2) + 3] === 255) {
+						if (data[((i * width + j - width) << 2) + 3] !== 255 && i - last < 13) {
+							const g = ngroup[last * width + j];
+							if (g !== null)
+							for (let k = last + 1; k < i; ++k) {
+								data[((k * width + j) << 2) + 0] = g.r;
+								data[((k * width + j) << 2) + 1] = g.g;
+								data[((k * width + j) << 2) + 2] = g.b;
+								data[((k * width + j) << 2) + 3] = 255;
+							}
+						}
+						last = i;
+					}
+				}
+			}
+
 			ctx.putImageData(currentData, 0, 0);
 		},
 		onRightClick(event) {
@@ -625,6 +670,12 @@ function preprocessing(canvas) {
 	const decomposed = decompose(hsl_data, width, height);
 	console.info(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const elements = compose(decomposed.elements, width, height);
+	elements.forEach(function(d) {
+		d.rgb = color.hslToRgb(d.color[0], d.color[1], d.color[2]);
+		d.r = Math.floor(d.rgb[0]);
+		d.g = Math.floor(d.rgb[1]);
+		d.b = Math.floor(d.rgb[2]);
+	});
 	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	ngroup = new Array(width * height);
 	groups = elements;
