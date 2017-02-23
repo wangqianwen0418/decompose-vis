@@ -51,18 +51,13 @@
                 showForm: false,
             };
         },
-        methods: {
-            showForm() {
-                this.showForm = !this.showForm;
-            },
-        },
     };
 
 </script>
 
 <style scoped>
     /*.headline{
-    height: 10vh;
+     height: 10vh;
     border-radius: 6px;
     font-size:40px;
     color:var(--color-0);
