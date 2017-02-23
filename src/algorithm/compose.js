@@ -52,32 +52,10 @@ function findNearest(elements, gradient, maxDistance = 75) {
     return relations;
 }
 
-function findNearestNaive(elements, gradient, maxDistance = 50) {
+function findNearestNaive(elements, gradient, maxDistance = 20) {
     const tick_num = gradient.map(d => Math.ceil(1.0 / d));
     const maxDistanceSqr = maxDistance * maxDistance;
-    const f = (d) => {
-        if (d >= 0 && d < 0.2) {
-            return 0;
-        } else if (d >= 0.2 && d < 0.4) {
-            return 1;
-        } else if (d >= 0.4 && d < 0.55) {
-            return 2;
-        } else if (d >= 0.55 && d < 0.72) {
-            return 3;
-        } else if (d >= 0.72 && d < 0.81) {
-            return 3;
-        } else if (d >= 0.81 && d < 0.85) {
-            return 5;
-        } else if (d >= 0.85 && d < 0.88) {
-            return 6;
-        } else if (d >= 0.88 && d < 0.92) {
-            return 7;
-        } else if (d >= 0.92 && d < 0.96) {
-            return 8;
-        } else if (d >= 0.96) {
-            return 9;
-        }
-    };
+    const f = (d) => Math.floor(d * 10);
     const colorHash = (color) => (
         Math.floor(color[0] / gradient[0]) * tick_num[1] * tick_num[2] +
         Math.floor(color[1] / gradient[1]) * tick_num[2] +
@@ -130,7 +108,7 @@ export function findGroup(element, currentTime = Number.MAX_VALUE) {
     return element;
 }
 
-export function compose(elements, width, height, gradient = [0.03, 0.03, 0.19]) {
+export function compose(elements, width, height, gradient = [0.01, 0.02, 0.2]) {
     const relations = Array.concat(
         findNearestNaive(elements.sort((a, b) => a.centroid[0] - b.centroid[0]), gradient)
     ).map(d => ({

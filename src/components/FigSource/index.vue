@@ -1,8 +1,550 @@
-<template src="./template.html"></template>
-<script src="./script.js"></script>
+<template>
+
+	<div class="figure-source">
+		<div class="figure-tabs_header">
+			<div v-for="item in blocks" :class='figure_tabs_class(item)' @click='onTabClick(item)'>
+				{{item.name}}
+			</div>
+		</div>
+		<canvas class="figure-main-view"
+		@mouseenter="onMouseenter" @mouseout="onMouseout" @mousemove="onMousemove"
+		@click.prevent="onClick" @contextmenu.prevent="onRightClick"
+		>
+		</canvas>
+	</div>
+	<!--
+    <el-tabs v-model="activeBlock" type="border-card" @tab-click="onTabClick">
+        <el-tab-pane v-for="(item, index) in color_spaces.slice(0, 14)" :label="index.toString()" :name="index.toString()" :tag="item.index">
+			<span slot="label" :style="item.style">{{index.toString()}}</span>
+        </el-tab-pane>
+		!-->
+			<!--
+            <el-row>
+                <el-col :span="3" v-for="item in color_spaces">
+                    <div class="circle-button"
+                        @mouseenter="onButtonMouseenter"
+                        @mouseout="onButtonMouseout"
+                        :tag=item.index :style=item.style>
+                        {{item.text}}
+                    </div>
+                </el-col>
+            </el-row>
+			!-->
+		<!--
+    </el-tabs>
+	!-->
+</template>
+<script>
+import * as color from "../../utils/color.js";
+import { offset } from "../../utils/common-utils.js";
+import { decompose } from "../../algorithm/decompose.js";
+import { compose, findGroup } from "../../algorithm/compose.js";
+import color_space_divide from "../../algorithm/color-space-divide.js";
+import { random_sampling_seq } from "../../algorithm/sampling.js";
+import { interactionInit } from "../../interaction/interaction.js"
+import * as d3 from "d3";
+
+let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
+let initalData, currentData, color_spaces = [];
+let zoom_ratio, bgtag;
+
+export default {
+    data() {
+		const blocks = ['overview', 'river', 'line', 'add'].map(d => ({
+				name: d,
+				selectedItems: [],
+			}));
+		return {
+			blocks,
+			activeBlock: blocks[0]
+		};
+    },
+	props: ['src', 'width', 'height'],
+	computed: {
+	},
+	methods: {
+		figure_tabs_class(item, activeBlock) {
+			return {
+				"figure-tabs_item": true, 
+				"active": item == this.activeBlock
+			};
+		},
+		canvasRender(event) {
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const width = canvas.width;
+			const height = canvas.height;
+
+			const data = currentData.data;
+			if (this.activeBlock.name === 'overview') {
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 3] = 255;
+				}
+				ctx.putImageData(currentData, 0, 0);
+				return;
+			} else {
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 3] = 30;
+				}
+			}
+
+			for (const group of groups) {
+				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
+					const points = group.points;
+					for (let i = 0; i < points.length; i += 2) {
+						currentData.data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
+						if (points[i + 1] > 0)
+							currentData.data[((points[i + 1] * width - width + points[i]) << 2) + 3] = 255;
+						if (points[i + 1] + 1 < height)
+							currentData.data[((points[i + 1] * width + width + points[i]) << 2) + 3] = 255;
+						if (points[i] > 0)
+							currentData.data[((points[i + 1] * width + points[i] - 1) << 2) + 3] = 255;
+						if (points[i] + 1 < width)
+							currentData.data[((points[i + 1] * width + points[i] + 1) << 2) + 3] = 255;
+					}
+				}
+			}
+			ctx.putImageData(currentData, 0, 0);
+		},
+		onRightClick(event) {
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			let group0 = ngroup[y * canvas.width + x];
+			if (group0 != null) {
+				group0 = findGroup(group0, currenttime);
+				const i = this.activeBlock.selectedItems.indexOf(group0);
+				if (i != -1) {
+					this.activeBlock.selectedItems.splice(i, 1);
+					this.canvasRender(event);
+				}
+			}
+		},
+		onClick(event) {
+			const start_time = new Date();
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			if (tags[y * canvas.width + x] === bgtag) {
+				return;
+			}
+			console.log(event, event.shiftKey, event.ctrlKey, event.altKey);
+			
+			if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
+				let group0 = ngroup[y * canvas.width + x];
+				if (group0 != null) {
+					group0 = findGroup(group0, currenttime);
+					this.activeBlock.selectedItems.push(group0);
+					this.canvasRender(event);
+				}
+			}
+			else if (event.shiftKey && !event.ctrlKey && !event.altKey) {
+				/*
+				if (!is_roping) {
+					is_roping = true;
+					rope = [];
+					rope.push([x, y]);
+					rope.push([x, y]);
+				} else {
+					rope.push([x, y]);
+				}
+				*/
+				let group0 = ngroup[y * canvas.width + x];
+				if (group0 != null) {
+					group0 = findGroup(group0, currenttime);
+					this.activeBlock.selectedItems.push(group0);
+					for (const group of groups) {
+						if (group.tag === group0.tag && group.points.length > 50) {
+							this.activeBlock.selectedItems.push(group);
+						}
+					}
+					this.canvasRender(event);
+				}
+			} else if (event.altKey && !event.shiftKey && !event.ctrlKey) {
+				console.log('convert to svg');
+				let group0 = ngroup[y * canvas.width + x];
+				const top = [], btm = [];
+				const contour = [];
+
+				if (group0 != null) {
+					group0 = findGroup(group0, currenttime);
+					const width = canvas.width;
+					const height = canvas.height;
+
+					let n = 0, r = 0, g = 0, b = 0, x0 = Number.MAX_VALUE, y0 = Number.MAX_VALUE, x1 = 0, y1 = 0;
+					for (const group of groups) {
+						if (findGroup(group, currenttime) === group0) {
+							const points = group.points;
+							for (let i = 0; i < points.length; i += 2) {
+								const x = Math.floor(points[i] / zoom_ratio);
+								const y = points[i + 1] / zoom_ratio;
+								n += 1;
+								r += currentData.data[((points[i + 1] * width + points[i]) << 2) + 0];
+								g += currentData.data[((points[i + 1] * width + points[i]) << 2) + 1];
+								b += currentData.data[((points[i + 1] * width + points[i]) << 2) + 2];
+								if (!btm[x]) {
+									btm[x] = y;
+								} else if (y > btm[x]) {
+									btm[x] = y;
+								}
+								if (!top[x]) {
+									top[x] = y;
+								} else if (y < top[x]) {
+									top[x] = y;
+								}
+								if (x < x0) {
+									x0 = x;
+								} else if (x > x1) {
+									x1 = x;
+								}
+								if (y < y0) {
+									y0 = y;
+								} else if (y > y1) {
+									y1 = y;
+								}
+							}
+						}
+					}
+					r = Math.floor(r / n);
+					g = Math.floor(g / n);
+					b = Math.floor(b / n);
+
+					for (var i = 0; i < top.length; ++i) if (top[i] !== undefined) {
+						contour.push([i, top[i]]);
+					}
+					for (var i = btm.length - 1; i >= 0; --i) if (btm[i] !== undefined) {
+						contour.push([i, btm[i]]);
+					}
+					contour.push(contour[0]);
+					const line = d3.line().curve(d3.curveCardinal.tension(0.5)).x(d => d[0] - x0).y(d => d[1] - y0);
+					const contour_sample =
+						contour.length < 100 ?
+						contour :
+						contour.filter((d, i) => i === 0 || i === (contour.length - 1) || (i % 4 === 0));
+
+					const div = d3.select(this.$el)
+						.append("div")
+						.attr("draggable", true)
+						.attr("id", "canvas-dragged-item")
+						.on("dragstart", ondragstart)
+						.on("dragend", ondragend);
+
+					const svg = div
+						.append("svg");
+
+					let left0 = -1, top0 = -1;
+
+					svg.attr("width", x1 - x0)
+						.attr("height", y1 - y0);
+
+					svg.append("path")
+						.datum(contour_sample)
+						.attr('d', line)
+						.attr("stroke-width", 2)
+						.attr("fill", `rgb(${r},${g},${b})`);
+
+					console.info(offset.x(canvas), offset.y(canvas));
+					div.attr('x', x0)
+						.attr('y', y0)
+						.attr('width', canvas.width / zoom_ratio)
+						.attr('height', canvas.height / zoom_ratio)
+						.style("z-index", 1)
+						.style("position", "fixed")
+						.style("left", `${x0 + offset.x(canvas)}px`)
+						.style("top", `${y0 + offset.y(canvas)}px`)
+						.style("opacity", 1);
+				}
+				console.info(`click time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+			}
+
+		},
+		onMousemove(event) {
+			const start_time = new Date();
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			if (false) {
+				ctx.beginPath();
+				ctx.strokeStyle = "red";
+				ctx.arc(x, y, 100, 0, Math.PI * 2, true); 
+				ctx.stroke();
+			}
+			if (tags[y * canvas.width + x] === bgtag) {
+				return;
+			}
+			// const k = y * canvas.width + x << 2;
+			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
+			// console.info(hsl);
+			// console.info(x, y, event);
+
+			let group0 = ngroup[y * canvas.width + x];
+			if (group0 != null) {
+				group0 = findGroup(group0, currenttime);
+				this.activeBlock.selectedItems.push(group0);
+				this.canvasRender(event);
+				this.activeBlock.selectedItems.pop();
+			}
+/*
+			if (is_roping) {
+				if (event.shiftKey) {
+					rope[rope.length - 1][0] = x;
+					rope[rope.length - 1][1] = y;
+					ctx.beginPath();
+					ctx.strokeStyle = "red";
+					ctx.moveTo(rope[0][0], rope[0][1]);
+					for (let i = rope.length - 1; i >= 0; --i) {
+						ctx.lineTo(rope[i][0], rope[i][1]);
+					}
+					ctx.stroke();
+					ctx.closePath();
+				} else {
+					is_roping = false;
+					// roping end here
+				}
+			}
+			*/
+
+			console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+		},
+		onMouseenter(event) {
+			/*
+			console.info("mouseenter");
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = currentData.data;
+			for (let i = 0; i < width * height; ++i) {
+				data[(i << 2) + 3] = 30;
+			}
+			ctx.putImageData(currentData, 0, 0);
+			*/
+		},
+		onMouseout(event) {
+			/*
+			console.info("mouseout");
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			lastgroup = null;
+			ctx.putImageData(initalData, 0, 0);
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = currentData.data;
+			for (let i = 0; i < width * height; ++i) {
+				data[(i << 2) + 3] = 30;
+			}
+			*/
+		},
+		onTabClick(item) {
+			this.activeBlock = item;
+			this.canvasRender();
+		},
+		onButtonMouseenter(event) {
+			const tag = ~~event.target.getAttribute("tag");
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = currentData.data;
+			let count = 0;
+			for (let i = 0; i < width * height; ++i) if (tags[i] === tag) {
+				data[(i << 2) + 3] = 255;
+				++count;
+
+			} else {
+				data[(i << 2) + 3] = 50;
+			}
+			console.info(tag, count);
+			ctx.putImageData(currentData, 0, 0);
+		},
+		onButtonMouseout(event) {
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			lastgroup = null;
+			ctx.putImageData(initalData, 0, 0);
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = currentData.data;
+			for (let i = 0; i < width * height; ++i) {
+				data[(i << 2) + 3] = 30;
+			}
+		}
+	},
+
+	mounted() {
+		const canvas = this.$el.getElementsByTagName('canvas')[0];
+		const svg = this.$el.getElementsByTagName('svg')[0];
+		const ctx = canvas.getContext('2d');
+		const img = new Image();
+		img.src = this.src;
+		img.onload = function() {
+			canvas.width = img.width;
+			canvas.height = img.height;
+			const realWidth = canvas.parentNode.clientWidth;
+			const realHeight = canvas.parentNode.clientHeight;
+			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight);
+			ctx.drawImage(img, 0, 0);
+			preprocessing(canvas);
+			//svg.attr('width', img.width / zoom_ratio)
+			//	.attr('height', img.height / zoom_ratio);
+		};
+		interactionInit();
+	}
+};
+/*
+function figurePanelRender(svg) {
+	const width = svg.clientWidth;
+	const height = svg.clientHeight;
+
+	svg = d3.select(svg);
+	svg.attr('width', width)
+		.attr('height', height);
+
+	svg.append('rect')
+		.attr('x', 0)
+		.attr('y', 0)
+		.attr('width', width)
+		.attr('height', height)
+		.style('fill', 'var(--color-blue)')
+		.style('stroke', 'none');
+
+	var g = svg.selectAll('.block')
+		.data(blocks)
+		.enter()
+		.append('g')
+		.attr('class', 'block')
+		.attr('transform', function(d, i){
+			return `translate(${i * 100}, 0)`;
+		});
+
+	var fontSize = "15px";
+		
+	g.append('rect')
+		.attr('width', 100)
+		.attr('height', height)
+		.style('fill', 'var(--color-blue)')
+		.style('stroke', 'var(--color-white)')
+		.style('stroke-width', 1);
+	
+	g.append('text')
+		.attr('transform', 'translate(20, 30)')
+		.style('font-size', '18px')
+		.style('fill', 'var(--color-white)')
+		.text(function(d){ return d; });
+}
+*/
+
+function preprocessing(canvas) {
+	const start_time = new Date();
+
+	const ctx = canvas.getContext('2d');
+	const width = canvas.width;
+	const height = canvas.height;
+
+	const imgData = ctx.getImageData(0, 0, width, height);
+	const data = imgData.data;
+	initalData = imgData;
+	const hsl_data = new Float32Array(width * height * 3);
+	console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+
+	const seq = random_sampling_seq(height * width);
+	for (let i = 0; i < height * width; ++i) {
+		let r = data[(i << 2) + 0];
+		let g = data[(i << 2) + 1];
+		let b = data[(i << 2) + 2];
+		const a = data[(i << 2) + 3];
+		if (a !== 255) {
+			r = Math.floor(r / 255 * a);
+			g = Math.floor(g / 255 * a);
+			b = Math.floor(b / 255 * a);
+			data[(i << 2) + 0] = r;
+			data[(i << 2) + 1] = g;
+			data[(i << 2) + 2] = b;
+			data[(i << 2) + 3] = 255;
+		}
+		const hsl = color.rgbToHsl(r, g, b);
+		hsl_data[i * 3 + 0] = hsl[0];
+		hsl_data[i * 3 + 1] = hsl[1];
+		hsl_data[i * 3 + 2] = hsl[2];
+	}
+	for (let i = 0; i < seq.length; ++i) {
+		const t = seq[i] * 3;
+		seq[i] = [hsl_data[t], hsl_data[t + 1], hsl_data[t + 2]];
+	}
+	const division = color_space_divide(seq);
+	const color2tag = division.color2tag;
+	console.info(division.tagcount);
+	const count = [];
+	tags = new Uint16Array(width * height);
+	for (let i = 0; i < height * width * 3; i += 3) {
+		const tag = color2tag([hsl_data[i], hsl_data[i + 1], hsl_data[i + 2]]);
+		if (!count[tag]) {
+			count[tag] = 0;
+		}
+		count[tag] += 1;
+		tags[i / 3] = tag;
+	}
+	console.info(count);
+	for (let i = 0; i < count.length; ++i) if (count[i] / (width * height) * 100 > 0.1) {
+		color_spaces.push({
+			text: `${(count[i] / (width * height) * 100).toFixed(2)}%\n
+				${i === 0 ? 'background' : division.tag2hsl(i)}`,
+			style:{ color: division.tag2rgb(i)},
+			count: count[i],
+			index: i,
+			name: i.toString(),
+		});
+	}
+	color_spaces.sort((a, b) => b.count - a.count);
+	bgtag = color_spaces[0].index;
+	for (let i = 0; i < height * width; ++i) {
+		if (tags[i] === bgtag) {
+			hsl_data[i * 3] = -1;
+		}
+	}
+
+	console.info(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	const decomposed = decompose(hsl_data, width, height);
+	console.info(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	const elements = compose(decomposed.elements, width, height);
+	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	ngroup = new Array(width * height);
+	groups = elements;
+	for (const element of elements) {
+		const points = element.points;
+		for (let i = 0; i < points.length; i += 2) {
+			ngroup[points[i] + points[i + 1] * width] = element;
+		}
+		if (element.timestamp > maxtimestamp) {
+			maxtimestamp = element.timestamp;
+		}
+		element.tag = color2tag(element.color);
+	}
+	console.log(elements);
+
+	currenttime = maxtimestamp;
+	ctx.putImageData(imgData, 0, 0);
+	currentData = ctx.getImageData(0, 0, width, height);
+	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+}
+
+function ondragstart() {
+	const event = d3.event;
+	event.dataTransfer.clearData();
+	event.dataTransfer.setData('text', event.target.id);
+}
+
+function ondragend() {
+    event.preventDefault();
+}
+
+</script>
 
 <style scoped>
-	/*.el-tabs {
+    /*.el-tabs {
 		height: 40vh;
 		font-family: 'Source Sans Pro', sans-serif;;
 		margin: 0px 3px;
@@ -13,21 +555,60 @@
     .el-tabs_header{
         background-color:var(--color-3);
     }*/
+    /*version 2*/
 
-/*version 2*/
-	.el-tabs {
-		height: 43vh;
-		/*font-family: 'Source Sans Pro', sans-serif;;*/
-		margin: 1vh 0.5vw 1vh 1vw;
-		border-radius: 0px;
-        border:none;
+
+	.figure-tabs_header {
+		border-bottom: 0px solid var(--color-blue-gray);
+		padding: 0;
+		position: relative;
+		margin: 0 0 15px;
+		width: 100%;
+		height: 4vh;
+		/* border-radius: 6px 6px 0px 0px; */
+		/* color: var(--color-3); */
+		background-color: var(--color-blue-gray);
+		float: inherit;
+	}
+
+	.figure-tabs_item {   
+		padding: 0 14px;
+		height: 4vh;
+		/* box-sizing: border-box; */
+		line-height: 42px;
+		float: left;
+		list-style: none;
+		font-size: 18px;
+		font-family: var(--font-1);
+		/* color: rgb(131, 145, 165); */    
+		background-color: var(--color-blue-gray);
+		color: var(--color-white);
+		/* margin-bottom: -1px; */
+		position: relative;
+	}
+
+	.figure-tabs_item.active {
+		color: var(--color-gray-dark);
+		background-color: var(--color-white);
+	}
+    
+    .figure-source {
+        height: 43vh;
+        /*font-family: 'Source Sans Pro', sans-serif;;*/
+        margin: 1vh 0.5vw 1vh 1vw;
+        border-radius: 0px;
+        border: none;
         /*border: 0.3px solid var(--color-gray-dark);*/
         margin: 5px 8px 5px 10px;
         /*box-shadow: 2px 2px 1px var(--color-gray-dark);*/
-        background-color:var(--color-white);
+        background-color: var(--color-white);
         color: var(--color-3);
-        box-shadow: 2px 2px 1px var(--color-gray);
+        box-shadow: 2px 2px 1px var(--color-gray);      
+    }
+	.figure-main-view {
+		max-width: 100%;
+		min-width: 100%;
+		float: inherit;
+
 	}
-
-
 </style>

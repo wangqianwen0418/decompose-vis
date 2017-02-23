@@ -50,5 +50,9 @@ textarea{
     box-shadow: 1px 1px 0.5px var(--color-gray);
     z-index:1;
 }
+.svgEditor {
+    width: 100%;
+    height: 100%;
+}
 
 
