@@ -54,12 +54,12 @@ ul {
     /*width:58vw;*/
     margin: 1vh 1vw 1.5vh 0.5vw;
     background-color: var(--color-white);
-    box-shadow: 2px 2px 1px var(--color-blue-dark);
+    box-shadow: 2px 2px 1px var(--color-gray);
     }
 
 #slides::-webkit-scrollbar {
     -webkit-appearance: none;
-    height: 1vh;
+    height: 0.6vh;
 }
 
 #slides::-webkit-scrollbar-thumb {
@@ -103,8 +103,8 @@ ul {
 .shadow-left {
     position: absolute;
     z-index: 2;
-    box-shadow: 10px 3px 10px -7px var(--color-blue-dark) inset;
-    height: 12.5vh;
+    box-shadow: 10px 3px 10px -7px var(--color-gray) inset;
+    height: 15vh;
     width:15px;
     margin-left: 5px;
 }
@@ -112,11 +112,11 @@ ul {
 .shadow-right {
     float:right;
     z-index: 2;
-    box-shadow: -10px 0px 5px -7px var(--color-blue-dark) inset;
+    box-shadow: -10px 0px 5px -7px var(-grayue-dark) inset;
     height: 22.5vh;
     width:10px;
     margin-right: 10px;
 }*/
 /*.container{
-    box-shadow: -10px 10px 5px  var(--color-blue-dark) inset;
+    box-shadow: -10px 10px 5px  var(--cograydark) inset;
 }*/

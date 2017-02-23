@@ -14,7 +14,7 @@
     color:var(--color-blue-dark);
     margin:0vh 1vw 0vh 0.5vw;
     border-top: 2px solid var(--color-blue-gray);
-    box-shadow: 2px 2px 1px var(--color-blue-dark);
+    box-shadow: 2px 2px 1px var(--color-gray);
     text-align: center
 }
 

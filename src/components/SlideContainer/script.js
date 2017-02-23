@@ -25,7 +25,7 @@ export default {
                         });
                     });
                 });
-                return (len + 1) * screen.width * 0.4;
+                return (len + 1) * screen.width * 0.14;
             },
         }),
         ...mapGetters({

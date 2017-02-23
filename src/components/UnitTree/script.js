@@ -52,15 +52,16 @@ function updateTree(nodes) {
         .style('stroke', 'var(--color-blue)')
         .style('stroke-width', '2')
         .attr('d', d => `M${d.y},${d.x
-            }C${(d.y + d.parent.y) / 2},${d.x
+            }L${(d.y + d.parent.y) / 2},${d.x
             } ${(d.y + d.parent.y) / 2},${d.parent.x
             } ${d.parent.y},${d.parent.x}`)
         .style('fill', 'none');
 
     link.attr('d', d => `M${d.y},${d.x
-            }C${(d.y + d.parent.y) / 2},${d.x
+            }L${(d.y + d.parent.y) / 2},${d.x
             } ${(d.y + d.parent.y) / 2},${d.parent.x
             } ${d.parent.y},${d.parent.x}`);
+
     link.exit().remove();
 
     const node = d3.select('.svgGroup').selectAll('.node')
