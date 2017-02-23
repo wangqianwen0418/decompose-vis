@@ -4,7 +4,7 @@
 
         <span class="iconGroup">
            <div style='float:right'>
-           <i class="icon el-icon-picture" ></i>
+           <i class="icon el-icon-picture" @click="showView = !showView"></i>
            <br/>preview
            </div>
 
@@ -12,26 +12,36 @@
            <i class="icon el-icon-upload2"></i>
            <br/>import
            </div>
-
-             <div class='selectImport'  v-if='showForm' >
-             <input type="file" class="upload" />
-             <br/>OR
-             <br/>
-            <select placeholder="pls select an example">
-                <option v-for='option in options' value="option.label">{{option.label}}</option>
-                <option ></option>
-            </select>
-             </div>
-
-            <!--<el-upload
-                class="upload-demo"
-                action="//jsonplaceholder.typicode.com/posts/"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :file-list="fileList">
-                <el-button size="small" type="primary">click to upload</el-button>
-            </el-upload>-->
        </span>
+
+       <el-dialog class='preview' v-model="showView" size='large' title='Preview'>
+       </el-dialog>
+
+        <el-dialog class='selectImport' v-model="showForm" size='tiny' title="Import">
+            <el-upload
+                class="upload-demo"
+                action="//jsonplaceholder.typicode.com/posts/">
+                <el-button size="small" :plain="true" type="info">upload a picture</el-button>
+                only jpg/png less then 500kb
+            </el-upload>
+            <el-input
+                type="textarea"
+                :rows="6"
+                :cols="40"
+                placeholder="add the text description here"
+                v-model="textDescription">
+            </el-input>
+            <el-button type="info" size="mini">import</el-button>
+            <br/>   OR
+            <br/>
+            <el-select v-model="value" placeholder="choose an example">
+                <el-option
+                v-for="item in options"
+                :label="item.label"
+                :value="item.value">
+                </el-option>
+            </el-select>
+        </el-dialog>
     </div>
 </template>
 
@@ -40,15 +50,16 @@
         data() {
             return {
                 options: [{
-                    label: 'choose an example',
-                }, {
+                    value: '1',
                     label: 'case study 1',
                 }, {
+                    value: '2',
                     label: 'case study 2',
-                }, {
-                    label: 'upload your own file',
                 }],
                 showForm: false,
+                showView: false,
+                value: '',
+                textDescription: '',
             };
         },
     };
@@ -81,7 +92,7 @@
         font-size: 40px;
         color: var(--color-white);
         background-color: var(--color-blue);
-        box-shadow: 2px 2px 1px var(--color-blue-dark);
+        box-shadow: 2px 2px 1px var(--color-gray);
         margin-bottom: 5px;
         font-family: var(--font-4);
     }
@@ -112,14 +123,20 @@
         padding: 0px 8px;
         font-size: 30px;
     }
-
-    .selectImport {
-        position: absolute;
-        top: 0%;
-        right: 20%;
-
+    .selectImport{
+        font-family: var(--font-2);
+        font-size: 20px;
     }
-    select:focus {
-        outline:none;
+
+    .preview{
+        font-size: 20px;
     }
+
+    el-button{
+        margin: 10px;
+    }
+
+
+
+
 </style>

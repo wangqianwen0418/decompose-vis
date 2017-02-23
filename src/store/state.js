@@ -171,6 +171,7 @@ const state = {
             ],
         },
     ],
+    text: '',
     templates: [{
         name: 'streamGraph',
         parent: ['root'],
