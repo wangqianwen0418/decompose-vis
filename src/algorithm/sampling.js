@@ -13,3 +13,11 @@ export function random_sampling(data, rate = 0.05) {
     }
     return seq;
 }
+
+export function systematic_sampling_seq(n, rate = 0.05) {
+    const seq = [];
+    for (let i = 0; i < n; i += 1 / rate) {
+        seq.push(i);
+    }
+    return seq;
+}

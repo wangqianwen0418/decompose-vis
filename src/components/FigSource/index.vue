@@ -52,102 +52,13 @@ import { offset } from "../../utils/common-utils.js";
 import { decompose } from "../../algorithm/decompose.js";
 import { compose, findGroup } from "../../algorithm/compose.js";
 import color_space_divide from "../../algorithm/color-space-divide.js";
-import { random_sampling_seq } from "../../algorithm/sampling.js";
+import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
 import * as d3 from "d3";
 
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
 let initalData, currentData, color_spaces = [];
 let zoom_ratio, bgtag;
-
-function createsvgFromGroup(group0) {
-	group0 = findGroup(group0, currenttime);
-	const width = canvas.width;
-	const height = canvas.height;
-
-	let n = 0, r = 0, g = 0, b = 0, x0 = Number.MAX_VALUE, y0 = Number.MAX_VALUE, x1 = 0, y1 = 0;
-	for (const group of groups) {
-		if (findGroup(group, currenttime) === group0) {
-			const points = group.points;
-			for (let i = 0; i < points.length; i += 2) {
-				const x = Math.floor(points[i] / zoom_ratio);
-				const y = points[i + 1] / zoom_ratio;
-				n += 1;
-				r += currentData.data[((points[i + 1] * width + points[i]) << 2) + 0];
-				g += currentData.data[((points[i + 1] * width + points[i]) << 2) + 1];
-				b += currentData.data[((points[i + 1] * width + points[i]) << 2) + 2];
-				if (!btm[x]) {
-					btm[x] = y;
-				} else if (y > btm[x]) {
-					btm[x] = y;
-				}
-				if (!top[x]) {
-					top[x] = y;
-				} else if (y < top[x]) {
-					top[x] = y;
-				}
-				if (x < x0) {
-					x0 = x;
-				} else if (x > x1) {
-					x1 = x;
-				}
-				if (y < y0) {
-					y0 = y;
-				} else if (y > y1) {
-					y1 = y;
-				}
-			}
-		}
-	}
-	r = Math.floor(r / n);
-	g = Math.floor(g / n);
-	b = Math.floor(b / n);
-
-	for (var i = 0; i < top.length; ++i) if (top[i] !== undefined) {
-		contour.push([i, top[i]]);
-	}
-	for (var i = btm.length - 1; i >= 0; --i) if (btm[i] !== undefined) {
-		contour.push([i, btm[i]]);
-	}
-	contour.push(contour[0]);
-	const line = d3.line().curve(d3.curveCardinal.tension(0.5)).x(d => d[0] - x0).y(d => d[1] - y0);
-	const contour_sample =
-		contour.length < 100 ?
-		contour :
-		contour.filter((d, i) => i === 0 || i === (contour.length - 1) || (i % 4 === 0));
-
-	const div = d3.select(this.$el)
-		.append("div")
-		.attr("draggable", true)
-		.attr("id", "canvas-dragged-item")
-		.on("dragstart", ondragstart)
-		.on("dragend", ondragend);
-
-	const svg = div
-		.append("svg");
-
-	let left0 = -1, top0 = -1;
-
-	svg.attr("width", x1 - x0)
-		.attr("height", y1 - y0);
-
-	svg.append("path")
-		.datum(contour_sample)
-		.attr('d', line)
-		.attr("stroke-width", 2)
-		.attr("fill", `rgb(${r},${g},${b})`);
-
-	console.info(offset.x(canvas), offset.y(canvas));
-	div.attr('x', x0)
-		.attr('y', y0)
-		.attr('width', canvas.width / zoom_ratio)
-		.attr('height', canvas.height / zoom_ratio)
-		.style("z-index", 1)
-		.style("position", "fixed")
-		.style("left", `${x0 + offset.x(canvas)}px`)
-		.style("top", `${y0 + offset.y(canvas)}px`)
-		.style("opacity", 1);
-}
 
 export default {
     data() {
@@ -169,6 +80,97 @@ export default {
 				"figure-tabs_item": true, 
 				"active": item == this.activeBlock
 			};
+		},
+		createsvgFromGroup(group0) {			
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const top = [], btm = [];
+			const contour = [];
+			const width = canvas.width;
+			const height = canvas.height;
+
+			let n = 0, r = 0, g = 0, b = 0, x0 = Number.MAX_VALUE, y0 = Number.MAX_VALUE, x1 = 0, y1 = 0;
+			for (const group of groups) {
+				if (findGroup(group, currenttime) === group0) {
+					const points = group.points;
+					for (let i = 0; i < points.length; i += 2) {
+						const x = Math.floor(points[i] / zoom_ratio);
+						const y = points[i + 1] / zoom_ratio;
+						n += 1;
+						r += currentData.data[((points[i + 1] * width + points[i]) << 2) + 0];
+						g += currentData.data[((points[i + 1] * width + points[i]) << 2) + 1];
+						b += currentData.data[((points[i + 1] * width + points[i]) << 2) + 2];
+						if (!btm[x]) {
+							btm[x] = y;
+						} else if (y > btm[x]) {
+							btm[x] = y;
+						}
+						if (!top[x]) {
+							top[x] = y;
+						} else if (y < top[x]) {
+							top[x] = y;
+						}
+						if (x < x0) {
+							x0 = x;
+						} else if (x > x1) {
+							x1 = x;
+						}
+						if (y < y0) {
+							y0 = y;
+						} else if (y > y1) {
+							y1 = y;
+						}
+					}
+				}
+			}
+			if (n === 0) return;
+			r = Math.floor(r / n);
+			g = Math.floor(g / n);
+			b = Math.floor(b / n);
+
+			for (var i = 0; i < top.length; ++i) if (top[i] !== undefined) {
+				contour.push([i, top[i]]);
+			}
+			for (var i = btm.length - 1; i >= 0; --i) if (btm[i] !== undefined) {
+				contour.push([i, btm[i]]);
+			}
+			contour.push(contour[0]);
+			const line = d3.line().curve(d3.curveCardinal.tension(0.5)).x(d => d[0] - x0).y(d => d[1] - y0);
+			const contour_sample =
+				contour.length < 100 ?
+				contour :
+				contour.filter((d, i) => i === 0 || i === (contour.length - 1) || (i % 2 === 0));
+
+			const div = d3.select(this.$el)
+				.append("div")
+				.attr("draggable", true)
+				.attr("id", "canvas-dragged-item")
+				.on("dragstart", ondragstart)
+				.on("dragend", ondragend);
+
+			const svg = div
+				.append("svg");
+
+			let left0 = -1, top0 = -1;
+
+			svg.attr("width", x1 - x0)
+				.attr("height", y1 - y0);
+
+			svg.append("path")
+				.datum(contour_sample)
+				.attr('d', line)
+				.attr("stroke-width", 2)
+				.attr("fill", `rgb(${r},${g},${b})`);
+
+			console.info(offset.x(canvas), offset.y(canvas));
+			div.attr('x', x0)
+				.attr('y', y0)
+				.attr('width', canvas.width / zoom_ratio)
+				.attr('height', canvas.height / zoom_ratio)
+				.style("z-index", 1)
+				.style("position", "fixed")
+				.style("left", `${x0 + offset.x(canvas)}px`)
+				.style("top", `${y0 + offset.y(canvas)}px`)
+				.style("opacity", 1);
 		},
 		canvasRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
@@ -259,6 +261,18 @@ export default {
 					for (const group of groups) {
 						if (group.tag === group0.tag && group.points.length > 50) {
 							this.activeBlock.selectedItems.push(group);
+						}
+					}
+					this.canvasRender(event);
+				}
+			} else if (event.shiftKey && !event.ctrlKey && event.altKey) {
+				let group0 = ngroup[y * canvas.width + x];
+				if (group0 != null) {
+					group0 = findGroup(group0, currenttime);
+					this.activeBlock.selectedItems.push(group0);
+					for (const group of groups) {
+						if (group.tag === group0.tag && group.points.length > 50) {
+							this.createsvgFromGroup(group);
 						}
 					}
 					this.canvasRender(event);
@@ -551,7 +565,7 @@ function preprocessing(canvas) {
 	const hsl_data = new Float32Array(width * height * 3);
 	console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 
-	const seq = random_sampling_seq(height * width);
+	const seq = systematic_sampling_seq(height * width);
 	for (let i = 0; i < height * width; ++i) {
 		let r = data[(i << 2) + 0];
 		let g = data[(i << 2) + 1];
