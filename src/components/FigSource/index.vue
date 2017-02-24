@@ -6,11 +6,13 @@
 				{{item.name}}
 			</div>
 		</div>
-		<canvas class="figure-main-view"
-		@mouseenter="onMouseenter" @mouseout="onMouseout" @mousemove="onMousemove"
-		@click.prevent="onClick" @contextmenu.prevent="onRightClick"
-		>
-		</canvas>
+		<div class="figure-content">
+			<canvas class="figure-main-view"
+			@mouseenter="onMouseenter" @mouseout="onMouseout" @mousemove="onMousemove"
+			@click.prevent="onClick" @contextmenu.prevent="onRightClick"
+			>
+			</canvas>
+		</div>
 	</div>
 	<!--
     <el-tabs v-model="activeBlock" type="border-card" @tab-click="onTabClick">
@@ -195,6 +197,10 @@ export default {
 					data[(i << 2) + 2] = initalData.data[(i << 2) + 2];
 					data[(i << 2) + 3] = 30;
 				}
+			}
+
+			function setPixel(index, r, g, b, a) {
+
 			}
 
 			for (const group of groups) {
@@ -426,19 +432,12 @@ export default {
 			const ctx = canvas.getContext('2d');
 			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
-			if (false) {
-				ctx.beginPath();
-				ctx.strokeStyle = "red";
-				ctx.arc(x, y, 100, 0, Math.PI * 2, true); 
-				ctx.stroke();
-			}
 			if (tags[y * canvas.width + x] === bgtag) {
 				return;
 			}
 			// const k = y * canvas.width + x << 2;
 			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
 			// console.info(hsl);
-			// console.info(x, y, event);
 
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
@@ -467,7 +466,7 @@ export default {
 			}
 			*/
 
-			console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onMouseenter(event) {
 			/*
@@ -546,6 +545,8 @@ export default {
 			const realWidth = canvas.parentNode.clientWidth;
 			const realHeight = canvas.parentNode.clientHeight;
 			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight);
+			console.log('image', img.width, img.height);
+			console.log('zoom', realWidth, realHeight, zoom_ratio);
 			ctx.drawImage(img, 0, 0);
 			preprocessing(canvas);
 			//svg.attr('width', img.width / zoom_ratio)
@@ -728,7 +729,7 @@ function ondragend() {
 		border-bottom: 0px solid var(--color-blue-gray);
 		padding: 0;
 		position: relative;
-		margin: 0 0 15px;
+		margin: 0 0 1vh;
 		width: 100%;
 		height: 4vh;
 		/* border-radius: 6px 6px 0px 0px; */
@@ -757,6 +758,10 @@ function ondragend() {
 		color: var(--color-gray-dark);
 		background-color: var(--color-white);
 	}
+
+	.figure-content {
+		height: 37vh;
+	}
     
     .figure-source {
         height: 43vh;
@@ -771,10 +776,9 @@ function ondragend() {
         color: var(--color-3);
         box-shadow: 2px 2px 1px var(--color-gray);      
     }
+
 	.figure-main-view {
 		max-width: 100%;
-		min-width: 100%;
-		float: inherit;
-
+		max-height: 100%;
 	}
 </style>
