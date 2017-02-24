@@ -1,12 +1,11 @@
 import { mapActions, mapState } from 'vuex';
 import draggable from 'vuedraggable';
-import { REMOVE_ITEM, SELECT_ITEM } from '../../store';
+import { REMOVE_CHANNEL, SELECT_CHANNEL } from '../../store';
 import * as d3 from 'd3';
 
-console.info(document.getElementById('slideText'));
-// {'b':2, 'a':1}
+
 export default {
-    props: ['item', 'mark', 'block'],
+    props: ['channel', 'mark', 'block'],
     data() {
         return {
             height: window.innerHeight * 0.4,
@@ -17,11 +16,11 @@ export default {
     methods: {
         // ondrop(event) {
         //   const id = event.dataTransfer.getData('text');
-        //   const item = document.getElementById(id);
-        //   const geo = item.getElementsByTagName('svg')[0].firstChild;
-        //   const x = item.getAttribute('x');
-        //   const y = item.getAttribute('y');
-        //   const width = item.getAttribute('width');
+        //   const Channel = document.getElementById(id);
+        //   const geo = Channel.getElementsByTagName('svg')[0].firstChild;
+        //   const x = Channel.getAttribute('x');
+        //   const y = Channel.getAttribute('y');
+        //   const width = Channel.getAttribute('width');
         //   const svg = this.$el.getElementsByClassName('svg-stage')[0];
         //         console.log(svg);
         //         const svgWidth = d3.select(svg).attr('width');
@@ -30,7 +29,7 @@ export default {
         //   d3.select(geo)
         //     .attr('transform', `translate(${x}, ${y}), scale(${ratio})`);
         //   svg.appendChild(geo);
-        //   item.remove();
+        //   Channel.remove();
         // },
         // getScales() {
         //     const x = d3.scaleTime().range([0, this.width * 0.5]);
@@ -38,15 +37,15 @@ export default {
         //     const r = d3.scaleLinear().range([0, this.height * 0.4]);
         //     // d3.axisLeft().scale(x);
         //     // d3.axisBottom().scale(y);
-        //     x.domain([0, d3.max(this.item.attachedEles, d => d.x)]);
-        //     y.domain([0, d3.max(this.item.attachedEles, d => d.y)]);
-        //     r.domain([0, d3.max(this.item.attachedEles, d => d.r)]);
+        //     x.domain([0, d3.max(this.Channel.attachedEles, d => d.x)]);
+        //     y.domain([0, d3.max(this.Channel.attachedEles, d => d.y)]);
+        //     r.domain([0, d3.max(this.Channel.attachedEles, d => d.r)]);
         //     return { x, y, r };
         // },
         // calculatePath() {
         //     const svg = d3.select(this.$el.getElementsByTagName('svg')[0]);
         //     // const scale = this.getScales();
-        //     const circles = this.item.attachedEles;
+        //     const circles = this.Channel.attachedEles;
         //     svg.selectAll('circle')
         //     .data(circles)
         //     .enter()
@@ -72,13 +71,13 @@ export default {
         //             );
         // },
         ...mapActions({
-            removeItem: REMOVE_ITEM,
-            selectItem: SELECT_ITEM,
+            removeChannel: REMOVE_CHANNEL,
+            selectChannel: SELECT_CHANNEL,
         }),
     },
     computed: {
         styleObject() {
-            if (this.item.selected) {
+            if (this.channel.selected) {
                 return {
                     border: '0.5vh dashed #417378',
                     height: '11vh',

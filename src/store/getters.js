@@ -8,17 +8,17 @@ const getters =
             });
             return block;
         },
-        selectedItem:
+        selectedChannel:
         (state) => {
-            let item = null;
+            let channel = null;
             state.blocks.forEach((block) => {
                 block.marks.forEach((mark) => {
-                    mark.channels.forEach((channel) => {
-                        if (channel.selected) { item = channel; }
+                    mark.channels.forEach((ch) => {
+                        if (ch.selected) { channel = ch; }
                     });
                 });
             });
-            return item;
+            return channel;
         },
         selectedEle:
         (state) => {

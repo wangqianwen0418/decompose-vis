@@ -1,7 +1,7 @@
 import { mapState, mapActions, mapGetters } from 'vuex';
 import draggable from 'vuedraggable';
 import slide from '../Slide';
-import { ADD_ITEM } from '../../store';
+import { ADD_CHANNEL } from '../../store';
 
 export default {
     data() {
@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            addItem: ADD_ITEM,
+            addChannel: ADD_CHANNEL,
         }),
     },
     watch: {

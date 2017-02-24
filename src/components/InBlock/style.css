@@ -94,7 +94,7 @@
         padding:0px;
     }
     #mark_list li{
-        border:3px solid var(--color-blue-gray);
+        border:3px solid var(--color-blue-light);
         margin: 0.5vh 0.5vw 0.5vh 1vw;
     }
     #mark_list li:before{
@@ -113,7 +113,7 @@
         padding-left: 6px;
     }
     #channel_list li{
-        background-color: var(--color-blue-gray);
+        background-color: var(--color-blue-light);
         color:var(--color-white);
         margin:0.5vh 0.5vw ;
     }
