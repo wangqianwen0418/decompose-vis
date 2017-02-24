@@ -1,27 +1,30 @@
 import * as d3 from 'd3';
 import { mapActions, mapGetters } from 'vuex';
-import { EDIT_ITEM } from '../../store';
+import { EDIT_ELE } from '../../store';
 
 export default {
+    data() {
+        return {
+            animation: '',
+        };
+    },
     computed: {
         message: {
             get() {
                 const selectedEle = this.$store.getters.selectedEle;
-                if (selectedEle) { return selectedEle.description.text; }
-                return '';
+                return selectedEle ? selectedEle.description.text : '';
             },
             set(value) {
-                this.$store.commit('EDIT_ITEM', value);
+                this.$store.commit('EDIT_ELE', value);
+                d3.select('.current')
+                    .select('#description')
+                    .text(value);
             },
         },
         ...mapGetters({
-            selectedItem: 'selectedItem',
+            selectedChannel: 'selectedChannel',
             selectedEle: 'selectedEle',
         }),
-        currentText() {
-            if (this.selectedEle) { return this.selectedEle.description.text; }
-            return '';
-        },
         styleObject() {
             const offsets = document.getElementById('positionTag').getBoundingClientRect();
             const top = offsets.top;
@@ -65,18 +68,11 @@ export default {
             item.remove();
         },
         ...mapActions({
-            editItem: EDIT_ITEM,
+            editEle: EDIT_ELE,
         }),
     },
     watch: {
-        currentText(val) {
-            if (this.selectedEle) {
-                d3.select('.current')
-                    .select('#description')
-                    .text(val);
-            }
-        },
-        selectedItem(val) {
+        selectedChannel(val) {
             // console.info(val.attachedEles);
             const svg = d3.select(this.$el).select('svg');
 

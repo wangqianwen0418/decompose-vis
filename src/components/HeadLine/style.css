@@ -1,0 +1,49 @@
+.headline {
+        height: 10vh;
+        /*border-radius: 6px;*/
+        font-size: 40px;
+        color: var(--color-white);
+        background-color: var(--color-blue);
+        box-shadow: 2px 2px 1px var(--color-gray);
+        margin-bottom: 5px;
+        font-family: var(--font-4);
+    }
+
+    #name {
+        margin: 0;
+        margin-left: 30px;
+        position: absolute;
+        top: 50%;
+        left: 0%;
+        -ms-transform: translate(0%, -50%);
+        transform: translate(0%, -50%);
+        font-family: var(--font-4);
+    }
+
+    .iconGroup {
+        position: absolute;
+        top: 50%;
+        right: 0%;
+        margin-right: 20px;
+        -ms-transform: translate(0%, -50%);
+        transform: translate(0%, -50%);
+        font-size: 15px;
+        font-family: var(--font-2);
+    }
+
+    .icon {
+        padding: 0px 8px;
+        font-size: 30px;
+    }
+    .selectImport{
+        font-family: var(--font-2);
+        font-size: 20px;
+    }
+
+    .preview{
+        font-size: 20px;
+    }
+
+    el-button{
+        margin: 10px;
+    }

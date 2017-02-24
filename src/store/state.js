@@ -5,63 +5,46 @@ const state = {
             parent: ['root'],
             children: [],
             selected: true,
-            marks: [
-                {
-                    name: 'mark11',
-                    channels: [
-                        {
-                            name: 'channel111',
-                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                            selected: false,
-                            removed: false,
-                            block: 'node',
-                            mark: 'node',
-                            channel: 'position',
-                        },
-                        {
-                            name: 'channel112',
-                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                            selected: false,
-                            removed: false,
-                            block: 'theme river',
-                            mark: 'strip',
-                            channel: 'position',
-                        },
-                        {
-                            name: 'channel113',
-                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                            selected: false,
-
-                            removed: false,
-                            block: 'theme river',
-                            mark: 'strip',
-                            channel: 'color',
-                        },
-                    ],
-                },
-                {
-                    name: 'mark12',
-                    channels: [
-                        {
-                            name: 'channel121',
-                            attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                            selected: false,
-                            removed: false,
-                            block: 'theme river',
-                            mark: 'strip',
-                            channel: 'position',
-                        },
-                        {
-                            name: 'channel122',
-                            attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                            selected: false,
-                            removed: false,
-                            block: 'theme river',
-                            mark: 'strip',
-                            channel: 'color',
-                        },
-                    ],
+            marks: [{
+                name: 'stream',
+                channels: [{
+                    name: 'position',
+                    selected: false,
+                    removed: false,
+                    attachedEles: [
+                    { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
+                    { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                    animations: ['move'],
+                    explanation: 'x position means xxx, y position means xxx',
+                }, {
+                    name: 'color',
+                    selected: false,
+                    removed: false,
+                    attachedEles: [
+                { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
+                { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                    animations: ['fill'],
+                    explanation: 'one color stands for one category',
+                }, {
+                    name: 'size',
+                    selected: false,
+                    removed: false,
+                    attachedEles: [
+                { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
+                { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                    animations: ['length', 'width'],
+                    explanation: 'the length means xxxx, the width is encoded with xxx',
+                }, {
+                    name: 'shape',
+                    selected: false,
+                    removed: false,
+                    attachedEles: [
+                { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
+                { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
+                    animations: ['transition'],
+                    explanation: 'merging and splitting',
                 }],
+            }],
         },
         {
             name: 'block2',
@@ -73,6 +56,7 @@ const state = {
                     name: 'mark21',
                     channels: [
                         {
+                            explanation: '',
                             name: 'channel 211',
                             attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                             selected: false,
@@ -107,6 +91,7 @@ const state = {
                     name: 'mark22',
                     channels: [
                         {
+                            explanation: '',
                             name: 'channel221',
                             attachedEles: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                             selected: false,
@@ -157,6 +142,7 @@ const state = {
                     name: 'mark31',
                     channels: [
                         {
+                            explanation: '',
                             name: 'channel 311',
                             attachedEles: [{ i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                             selected: false,
@@ -187,6 +173,7 @@ const state = {
                     { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
                     { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                 animations: ['move'],
+                explanation: 'x position means xxx, y position means xxx',
             }, {
                 name: 'color',
                 selected: false,
@@ -195,6 +182,7 @@ const state = {
                 { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
                 { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                 animations: ['fill'],
+                explanation: 'one color stands for one category',
             }, {
                 name: 'size',
                 selected: false,
@@ -203,6 +191,7 @@ const state = {
                 { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
                 { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                 animations: ['length', 'width'],
+                explanation: 'the length means xxxx, the width is encoded with xxx',
             }, {
                 name: 'shape',
                 selected: false,
@@ -211,6 +200,7 @@ const state = {
                 { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
                 { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                 animations: ['transition'],
+                explanation: 'merging and splitting',
             }],
         }],
     }, {
@@ -219,10 +209,13 @@ const state = {
             name: 'point',
             channels: [{
                 name: 'position',
+                explanation: '',
             }, {
                 name: 'color',
+                explanation: '',
             }, {
                 name: 'size',
+                explanation: '',
             }],
         }],
     }, {

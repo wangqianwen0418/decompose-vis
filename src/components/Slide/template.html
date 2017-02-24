@@ -1,12 +1,12 @@
 <div class="slide"
     :style="styleObject"
-    @click="selectItem(item)"
+    @click="selectChannel(channel)"
 >
     <div id="slideText">
-        <i class="el-icon-close" @click="removeItem(item)" ></i>
+        <i class="el-icon-close" @click="removeChannel(channel)" ></i>
         <br/> {{block.name}}
         <br/> {{mark.name}}
-        <br/> {{item.name}}
+        <br/> {{channel.name}}
 
     </div>
 </div>

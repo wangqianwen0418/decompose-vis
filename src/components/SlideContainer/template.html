@@ -5,13 +5,13 @@
 
 <div id="slides">
     <div class="container" :style="{width:calculatedWidth+'px'}">
-        <template v-for='(block, index) in blocks' >
-            <template v-for='(mark, index) in block.marks' >
+        <template v-for='block in blocks' >
+            <template v-for='mark in block.marks' >
             <draggable :list="mark.channels" >
-                <slide v-for="(channel, index) in mark.channels" v-if='!channel.removed'
+                <slide v-for="channel in mark.channels" v-if='!channel.removed'
                 :block='block'
                 :mark='mark'
-                :item="channel" />
+                :channel="channel" />
             </draggable>
             </template>
         </template>
