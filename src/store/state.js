@@ -1,3 +1,5 @@
+import templates from './templates';
+
 const state = {
     blocks: [
         {
@@ -9,15 +11,16 @@ const state = {
                 name: 'stream',
                 channels: [{
                     name: 'position',
+                    more: 'x-y',
                     selected: false,
                     removed: false,
                     attachedEles: [
                     { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
                     { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
                     animations: ['move'],
-                    explanation: 'x position means xxx, y position means xxx',
+                    explanation: 'x position means xxx,\ny position means xxx',
                 }, {
-                    name: 'color',
+                    name: 'color-h',
                     selected: false,
                     removed: false,
                     attachedEles: [
@@ -27,6 +30,7 @@ const state = {
                     explanation: 'one color stands for one category',
                 }, {
                     name: 'size',
+                    more: 'w-h',
                     selected: false,
                     removed: false,
                     attachedEles: [
@@ -36,6 +40,7 @@ const state = {
                     explanation: 'the length means xxxx, the width is encoded with xxx',
                 }, {
                     name: 'shape',
+                    more: 'transition',
                     selected: false,
                     removed: false,
                     attachedEles: [
@@ -158,81 +163,6 @@ const state = {
         },
     ],
     text: '',
-    templates: [{
-        name: 'streamGraph',
-        parent: ['root'],
-        children: [],
-        selected: false,
-        marks: [{
-            name: 'stream',
-            channels: [{
-                name: 'position',
-                selected: false,
-                removed: false,
-                attachedEles: [
-                    { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
-                    { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                animations: ['move'],
-                explanation: 'x position means xxx, y position means xxx',
-            }, {
-                name: 'color',
-                selected: false,
-                removed: false,
-                attachedEles: [
-                { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
-                { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                animations: ['fill'],
-                explanation: 'one color stands for one category',
-            }, {
-                name: 'size',
-                selected: false,
-                removed: false,
-                attachedEles: [
-                { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
-                { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                animations: ['length', 'width'],
-                explanation: 'the length means xxxx, the width is encoded with xxx',
-            }, {
-                name: 'shape',
-                selected: false,
-                removed: false,
-                attachedEles: [
-                { i: 0, x: 310, y: 201, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } },
-                { i: 1, x: 332, y: 112, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-                animations: ['transition'],
-                explanation: 'merging and splitting',
-            }],
-        }],
-    }, {
-        name: 'node',
-        marks: [{
-            name: 'point',
-            channels: [{
-                name: 'position',
-                explanation: '',
-            }, {
-                name: 'color',
-                explanation: '',
-            }, {
-                name: 'size',
-                explanation: '',
-            }],
-        }],
-    }, {
-        name: 'line',
-        marks: [{
-            name: 'line',
-            channels: [{
-                name: 'position',
-            }, {
-                name: 'color',
-            }, {
-                name: 'size',
-            }],
-        }],
-    }],
-    figureSource: [{ i: 0, x: 100, y: 219, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }, { i: 1, x: 202, y: 129, path: '', selected: false, description: { text: 'description', dx: 0, dy: 0 } }],
-    // selectedItem: {},
-    // selectedIndex: '',
+    temps: templates,
 };
 export default state;
