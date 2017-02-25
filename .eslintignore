@@ -6,5 +6,6 @@ src/utils/*.js
 src/interaction/*.js
 src/components/VisFigure.vue
 src/components/FigSource
+src/components/editor
 src/VisFigure.vue
 src/App.vue
