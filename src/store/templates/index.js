@@ -2,7 +2,7 @@ import grid from './grid';
 import line from './line';
 import scatterPlot from './scatterPlot';
 import themeRiver from './themeRiver';
-import dountChart from './dountChart'
+import dountChart from './dountChart';
 
 const templates = [
     grid,

@@ -34,7 +34,7 @@ export default {
 
 <style>
 .textSource{
-    height: 13vh;
+    height: 23vh;
     background-color: var(--color-white);
     color:var(--color-blue-dark);
     margin:0vh 1vw 0vh 0.5vw;

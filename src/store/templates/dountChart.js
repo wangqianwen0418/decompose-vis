@@ -2,7 +2,7 @@ const dountChart = {
     name: 'dountChart',
     parent: ['root'],
     children: [],
-    selected: false,
+    selected: true,
     marks: [{
         name: 'arc',
         channels: [{

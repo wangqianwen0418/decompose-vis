@@ -239,8 +239,8 @@ const circleDragger =
 const myVue = {
     data() {
         return {
-            height: 300,
-            width: 250,
+            height: 280,
+            width: 220,
         };
     },
     computed: {

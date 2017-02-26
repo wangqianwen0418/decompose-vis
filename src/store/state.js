@@ -1,7 +1,7 @@
 import templates from './templates';
 
 const state = {
-    blocks: [
+    blocks1: [
         {
             name: 'block1',
             parent: ['root'],
@@ -163,6 +163,6 @@ const state = {
         },
     ],
     text: '',
-    temps: templates,
+    blocks: templates,
 };
 export default state;
