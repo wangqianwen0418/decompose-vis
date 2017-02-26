@@ -10,8 +10,15 @@ import {
 
 
 const mutations = {
-    [ADD_CHANNEL](state) {
-        state.channels.push(state.newchannel);
+    [ADD_CHANNEL](state, channelTemp) {
+        // state.blocks.forEach((block) => {
+        //     block.marks.forEach((mark) => {
+        //         mark.channels.forEach((ch) => {
+        //             if (ch.selected) { channel = ch; }
+        //         });
+        //     });
+        // });
+        console.info(channelTemp.name);
     },
     [REMOVE_CHANNEL](state, channel) {
         channel.removed = true;

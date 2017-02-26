@@ -125,7 +125,7 @@
     #channel_list li:last-child:before{
         content:' ';
     }
-    #channel_list li{
+    #channel_list li, #channel_list span{
         background-color: var(--color-blue-light);
         color:var(--color-white);
         margin:0.5vh 0.5vw ;
