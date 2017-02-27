@@ -200,22 +200,27 @@ export default {
 			}
 
 			function setPixel(index, r, g, b, a) {
-
+				data[(index << 2) + 0] = r;
+				data[(index << 2) + 1] = g;
+				data[(index << 2) + 2] = b;
+				data[(index << 2) + 3] = a;
 			}
 
 			for (const group of groups) {
 				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
 					const points = group.points;
 					for (let i = 0; i < points.length; i += 2) {
-						data[((points[i + 1] * width + points[i]) << 2) + 3] = 255;
-						if (points[i + 1] > 0)
-							data[((points[i + 1] * width - width + points[i]) << 2) + 3] = 255;
-						if (points[i + 1] + 1 < height)
-							data[((points[i + 1] * width + width + points[i]) << 2) + 3] = 255;
-						if (points[i] > 0)
-							data[((points[i + 1] * width + points[i] - 1) << 2) + 3] = 255;
-						if (points[i] + 1 < width)
-							data[((points[i + 1] * width + points[i] + 1) << 2) + 3] = 255;
+						const x = points[i];
+						const y = points[i + 1];
+						setPixel(y * width + x, group.r, group.g, group.b, 255);
+						if (y > 0)
+							setPixel(y * width - width + x, group.r, group.g, group.b, 255);
+						if (y + 1 < height)
+							setPixel(y * width + width + x, group.r, group.g, group.b, 255);
+						if (x > 0)
+						setPixel(y * width + x - 1, group.r, group.g, group.b, 255);
+						if (x + 1 < width)
+						setPixel(y * width + x + 1, group.r, group.g, group.b, 255);
 					}
 				}
 			}

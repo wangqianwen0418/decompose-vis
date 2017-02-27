@@ -3,6 +3,7 @@ config/*.js
 src/VisFigure.vue
 src/algorithm/*.js
 src/utils/*.js
+src/canvas
 src/interaction/*.js
 src/components/VisFigure.vue
 src/components/FigSource
