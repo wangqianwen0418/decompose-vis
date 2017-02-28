@@ -10,17 +10,31 @@ const state = {
             channels: [
                 {
                     name: 'positon',
-
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
                 }, {
                     name: 'color-s',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
                 }, {
                     name: 'color-h',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
 
                 }, {
                     name: 'size',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
 
                 }, {
                     name: 'shape',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
 
                 },
             ],
@@ -30,17 +44,32 @@ const state = {
             channels: [
                 {
                     name: 'positon',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
 
                 }, {
                     name: 'color-s',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
                 }, {
                     name: 'color-h',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
 
                 }, {
                     name: 'size',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
 
                 }, {
                     name: 'shape',
+                    removed: false,
+                    selected: false,
+                    attachedEles: [],
 
                 },
             ],

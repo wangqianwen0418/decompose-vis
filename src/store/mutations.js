@@ -1,8 +1,8 @@
 import {
-    ADD_CHANNEL,
-    REMOVE_CHANNEL,
-    ADD_MARK,
-    REMOVE_MARK,
+    // ADD_CHANNEL,
+    // REMOVE_CHANNEL,
+    // ADD_MARK,
+    // REMOVE_MARK,
     SELECT_CHANNEL,
     EDIT_ELE,
     UPDATE_BLOCKS,
@@ -12,27 +12,27 @@ import {
 
 
 const mutations = {
-    [ADD_CHANNEL](state, channelTemp) {
-        state.blocks.forEach((block) => {
-            // block.marks.forEach((mark) => {
-                // mark.channels.forEach((ch) => {
-            if (block.selected) { block.marks[0].channels.push(channelTemp); }
-                // });
-            // });
-        });
-    },
-    [REMOVE_CHANNEL](state, channel) {
-        channel.removed = true;
-    },
-    [ADD_MARK](state, markTemp) {
-        state.blocks.forEach((blk) => {
-            if (blk.selected) { blk.marks.push(markTemp); }
-        });
-        console.info('hhhhh');
-    },
-    [REMOVE_MARK](state, mark) {
-        mark.removed = true;
-    },
+    // [ADD_CHANNEL](state, channelTemp) {
+    //     state.blocks.forEach((block) => {
+    //         // block.marks.forEach((mark) => {
+    //             // mark.channels.forEach((ch) => {
+    //         if (block.selected) { block.marks[0].channels.push(channelTemp); }
+    //             // });
+    //         // });
+    //     });
+    // },
+    // [REMOVE_CHANNEL](state, channel) {
+    //     channel.removed = true;
+    // },
+    // [ADD_MARK](state, markTemp) {
+    //     state.blocks.forEach((blk) => {
+    //         if (blk.selected) { blk.marks.push(markTemp); }
+    //     });
+    //     console.info('hhhhh');
+    // },
+    // [REMOVE_MARK](state, mark) {
+    //     mark.removed = true;
+    // },
     [SELECT_CHANNEL](state, channel) {
         const blocks = state.blocks;
         blocks.forEach((block) => {
