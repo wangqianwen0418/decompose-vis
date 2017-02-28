@@ -49,7 +49,7 @@ function updateTree(nodes) {
 
     link.enter().append('path')
         .attr('class', 'link')
-        .style('stroke', 'var(--color-blue)')
+        .style('stroke', 'var(--color-blue-light)')
         .style('stroke-width', '2')
         .attr('d', d => `M${d.y},${d.x
             }L${(d.y + d.parent.y) / 2},${d.x
@@ -95,7 +95,7 @@ function updateTree(nodes) {
         .attr('rx', 3)
         .attr('ry', 3)
         .attr('y', '-10')
-        .style('fill', 'var(--color-blue)');
+        .style('fill', 'var(--color-blue-light)');
 
     nodeGroup1.append('text')
         .text(d => d.data.name)
@@ -126,7 +126,7 @@ function updateTree(nodes) {
         .attr('y', '-10')
         .attr('rx', 3)
         .attr('ry', 3)
-        .style('fill', 'var(--color-blue)');
+        .style('fill', 'var(--color-blue-light)');
 
     nodeGroup2.append('text')
         .text(d => d.data.name)
@@ -157,7 +157,7 @@ function updateTree(nodes) {
         .attr('y', '-10')
         .attr('rx', 3)
         .attr('ry', 3)
-        .style('fill', 'var(--color-blue)');
+        .style('fill', 'var(--color-blue-light)');
 
     nodeGroup3.append('text')
         .text(d => d.data.name)
@@ -175,7 +175,7 @@ const overCircle = function (d) {
         d3.select(this)
         .attr('opacity', 0.3)
         .style('fill', 'var(--color-1)')
-        .style('stroke', 'var(--color-blue)')
+        .style('stroke', 'var(--color-blue-light)')
         .style('stroke-width', '3px');
     }
 };
@@ -221,8 +221,8 @@ const circleDragger =
 
                 d3.select(this)
                 .select('.fgrect')
-                .style('stroke', 'var(--color-blue-dark)')
-                .style('stroke-width', '5px');
+                .style('stroke', 'var(--color-blue-highlight)')
+                .style('stroke-width', '8px');
 
                 blocks.forEach((blk) => {
                     if (blk.name === d.data.name) {
@@ -239,8 +239,8 @@ const circleDragger =
 const myVue = {
     data() {
         return {
-            height: 300,
-            width: 250,
+            height: 280,
+            width: 220,
         };
     },
     computed: {

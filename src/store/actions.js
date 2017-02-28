@@ -1,27 +1,39 @@
 import {
-    ADD_ITEM,
-    REMOVE_ITEM,
-    SELECT_ITEM,
-    EDIT_ITEM,
+    ADD_CHANNEL,
+    ADD_MARK,
+    REMOVE_CHANNEL,
+    REMOVE_MARK,
+    SELECT_CHANNEL,
+    EDIT_ELE,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
+    EDIT_EXP,
 } from './types';
 
 const actions = {
-    [ADD_ITEM]({ commit }) {
-        commit(ADD_ITEM);
+    [ADD_CHANNEL]({ commit }, channelTemp) {
+        commit(ADD_CHANNEL, channelTemp);
     },
-    [REMOVE_ITEM]({ commit }, item) {
-        commit(REMOVE_ITEM, item);
+    [REMOVE_CHANNEL]({ commit }, item) {
+        commit(REMOVE_CHANNEL, item);
     },
-    [SELECT_ITEM]({ commit }, item) {
-        commit(SELECT_ITEM, item);
+    [ADD_MARK]({ commit }, markTemp) {
+        commit(ADD_MARK, markTemp);
+    },
+    [REMOVE_MARK]({ commit }, mark) {
+        commit(REMOVE_CHANNEL, mark);
+    },
+    [SELECT_CHANNEL]({ commit }, item) {
+        commit(SELECT_CHANNEL, item);
     },
     [SELECT_BLOCK]({ commit }, block) {
         commit(SELECT_BLOCK, block);
     },
-    [EDIT_ITEM]({ commit }, text) {
-        commit(EDIT_ITEM, text);
+    [EDIT_ELE]({ commit }, text) {
+        commit(EDIT_ELE, text);
+    },
+    [EDIT_EXP]({ commit }, text) {
+        commit(EDIT_EXP, text);
     },
     [UPDATE_BLOCKS]({ commit }, blocks) {
         commit(UPDATE_BLOCKS, blocks);

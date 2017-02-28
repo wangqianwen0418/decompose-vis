@@ -1,4 +1,5 @@
 import * as d3 from 'd3';
+<<<<<<< HEAD
 import {
     mapActions,
     mapGetters
@@ -6,31 +7,50 @@ import {
 import {
     EDIT_ITEM
 } from '../../store';
+=======
+import { mapActions, mapGetters } from 'vuex';
+import { EDIT_ELE } from '../../store';
+>>>>>>> dev
 
 export default {
+    data() {
+        return {
+            animation: '',
+        };
+    },
     computed: {
         message: {
             get() {
                 const selectedEle = this.$store.getters.selectedEle;
+<<<<<<< HEAD
                 if (selectedEle) {
                     return selectedEle.description.text;
                 }
                 return '';
+=======
+                return selectedEle ? selectedEle.description.text : '';
+>>>>>>> dev
             },
             set(value) {
-                this.$store.commit('EDIT_ITEM', value);
+                this.$store.commit('EDIT_ELE', value);
+                d3.select('.current')
+                    .select('#description')
+                    .text(value);
             },
         },
         ...mapGetters({
-            selectedItem: 'selectedItem',
+            selectedChannel: 'selectedChannel',
             selectedEle: 'selectedEle',
         }),
+<<<<<<< HEAD
         currentText() {
             if (this.selectedEle) {
                 return this.selectedEle.description.text;
             }
             return '';
         },
+=======
+>>>>>>> dev
         styleObject() {
             const offsets = document.getElementById('positionTag').getBoundingClientRect();
             const top = offsets.top;
@@ -160,18 +180,11 @@ export default {
             item.remove();
         },
         ...mapActions({
-            editItem: EDIT_ITEM,
+            editEle: EDIT_ELE,
         }),
     },
     watch: {
-        currentText(val) {
-            if (this.selectedEle) {
-                d3.select('.current')
-                    .select('#description')
-                    .text(val);
-            }
-        },
-        selectedItem(val) {
+        selectedChannel(val) {
             // console.info(val.attachedEles);
             const svg = d3.select(this.$el).select('svg');
 

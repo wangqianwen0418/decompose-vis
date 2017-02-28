@@ -14,10 +14,13 @@ export default new Vuex.Store({
 });
 
 export {
-    ADD_ITEM,
-    REMOVE_ITEM,
-    SELECT_ITEM,
-    EDIT_ITEM,
+    ADD_CHANNEL,
+    REMOVE_CHANNEL,
+    ADD_MARK,
+    REMOVE_MARK,
+    SELECT_CHANNEL,
+    EDIT_ELE,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
+    EDIT_EXP,
 } from './types';

@@ -34,13 +34,14 @@
 /*version 2*/
 
 :root{
-    --color-blue-light:#A4CFBE;
+    --color-blue-light:#77b1c6;
     /*--color-blue:#78C0AE;;*/
-    --color-blue:#538FA6;
+    --color-blue:#5eacc9;
     /*--color-blue-dark:#4F8C91;*/
-    --color-blue-dark:#31667F;
+    --color-blue-dark:#49859b;
     --color-gray-light:#eeeeee;
-    --color-blue-gray:#6D98B0;
+    --color-blue-gray:#9fbdce;
+    --color-blue-highlight:#0cffff;
     --color-gray:#C5C5C5;
     --color-white: #fcffff;
     --font-1:'Pangolin', cursive;

@@ -1,4 +1,4 @@
-import HeadLine from '../Headline';
+import HeadLine from '../HeadLine';
 import resource from '../Resource';
 import TextSource from '../TextSource';
 import editor from '../Editor';

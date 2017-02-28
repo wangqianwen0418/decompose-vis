@@ -1,16 +1,17 @@
 <div class="editor" id='positionTag'>
 
-    <div class='editPanel' v-if='selectedEle'
-    draggable='true' @dragstart='dragstart' @drag='drag' 
+<div class='editPanel' v-if='selectedEle'
+    draggable='true' @dragstart='dragstart' @drag='drag'
     :style="styleObject"
     >
     Annotation
     <textarea
     @keydown.enter='exit()'
-    v-model="message" @input='editItem(message)'
+    v-model="message" @input='editEle(message)'
     placeholder="edit the selected element here">
     </textarea>
     Animation <i class="el-icon-setting"></i>
+<<<<<<< HEAD
     <el-select v-model="value" placeholder="add color"></el-select>
     </div>
     <canvas class='editorCanvas' width="600" height="400"></canvas>
@@ -18,4 +19,10 @@
     <svg class='svgEditor' width="55vw" height="55vh" @drop.prevent='ondrop'>
     </svg>
     !-->
+=======
+    <el-select v-model="animation" placeholder="add color"></el-select>
+</div>
+
+    <svg class='svgEditor' width="55vw" height="55vh" @drop.prevent='ondrop'></svg>
+>>>>>>> dev
 </div>

@@ -19,7 +19,7 @@ textarea{
 .editor {
     /*border-radius: 6px;*/
     /*width:57vw;*/
-    height: 55vh;
+    height: 60vh;
     /*border: 0.4vw solid var(--color-2);*/
     border:none;
     background-color:var(--color-white);
@@ -54,9 +54,12 @@ textarea{
     width: 100%;
     height: 100%;
 }
+<<<<<<< HEAD
 canvas {
     max-width: 100%;
     max-height: 100%;
 }
 
 
+=======
+>>>>>>> dev

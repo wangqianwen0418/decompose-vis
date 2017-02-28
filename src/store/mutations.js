@@ -1,30 +1,48 @@
 import {
-    ADD_ITEM,
-    REMOVE_ITEM,
-    SELECT_ITEM,
-    EDIT_ITEM,
+    ADD_CHANNEL,
+    REMOVE_CHANNEL,
+    ADD_MARK,
+    REMOVE_MARK,
+    SELECT_CHANNEL,
+    EDIT_ELE,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
+    EDIT_EXP,
 } from './types';
 
 
 const mutations = {
-    [ADD_ITEM](state) {
-        state.items.push(state.newItem);
+    [ADD_CHANNEL](state, channelTemp) {
+        state.blocks.forEach((block) => {
+            // block.marks.forEach((mark) => {
+                // mark.channels.forEach((ch) => {
+            if (block.selected) { block.marks[0].channels.push(channelTemp); }
+                // });
+            // });
+        });
     },
-    [REMOVE_ITEM](state, item) {
-        item.removed = true;
+    [REMOVE_CHANNEL](state, channel) {
+        channel.removed = true;
     },
-    [SELECT_ITEM](state, item) {
+    [ADD_MARK](state, markTemp) {
+        state.blocks.forEach((blk) => {
+            if (blk.selected) { blk.marks.push(markTemp); }
+        });
+        console.info('hhhhh');
+    },
+    [REMOVE_MARK](state, mark) {
+        mark.removed = true;
+    },
+    [SELECT_CHANNEL](state, channel) {
         const blocks = state.blocks;
         blocks.forEach((block) => {
             block.marks.forEach((mark) => {
-                mark.channels.forEach((channel) => {
-                    channel.selected = false;
+                mark.channels.forEach((ch) => {
+                    ch.selected = false;
                 });
             });
         });
-        item.selected = true;
+        channel.selected = true;
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
@@ -32,7 +50,7 @@ const mutations = {
         });
         block.selected = true;
     },
-    [EDIT_ITEM](state, message) {
+    [EDIT_ELE](state, message) {
         state.blocks.forEach((block) => {
             block.marks.forEach((mark) => {
                 mark.channels.forEach((channel) => {
@@ -40,6 +58,17 @@ const mutations = {
                         channel.attachedEles.forEach((ele) => {
                             if (ele.selected) { ele.description.text = message; }
                         });
+                    }
+                });
+            });
+        });
+    },
+    [EDIT_EXP](state, exp) {
+        state.blocks.forEach((block) => {
+            block.marks.forEach((mark) => {
+                mark.channels.forEach((channel) => {
+                    if (channel.selected) {
+                        channel.explanation = exp;
                     }
                 });
             });
