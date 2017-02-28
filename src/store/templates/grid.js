@@ -5,6 +5,7 @@ const grid = {
     selected: false,
     marks: [{
         name: 'area',
+        removed: false,
         channels: [{
             name: 'position',
             more: 'r-theta',

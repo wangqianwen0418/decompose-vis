@@ -6,6 +6,7 @@ const themeRiver =
         selected: false,
         marks: [{
             name: 'area',
+            removed: false,
             channels: [{
                 name: 'position',
                 more: 'x-y',

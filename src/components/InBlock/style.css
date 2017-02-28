@@ -97,6 +97,7 @@
         border:3px solid var(--color-blue-light);
         margin: 0.5vh 0.5vw 0.5vh 1vw;
     }
+
     #mark_list li:before{
         content:' ◦ ';
         color:var(--color-blue-dark);
@@ -111,6 +112,11 @@
     #mark_list li.mark{
         margin-left:3px;
         font-size: 18px;
+    }
+        #mark_list span{
+        color: var(--color-blue-dark);
+        background-color:var(--color-white);
+        font-size: 15px;
     }
     #channel_list{
         font-size:15px;

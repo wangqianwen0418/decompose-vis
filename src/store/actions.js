@@ -1,6 +1,8 @@
 import {
     ADD_CHANNEL,
+    ADD_MARK,
     REMOVE_CHANNEL,
+    REMOVE_MARK,
     SELECT_CHANNEL,
     EDIT_ELE,
     UPDATE_BLOCKS,
@@ -9,11 +11,17 @@ import {
 } from './types';
 
 const actions = {
-    [ADD_CHANNEL]({ commit }) {
-        commit(ADD_CHANNEL);
+    [ADD_CHANNEL]({ commit }, channelTemp) {
+        commit(ADD_CHANNEL, channelTemp);
     },
     [REMOVE_CHANNEL]({ commit }, item) {
         commit(REMOVE_CHANNEL, item);
+    },
+    [ADD_MARK]({ commit }, markTemp) {
+        commit(ADD_MARK, markTemp);
+    },
+    [REMOVE_MARK]({ commit }, mark) {
+        commit(REMOVE_CHANNEL, mark);
     },
     [SELECT_CHANNEL]({ commit }, item) {
         commit(SELECT_CHANNEL, item);

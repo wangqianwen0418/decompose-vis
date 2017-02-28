@@ -15,7 +15,7 @@
             styleObject() {
                 if (this.channel.selected) {
                     return {
-                        border: '2px dashed var(--color-white)',
+                        border: '4px solid var(--color-blue-highlight)',
                     };
                 }
                 return null;
@@ -31,7 +31,7 @@
 
 </script>
 
-<style scoped>
+<!--<style scoped>
     .el-icon-close{
         float:right;
         font-size:10px;
@@ -52,4 +52,4 @@
      li:last-child{
         text-align: center;
     }
-</style>
+</style>-->

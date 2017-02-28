@@ -5,6 +5,7 @@ const scatterPlot = {
     selected: false,
     marks: [{
         name: 'point',
+        removed: false,
         channels: [{
             name: 'position',
             more: 'x-y',

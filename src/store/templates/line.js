@@ -5,6 +5,7 @@
         selected: false,
         marks: [{
             name: 'line',
+            removed: false,
             channels: [{
                 name: 'position',
                 more: 'x-y',

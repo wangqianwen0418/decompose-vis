@@ -5,6 +5,7 @@ const dountChart = {
     selected: true,
     marks: [{
         name: 'arc',
+        removed: false,
         channels: [{
             name: 'color-h',
             more: 'hue',
