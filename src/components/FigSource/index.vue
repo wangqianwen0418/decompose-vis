@@ -216,6 +216,7 @@ export default {
 						const x = points[i];
 						const y = points[i + 1];
 						setPixel(y * width + x, group.r, group.g, group.b, 255);
+						continue;
 						if (y > 0)
 							setPixel(y * width - width + x, group.r, group.g, group.b, 255);
 						if (y + 1 < height)
@@ -224,44 +225,6 @@ export default {
 						setPixel(y * width + x - 1, group.r, group.g, group.b, 255);
 						if (x + 1 < width)
 						setPixel(y * width + x + 1, group.r, group.g, group.b, 255);
-					}
-				}
-			}
-			
-			// then make it smooth
-			for (let i = 0; i < height; ++i) {
-				let last = -width;
-				for (let j = 0; j < width; ++j) {
-					if (data[((i * width + j) << 2) + 3] === 255) {
-						if (data[((i * width + j - 1) << 2) + 3] !== 255 && j - last < 13) {
-							const g = ngroup[i * width + last];
-							if (g !== null)
-							for (let k = last + 1; k < j; ++k) {
-								data[((i * width + k) << 2) + 0] = g.r;
-								data[((i * width + k) << 2) + 1] = g.g;
-								data[((i * width + k) << 2) + 2] = g.b;
-								data[((i * width + k) << 2) + 3] = 255;
-							}
-						}
-						last = j;
-					}
-				}
-			}
-			for (let j = 0; j < width; ++j) {
-				let last = -height;
-				for (let i = 0; i < height; ++i) {
-					if (data[((i * width + j) << 2) + 3] === 255) {
-						if (data[((i * width + j - width) << 2) + 3] !== 255 && i - last < 13) {
-							const g = ngroup[last * width + j];
-							if (g !== null)
-							for (let k = last + 1; k < i; ++k) {
-								data[((k * width + j) << 2) + 0] = g.r;
-								data[((k * width + j) << 2) + 1] = g.g;
-								data[((k * width + j) << 2) + 2] = g.b;
-								data[((k * width + j) << 2) + 3] = 255;
-							}
-						}
-						last = i;
 					}
 				}
 			}
@@ -306,6 +269,7 @@ export default {
 						const x = points[i];
 						const y = points[i + 1];
 						setPixel(y * width + x, group.r, group.g, group.b, 255);
+						continue;
 						if (y > 0)
 							setPixel(y * width - width + x, group.r, group.g, group.b, 255);
 						if (y + 1 < height)
@@ -319,12 +283,13 @@ export default {
 			}
 			
 			// then make it smooth
+			if (false)
 			for (let i = 0; i < height; ++i) {
 				let last = -width;
 				for (let j = 0; j < width; ++j) {
 					if (data[((i * width + j) << 2) + 3] === 255) {
 						if (data[((i * width + j - 1) << 2) + 3] !== 255 && j - last < 13) {
-							const g = ngroup[i * width + last];
+							const g = ngroup[i * width + last - 2];
 							if (g !== null)
 							for (let k = last + 1; k < j; ++k) {
 								data[((i * width + k) << 2) + 0] = g.r;
@@ -337,12 +302,13 @@ export default {
 					}
 				}
 			}
+			if (false)
 			for (let j = 0; j < width; ++j) {
 				let last = -height;
 				for (let i = 0; i < height; ++i) {
 					if (data[((i * width + j) << 2) + 3] === 255) {
 						if (data[((i * width + j - width) << 2) + 3] !== 255 && i - last < 13) {
-							const g = ngroup[last * width + j];
+							const g = ngroup[last * width + j - 2];
 							if (g !== null)
 							for (let k = last + 1; k < i; ++k) {
 								data[((k * width + j) << 2) + 0] = g.r;
