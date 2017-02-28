@@ -221,8 +221,8 @@ const circleDragger =
 
                 d3.select(this)
                 .select('.fgrect')
-                .style('stroke', 'var(--color-blue-dark)')
-                .style('stroke-width', '5px');
+                .style('stroke', 'var(--color-blue-highlight)')
+                .style('stroke-width', '8px');
 
                 blocks.forEach((blk) => {
                     if (blk.name === d.data.name) {
@@ -239,8 +239,8 @@ const circleDragger =
 const myVue = {
     data() {
         return {
-            height: 300,
-            width: 250,
+            height: 280,
+            width: 220,
         };
     },
     computed: {

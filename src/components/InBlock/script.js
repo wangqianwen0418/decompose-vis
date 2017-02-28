@@ -1,19 +1,24 @@
 import draggable from 'vuedraggable';
-import { mapGetters, mapActions } from 'vuex';
-import { REMOVE_ITEM } from '../../store';
+import markv from '../mark';
+import { mapGetters, mapActions, mapState } from 'vuex';
+import { ADD_MARK } from '../../store';
 
 export default {
     computed: {
         ...mapGetters({
             block: 'selectedBlock',
         }),
+        ...mapState({
+            marksTemp: 'marksTemp',
+        }),
     },
     components: {
         draggable,
+        markv,
     },
     methods: {
         ...mapActions({
-            removeItem: REMOVE_ITEM,
+            addMark: ADD_MARK,
         }),
     },
 };

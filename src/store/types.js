@@ -1,5 +1,7 @@
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 export const REMOVE_CHANNEL = 'REMOVE_CHANNEL';
+export const ADD_MARK = 'ADD_MARK';
+export const REMOVE_MARK = 'REMOVE_MARK';
 export const SELECT_CHANNEL = 'SELECT_CHANNEL';
 export const EDIT_ELE = 'EDIT_ELE';
 export const EDIT_EXP = 'EDIT_EXP';

@@ -4,19 +4,23 @@
         <ul id='mark_list'>
             <div class='block'>{{block.name}}<hr/></div>
             <draggable :list="block.marks">
-                <li v-for='(mark, index) in block.marks'>
-                    <span class='mark'>{{mark.name}}</span>
-                    <i class="el-icon-close" />
-                    <ol id='channel_list'>
-                        <draggable :list="mark.channels">
-                            <li v-for="(channel, index) in mark.channels"
-                            v-if='!channel.removed'
-                            class='bg-purple'>
-                                <span class='channel'>{{channel.name}}</span>
-                                <i class="el-icon-close" @click="removeItem(channel)"/>
-                            </li>
-                        </draggable>
-                    </ol>
+             <markv v-if='!mark.removed' v-for='mark in block.marks' :mark='mark' >
+                </markv>
+                <li>
+                    <el-dropdown >
+                        <span class="el-dropdown-link">
+                            add another mark<i class="el-icon-caret-bottom el-icon--right"></i>
+                        </span>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item v-for='markTemp in marksTemp' >
+                                <span @click='addMark(markTemp)'>
+                                    {{markTemp.name}}
+                                </span>
+                            </el-dropdown-item>
+                            <!--<el-dropdown-item command="d">size</el-dropdown-item>-->
+                            <!--<el-dropdown-item command="e">shape</el-dropdown-item>-->
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </li>
             </draggable>
         </ul>
@@ -26,6 +30,6 @@
 
 <script src="./script.js"></script>
 
-<style scoped src="./style.css">
+<style src="./style.css">
 
 </style>
