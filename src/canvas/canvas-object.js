@@ -38,6 +38,7 @@ function Item(item) {
     this.y = y0;
     this.w = x1 - x0;
     this.h = y1 - y0;
+    this.a = 1;
     const w = this.w;
     const h = this.h;
 
@@ -47,15 +48,18 @@ function Item(item) {
         const data = canvas.data;
         const rw = 1.0 / w * this.w;
         const rh = 1.0 / h * this.h;
-        const color = this.color;
+        const r = this.color[0];
+        const g = this.color[1];
+        const b = this.color[2];
+        const a = this.color[3] * this.a;
         for (let i = 0; i < points.length; i += 2) {
             const x = ~~((points[i] - x0) * rw + this.x);
             const y = ~~((points[i] - y0) * rh + this.y);
             const index = (x + y * width) << 2;
-            data[index + 0] = color[0];
-            data[index + 1] = color[1];
-            data[index + 2] = color[2];
-            data[index + 3] = color[3];
+            data[index + 0] = r;
+            data[index + 1] = g;
+            data[index + 2] = b;
+            data[index + 3] = a;
         }
     };
     return this;
