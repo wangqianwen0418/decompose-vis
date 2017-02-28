@@ -1,7 +1,7 @@
 <template>
     <li >
             <span class='mark'>{{mark.name}}</span>
-            <i class="el-icon-close" @click='removeMark(mark)'/>
+            <i class="el-icon-close" @click='removeMark'/>
 
             <ol id='channel_list'>
                 <draggable :list="mark.channels">
