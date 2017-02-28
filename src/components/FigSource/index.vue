@@ -174,6 +174,99 @@ export default {
 				.style("top", `${y0 + offset.y(canvas)}px`)
 				.style("opacity", 1);
 		},
+		editorRender(event) {
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const canvas2 = document.getElementsByClassName('editorCanvas')[0];
+			const ctx2 = canvas2.getContext('2d');
+			canvas2.width = canvas.width;
+			canvas2.height = canvas.height;
+			const width = canvas.width;
+			const height = canvas.height;
+
+			const data = currentData.data;
+			if (this.activeBlock.name === 'overview') {
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 0] = 0;
+					data[(i << 2) + 1] = 0;
+					data[(i << 2) + 2] = 0;
+					data[(i << 2) + 3] = 0;
+				}
+				ctx.putImageData(currentData, 0, 0);
+				return;
+			} else {
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 0] = 0;
+					data[(i << 2) + 1] = 0;
+					data[(i << 2) + 2] = 0;
+					data[(i << 2) + 3] = 0;
+				}
+			}
+
+			function setPixel(index, r, g, b, a) {
+				data[(index << 2) + 0] = r;
+				data[(index << 2) + 1] = g;
+				data[(index << 2) + 2] = b;
+				data[(index << 2) + 3] = a;
+			}
+
+			for (const group of groups) {
+				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
+					const points = group.points;
+					for (let i = 0; i < points.length; i += 2) {
+						const x = points[i];
+						const y = points[i + 1];
+						setPixel(y * width + x, group.r, group.g, group.b, 255);
+						if (y > 0)
+							setPixel(y * width - width + x, group.r, group.g, group.b, 255);
+						if (y + 1 < height)
+							setPixel(y * width + width + x, group.r, group.g, group.b, 255);
+						if (x > 0)
+						setPixel(y * width + x - 1, group.r, group.g, group.b, 255);
+						if (x + 1 < width)
+						setPixel(y * width + x + 1, group.r, group.g, group.b, 255);
+					}
+				}
+			}
+			
+			// then make it smooth
+			for (let i = 0; i < height; ++i) {
+				let last = -width;
+				for (let j = 0; j < width; ++j) {
+					if (data[((i * width + j) << 2) + 3] === 255) {
+						if (data[((i * width + j - 1) << 2) + 3] !== 255 && j - last < 13) {
+							const g = ngroup[i * width + last];
+							if (g !== null)
+							for (let k = last + 1; k < j; ++k) {
+								data[((i * width + k) << 2) + 0] = g.r;
+								data[((i * width + k) << 2) + 1] = g.g;
+								data[((i * width + k) << 2) + 2] = g.b;
+								data[((i * width + k) << 2) + 3] = 255;
+							}
+						}
+						last = j;
+					}
+				}
+			}
+			for (let j = 0; j < width; ++j) {
+				let last = -height;
+				for (let i = 0; i < height; ++i) {
+					if (data[((i * width + j) << 2) + 3] === 255) {
+						if (data[((i * width + j - width) << 2) + 3] !== 255 && i - last < 13) {
+							const g = ngroup[last * width + j];
+							if (g !== null)
+							for (let k = last + 1; k < i; ++k) {
+								data[((k * width + j) << 2) + 0] = g.r;
+								data[((k * width + j) << 2) + 1] = g.g;
+								data[((k * width + j) << 2) + 2] = g.b;
+								data[((k * width + j) << 2) + 3] = 255;
+							}
+						}
+						last = i;
+					}
+				}
+			}
+			ctx2.putImageData(currentData, 0, 0);
+		},
 		canvasRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
@@ -429,7 +522,7 @@ export default {
 				}
 				console.info(`click time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 			}
-
+			this.editorRender(event);
 		},
 		onMousemove(event) {
 			const start_time = new Date();
