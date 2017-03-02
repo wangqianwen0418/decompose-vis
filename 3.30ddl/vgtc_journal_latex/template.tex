@@ -102,7 +102,7 @@
 
 %% Keywords that describe your work. Will show as 'Index Terms' in journal
 %% please capitalize first letter and insert punctuation after last keyword
-\keywords{Radiosity, global illumination, constant time}
+\keywords{Narrative visualization, visual encoding explanation, }
 
 %% ACM Computing Classification System (CCS). 
 %% See <http://www.acm.org/class/1998/> for details.
@@ -118,7 +118,7 @@
 \teaser{
   \centering
   \includegraphics[width=\linewidth]{CypressView}
-  \caption{In the Clouds: Vancouver from Cypress Mountain. Note that the teaser may not be wider than the abstract block.}
+  \caption{we don't have the system , we have nothing to add here at this time point}
 	\label{fig:teaser}
 }
 
@@ -174,7 +174,36 @@ The extensive needs of data communication exist not only in the data visualizati
 User experience is of great concern when utilising an authoring tool. Sketch story \cite{lee_sketchstory:_2013}, with its freeform sketch interaction, provides a more engaging way to create and present narrative visualization. Dataclips \cite{amini_authoring_2017}lower the barrier of crafting narrative visualization by providing a library of data clips, allowing non-experts to be involved in the production of narrative visualization. \par
 However, it is the information delivery that is the core consideration of an authoring tool. Existing authoring tools usually choose a specific type of narrative visualization based on the information they want to convey.\cite{amini_authoring_2017}Meanwhile, integrating an authoring tool for narrative visualization with a  data analysis tool has become a trend since it effectively bridges the gap between data analysis and data communication. \cite{eccles_stories_2007,bryan_temporal_2016,lee_more_2015}\par 
 These tools offer inspiring user interaction design as well as good examples to implement narrative visualization. However, they treat visual encodings as cognitively obvious attributes that can be universally and immediately recognized without a formal introduction, making them inapplicable for our purpose. \par
-\section{}
+\section{Analysis of a visualization}
+To better inform the crafting of a narrative explanation, we survey more than 60 papers about data visualization design that published in journals with high impact and have high citations. Based on our survey, we propose a model that try to decompose the structure of an advanced visualization, as well as to identify correlations and visual distractions existing between different compositions. At the same time, combining with the work from other fields such as HCI, object perception, human visual attention and learning process, we put forward some suggestions for the design of narrative visualization explanation. \par
+\subsection{Compositions of a visualization}
+\subsubsection{Hierarchical structure}
+Based on our survey of more than 60 papers, we propose a model that decomposes a visualization into three levels of structure: visual primitives, visual units, and then an advanced visualization design. A visual primitive is one graphic element, also called as mark\cite{munzner_visualization_2014}, with all the visual channels controlling its appearance. A visual unit is the combination of visual primitives. It is also the smallest functional unit of a visualization.  And an advanced visualization is the combination of visual units. \parFor instance, a point whose position and color are encoded is a visual primitive. It is the combination of one mark, point, with two visual channels, color and position. A scatter plot, which groups such points, is a visual unit. A node-link diagram, which is also a visual unit, is consist of two visual primitives, points mentioned above and lines whose position and color are encoded. \par
+\subsubsection{Correlations between visual units}
+In our model, we define three types of relationship between visual units: logic independency, logic dependency, and enhancement. \parLogic independency: it means two visual units have no correlations at all. However, this is rarely the case in an advanced data visualization design.Logic dependency: if two visual units have logic dependency, it means they share some encoding scheme. Thus, it will be better if we pair them up in a narrative explanation. According to our survey, color and positon are the most commonly shared visual encodings.  This might be result that color and position usually encoded with simple while fundamental information. \parEnhancement: if one visual unit A is the enhancement of another visual unit B, it means that A is imported to replace some visual primitives in B, thus enriching the information B conveys. Some typical examples are the heat map mapped upon the steams in a theme river\cite{wu_opinionseer:_2010}  and usage of glyph to enhance the meaning of nodes in a multidimensional scaling plot.\cite{chen_peakvizor:_2016}\par
+\subsubsection{Correlations between visual primitives}
+The inner relationship between visual primitives is relatively simple.\parIn our survey, there is no visual units that have more than 2 visual primitives. And the relationship between the 2 visual primitives, if there are two, are quite obvious. The encoding of one primitive always has high dependency on the encoding of another primitive. For example, in a chord diagram, the encoding of the arcs should be explained before the line connecting them. \par
+\subsubsection{Correlations between visual channels}
+The relationship between channels might be the most complicated relationship in our model. \parSince different channels are encoded with different information, they are usually separated and have no logic dependency upon others. But can we just explain them in a random order?Of course not.\parTherefore, we define two metrics to order the explaining of visual channels: complexity of their encoded information and saliency of their visual appearance.\parFirst, a proper explanation should follow the order of decreasing visual saliency. Even though different channels have intrinsically different perceptual salience and channel with high salience will suppress the expression of other, such salience strength can be influenced in a task-dependent manner. \cite{nothdurft_salience_2000} By introducing the channel with high saliency first, we remove it from the task list in our mind, decrease its saliency and give other channels more chance to attract limited human attention. \par Second, we should follow the order of increasing complexity. “easy to difficult” practice has been long used and confirmed to be effective for learning new tasks\cite{bliss_effects_1992}.\par Based on our survey, there are four common visual channels: color, size, position, shape. Sorted in the increasing complexity order, it is color-positon-size-shape, while sorted in the decreasing visual saliency order, it is position-color-size-shape\cite{munzner_visualization_2014}.  \parIn our system, we choose position-color-size-shape as a trade-off between these two metrics. But we do recommend the users to define their own preferable sequence according to their situation. \par\subsection{Analysis of existing visual distraction}
+From our observation, we identify two kinds of visual distractions: visual distraction from context and visual distraction from sibling channels, namely, the channels of the same mark. \par\textbf{Visual distraction from context}: Its intensity is determined by spatial distance and appearance similarity. This kind of distraction has been widely discussed in the field of object detection and human visual attention.  Focus + Context, which might be the most popular techniques for this problem, make uneven use of graphic resource to discriminate focus from their context. At the same time, adding dynamic changes to focus elements has also been demonstrated as effective under various conditions\cite{waldner_attractive_2014}. \par\textbf{Visual distraction from sibling channels}: A visual primitive usually has more than one visual channels. Thus, when recognizing one primitive, the channels with high visual saliency can significantly influence the expression of other channels. For example, color can be a strong visual distractor when people want to focus on the shape.\par
+\subsection{Design consideration of narrative sequence}
+\textbf{Channels}: As discussed in section 3.1.4, when explaining channels, we should take information complexity as well as visual saliency into account. \parAs for one channel, the narrative explanation depends on the type of the channel, namely, whether it is a magnitude channel, which expresses ordered data attributes, or a identify channel, which expresses category data attributes. For a magnitude channel, two extreme examples will be enough for explaining, while for an ordered channel, introducing each category one by one.\par\textbf{Units}: As discussed in section 3.1.2, two relationships, logic dependency and enhancement, will influence the order of a narrative explanation. Thus, we express correlations of units in a tree diagram where a child node is the enhancement of its parent and sibling nodes have logic dependency. When explaining these visual units, we can simply obey a deep first search (DFS) order to visit all the visual units.\par\textbf{Non-linear sequence}: so far, all the narrative explanation we discussed is linear. We move from one channel to another channel, then from one primitive to another primitive, then from one unit to another unit. However, the fact is that no one likes to read a prolonged, extremely detailed instruction. A good narrative explanation should include non-linear design, allowing users to skip uninterested, go back to previous information and freely switch between different parts. \par
+\section{Narvis: An Authoring tool for Crafting Narrative Explanation}
+\subsection{Design tasks}
+\subsection{Figure decomposition and text detection}
+\subsection{Animation and Reminder}
+\subsection{Library of explanation templates}
+\subsubsection{methodology}
+\subsubsection{Visualization type and Animation implemented}
+\subsubsection{coverage}
+\subsection{User interface}
+
+\section{Evaluation}
+
+\section{Limitation and Discussion}
+
+\section{Conclusion and Future Work}
+
 \section{Bibliography Instructions}
 
 \begin{itemize}
@@ -402,7 +431,6 @@ invidunt ut labore et dolore magna aliquyam erat, sed diam
 voluptua. At vero eos et accusam et justo duo dolores et ea
 rebum.
 \cite{borkin_what_2013,dunne_rapid_2012}
-
 %% if specified like this the section will be committed in review mode
 \acknowledgments{
 The authors wish to thank A, B, C. This work was supported in part by

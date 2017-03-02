@@ -3,12 +3,23 @@
 \BOOKMARK [2][]{subsection.4}{Structure of Narrative Data Visualization}{section.3}% 3
 \BOOKMARK [2][]{subsection.5}{Animation for data visualization}{section.3}% 4
 \BOOKMARK [2][]{subsection.6}{Authoring tools for narrative visualization}{section.3}% 5
-\BOOKMARK [1][]{section.7}{}{}% 6
-\BOOKMARK [1][]{section.8}{Bibliography Instructions}{}% 7
-\BOOKMARK [1][]{section.9}{Example Section}{}% 8
-\BOOKMARK [1][]{section.10}{Exposition}{}% 9
-\BOOKMARK [2][]{subsection.12}{Lorem ipsum}{section.10}% 10
-\BOOKMARK [2][]{subsection.14}{Mezcal Head}{section.10}% 11
-\BOOKMARK [3][-]{subsubsection.15}{Duis Autem}{subsection.14}% 12
-\BOOKMARK [3][-]{subsubsection.17}{Ejector Seat Reservation}{subsection.14}% 13
-\BOOKMARK [1][]{section.22}{Conclusion}{}% 14
+\BOOKMARK [1][]{section.7}{Analysis of a visualization}{}% 6
+\BOOKMARK [2][]{subsection.8}{Compositions of a visualization}{section.7}% 7
+\BOOKMARK [3][-]{subsubsection.9}{Hierarchical structure}{subsection.8}% 8
+\BOOKMARK [3][-]{subsubsection.10}{Correlations between visual units}{subsection.8}% 9
+\BOOKMARK [3][-]{subsubsection.11}{Correlations between visual primitives}{subsection.8}% 10
+\BOOKMARK [3][-]{subsubsection.12}{Correlations between visual channels}{subsection.8}% 11
+\BOOKMARK [2][]{subsection.13}{Analysis of existing visual distraction}{section.7}% 12
+\BOOKMARK [2][]{subsection.14}{Design consideration of narrative sequence}{section.7}% 13
+\BOOKMARK [1][]{section.15}{Narvis: An Authoring tool for Crafting Narrative Explanation}{}% 14
+\BOOKMARK [2][]{subsection.16}{Design tasks}{section.15}% 15
+\BOOKMARK [2][]{subsection.17}{Figure decomposition and text detection}{section.15}% 16
+\BOOKMARK [2][]{subsection.18}{Animation and Reminder}{section.15}% 17
+\BOOKMARK [2][]{subsection.19}{Library of explanation templates}{section.15}% 18
+\BOOKMARK [3][-]{subsubsection.20}{methodology}{subsection.19}% 19
+\BOOKMARK [3][-]{subsubsection.21}{Visualization type and Animation implemented}{subsection.19}% 20
+\BOOKMARK [3][-]{subsubsection.22}{coverage}{subsection.19}% 21
+\BOOKMARK [2][]{subsection.23}{User interface}{section.15}% 22
+\BOOKMARK [1][]{section.24}{Evaluation}{}% 23
+\BOOKMARK [1][]{section.25}{Limitation and Discussion}{}% 24
+\BOOKMARK [1][]{section.26}{Conclusion and Future Work}{}% 25

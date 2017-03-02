@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.9.14)  1 MAR 2017 16:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.9.14)  2 MAR 2017 21:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -375,7 +375,7 @@ Package hyperref Info: Option `breaklinks' set `true' on input line 132.
 Package hyperref Info: Option `colorlinks' set `false' on input line 132.
 Package hyperref Info: Option `nesting' set `true' on input line 132.
 Package hyperref Info: Option `linktocpage' set `true' on input line 132.
-(/Users/wangqianwen/Desktop/3.30ddl/vgtc_journal_latex/.texpadtmp/template.aux)
+(/Users/wangqianwen/Desktop/coding-train/vis17/3.30ddl/vgtc_journal_latex/.texpadtmp/template.aux)
 \openout1 = `template.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 138.
@@ -451,7 +451,7 @@ Package: gettitlestring 2016/05/16 v1.5 Cleanup title references (HO)
 LaTeX Info: Redefining \ref on input line 138.
 LaTeX Info: Redefining \pageref on input line 138.
 LaTeX Info: Redefining \nameref on input line 138.
- (/Users/wangqianwen/Desktop/3.30ddl/vgtc_journal_latex/.texpadtmp/template.out) (/Users/wangqianwen/Desktop/3.30ddl/vgtc_journal_latex/.texpadtmp/template.out)
+ (/Users/wangqianwen/Desktop/coding-train/vis17/3.30ddl/vgtc_journal_latex/.texpadtmp/template.out) (/Users/wangqianwen/Desktop/coding-train/vis17/3.30ddl/vgtc_journal_latex/.texpadtmp/template.out)
 \@outlinefile=\write3
 \openout3 = `template.out'.
 
@@ -492,14 +492,14 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <10> not available
 (Font)              Font shape `OT1/phv/m/sl' tried instead on input line 145.
 \abstractwidth=\skip53
- <pictures/CypressView.jpg, id=60, 1260.71pt x 497.86pt>
+ <pictures/CypressView.jpg, id=104, 1260.71pt x 497.86pt>
 File: pictures/CypressView.jpg Graphic file (type jpg)
  <use pictures/CypressView.jpg>
 Package pdftex.def Info: pictures/CypressView.jpg used on input line 145.
 (pdftex.def)             Requested size: 467.22528pt x 184.50919pt.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <8> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 145.
- <diamondrule.pdf, id=61, 213.79875pt x 12.045pt>
+ <diamondrule.pdf, id=105, 213.79875pt x 12.045pt>
 File: diamondrule.pdf Graphic file (type pdf)
  <use diamondrule.pdf>
 Package pdftex.def Info: diamondrule.pdf used on input line 145.
@@ -564,78 +564,46 @@ Missing character: There is no ú in font ptmr7t!
 Missing character: There is no ‚ in font ptmr7t!
 Missing character: There is no Ä in font ptmr7t!
 Missing character: There is no ù in font ptmr7t!
+ [2]
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ú in font ptmr7t!
+Missing character: There is no ‚ in font ptmr7t!
+Missing character: There is no Ä in font ptmr7t!
+Missing character: There is no ù in font ptmr7t!
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 175.
-
-
-LaTeX Warning: Citation `' on page 2 undefined on input line 175.
-
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 181.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 193.
-(/usr/local/texlive/2016/texmf-dist/tex/latex/psnfss/omsptm.fd
-File: omsptm.fd 
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <9> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 193.
-
-Underfull \hbox (badness 10000) in paragraph at lines 200--201
-[]\OT1/ptm/m/n/9 (+20) abbreviated pro-ceed-ings name: e.g., ``Proc.\OMS/cmsy/m/n/9 n
- []
-
-
-Underfull \hbox (badness 7649) in paragraph at lines 200--201
-\OT1/ptm/m/n/9 (+20) CONF[]ACRONYNM'' with-out the year; ex-am-ple:
- []
-
-
-Underfull \hbox (badness 4454) in paragraph at lines 205--206
-[]\OT1/ptm/m/n/9 (+20) article/paper ti-tle con-ven-tion: re-frain from us-ing curly
- []
-
-[2] <pictures/paper-count-w-2015-new.pdf, id=151, 832.35068pt x 451.25789pt>
-File: pictures/paper-count-w-2015-new.pdf Graphic file (type pdf)
- <use pictures/paper-count-w-2015-new.pdf>
-Package pdftex.def Info: pictures/paper-count-w-2015-new.pdf used on input line 352.
-(pdftex.def)             Requested size: 251.31898pt x 136.25288pt.
- [3] (/Users/wangqianwen/Desktop/3.30ddl/vgtc_journal_latex/.texpadtmp/template.bbl
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [4 <./pictures/paper-count-w-2015-new.pdf>]
-Underfull \hbox (badness 1189) in paragraph at lines 376--385
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 203.
+ (/Users/wangqianwen/Desktop/coding-train/vis17/3.30ddl/vgtc_journal_latex/.texpadtmp/template.bbl [3]
+Underfull \hbox (badness 1189) in paragraph at lines 315--324
 []\OT1/ptm/m/n/8 (+20) J. Zhao, N. Cao, Z. Wen, Y. Song, Y. R. Lin, and C. Collins.
  []
 
 )
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 418.
- [5
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 239.
+ [4
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 418.
- (/Users/wangqianwen/Desktop/3.30ddl/vgtc_journal_latex/.texpadtmp/template.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 418.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 418.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 239.
+ (/Users/wangqianwen/Desktop/coding-train/vis17/3.30ddl/vgtc_journal_latex/.texpadtmp/template.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 239.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 239.
 Package rerunfilecheck Info: File `template.out' has not changed.
-(rerunfilecheck)             Checksum: 63C246D2611FB46544BC21FA101BB47C;845.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 418.
+(rerunfilecheck)             Checksum: 6C13D4F31BE7E95B5B2876B4B0E9AC1B;2337.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 239.
  ) 
 Here is how much of TeX's memory you used:
- 8765 strings out of 493014
- 134581 string characters out of 6133351
- 264222 words of memory out of 5000000
- 11854 multiletter control sequences out of 15000+600000
- 64426 words of font info for 258 fonts, out of 8000000 for 9000
+ 8611 strings out of 493014
+ 132888 string characters out of 6133351
+ 255787 words of memory out of 5000000
+ 11746 multiletter control sequences out of 15000+600000
+ 48845 words of font info for 217 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 33i,12n,38p,928b,446s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on /Users/wangqianwen/Desktop/3.30ddl/vgtc_journal_latex/.texpadtmp/template.pdf (5 pages, 677796 bytes).
+ 33i,7n,38p,928b,446s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on /Users/wangqianwen/Desktop/coding-train/vis17/3.30ddl/vgtc_journal_latex/.texpadtmp/template.pdf (4 pages, 623741 bytes).
 PDF statistics:
- 249 PDF objects out of 1000 (max. 8388607)
+ 241 PDF objects out of 1000 (max. 8388607)
  224 compressed objects within 3 object streams
- 66 named destinations out of 1000 (max. 500000)
- 55424 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 63 named destinations out of 1000 (max. 500000)
+ 47315 words of extra memory for PDF output out of 51595 (max. 10000000)
 

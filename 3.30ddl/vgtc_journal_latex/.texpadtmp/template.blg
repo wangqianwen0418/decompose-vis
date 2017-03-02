@@ -7,14 +7,6 @@ Database file #1: ../template.bib
 Warning--entry type for "schmidt_living_2017" isn't style-file defined
 --line 681 of file ../template.bib
 Database file #2: ../ref.bib
-Repeated entry---line 9 of file ../ref.bib
- : @article{dunne_rapid_2012
- :                          ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 79 of file ../ref.bib
- : @article{borkin_what_2013
- :                          ,
-I'm skipping whatever remains of this entry
 Repeated entry---line 94 of file ../ref.bib
  : @article{bryan_temporal_2016
  :                             ,
@@ -26,10 +18,6 @@ I'm skipping whatever remains of this entry
 Repeated entry---line 203 of file ../ref.bib
  : @article{kosara_storytelling:_2013
  :                                   ,
-I'm skipping whatever remains of this entry
-Repeated entry---line 261 of file ../ref.bib
- : @article{isenberg_visualization_2017
- :                                     ,
 I'm skipping whatever remains of this entry
 Repeated entry---line 276 of file ../ref.bib
  : @article{amini_authoring_2017
@@ -107,24 +95,23 @@ Repeated entry---line 827 of file ../ref.bib
  : @article{ruchikachorn_learning_2015
  :                                    ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for ""
+Warning--entry type for "bliss_effects_1992" isn't style-file defined
+--line 914 of file ../ref.bib
 Warning--empty year in amini_understanding_2015
 Warning--empty journal in amini_authoring_2017
 Warning--empty year in amini_authoring_2017
 Warning--empty journal in bach_graphdiaries:_2014
 Warning--empty year in bach_graphdiaries:_2014
-Warning--empty journal in borkin_what_2013
-Warning--empty year in borkin_what_2013
 Warning--empty journal in bryan_temporal_2016
 Warning--empty year in bryan_temporal_2016
 Warning--empty journal in cao_whisper:_2012
 Warning--empty year in cao_whisper:_2012
+Warning--empty journal in chen_peakvizor:_2016
+Warning--empty year in chen_peakvizor:_2016
 Warning--empty journal in chi_morphable_2015
 Warning--empty year in chi_morphable_2015
 Warning--empty journal in cohn_visual_2013
 Warning--empty year in cohn_visual_2013
-Warning--empty journal in dunne_rapid_2012
-Warning--empty year in dunne_rapid_2012
 Warning--empty year in eccles_stories_2007
 Warning--empty journal in gershon_what_2001
 Warning--empty year in gershon_what_2001
@@ -135,8 +122,6 @@ Warning--empty journal in hullman_deeper_2013
 Warning--empty year in hullman_deeper_2013
 Warning--empty journal in huron_visual_2013
 Warning--empty year in huron_visual_2013
-Warning--empty journal in isenberg_visualization_2017
-Warning--empty year in isenberg_visualization_2017
 Warning--empty journal in kosara_storytelling:_2013
 Warning--empty year in kosara_storytelling:_2013
 Warning--empty journal in lee_sketchstory:_2013
@@ -144,6 +129,8 @@ Warning--empty year in lee_sketchstory:_2013
 Warning--empty journal in lee_more_2015
 Warning--empty year in lee_more_2015
 Warning--empty year in munzner_visualization_2014
+Warning--empty journal in nothdurft_salience_2000
+Warning--empty year in nothdurft_salience_2000
 Warning--empty journal in robertson_effectiveness_2008
 Warning--empty year in robertson_effectiveness_2008
 Warning--empty journal in ruchikachorn_learning_2015
@@ -157,47 +144,49 @@ Warning--empty year in waldner_attractive_2014
 Warning--empty year in wang_animated_2016
 Warning--empty journal in wu_opinionflow:_2014
 Warning--empty year in wu_opinionflow:_2014
+Warning--empty journal in wu_opinionseer:_2010
+Warning--empty year in wu_opinionseer:_2010
 Warning--empty journal in zhao_x0023;fluxflow:_2014
 Warning--empty year in zhao_x0023;fluxflow:_2014
-You've used 36 entries,
+You've used 30 entries,
             2598 wiz_defined-function locations,
-            826 strings with 11135 characters,
-and the built_in function-call counts, 37875 in all, are:
-= -- 8484
-> -- 736
-< -- 1412
-+ -- 1704
-- -- 286
-* -- 1369
-:= -- 5429
-add.period$ -- 111
-call.type$ -- 36
-change.case$ -- 234
+            775 strings with 9817 characters,
+and the built_in function-call counts, 32609 in all, are:
+= -- 7320
+> -- 626
+< -- 1226
++ -- 1470
+- -- 243
+* -- 1178
+:= -- 4649
+add.period$ -- 91
+call.type$ -- 30
+change.case$ -- 197
 chr.to.int$ -- 0
-cite$ -- 87
-duplicate$ -- 446
-empty$ -- 1051
-format.name$ -- 254
-if$ -- 9980
+cite$ -- 81
+duplicate$ -- 373
+empty$ -- 905
+format.name$ -- 216
+if$ -- 8602
 int.to.chr$ -- 0
-int.to.str$ -- 36
-missing$ -- 34
-newline$ -- 365
-num.names$ -- 70
-pop$ -- 295
+int.to.str$ -- 30
+missing$ -- 29
+newline$ -- 311
+num.names$ -- 60
+pop$ -- 271
 preamble$ -- 1
-purify$ -- 200
+purify$ -- 168
 quote$ -- 0
-skip$ -- 295
+skip$ -- 248
 stack$ -- 0
-substring$ -- 2486
-swap$ -- 61
-text.length$ -- 775
+substring$ -- 2172
+swap$ -- 49
+text.length$ -- 669
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 142
+type$ -- 118
 warning$ -- 51
-while$ -- 201
-width$ -- 38
-write$ -- 1206
-(There were 25 error messages)
+while$ -- 172
+width$ -- 32
+write$ -- 1021
+(There were 22 error messages)

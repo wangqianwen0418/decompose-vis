@@ -35,17 +35,10 @@ B.~Bach, E.~Pietriga, and J.~D. Fekete.
 }{.}\hspace{.4pt}254}}
 
 
-\bibitem{borkin_what_2013}
-M.~A. Borkin, A.~A. Vo, Z.~Bylinskii, P.~Isola, S.~Sunkavalli, A.~Oliva, and
-  H.~Pfister.
-\newblock What makes a visualization memorable?
-\newblock 19(12):2306--2315. doi: {{%
-10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1109\discretionary{/}{%
-}{/}TVCG\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}2013\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}234}}
-
+\bibitem{bliss_effects_1992}
+J.~P. Bliss, D.~R. Lampton, and J.~A. Boldovici.
+\newblock The effects of easy-to-difficult, difficult-only, and
+  mixed-difficulty practice on performance of simulated gunnery tasks.
 
 \bibitem{bryan_temporal_2016}
 C.~Bryan, K.~L. Ma, and J.~Woodring.
@@ -71,6 +64,18 @@ N.~Cao, Y.~R. Lin, X.~Sun, D.~Lazer, S.~Liu, and H.~Qu.
 }{.}\hspace{.4pt}291}}
 
 
+\bibitem{chen_peakvizor:_2016}
+Q.~Chen, Y.~Chen, D.~Liu, C.~Shi, Y.~Wu, and H.~Qu.
+\newblock {PeakVizor}: Visual analytics of peaks in video clickstreams from
+  massive open online courses.
+\newblock 22(10):2315--2330. doi: {{%
+10\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}1109\discretionary{/}{%
+}{/}TVCG\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2015\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2505305}}
+
+
 \bibitem{chi_morphable_2015}
 M.~T. Chi, S.~S. Lin, S.~Y. Chen, C.~H. Lin, and T.~Y. Lee.
 \newblock Morphable word clouds for time-varying text data visualization.
@@ -90,17 +95,6 @@ N.~Cohn.
 }{.}\hspace{.4pt}1111\discretionary{/}{%
 }{/}cogs\hspace{.1pt}\discretionary{.}{%
 }{.}\hspace{.4pt}12016}}
-
-
-\bibitem{dunne_rapid_2012}
-C.~Dunne, B.~Shneiderman, R.~Gove, J.~Klavans, and B.~Dorr.
-\newblock Rapid understanding of scientific paper collections: Integrating
-  statistics, text analytics, and visualization.
-\newblock 63(12):2351--2369. doi: {{%
-10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1002\discretionary{/}{%
-}{/}asi\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}22652}}
 
 
 \bibitem{eccles_stories_2007}
@@ -170,42 +164,6 @@ S.~Huron, R.~Vuillemot, and J.~D. Fekete.
 }{.}\hspace{.4pt}227}}
 
 
-\bibitem{Isenberg:2017:VMC}
-P.~Isenberg, F.~Heimerl, S.~Koch, T.~Isenberg, P.~Xu, C.~Stolper, M.~Sedlmair,
-  J.~Chen, T.~M{\"o}ller, and J.~Stasko.
-\newblock {vispubdata.org: A Metadata Collection about {IEEE} Visualization
-  ({VIS}) Publications}.
-\newblock {\em IEEE Transactions on Visualization and Computer Graphics}, 23,
-  2017.
-\newblock To appear. doi: {{%
-10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1109\discretionary{/}{%
-}{/}TVCG\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}2016\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}2615308}}
-
-
-\bibitem{isenberg_visualization_2017}
-P.~Isenberg, T.~Isenberg, M.~Sedlmair, J.~Chen, and T.~M?ller.
-\newblock Visualization as seen through its research paper keywords.
-\newblock 23(1):771--780. doi: {{%
-10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1109\discretionary{/}{%
-}{/}TVCG\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}2016\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}2598827}}
-
-
-\bibitem{Kindlmann:1999:SAG}
-G.~Kindlmann.
-\newblock Semi-automatic generation of transfer functions for direct volume
-  rendering.
-\newblock Master's thesis, Cornell University, USA, 1999.
-
-\bibitem{Kitware:2003}
-Kitware, Inc.
-\newblock {\em The Visualization Toolkit User's Guide}, January 2003.
-
 \bibitem{kosara_storytelling:_2013}
 R.~Kosara and J.~Mackinlay.
 \newblock Storytelling: The next step for visualization.
@@ -241,44 +199,23 @@ B.~Lee, N.~H. Riche, P.~Isenberg, and S.~Carpendale.
 }{.}\hspace{.4pt}99}}
 
 
-\bibitem{Lorensen:1987:MCA}
-W.~E. Lorensen and H.~E. Cline.
-\newblock Marching cubes: A high resolution {3D} surface construction
-  algorithm.
-\newblock {\em SIGGRAPH Computer Graphics}, 21(4):163--169, Aug. 1987. doi: {{%
-10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1145\discretionary{/}{%
-}{/}37402\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}37422}}
-
-
-\bibitem{Max:1995:OMF}
-N.~Max.
-\newblock Optical models for direct volume rendering.
-\newblock {\em IEEE Transactions on Visualization and Computer Graphics},
-  1(2):99--108, June 1995. doi: {{%
-10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1109\discretionary{/}{%
-}{/}2945\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}468400}}
-
-
 \bibitem{munzner_visualization_2014}
 T.~Munzner.
 \newblock {\em Visualization Analysis and Design}.
 \newblock {CRC} Press.
 \newblock Google-Books-{ID}: {dznSBQAAQBAJ}.
 
-\bibitem{Nielson:1991:TAD}
-G.~M. Nielson and B.~Hamann.
-\newblock The asymptotic decider: Removing the ambiguity in marching cubes.
-\newblock In {\em Proc.\ Visualization}, pp. 83--91. IEEE Computer Society, Los
-  Alamitos, 1991. doi: {{%
+\bibitem{nothdurft_salience_2000}
+H.-C. Nothdurft.
+\newblock Salience from feature contrast: variations with texture density.
+\newblock 40(23):3181--3200. doi: {{%
 10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1109\discretionary{/}{%
-}{/}VISUAL\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1991\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}175782}}
+}{.}\hspace{.4pt}1016\discretionary{/}{%
+}{/}S0042\discretionary{%
+}{-}{-}6989\discretionary{%
+}{(}{(}00\discretionary{)}{%
+}{)}00168\discretionary{%
+}{-}{-}1}}
 
 
 \bibitem{robertson_effectiveness_2008}
@@ -363,13 +300,15 @@ Y.~Wu, S.~Liu, K.~Yan, M.~Liu, and F.~Wu.
 }{.}\hspace{.4pt}2346920}}
 
 
-\bibitem{Wyvill:1986:DSS}
-G.~Wyvill, C.~McPheeters, and B.~Wyvill.
-\newblock Data structure for \emph{soft} objects.
-\newblock {\em The Visual Computer}, 2(4):227--234, Aug. 1986. doi: {{%
+\bibitem{wu_opinionseer:_2010}
+Y.~Wu, F.~Wei, S.~Liu, N.~Au, W.~Cui, H.~Zhou, and H.~Qu.
+\newblock {OpinionSeer}: Interactive visualization of hotel customer feedback.
+\newblock 16(6):1109--1118. doi: {{%
 10\hspace{.1pt}\discretionary{.}{%
-}{.}\hspace{.4pt}1007\discretionary{/}{%
-}{/}BF01900346}}
+}{.}\hspace{.4pt}1109\discretionary{/}{%
+}{/}TVCG\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2010\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}183}}
 
 
 \bibitem{zhao_x0023;fluxflow:_2014}

@@ -107,7 +107,8 @@ Repeated entry---line 827 of file ref.bib
  : @article{ruchikachorn_learning_2015
  :                                    ,
 I'm skipping whatever remains of this entry
-Warning--I didn't find a database entry for ""
+Warning--entry type for "bliss_effects_1992" isn't style-file defined
+--line 914 of file ref.bib
 Warning--empty year in amini_understanding_2015
 Warning--empty journal in amini_authoring_2017
 Warning--empty year in amini_authoring_2017
@@ -119,6 +120,8 @@ Warning--empty journal in bryan_temporal_2016
 Warning--empty year in bryan_temporal_2016
 Warning--empty journal in cao_whisper:_2012
 Warning--empty year in cao_whisper:_2012
+Warning--empty journal in chen_peakvizor:_2016
+Warning--empty year in chen_peakvizor:_2016
 Warning--empty journal in chi_morphable_2015
 Warning--empty year in chi_morphable_2015
 Warning--empty journal in cohn_visual_2013
@@ -144,6 +147,8 @@ Warning--empty year in lee_sketchstory:_2013
 Warning--empty journal in lee_more_2015
 Warning--empty year in lee_more_2015
 Warning--empty year in munzner_visualization_2014
+Warning--empty journal in nothdurft_salience_2000
+Warning--empty year in nothdurft_salience_2000
 Warning--empty journal in robertson_effectiveness_2008
 Warning--empty year in robertson_effectiveness_2008
 Warning--empty journal in ruchikachorn_learning_2015
@@ -157,47 +162,49 @@ Warning--empty year in waldner_attractive_2014
 Warning--empty year in wang_animated_2016
 Warning--empty journal in wu_opinionflow:_2014
 Warning--empty year in wu_opinionflow:_2014
+Warning--empty journal in wu_opinionseer:_2010
+Warning--empty year in wu_opinionseer:_2010
 Warning--empty journal in zhao_x0023;fluxflow:_2014
 Warning--empty year in zhao_x0023;fluxflow:_2014
-You've used 36 entries,
+You've used 40 entries,
             2598 wiz_defined-function locations,
-            825 strings with 11118 characters,
-and the built_in function-call counts, 37875 in all, are:
-= -- 8484
-> -- 736
-< -- 1412
-+ -- 1704
-- -- 286
-* -- 1369
-:= -- 5429
-add.period$ -- 111
-call.type$ -- 36
-change.case$ -- 234
+            847 strings with 11950 characters,
+and the built_in function-call counts, 41991 in all, are:
+= -- 9396
+> -- 832
+< -- 1562
++ -- 1893
+- -- 323
+* -- 1527
+:= -- 6018
+add.period$ -- 122
+call.type$ -- 40
+change.case$ -- 263
 chr.to.int$ -- 0
-cite$ -- 87
-duplicate$ -- 446
-empty$ -- 1051
-format.name$ -- 254
-if$ -- 9980
+cite$ -- 97
+duplicate$ -- 486
+empty$ -- 1164
+format.name$ -- 288
+if$ -- 11057
 int.to.chr$ -- 0
-int.to.str$ -- 36
-missing$ -- 34
-newline$ -- 365
-num.names$ -- 70
-pop$ -- 295
+int.to.str$ -- 40
+missing$ -- 37
+newline$ -- 404
+num.names$ -- 78
+pop$ -- 334
 preamble$ -- 1
-purify$ -- 200
+purify$ -- 225
 quote$ -- 0
-skip$ -- 295
+skip$ -- 323
 stack$ -- 0
-substring$ -- 2486
-swap$ -- 61
-text.length$ -- 775
+substring$ -- 2753
+swap$ -- 62
+text.length$ -- 856
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 142
-warning$ -- 51
-while$ -- 201
-width$ -- 38
-write$ -- 1206
+type$ -- 158
+warning$ -- 57
+while$ -- 221
+width$ -- 42
+write$ -- 1332
 (There were 25 error messages)

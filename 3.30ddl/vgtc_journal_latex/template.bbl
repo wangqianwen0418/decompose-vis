@@ -35,6 +35,11 @@ B.~Bach, E.~Pietriga, and J.~D. Fekete.
 }{.}\hspace{.4pt}254}}
 
 
+\bibitem{bliss_effects_1992}
+J.~P. Bliss, D.~R. Lampton, and J.~A. Boldovici.
+\newblock The effects of easy-to-difficult, difficult-only, and
+  mixed-difficulty practice on performance of simulated gunnery tasks.
+
 \bibitem{borkin_what_2013}
 M.~A. Borkin, A.~A. Vo, Z.~Bylinskii, P.~Isola, S.~Sunkavalli, A.~Oliva, and
   H.~Pfister.
@@ -69,6 +74,18 @@ N.~Cao, Y.~R. Lin, X.~Sun, D.~Lazer, S.~Liu, and H.~Qu.
 }{/}TVCG\hspace{.1pt}\discretionary{.}{%
 }{.}\hspace{.4pt}2012\hspace{.1pt}\discretionary{.}{%
 }{.}\hspace{.4pt}291}}
+
+
+\bibitem{chen_peakvizor:_2016}
+Q.~Chen, Y.~Chen, D.~Liu, C.~Shi, Y.~Wu, and H.~Qu.
+\newblock {PeakVizor}: Visual analytics of peaks in video clickstreams from
+  massive open online courses.
+\newblock 22(10):2315--2330. doi: {{%
+10\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}1109\discretionary{/}{%
+}{/}TVCG\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2015\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2505305}}
 
 
 \bibitem{chi_morphable_2015}
@@ -281,6 +298,19 @@ G.~M. Nielson and B.~Hamann.
 }{.}\hspace{.4pt}175782}}
 
 
+\bibitem{nothdurft_salience_2000}
+H.-C. Nothdurft.
+\newblock Salience from feature contrast: variations with texture density.
+\newblock 40(23):3181--3200. doi: {{%
+10\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}1016\discretionary{/}{%
+}{/}S0042\discretionary{%
+}{-}{-}6989\discretionary{%
+}{(}{(}00\discretionary{)}{%
+}{)}00168\discretionary{%
+}{-}{-}1}}
+
+
 \bibitem{robertson_effectiveness_2008}
 G.~Robertson, R.~Fernandez, D.~Fisher, B.~Lee, and J.~Stasko.
 \newblock Effectiveness of animation in trend visualization.
@@ -361,6 +391,17 @@ Y.~Wu, S.~Liu, K.~Yan, M.~Liu, and F.~Wu.
 }{/}TVCG\hspace{.1pt}\discretionary{.}{%
 }{.}\hspace{.4pt}2014\hspace{.1pt}\discretionary{.}{%
 }{.}\hspace{.4pt}2346920}}
+
+
+\bibitem{wu_opinionseer:_2010}
+Y.~Wu, F.~Wei, S.~Liu, N.~Au, W.~Cui, H.~Zhou, and H.~Qu.
+\newblock {OpinionSeer}: Interactive visualization of hotel customer feedback.
+\newblock 16(6):1109--1118. doi: {{%
+10\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}1109\discretionary{/}{%
+}{/}TVCG\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}2010\hspace{.1pt}\discretionary{.}{%
+}{.}\hspace{.4pt}183}}
 
 
 \bibitem{Wyvill:1986:DSS}
