@@ -1,16 +1,6 @@
 import * as d3 from 'd3';
-<<<<<<< HEAD
-import {
-    mapActions,
-    mapGetters
-} from 'vuex';
-import {
-    EDIT_ITEM
-} from '../../store';
-=======
 import { mapActions, mapGetters } from 'vuex';
 import { EDIT_ELE } from '../../store';
->>>>>>> dev
 
 export default {
     data() {
@@ -22,14 +12,7 @@ export default {
         message: {
             get() {
                 const selectedEle = this.$store.getters.selectedEle;
-<<<<<<< HEAD
-                if (selectedEle) {
-                    return selectedEle.description.text;
-                }
-                return '';
-=======
                 return selectedEle ? selectedEle.description.text : '';
->>>>>>> dev
             },
             set(value) {
                 this.$store.commit('EDIT_ELE', value);
@@ -42,15 +25,12 @@ export default {
             selectedChannel: 'selectedChannel',
             selectedEle: 'selectedEle',
         }),
-<<<<<<< HEAD
         currentText() {
             if (this.selectedEle) {
                 return this.selectedEle.description.text;
             }
             return '';
         },
-=======
->>>>>>> dev
         styleObject() {
             const offsets = document.getElementById('positionTag').getBoundingClientRect();
             const top = offsets.top;
