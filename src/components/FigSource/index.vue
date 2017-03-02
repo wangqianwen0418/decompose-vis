@@ -382,7 +382,12 @@ export default {
 					group0 = findGroup(group0, currenttime);
 					this.activeBlock.selectedItems.push(group0);
 					for (const group of groups) {
-						if (group.tag === group0.tag && group.points.length > 50) {
+						if (group.points.length > 10 &&
+							//group.tag === group0.tag && 
+							Math.abs(group.color[0] - group0.color[0]) < 0.02 &&
+							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
+							Math.abs(group.color[2] - group0.color[2]) < 0.5
+							) {
 							this.activeBlock.selectedItems.push(group);
 						}
 					}
@@ -394,7 +399,7 @@ export default {
 					group0 = findGroup(group0, currenttime);
 					this.activeBlock.selectedItems.push(group0);
 					for (const group of groups) {
-						if (group.tag === group0.tag && group.points.length > 50) {
+						if (group.tag === group0.tag && group.points.length > 10) {
 							this.createsvgFromGroup(group);
 						}
 					}
