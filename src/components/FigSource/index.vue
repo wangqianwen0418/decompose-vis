@@ -14,39 +14,6 @@
 			</canvas>
 		</div>
 	</div>
-	<!--
-    <el-tabs v-model="activeBlock" type="border-card" @tab-click="onTabClick">
-        <el-tab-pane v-for="(item, index) in color_spaces.slice(0, 14)" :label="index.toString()" :name="index.toString()" :tag="item.index">
-			<span slot="label" :style="item.style">{{index.toString()}}</span>
-        </el-tab-pane>
-		!-->
-			<!--
-            <el-row>
-                <el-col :span="3" v-for="item in color_spaces">
-                    <div class="circle-button"
-                        @mouseenter="onButtonMouseenter"
-                        @mouseout="onButtonMouseout"
-                        :tag=item.index :style=item.style>
-                        {{item.text}}
-                    </div>
-                </el-col>
-            </el-row>
-			!-->
-		<!--
-    </el-tabs>
-	!-->
-		<!--
-		<el-row>
-			<el-col :span="3" v-for="item in color_spaces">
-				<div class="circle-button"
-					@mouseenter="onButtonMouseenter"
-					@mouseout="onButtonMouseout"
-					:tag=item.index :style=item.style>
-					<br><br><br>{{item.text}}
-				</div>
-			</el-col>
-		</el-row>
-		!-->
 </template>
 <script>
 import * as color from "../../utils/color.js";
@@ -540,9 +507,6 @@ export default {
 			if (tags[y * canvas.width + x] === bgtag) {
 				return;
 			}
-			// const k = y * canvas.width + x << 2;
-			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
-			// console.info(hsl);
 
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
@@ -551,56 +515,8 @@ export default {
 				this.canvasRender(event);
 				this.activeBlock.selectedItems.pop();
 			}
-/*
-			if (is_roping) {
-				if (event.shiftKey) {
-					rope[rope.length - 1][0] = x;
-					rope[rope.length - 1][1] = y;
-					ctx.beginPath();
-					ctx.strokeStyle = "red";
-					ctx.moveTo(rope[0][0], rope[0][1]);
-					for (let i = rope.length - 1; i >= 0; --i) {
-						ctx.lineTo(rope[i][0], rope[i][1]);
-					}
-					ctx.stroke();
-					ctx.closePath();
-				} else {
-					is_roping = false;
-					// roping end here
-				}
-			}
-			*/
 
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
-		},
-		onMouseenter(event) {
-			/*
-			console.info("mouseenter");
-			const canvas = this.$el.getElementsByTagName('canvas')[0];
-			const ctx = canvas.getContext('2d');
-			const width = canvas.width;
-			const height = canvas.height;
-			const data = currentData.data;
-			for (let i = 0; i < width * height; ++i) {
-				data[(i << 2) + 3] = 30;
-			}
-			ctx.putImageData(currentData, 0, 0);
-			*/
-		},
-		onMouseout(event) {
-			/*
-			console.info("mouseout");
-			const canvas = this.$el.getElementsByTagName('canvas')[0];
-			const ctx = canvas.getContext('2d');
-			lastgroup = null;
-			ctx.putImageData(initalData, 0, 0);
-			const width = canvas.width;
-			const height = canvas.height;
-			const data = currentData.data;
-			for (let i = 0; i < width * height; ++i) {
-				data[(i << 2) + 3] = 30;
-			}
-			*/
 		},
 		onTabClick(item) {
 			this.activeBlock = item;
@@ -660,48 +576,6 @@ export default {
 		interactionInit();
 	}
 };
-/*
-function figurePanelRender(svg) {
-	const width = svg.clientWidth;
-	const height = svg.clientHeight;
-
-	svg = d3.select(svg);
-	svg.attr('width', width)
-		.attr('height', height);
-
-	svg.append('rect')
-		.attr('x', 0)
-		.attr('y', 0)
-		.attr('width', width)
-		.attr('height', height)
-		.style('fill', 'var(--color-blue)')
-		.style('stroke', 'none');
-
-	var g = svg.selectAll('.block')
-		.data(blocks)
-		.enter()
-		.append('g')
-		.attr('class', 'block')
-		.attr('transform', function(d, i){
-			return `translate(${i * 100}, 0)`;
-		});
-
-	var fontSize = "15px";
-		
-	g.append('rect')
-		.attr('width', 100)
-		.attr('height', height)
-		.style('fill', 'var(--color-blue)')
-		.style('stroke', 'var(--color-white)')
-		.style('stroke-width', 1);
-	
-	g.append('text')
-		.attr('transform', 'translate(20, 30)')
-		.style('font-size', '18px')
-		.style('fill', 'var(--color-white)')
-		.text(function(d){ return d; });
-}
-*/
 
 function preprocessing(canvas) {
 	const start_time = new Date();
@@ -816,20 +690,6 @@ function ondragend() {
 </script>
 
 <style scoped>
-    /*.el-tabs {
-		height: 40vh;
-		font-family: 'Source Sans Pro', sans-serif;;
-		margin: 0px 3px;
-		border-radius: 6px;
-        background-color:var(--color-0);
-        box-shadow: 2px 2px 1px var(--color-3);
-	}
-    .el-tabs_header{
-        background-color:var(--color-3);
-    }*/
-    /*version 2*/
-
-
 	.figure-tabs_header {
 		border-bottom: 0px solid var(--color-blue-gray);
 		padding: 0;
