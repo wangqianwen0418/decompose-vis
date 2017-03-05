@@ -114,6 +114,14 @@ function Item(item) {
 
 function CanvasObject(items) {
     this.items = items.map((item) => (new Item(item)));
+    const x = Math.min(...items.map(item => item.x));
+    const w = Math.max(...items.map(item => item.x)) - this.x;
+    const y = Math.min(...items.map(item => item.y));
+    const h = Math.max(...items.map(item => item.y)) - this.y;
+    this.x = x;
+    this.w = w;
+    this.y = y;
+    this.h = h;
     this.render = (canvas) => {
         this.items.forEach((item) => {
             item.render(canvas);

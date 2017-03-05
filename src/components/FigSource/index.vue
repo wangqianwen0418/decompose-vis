@@ -2,7 +2,7 @@
 
 	<div class="figure-source">
 		<div class="figure-tabs_header">
-			<div v-for="item in blocks" :class='figure_tabs_class(item)' @click='onTabClick(item)'>
+			<div v-for="item in blocks" :class="figure_tabs_class(item)" @click="onTabClick(item)">
 				{{item.name}}
 			</div>
 		</div>
@@ -36,7 +36,7 @@ export default {
 				selectedItems: [],
 			}));
 		return {
-			blocks,
+			blocks: blocks,
 			activeBlock: blocks[0]
 		};
     },
@@ -44,7 +44,7 @@ export default {
 	computed: {
 	},
 	methods: {
-		figure_tabs_class(item, activeBlock) {
+		figure_tabs_class(item) {
 			return {
 				"figure-tabs_item": true, 
 				"active": item == this.activeBlock
@@ -160,13 +160,6 @@ export default {
 				ctx.globalAlpha = 0.1;
 				ctx.drawImage(img, 0, 0);
 				ctx.globalAlpha = 1;
-			}
-
-			function setPixel(index, r, g, b, a) {
-				data[(index << 2) + 0] = r;
-				data[(index << 2) + 1] = g;
-				data[(index << 2) + 2] = b;
-				data[(index << 2) + 3] = a;
 			}
 
 			for (const group of groups) {
@@ -297,14 +290,6 @@ export default {
 				ctx.globalAlpha = 1;
 			}
 
-			function setPixel(index, r, g, b, a) {
-				data[(index << 2) + 0] = r;
-				data[(index << 2) + 1] = g;
-				data[(index << 2) + 2] = b;
-				data[(index << 2) + 3] = a;
-			}
-
-			console.log(this.activeBlock);
 			for (const group of groups) {
 				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
 					const points = group.points;
@@ -669,6 +654,109 @@ function preprocessing(canvas) {
 	currentData = ctx.getImageData(0, 0, width, height);
 	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 }
+
+
+
+function calc(canvas) {
+	const start_time = new Date();
+
+	const ctx = canvas.getContext('2d');
+	const width = canvas.width;
+	const height = canvas.height;
+
+	const imgData = ctx.getImageData(0, 0, width, height);
+	const data = imgData.data;
+	initalData = imgData;
+	const hsl_data = new Float32Array(width * height * 3);
+	console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+
+	const seq = systematic_sampling_seq(height * width);
+	for (let i = 0; i < height * width; ++i) {
+		let r = data[(i << 2) + 0];
+		let g = data[(i << 2) + 1];
+		let b = data[(i << 2) + 2];
+		const a = data[(i << 2) + 3];
+		if (a !== 255) {
+			r = Math.floor(r / 255 * a);
+			g = Math.floor(g / 255 * a);
+			b = Math.floor(b / 255 * a);
+			data[(i << 2) + 0] = r;
+			data[(i << 2) + 1] = g;
+			data[(i << 2) + 2] = b;
+			data[(i << 2) + 3] = 255;
+		}
+		const hsl = color.rgbToHsl(r, g, b);
+		hsl_data[i * 3 + 0] = hsl[0];
+		hsl_data[i * 3 + 1] = hsl[1];
+		hsl_data[i * 3 + 2] = hsl[2];
+	}
+	for (let i = 0; i < seq.length; ++i) {
+		const t = seq[i] * 3;
+		seq[i] = [hsl_data[t], hsl_data[t + 1], hsl_data[t + 2]];
+	}
+	const division = color_space_divide(seq);
+	const color2tag = division.color2tag;
+	console.info(division.tagcount);
+	const count = [];
+	tags = new Uint16Array(width * height);
+	for (let i = 0; i < height * width * 3; i += 3) {
+		const tag = color2tag([hsl_data[i], hsl_data[i + 1], hsl_data[i + 2]]);
+		if (!count[tag]) {
+			count[tag] = 0;
+		}
+		count[tag] += 1;
+		tags[i / 3] = tag;
+	}
+	console.info(count);
+	for (let i = 0; i < count.length; ++i) if (count[i] / (width * height) * 100 > 0.1) {
+		color_spaces.push({
+			text: `${(count[i] / (width * height) * 100).toFixed(2)}%\n
+				${i === 0 ? 'background' : division.tag2hsl(i)}`,
+			style:{ color: division.tag2rgb(i)},
+			count: count[i],
+			index: i,
+			name: i.toString(),
+		});
+	}
+	color_spaces.sort((a, b) => b.count - a.count);
+	bgtag = color_spaces[0].index;
+	for (let i = 0; i < height * width; ++i) {
+		if (tags[i] === bgtag) {
+			hsl_data[i * 3] = -1;
+		}
+	}
+
+	console.info(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	const decomposed = decompose(hsl_data, width, height);
+	console.info(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	const elements = compose(decomposed.elements, width, height);
+	elements.forEach(function(d) {
+		d.rgb = color.hslToRgb(d.color[0], d.color[1], d.color[2]);
+		d.r = Math.floor(d.rgb[0]);
+		d.g = Math.floor(d.rgb[1]);
+		d.b = Math.floor(d.rgb[2]);
+	});
+	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
+	ngroup = new Array(width * height);
+	groups = elements;
+	for (const element of elements) {
+		const points = element.points;
+		for (let i = 0; i < points.length; i += 2) {
+			ngroup[points[i] + points[i + 1] * width] = element;
+		}
+		if (element.timestamp > maxtimestamp) {
+			maxtimestamp = element.timestamp;
+		}
+		element.tag = color2tag(element.color);
+	}
+	console.log(elements);
+
+	currenttime = maxtimestamp;
+	ctx.putImageData(imgData, 0, 0);
+	currentData = ctx.getImageData(0, 0, width, height);
+	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+}
+
 
 function ondragstart() {
 	const event = d3.event;
