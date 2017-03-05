@@ -8,7 +8,7 @@
 		</div>
 		<div class="figure-content">
 			<canvas class="figure-main-view"
-			@mouseenter="onMouseenter" @mouseout="onMouseout" @mousemove="onMousemove"
+			@mousemove="onMousemove"
 			@click.prevent="onClick" @contextmenu.prevent="onRightClick"
 			>
 			</canvas>
@@ -144,7 +144,7 @@ export default {
 		editorRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const canvas2 = document.getElementsByClassName('editorCanvas')[0];
-			const ctx2 = canvas2.getContext('2d');
+			const ctx = canvas2.getContext('2d');
 			canvas2.width = canvas.width;
 			canvas2.height = canvas.height;
 			const width = canvas.width;
@@ -152,21 +152,14 @@ export default {
 
 			const data = currentData.data;
 			if (this.activeBlock.name === 'overview') {
-				for (let i = 0; i < width * height; ++i) {
-					data[(i << 2) + 0] = 0;
-					data[(i << 2) + 1] = 0;
-					data[(i << 2) + 2] = 0;
-					data[(i << 2) + 3] = 0;
-				}
-				ctx.putImageData(currentData, 0, 0);
+				ctx.globalAlpha = 1;
+				ctx.drawImage(img, 0, 0);
 				return;
 			} else {
-				for (let i = 0; i < width * height; ++i) {
-					data[(i << 2) + 0] = 0;
-					data[(i << 2) + 1] = 0;
-					data[(i << 2) + 2] = 0;
-					data[(i << 2) + 3] = 0;
-				}
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.globalAlpha = 0.1;
+				ctx.drawImage(img, 0, 0);
+				ctx.globalAlpha = 1;
 			}
 
 			function setPixel(index, r, g, b, a) {
@@ -179,23 +172,17 @@ export default {
 			for (const group of groups) {
 				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
 					const points = group.points;
-					for (let i = 0; i < points.length; i += 2) {
-						const x = points[i];
-						const y = points[i + 1];
-						setPixel(y * width + x, group.r, group.g, group.b, 255);
-						continue;
-						if (y > 0)
-							setPixel(y * width - width + x, group.r, group.g, group.b, 255);
-						if (y + 1 < height)
-							setPixel(y * width + width + x, group.r, group.g, group.b, 255);
-						if (x > 0)
-						setPixel(y * width + x - 1, group.r, group.g, group.b, 255);
-						if (x + 1 < width)
-						setPixel(y * width + x + 1, group.r, group.g, group.b, 255);
+					ctx.strokeStyle = `rgb(${group.r},${group.g},${group.b})`;
+					console.log(group.lines.length);
+					for (const line of group.lines) {
+   						ctx.beginPath();  
+						ctx.moveTo(line.x, line.y1 - 1);
+						ctx.lineTo(line.x, line.y2 + 1);
+						ctx.stroke();
+   						ctx.closePath();  
 					}
 				}
 			}
-			ctx2.putImageData(currentData, 0, 0);
 		},
 		oldCanvasRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
@@ -317,6 +304,7 @@ export default {
 				data[(index << 2) + 3] = a;
 			}
 
+			console.log(this.activeBlock);
 			for (const group of groups) {
 				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
 					const points = group.points;
@@ -324,8 +312,8 @@ export default {
 					console.log(group.lines.length);
 					for (const line of group.lines) {
    						ctx.beginPath();  
-						ctx.moveTo(line.x, line.y1);
-						ctx.lineTo(line.x, line.y2);
+						ctx.moveTo(line.x, line.y1 - 1);
+						ctx.lineTo(line.x, line.y2 + 1);
 						ctx.stroke();
    						ctx.closePath();  
 					}
@@ -358,7 +346,7 @@ export default {
 			}
 			console.log(event, event.shiftKey, event.ctrlKey, event.altKey);
 			
-			if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
+			if (event.shiftKey && !event.ctrlKey && !event.altKey) {
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
@@ -366,7 +354,7 @@ export default {
 					this.canvasRender(event);
 				}
 			}
-			else if (event.shiftKey && !event.ctrlKey && !event.altKey) {
+			else if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
 				/*
 				if (!is_roping) {
 					is_roping = true;
