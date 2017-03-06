@@ -29,10 +29,11 @@
         transform: translate(0%, -50%);
         font-size: 15px;
         font-family: var(--font-2);
+        text-align: center;
     }
 
-    .icon {
-        padding: 0px 8px;
+    .fa {
+        padding: 0px 12px;
         font-size: 30px;
     }
     .selectImport{

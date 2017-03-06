@@ -15,9 +15,15 @@ export default {
         channel,
     },
     methods: {
-        ...mapActions({
-            addChannel: ADD_CHANNEL,
-            removeMark: REMOVE_MARK,
-        }),
+        // ...mapActions({
+        //     addChannel: ADD_CHANNEL,
+        //     removeMark: REMOVE_MARK,
+        // }),
+        addChannel(channelTemp) {
+            this.mark.channels.push(channelTemp);
+        },
+        removeMark() {
+            this.mark.removed = true;
+        },
     },
 };

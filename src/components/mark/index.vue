@@ -1,7 +1,7 @@
 <template>
     <li >
             <span class='mark'>{{mark.name}}</span>
-            <i class="el-icon-close" @click='removeMark(mark)'/>
+            <i class="el-icon-close" @click='removeMark'/>
 
             <ol id='channel_list'>
                 <draggable :list="mark.channels">
@@ -13,10 +13,11 @@
                             add another channel<i class="el-icon-caret-bottom el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item v-for='channelTemp in channelsTemp'>
-                            <span @click='addChannel(channelTemp)'>{{channelTemp.name}}
-                            </span>
+                            <span v-for='channelTemp in channelsTemp' @click='addChannel(channelTemp)'>
+                            <el-dropdown-item >
+                            {{channelTemp.name}}
                             </el-dropdown-item>
+                              </span>
                         </el-dropdown-menu>
                         </el-dropdown>
                     </li>

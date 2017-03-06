@@ -1,7 +1,7 @@
 import draggable from 'vuedraggable';
 import markv from '../mark';
-import { mapGetters, mapActions, mapState } from 'vuex';
-import { ADD_MARK } from '../../store';
+import { mapGetters, mapState } from 'vuex';
+// import { ADD_MARK } from '../../store';
 
 export default {
     computed: {
@@ -17,8 +17,11 @@ export default {
         markv,
     },
     methods: {
-        ...mapActions({
-            addMark: ADD_MARK,
-        }),
+        // ...mapActions({
+        //     addMark: ADD_MARK,
+        // }),
+        addMark(markTemp) {
+            this.block.marks.push(markTemp);
+        },
     },
 };
