@@ -7,9 +7,23 @@ export function Canvas(canvas) {
     this.eventListener = new Int16Array(this.width * this.height);
     this.Items = new Array();
     this.render = () => {
-        Items.forEach(item => {
+        this.Items.forEach(item => {
             item.render(this);
         });
+    };
+    const frames = [];
+    this.animation = (frame) => {
+        frame = frame || 0;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.Items.forEach(item => {
+            item.a += 1.0 / 30;
+            if (item.a > 1) {
+                item.a = 1;
+            }
+        });
+        this.render();
+        if (frame < 30)
+        setTimeout(this.animation, 10, frame + 1);
     };
     return this;
 }
@@ -118,7 +132,7 @@ export function Item(item) {
     return this;
 }
 
-function CanvasObject(items) {
+export function ItemSet(items) {
     this.items = items.map((item) => (new Item(item)));
     const x = Math.min(...items.map(item => item.x));
     const w = Math.max(...items.map(item => item.x)) - this.x;
@@ -128,8 +142,10 @@ function CanvasObject(items) {
     this.w = w;
     this.y = y;
     this.h = h;
+    this.a = 1;
     this.render = (canvas) => {
         this.items.forEach((item) => {
+            item.a = this.a;
             item.render(canvas);
         });
     };

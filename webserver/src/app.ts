@@ -14,7 +14,17 @@ const SaveLoadRouter: Router = new Router()
     .get("/load", async (ctx, next) => {
         const name: string = ctx.query.name;
         const data = await redis.get(name);
-        ctx.body = JSON.parse(data || "");
+        if (data) {
+            ctx.body = JSON.parse(data);
+        } else {
+            ctx.body = "nodata";
+        }
+        await next();
+    })
+    .get("/save", async (ctx, next) => {
+        const name: string = ctx.query.name;
+        const data: string = JSON.stringify(ctx.query.data);
+        redis.set(name, data);
         await next();
     })
     .post("/save", async (ctx, next) => {
