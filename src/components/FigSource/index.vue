@@ -40,6 +40,7 @@ export default {
 			blocks: blocks,
 			activeBlock: blocks[0],
 			canvas: null,
+			editor: null,
 		};
     },
 	props: ['src', 'width', 'height'],
@@ -147,12 +148,12 @@ export default {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const canvas2 = document.getElementsByClassName('editorCanvas')[0];
 			const ctx = canvas2.getContext('2d');
-			canvas2.width = canvas.width;
+			canvas2.width  = canvas.width;
 			canvas2.height = canvas.height;
-			const width = canvas.width;
-			const height = canvas.height;
+			if (this.editor === null) {
+				this.editor = new Canvas(canvas2);
+			}
 
-			const data = currentData.data;
 			if (this.activeBlock.name === 'overview') {
 				ctx.globalAlpha = 1;
 				ctx.drawImage(img, 0, 0);
@@ -164,123 +165,21 @@ export default {
 				ctx.globalAlpha = 1;
 			}
 
-			for (const group of groups) {
-				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
-					const points = group.points;
-					ctx.strokeStyle = `rgb(${group.r},${group.g},${group.b})`;
-					console.log(group.lines.length);
-					for (const line of group.lines) {
-   						ctx.beginPath();  
-						ctx.moveTo(line.x, line.y1 - 1);
-						ctx.lineTo(line.x, line.y2 + 1);
-						ctx.stroke();
-   						ctx.closePath();  
-					}
+			for (const item of this.activeBlock.selectedItems) {
+				if (this.editor.Items.indexOf(item) === -1) {
+					this.editor.Items.push(item);
+					item.a = 0;
 				}
 			}
-		},
-		oldCanvasRender(event) {
-			const canvas = this.$el.getElementsByTagName('canvas')[0];
-			const ctx = canvas.getContext('2d');
-			const width = canvas.width;
-			const height = canvas.height;
-
-			const data = currentData.data;
-			if (this.activeBlock.name === 'overview') {
-				for (let i = 0; i < width * height; ++i) {
-					data[(i << 2) + 0] = initalData.data[(i << 2) + 0];
-					data[(i << 2) + 1] = initalData.data[(i << 2) + 1];
-					data[(i << 2) + 2] = initalData.data[(i << 2) + 2];
-					data[(i << 2) + 3] = 255;
-				}
-				ctx.putImageData(currentData, 0, 0);
-				return;
-			} else {
-				for (let i = 0; i < width * height; ++i) {
-					data[(i << 2) + 0] = initalData.data[(i << 2) + 0];
-					data[(i << 2) + 1] = initalData.data[(i << 2) + 1];
-					data[(i << 2) + 2] = initalData.data[(i << 2) + 2];
-					data[(i << 2) + 3] = 30;
-				}
-			}
-
-			function setPixel(index, r, g, b, a) {
-				data[(index << 2) + 0] = r;
-				data[(index << 2) + 1] = g;
-				data[(index << 2) + 2] = b;
-				data[(index << 2) + 3] = a;
-			}
-
-			for (const group of groups) {
-				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
-					const points = group.points;
-					console.log(points.length / 2);
-					for (let i = 0; i < points.length; i += 2) {
-						const x = points[i];
-						const y = points[i + 1];
-						setPixel(y * width + x, group.r, group.g, group.b, 255);
-						continue;
-						if (y > 0)
-							setPixel(y * width - width + x, group.r, group.g, group.b, 255);
-						if (y + 1 < height)
-							setPixel(y * width + width + x, group.r, group.g, group.b, 255);
-						if (x > 0)
-						setPixel(y * width + x - 1, group.r, group.g, group.b, 255);
-						if (x + 1 < width)
-						setPixel(y * width + x + 1, group.r, group.g, group.b, 255);
-					}
-				}
-			}
-			
-			// then make it smooth
-			if (false)
-			for (let i = 0; i < height; ++i) {
-				let last = -width;
-				for (let j = 0; j < width; ++j) {
-					if (data[((i * width + j) << 2) + 3] === 255) {
-						if (data[((i * width + j - 1) << 2) + 3] !== 255 && j - last < 13) {
-							const g = ngroup[i * width + last - 2];
-							if (g !== null)
-							for (let k = last + 1; k < j; ++k) {
-								data[((i * width + k) << 2) + 0] = g.r;
-								data[((i * width + k) << 2) + 1] = g.g;
-								data[((i * width + k) << 2) + 2] = g.b;
-								data[((i * width + k) << 2) + 3] = 255;
-							}
-						}
-						last = j;
-					}
-				}
-			}
-			if (false)
-			for (let j = 0; j < width; ++j) {
-				let last = -height;
-				for (let i = 0; i < height; ++i) {
-					if (data[((i * width + j) << 2) + 3] === 255) {
-						if (data[((i * width + j - width) << 2) + 3] !== 255 && i - last < 13) {
-							const g = ngroup[last * width + j - 2];
-							if (g !== null)
-							for (let k = last + 1; k < i; ++k) {
-								data[((k * width + j) << 2) + 0] = g.r;
-								data[((k * width + j) << 2) + 1] = g.g;
-								data[((k * width + j) << 2) + 2] = g.b;
-								data[((k * width + j) << 2) + 3] = 255;
-							}
-						}
-						last = i;
-					}
-				}
-			}
-
-			ctx.putImageData(currentData, 0, 0);
+			this.editor.animation(0);
 		},
 		canvasRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
-			const width = canvas.width;
-			const height = canvas.height;
+			if (this.canvas === null) {
+				this.canvas = new Canvas(canvas);
+			}
 
-			const data = currentData.data;
 			if (this.activeBlock.name === 'overview') {
 				ctx.globalAlpha = 1;
 				ctx.drawImage(img, 0, 0);
@@ -292,8 +191,8 @@ export default {
 				ctx.globalAlpha = 1;
 			}
 
-			for (const group of this.activeBlock.selectedItems) {
-				group.item.render(this.canvas);
+			for (const item of this.activeBlock.selectedItems) {
+				item.render(this.canvas);
 			}
 		},
 		onRightClick(event) {
@@ -304,7 +203,7 @@ export default {
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-				const i = this.activeBlock.selectedItems.indexOf(group0);
+				const i = this.activeBlock.selectedItems.indexOf(group0.item);
 				if (i != -1) {
 					this.activeBlock.selectedItems.splice(i, 1);
 					this.canvasRender(event);
@@ -326,25 +225,15 @@ export default {
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					this.activeBlock.selectedItems.push(group0);
+					this.activeBlock.selectedItems.push(group0.item);
 					this.canvasRender(event);
 				}
 			}
 			else if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
-				/*
-				if (!is_roping) {
-					is_roping = true;
-					rope = [];
-					rope.push([x, y]);
-					rope.push([x, y]);
-				} else {
-					rope.push([x, y]);
-				}
-				*/
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					this.activeBlock.selectedItems.push(group0);
+					this.activeBlock.selectedItems.push(group0.item);
 					for (const group of groups) {
 						if (group.points.length > 10 &&
 							//group.tag === group0.tag && 
@@ -352,7 +241,7 @@ export default {
 							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
 							Math.abs(group.color[2] - group0.color[2]) < 0.5
 							) {
-							this.activeBlock.selectedItems.push(group);
+							this.activeBlock.selectedItems.push(group.item);
 						}
 					}
 					this.canvasRender(event);
@@ -361,7 +250,7 @@ export default {
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					this.activeBlock.selectedItems.push(group0);
+					this.activeBlock.selectedItems.push(group0.item);
 					for (const group of groups) {
 						if (group.tag === group0.tag && group.points.length > 10) {
 							this.createsvgFromGroup(group);
@@ -480,7 +369,7 @@ export default {
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-				this.activeBlock.selectedItems.push(group0);
+				this.activeBlock.selectedItems.push(group0.item);
 				this.canvasRender(event);
 				this.activeBlock.selectedItems.pop();
 			}
@@ -539,7 +428,6 @@ export default {
 			console.log('zoom', realWidth, realHeight, zoom_ratio);
 			ctx.drawImage(img, 0, 0);
 			preprocessing(canvas);
-			this.canvas = new Canvas(canvas);
 			//svg.attr('width', img.width / zoom_ratio)
 			//	.attr('height', img.height / zoom_ratio);
 		};
