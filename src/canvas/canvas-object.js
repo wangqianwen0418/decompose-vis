@@ -1,15 +1,20 @@
-function Canvas(canvas) {
+export function Canvas(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-    this.data = ctx.createImageData(canvas.width, canvas.height);
+    this.data = this.ctx.createImageData(canvas.width, canvas.height);
     this.width = canvas.width;
     this.height = canvas.height;
-    this.eventListener = new Int16Array(width * height);
-    this.Objects = new Array();
+    this.eventListener = new Int16Array(this.width * this.height);
+    this.Items = new Array();
+    this.render = () => {
+        Items.forEach(item => {
+            item.render(this);
+        });
+    };
     return this;
 }
 
-function Item(item) {
+export function Item(item) {
     this.points = item.points;
     this.lines = item.lines;
     this.color = item.color;
@@ -84,6 +89,7 @@ function Item(item) {
         const width = canvas.width;
         const height = canvas.height;
         const data = canvas.data;
+        const ctx = canvas.ctx;
         const rw = 1.0 / w * this.w;
         const rh = 1.0 / h * this.h;
         const r = this.color[0];
@@ -91,7 +97,7 @@ function Item(item) {
         const b = this.color[2];
         const a = this.color[3] * this.a;
         ctx.strokeStyle = `rgba(${r},${g},${b},${a})`;
-        for (const line of group.lines) {
+        for (const line of lines) {
             const x = ~~((line.x - x0) * rw + this.x);
             const y1 = ~~((line.y1 - y0) * rh + this.y);
             const y2 = ~~((line.y2 - y0) * rh + this.y);

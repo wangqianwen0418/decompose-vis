@@ -23,6 +23,7 @@ import { compose, findGroup } from "../../algorithm/compose.js";
 import color_space_divide from "../../algorithm/color-space-divide.js";
 import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
+import { Canvas, Item } from "../../canvas/canvas-object.js";
 import * as d3 from "d3";
 
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
@@ -37,7 +38,8 @@ export default {
 			}));
 		return {
 			blocks: blocks,
-			activeBlock: blocks[0]
+			activeBlock: blocks[0],
+			canvas: null,
 		};
     },
 	props: ['src', 'width', 'height'],
@@ -290,19 +292,8 @@ export default {
 				ctx.globalAlpha = 1;
 			}
 
-			for (const group of groups) {
-				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
-					const points = group.points;
-					ctx.strokeStyle = `rgb(${group.r},${group.g},${group.b})`;
-					console.log(group.lines.length);
-					for (const line of group.lines) {
-   						ctx.beginPath();  
-						ctx.moveTo(line.x, line.y1 - 1);
-						ctx.lineTo(line.x, line.y2 + 1);
-						ctx.stroke();
-   						ctx.closePath();  
-					}
-				}
+			for (const group of this.activeBlock.selectedItems) {
+				group.item.render(this.canvas);
 			}
 		},
 		onRightClick(event) {
@@ -538,7 +529,7 @@ export default {
 		const ctx = canvas.getContext('2d');
 		img = new Image();
 		img.src = this.src;
-		img.onload = function() {
+		img.onload = () => {
 			canvas.width = img.width;
 			canvas.height = img.height;
 			const realWidth = canvas.parentNode.clientWidth;
@@ -548,6 +539,7 @@ export default {
 			console.log('zoom', realWidth, realHeight, zoom_ratio);
 			ctx.drawImage(img, 0, 0);
 			preprocessing(canvas);
+			this.canvas = new Canvas(canvas);
 			//svg.attr('width', img.width / zoom_ratio)
 			//	.attr('height', img.height / zoom_ratio);
 		};
@@ -633,6 +625,10 @@ function preprocessing(canvas) {
 		d.r = Math.floor(d.rgb[0]);
 		d.g = Math.floor(d.rgb[1]);
 		d.b = Math.floor(d.rgb[2]);
+		d.item = new Item({
+			lines: d.lines,
+			color: [d.r, d.g, d.b, 1],
+		});
 	});
 	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	ngroup = new Array(width * height);
