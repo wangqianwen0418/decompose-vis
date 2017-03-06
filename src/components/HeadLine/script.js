@@ -20,6 +20,11 @@ export default {
                 message: 'Your NarVis is Saved !',
                 offset: 100,
             });
+            this.$http.post('http://localhost:9999/save', { name: 'wqw' }).then((res) => {
+                console.info(res);
+            }, (err) => {
+                console.info(err);
+            });
         },
     },
 };

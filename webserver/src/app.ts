@@ -29,7 +29,7 @@ function WebServer(): Koa {
 
     app.use(bodyParser());
     app.use(SaveLoadRouter.routes());
-    
+
     return app;
 }
 
