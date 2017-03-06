@@ -14,4 +14,12 @@ export default {
             textDescription: '',
         };
     },
+    methods: {
+        save() {
+            this.$notify.success({
+                message: 'Your NarVis is Saved !',
+                offset: 100,
+            });
+        },
+    },
 };

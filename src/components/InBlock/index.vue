@@ -12,11 +12,11 @@
                             add another mark<i class="el-icon-caret-bottom el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item v-for='markTemp in marksTemp' >
-                                <span @click='addMark(markTemp)'>
+                            <span v-for='markTemp in marksTemp' @click='addMark(markTemp)'>
+                            <el-dropdown-item >
                                     {{markTemp.name}}
-                                </span>
                             </el-dropdown-item>
+                             </span>
                             <!--<el-dropdown-item command="d">size</el-dropdown-item>-->
                             <!--<el-dropdown-item command="e">shape</el-dropdown-item>-->
                         </el-dropdown-menu>

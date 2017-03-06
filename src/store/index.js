@@ -14,10 +14,10 @@ export default new Vuex.Store({
 });
 
 export {
-    ADD_CHANNEL,
-    REMOVE_CHANNEL,
-    ADD_MARK,
-    REMOVE_MARK,
+    // ADD_CHANNEL,
+    // REMOVE_CHANNEL,
+    // ADD_MARK,
+    // REMOVE_MARK,
     SELECT_CHANNEL,
     EDIT_ELE,
     UPDATE_BLOCKS,
