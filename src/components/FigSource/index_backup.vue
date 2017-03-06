@@ -2,18 +2,51 @@
 
 	<div class="figure-source">
 		<div class="figure-tabs_header">
-			<div v-for="item in blocks" :class="figure_tabs_class(item)" @click="onTabClick(item)">
+			<div v-for="item in blocks" :class='figure_tabs_class(item)' @click='onTabClick(item)'>
 				{{item.name}}
 			</div>
 		</div>
 		<div class="figure-content">
 			<canvas class="figure-main-view"
-			@mousemove="onMousemove"
+			@mouseenter="onMouseenter" @mouseout="onMouseout" @mousemove="onMousemove"
 			@click.prevent="onClick" @contextmenu.prevent="onRightClick"
 			>
 			</canvas>
 		</div>
 	</div>
+	<!--
+    <el-tabs v-model="activeBlock" type="border-card" @tab-click="onTabClick">
+        <el-tab-pane v-for="(item, index) in color_spaces.slice(0, 14)" :label="index.toString()" :name="index.toString()" :tag="item.index">
+			<span slot="label" :style="item.style">{{index.toString()}}</span>
+        </el-tab-pane>
+		!-->
+			<!--
+            <el-row>
+                <el-col :span="3" v-for="item in color_spaces">
+                    <div class="circle-button"
+                        @mouseenter="onButtonMouseenter"
+                        @mouseout="onButtonMouseout"
+                        :tag=item.index :style=item.style>
+                        {{item.text}}
+                    </div>
+                </el-col>
+            </el-row>
+			!-->
+		<!--
+    </el-tabs>
+	!-->
+		<!--
+		<el-row>
+			<el-col :span="3" v-for="item in color_spaces">
+				<div class="circle-button"
+					@mouseenter="onButtonMouseenter"
+					@mouseout="onButtonMouseout"
+					:tag=item.index :style=item.style>
+					<br><br><br>{{item.text}}
+				</div>
+			</el-col>
+		</el-row>
+		!-->
 </template>
 <script>
 import * as color from "../../utils/color.js";
@@ -23,7 +56,6 @@ import { compose, findGroup } from "../../algorithm/compose.js";
 import color_space_divide from "../../algorithm/color-space-divide.js";
 import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
-import { Canvas, Item } from "../../canvas/canvas-object.js";
 import * as d3 from "d3";
 
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
@@ -37,16 +69,15 @@ export default {
 				selectedItems: [],
 			}));
 		return {
-			blocks: blocks,
-			activeBlock: blocks[0],
-			canvas: null,
+			blocks,
+			activeBlock: blocks[0]
 		};
     },
 	props: ['src', 'width', 'height'],
 	computed: {
 	},
 	methods: {
-		figure_tabs_class(item) {
+		figure_tabs_class(item, activeBlock) {
 			return {
 				"figure-tabs_item": true, 
 				"active": item == this.activeBlock
@@ -146,7 +177,7 @@ export default {
 		editorRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const canvas2 = document.getElementsByClassName('editorCanvas')[0];
-			const ctx = canvas2.getContext('2d');
+			const ctx2 = canvas2.getContext('2d');
 			canvas2.width = canvas.width;
 			canvas2.height = canvas.height;
 			const width = canvas.width;
@@ -154,30 +185,50 @@ export default {
 
 			const data = currentData.data;
 			if (this.activeBlock.name === 'overview') {
-				ctx.globalAlpha = 1;
-				ctx.drawImage(img, 0, 0);
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 0] = 0;
+					data[(i << 2) + 1] = 0;
+					data[(i << 2) + 2] = 0;
+					data[(i << 2) + 3] = 0;
+				}
+				ctx.putImageData(currentData, 0, 0);
 				return;
 			} else {
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				ctx.globalAlpha = 0.1;
-				ctx.drawImage(img, 0, 0);
-				ctx.globalAlpha = 1;
+				for (let i = 0; i < width * height; ++i) {
+					data[(i << 2) + 0] = 0;
+					data[(i << 2) + 1] = 0;
+					data[(i << 2) + 2] = 0;
+					data[(i << 2) + 3] = 0;
+				}
+			}
+
+			function setPixel(index, r, g, b, a) {
+				data[(index << 2) + 0] = r;
+				data[(index << 2) + 1] = g;
+				data[(index << 2) + 2] = b;
+				data[(index << 2) + 3] = a;
 			}
 
 			for (const group of groups) {
 				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
 					const points = group.points;
-					ctx.strokeStyle = `rgb(${group.r},${group.g},${group.b})`;
-					console.log(group.lines.length);
-					for (const line of group.lines) {
-   						ctx.beginPath();  
-						ctx.moveTo(line.x, line.y1 - 1);
-						ctx.lineTo(line.x, line.y2 + 1);
-						ctx.stroke();
-   						ctx.closePath();  
+					for (let i = 0; i < points.length; i += 2) {
+						const x = points[i];
+						const y = points[i + 1];
+						setPixel(y * width + x, group.r, group.g, group.b, 255);
+						continue;
+						if (y > 0)
+							setPixel(y * width - width + x, group.r, group.g, group.b, 255);
+						if (y + 1 < height)
+							setPixel(y * width + width + x, group.r, group.g, group.b, 255);
+						if (x > 0)
+						setPixel(y * width + x - 1, group.r, group.g, group.b, 255);
+						if (x + 1 < width)
+						setPixel(y * width + x + 1, group.r, group.g, group.b, 255);
 					}
 				}
 			}
+			ctx2.putImageData(currentData, 0, 0);
 		},
 		oldCanvasRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
@@ -292,8 +343,26 @@ export default {
 				ctx.globalAlpha = 1;
 			}
 
-			for (const group of this.activeBlock.selectedItems) {
-				group.item.render(this.canvas);
+			function setPixel(index, r, g, b, a) {
+				data[(index << 2) + 0] = r;
+				data[(index << 2) + 1] = g;
+				data[(index << 2) + 2] = b;
+				data[(index << 2) + 3] = a;
+			}
+
+			for (const group of groups) {
+				if (this.activeBlock.selectedItems.indexOf(findGroup(group, currenttime)) != -1) {
+					const points = group.points;
+					ctx.strokeStyle = `rgb(${group.r},${group.g},${group.b})`;
+					console.log(group.lines.length);
+					for (const line of group.lines) {
+   						ctx.beginPath();  
+						ctx.moveTo(line.x, line.y1);
+						ctx.lineTo(line.x, line.y2);
+						ctx.stroke();
+   						ctx.closePath();  
+					}
+				}
 			}
 		},
 		onRightClick(event) {
@@ -322,7 +391,7 @@ export default {
 			}
 			console.log(event, event.shiftKey, event.ctrlKey, event.altKey);
 			
-			if (event.shiftKey && !event.ctrlKey && !event.altKey) {
+			if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
@@ -330,7 +399,7 @@ export default {
 					this.canvasRender(event);
 				}
 			}
-			else if (!event.shiftKey && !event.ctrlKey && !event.altKey) {
+			else if (event.shiftKey && !event.ctrlKey && !event.altKey) {
 				/*
 				if (!is_roping) {
 					is_roping = true;
@@ -346,12 +415,7 @@ export default {
 					group0 = findGroup(group0, currenttime);
 					this.activeBlock.selectedItems.push(group0);
 					for (const group of groups) {
-						if (group.points.length > 10 &&
-							//group.tag === group0.tag && 
-							Math.abs(group.color[0] - group0.color[0]) < 0.02 &&
-							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
-							Math.abs(group.color[2] - group0.color[2]) < 0.5
-							) {
+						if (group.tag === group0.tag && group.points.length > 50) {
 							this.activeBlock.selectedItems.push(group);
 						}
 					}
@@ -363,7 +427,7 @@ export default {
 					group0 = findGroup(group0, currenttime);
 					this.activeBlock.selectedItems.push(group0);
 					for (const group of groups) {
-						if (group.tag === group0.tag && group.points.length > 10) {
+						if (group.tag === group0.tag && group.points.length > 50) {
 							this.createsvgFromGroup(group);
 						}
 					}
@@ -476,6 +540,9 @@ export default {
 			if (tags[y * canvas.width + x] === bgtag) {
 				return;
 			}
+			// const k = y * canvas.width + x << 2;
+			// const hsl = color.rgbToHsl(initalData.data[k + 0], initalData.data[k + 1], initalData.data[k + 2]);
+			// console.info(hsl);
 
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
@@ -484,8 +551,56 @@ export default {
 				this.canvasRender(event);
 				this.activeBlock.selectedItems.pop();
 			}
+/*
+			if (is_roping) {
+				if (event.shiftKey) {
+					rope[rope.length - 1][0] = x;
+					rope[rope.length - 1][1] = y;
+					ctx.beginPath();
+					ctx.strokeStyle = "red";
+					ctx.moveTo(rope[0][0], rope[0][1]);
+					for (let i = rope.length - 1; i >= 0; --i) {
+						ctx.lineTo(rope[i][0], rope[i][1]);
+					}
+					ctx.stroke();
+					ctx.closePath();
+				} else {
+					is_roping = false;
+					// roping end here
+				}
+			}
+			*/
 
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+		},
+		onMouseenter(event) {
+			/*
+			console.info("mouseenter");
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = currentData.data;
+			for (let i = 0; i < width * height; ++i) {
+				data[(i << 2) + 3] = 30;
+			}
+			ctx.putImageData(currentData, 0, 0);
+			*/
+		},
+		onMouseout(event) {
+			/*
+			console.info("mouseout");
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const ctx = canvas.getContext('2d');
+			lastgroup = null;
+			ctx.putImageData(initalData, 0, 0);
+			const width = canvas.width;
+			const height = canvas.height;
+			const data = currentData.data;
+			for (let i = 0; i < width * height; ++i) {
+				data[(i << 2) + 3] = 30;
+			}
+			*/
 		},
 		onTabClick(item) {
 			this.activeBlock = item;
@@ -529,7 +644,7 @@ export default {
 		const ctx = canvas.getContext('2d');
 		img = new Image();
 		img.src = this.src;
-		img.onload = () => {
+		img.onload = function() {
 			canvas.width = img.width;
 			canvas.height = img.height;
 			const realWidth = canvas.parentNode.clientWidth;
@@ -539,13 +654,54 @@ export default {
 			console.log('zoom', realWidth, realHeight, zoom_ratio);
 			ctx.drawImage(img, 0, 0);
 			preprocessing(canvas);
-			this.canvas = new Canvas(canvas);
 			//svg.attr('width', img.width / zoom_ratio)
 			//	.attr('height', img.height / zoom_ratio);
 		};
 		interactionInit();
 	}
 };
+/*
+function figurePanelRender(svg) {
+	const width = svg.clientWidth;
+	const height = svg.clientHeight;
+
+	svg = d3.select(svg);
+	svg.attr('width', width)
+		.attr('height', height);
+
+	svg.append('rect')
+		.attr('x', 0)
+		.attr('y', 0)
+		.attr('width', width)
+		.attr('height', height)
+		.style('fill', 'var(--color-blue)')
+		.style('stroke', 'none');
+
+	var g = svg.selectAll('.block')
+		.data(blocks)
+		.enter()
+		.append('g')
+		.attr('class', 'block')
+		.attr('transform', function(d, i){
+			return `translate(${i * 100}, 0)`;
+		});
+
+	var fontSize = "15px";
+		
+	g.append('rect')
+		.attr('width', 100)
+		.attr('height', height)
+		.style('fill', 'var(--color-blue)')
+		.style('stroke', 'var(--color-white)')
+		.style('stroke-width', 1);
+	
+	g.append('text')
+		.attr('transform', 'translate(20, 30)')
+		.style('font-size', '18px')
+		.style('fill', 'var(--color-white)')
+		.text(function(d){ return d; });
+}
+*/
 
 function preprocessing(canvas) {
 	const start_time = new Date();
@@ -625,10 +781,6 @@ function preprocessing(canvas) {
 		d.r = Math.floor(d.rgb[0]);
 		d.g = Math.floor(d.rgb[1]);
 		d.b = Math.floor(d.rgb[2]);
-		d.item = new Item({
-			lines: d.lines,
-			color: [d.r, d.g, d.b, 1],
-		});
 	});
 	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	ngroup = new Array(width * height);
@@ -650,109 +802,6 @@ function preprocessing(canvas) {
 	currentData = ctx.getImageData(0, 0, width, height);
 	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 }
-
-
-
-function calc(canvas) {
-	const start_time = new Date();
-
-	const ctx = canvas.getContext('2d');
-	const width = canvas.width;
-	const height = canvas.height;
-
-	const imgData = ctx.getImageData(0, 0, width, height);
-	const data = imgData.data;
-	initalData = imgData;
-	const hsl_data = new Float32Array(width * height * 3);
-	console.info(`time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
-
-	const seq = systematic_sampling_seq(height * width);
-	for (let i = 0; i < height * width; ++i) {
-		let r = data[(i << 2) + 0];
-		let g = data[(i << 2) + 1];
-		let b = data[(i << 2) + 2];
-		const a = data[(i << 2) + 3];
-		if (a !== 255) {
-			r = Math.floor(r / 255 * a);
-			g = Math.floor(g / 255 * a);
-			b = Math.floor(b / 255 * a);
-			data[(i << 2) + 0] = r;
-			data[(i << 2) + 1] = g;
-			data[(i << 2) + 2] = b;
-			data[(i << 2) + 3] = 255;
-		}
-		const hsl = color.rgbToHsl(r, g, b);
-		hsl_data[i * 3 + 0] = hsl[0];
-		hsl_data[i * 3 + 1] = hsl[1];
-		hsl_data[i * 3 + 2] = hsl[2];
-	}
-	for (let i = 0; i < seq.length; ++i) {
-		const t = seq[i] * 3;
-		seq[i] = [hsl_data[t], hsl_data[t + 1], hsl_data[t + 2]];
-	}
-	const division = color_space_divide(seq);
-	const color2tag = division.color2tag;
-	console.info(division.tagcount);
-	const count = [];
-	tags = new Uint16Array(width * height);
-	for (let i = 0; i < height * width * 3; i += 3) {
-		const tag = color2tag([hsl_data[i], hsl_data[i + 1], hsl_data[i + 2]]);
-		if (!count[tag]) {
-			count[tag] = 0;
-		}
-		count[tag] += 1;
-		tags[i / 3] = tag;
-	}
-	console.info(count);
-	for (let i = 0; i < count.length; ++i) if (count[i] / (width * height) * 100 > 0.1) {
-		color_spaces.push({
-			text: `${(count[i] / (width * height) * 100).toFixed(2)}%\n
-				${i === 0 ? 'background' : division.tag2hsl(i)}`,
-			style:{ color: division.tag2rgb(i)},
-			count: count[i],
-			index: i,
-			name: i.toString(),
-		});
-	}
-	color_spaces.sort((a, b) => b.count - a.count);
-	bgtag = color_spaces[0].index;
-	for (let i = 0; i < height * width; ++i) {
-		if (tags[i] === bgtag) {
-			hsl_data[i * 3] = -1;
-		}
-	}
-
-	console.info(`rgbtoHsl: ${(new Date()).getTime() - start_time.getTime()} ms`);
-	const decomposed = decompose(hsl_data, width, height);
-	console.info(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
-	const elements = compose(decomposed.elements, width, height);
-	elements.forEach(function(d) {
-		d.rgb = color.hslToRgb(d.color[0], d.color[1], d.color[2]);
-		d.r = Math.floor(d.rgb[0]);
-		d.g = Math.floor(d.rgb[1]);
-		d.b = Math.floor(d.rgb[2]);
-	});
-	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
-	ngroup = new Array(width * height);
-	groups = elements;
-	for (const element of elements) {
-		const points = element.points;
-		for (let i = 0; i < points.length; i += 2) {
-			ngroup[points[i] + points[i + 1] * width] = element;
-		}
-		if (element.timestamp > maxtimestamp) {
-			maxtimestamp = element.timestamp;
-		}
-		element.tag = color2tag(element.color);
-	}
-	console.log(elements);
-
-	currenttime = maxtimestamp;
-	ctx.putImageData(imgData, 0, 0);
-	currentData = ctx.getImageData(0, 0, width, height);
-	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
-}
-
 
 function ondragstart() {
 	const event = d3.event;
@@ -767,6 +816,20 @@ function ondragend() {
 </script>
 
 <style scoped>
+    /*.el-tabs {
+		height: 40vh;
+		font-family: 'Source Sans Pro', sans-serif;;
+		margin: 0px 3px;
+		border-radius: 6px;
+        background-color:var(--color-0);
+        box-shadow: 2px 2px 1px var(--color-3);
+	}
+    .el-tabs_header{
+        background-color:var(--color-3);
+    }*/
+    /*version 2*/
+
+
 	.figure-tabs_header {
 		border-bottom: 0px solid var(--color-blue-gray);
 		padding: 0;
