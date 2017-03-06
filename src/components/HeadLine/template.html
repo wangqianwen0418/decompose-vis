@@ -2,15 +2,27 @@
     <p id='name'> NarVis</p>
 
     <span class="iconGroup">
+           <div style='float:right' @click=" " >
+           <a href='library.html'><i class="fa fa-globe" ></i></a>
+           <br/>explore
+            </div>
+
+
+           <div style='float:right' @click="save" >
+           <i class="fa fa-download"></i>
+           <br/>save
+           </div>
+
            <div style='float:right'>
-           <i class="icon el-icon-picture" @click="showView = !showView"></i>
+           <i class="fa fa-eye" @click="showView = !showView"></i>
            <br/>preview
            </div>
 
-           <div style='float:right' @click="showForm = !showForm" >
-           <i class="icon el-icon-upload2"></i>
-           <br/>import
-           </div>
+
+            <div style='float:right' @click="showForm = !showForm" >
+            <i class="fa fa-upload"></i>
+            <br/>import
+            </div>
        </span>
 
     <el-dialog class='preview' v-model="showView" size='large' title='Preview'>
