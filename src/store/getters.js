@@ -26,7 +26,7 @@ const getters =
             state.blocks.forEach((block) => {
                 block.marks.forEach((mark) => {
                     mark.channels.forEach((channel) => {
-                        if (channel.selected) {
+                        if (channel.selected && channel.attachedEles) {
                             channel.attachedEles.forEach((ele) => {
                                 if (ele.selected) returnEle = ele;
                             });
