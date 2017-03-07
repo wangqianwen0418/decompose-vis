@@ -17,9 +17,6 @@ export default {
         markv,
     },
     methods: {
-        // ...mapActions({
-        //     addMark: ADD_MARK,
-        // }),
         addMark(markTemp) {
             this.block.marks.push(markTemp);
         },

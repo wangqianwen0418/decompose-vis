@@ -4,7 +4,7 @@
         <ul id='mark_list'>
             <div class='block'>{{block.name}}<hr/></div>
             <draggable :list="block.marks">
-             <markv v-if='!mark.removed' v-for='mark in block.marks' :mark='mark' >
+             <markv v-for='mark in block.marks' :mark='mark' :block= 'block'>
                 </markv>
                 <li>
                     <el-dropdown >

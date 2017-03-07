@@ -165,12 +165,13 @@ export default {
     },
     watch: {
         selectedChannel(val) {
-            // console.info(val.attachedEles);
+            if(val){
             const svg = d3.select(this.$el).select('svg');
 
             svg.selectAll('*')
                 .remove();
 
+            if(val.attachedEles) {
             const g = svg.selectAll('circle')
                 .data(val.attachedEles)
                 .enter()
@@ -273,6 +274,8 @@ export default {
             //         // d.description.dx = d3.event.x - d.x;
             //         // d.description.dy = d3.event.y - d.y;
             // });
+            }
+            }
         },
     },
 };

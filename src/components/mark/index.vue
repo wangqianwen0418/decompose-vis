@@ -5,7 +5,7 @@
 
             <ol id='channel_list'>
                 <draggable :list="mark.channels">
-                        <channel v-for='channel in mark.channels' :channel='channel'/>
+                        <channel v-for='channel in mark.channels' :channel='channel' :mark='mark'/>
                     <li>
                         <!--<i class="el-icon-plus"> add another channel</i>-->
                         <el-dropdown >

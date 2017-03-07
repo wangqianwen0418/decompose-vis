@@ -1,10 +1,10 @@
 import draggable from 'vuedraggable';
-import { mapActions, mapState } from 'vuex';
-import { ADD_CHANNEL, REMOVE_MARK } from '../../store';
+import { mapState } from 'vuex';
+// import { ADD_CHANNEL, REMOVE_MARK } from '../../store';
 import channel from '../channel';
 
 export default {
-    props: ['mark'],
+    props: ['mark', 'block'],
     computed: {
         ...mapState({
             channelsTemp: 'channelsTemp',
@@ -20,10 +20,15 @@ export default {
         //     removeMark: REMOVE_MARK,
         // }),
         addChannel(channelTemp) {
-            this.mark.channels.push(channelTemp);
+            console.info(channelTemp);
+            const clone = JSON.parse(JSON.stringify(channelTemp));
+            this.mark.channels.push(clone);
         },
         removeMark() {
-            this.mark.removed = true;
+            const index = this.block.marks.indexOf(this.mark);
+            if (index > -1) {
+                this.block.marks.splice(index, 1);
+            }
         },
     },
 };
