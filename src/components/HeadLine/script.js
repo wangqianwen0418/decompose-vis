@@ -19,10 +19,11 @@ export default {
     computed: {
       textDescription: {
         set(value) {
-          value = value.split('.');
-          let types = ['size','color-h','color-s'];
+          let values = value.split('.');
+          let types = ['size','color-h','color-s','position'];
           types.forEach((item) => {
-            this.makeIt(item,value);
+            this.makeIt(item,values);
+            values = value.split('.');
           })
         },
       },
@@ -36,19 +37,18 @@ export default {
         dict['color-h'] = ['color','hue','shades'];
         dict['size'] = ['size','width'];
         dict['shape'] = ['shape','figure','glyph','triangle','square'];
-        value.forEach(function(item) {
+        value.forEach(function(item,index,array) {
           dict[section].forEach(function(word){
             if(item.includes(word)) {
-                sentences.push(item);
+                array[index] = "<b><span style='background-color: #FFFF00'>" + item + "</span></b>";
             }
           });
         });
-        console.log(sentences);
         this.$store.state.blocks.forEach(function(block) {
           block.marks.forEach(function(mark) {
             mark.channels.forEach(function(channel) {
               if(channel.name == section) {
-                channel.explanation = sentences.join(".");
+                channel.explanation = value.join(".");
               }
             })
           })

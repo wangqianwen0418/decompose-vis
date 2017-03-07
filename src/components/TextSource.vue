@@ -1,10 +1,6 @@
 <template>
     <div class="textSource">
-          <!--here is the corresponding text description-->
-          <textarea
-          v-model="exp"
-          placeholder="here is the corresponding text description">
-          </textarea>
+          <p v-html = "exp">  <p>
     </div>
 </template>
 
@@ -17,9 +13,6 @@ export default {
         exp: {
             get() {
                 const selectedChannel = this.$store.getters.selectedChannel;
-                /* eslint-disable */
-                console.log(selectedChannel);
-                /* eslint-enable */
                 return selectedChannel ? selectedChannel.explanation : '';
             },
             set(value) {
