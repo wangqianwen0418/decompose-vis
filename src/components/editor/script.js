@@ -11,8 +11,8 @@ export default {
     computed: {
         message: {
             get() {
-                const selectedEle = this.$store.getters.selectedEle;
-                return selectedEle ? selectedEle.description.text : '';
+              const selectedEle = this.$store.getters.selectedEle;
+              return selectedEle ? selectedEle.description.text : '';
             },
             set(value) {
                 this.$store.commit('EDIT_ELE', value);
@@ -184,4 +184,3 @@ export default {
         },
     },
 };
-

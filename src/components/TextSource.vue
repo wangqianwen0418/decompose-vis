@@ -17,6 +17,9 @@ export default {
         exp: {
             get() {
                 const selectedChannel = this.$store.getters.selectedChannel;
+                /* eslint-disable */
+                console.log(selectedChannel);
+                /* eslint-enable */
                 return selectedChannel ? selectedChannel.explanation : '';
             },
             set(value) {
