@@ -28,6 +28,50 @@ export function Canvas(canvas) {
     return this;
 }
 
+export function mergeItem(items) {
+    const l =
+        Array.concat(...items.map(item => item.lines))
+            .sort((a, b) => {
+                if (a.x !== b.x) {
+                    return a.x - b.x;
+                } else if (a.y1 !== b.y1) {
+                    return a.y1 - b.y1;
+                } else {
+                    return a.y2 - b.y2;
+                }
+            });
+    // need a merge processing here
+    const lines = [];
+    for (let i = 0; i < l.length; ++i) {
+        lines.push(l[i]);
+        while (lines.length > 1 &&
+            lines[lines.length - 1].x === lines[lines.length - 2].x &&
+            lines[lines.length - 1].y1 - lines[lines.length - 2].y2 < 20) {
+                lines[lines.length - 2].y2 = lines[lines.length - 1].y2;
+                lines.pop();
+            }
+    }
+    
+    const color = [0, 0, 0, 0];
+    let n = 0;
+    for (const item of items) {
+        for (let i = 0; i < 4; ++i) {
+            color[i] += (item.y2 - item.y1) * item.color[i];
+        }
+        n += item.y2 - item.y1;
+    }
+    for (let i = 0; i < 4; ++i) {
+        color[i] /= n;
+    }
+
+    const self = new Item({
+        lines,
+        color,
+    });
+
+    return self;
+}
+
 export function Item(item) {
     this.points = item.points;
     this.lines = item.lines;
@@ -83,6 +127,7 @@ export function Item(item) {
         const width = canvas.width;
         const height = canvas.height;
         const data = canvas.data;
+        const ctx = canvas.ctx;
         const rw = 1.0 / w * this.w;
         const rh = 1.0 / h * this.h;
         const r = this.color[0];
@@ -98,11 +143,11 @@ export function Item(item) {
             data[index + 2] = b;
             data[index + 3] = a;
         }
+        ctx.putImagedata(data, 0, 0);
     };
     this.lineRender = (canvas) => {
         const width = canvas.width;
         const height = canvas.height;
-        const data = canvas.data;
         const ctx = canvas.ctx;
         const rw = 1.0 / w * this.w;
         const rh = 1.0 / h * this.h;
