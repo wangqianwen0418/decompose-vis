@@ -1,33 +1,3 @@
-export function Canvas(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
-    this.data = this.ctx.createImageData(canvas.width, canvas.height);
-    this.width = canvas.width;
-    this.height = canvas.height;
-    this.eventListener = new Int16Array(this.width * this.height);
-    this.Items = new Array();
-    this.render = () => {
-        this.Items.forEach(item => {
-            item.render(this);
-        });
-    };
-    const frames = [];
-    this.animation = (frame) => {
-        frame = frame || 0;
-        this.ctx.clearRect(0, 0, this.width, this.height);
-        this.Items.forEach(item => {
-            item.a += 1.0 / 30;
-            if (item.a > 1) {
-                item.a = 1;
-            }
-        });
-        this.render();
-        if (frame < 30)
-        setTimeout(this.animation, 10, frame + 1);
-    };
-    return this;
-}
-
 export class TCanvas {
     constructor(canvas, width, height) {
         width = width || canvas.width;
@@ -47,6 +17,13 @@ export class TCanvas {
         ctx.clearRect(0, 0, width, height);  
     }
 
+    addItem(item) {
+        const items = this.items;
+        item.index = items.length;
+        item.canvas = this;
+        items.push(item);
+    }
+
     render(timestamp) {
         timestamp = timestamp || 0;
         const items = this.itemTables[timestamp];
@@ -58,49 +35,6 @@ export class TCanvas {
     }
 }
 
-export function mergeItem(items) {
-    const l =
-        Array.concat(...items.map(item => item.lines))
-            .sort((a, b) => {
-                if (a.x !== b.x) {
-                    return a.x - b.x;
-                } else if (a.y1 !== b.y1) {
-                    return a.y1 - b.y1;
-                } else {
-                    return a.y2 - b.y2;
-                }
-            });
-    // need a merge processing here
-    const lines = [];
-    for (let i = 0; i < l.length; ++i) {
-        lines.push(l[i]);
-        while (lines.length > 1 &&
-            lines[lines.length - 1].x === lines[lines.length - 2].x &&
-            lines[lines.length - 1].y1 - lines[lines.length - 2].y2 < 20) {
-                lines[lines.length - 2].y2 = lines[lines.length - 1].y2;
-                lines.pop();
-            }
-    }
-    
-    const color = [0, 0, 0, 0];
-    let n = 0;
-    for (const item of items) {
-        for (let i = 0; i < 4; ++i) {
-            color[i] += (item.y2 - item.y1) * item.color[i];
-        }
-        n += item.y2 - item.y1;
-    }
-    for (let i = 0; i < 4; ++i) {
-        color[i] /= n;
-    }
-
-    const self = new Item({
-        lines,
-        color,
-    });
-
-    return self;
-}
 
 export class TItem {
     constructor(_) {
@@ -156,9 +90,14 @@ export class TItem {
         this.w0 = this.w;
         this.h0 = this.h;
         this.alpha = 1;
+        this.appeartime = null;
+        this.ff = null;
+        this.tt = null;
+        this.duration = null;
     }
 
-    render(canvas) {
+    render() {
+        const canvas = this.canvas;
         const width = canvas.width;
         const height = canvas.height;
         const ctx = canvas.ctx;
@@ -185,6 +124,121 @@ export class TItem {
             ctx.closePath();  
         }
     }
+
+    createAnimation() {
+        const fields = [];
+        for (const field of this.ff) {
+            if (this.tt.hasOwnProperty(field)) {
+                fields.push(field);
+            }
+        }
+    }
+
+    appear(_) {
+        this.appeartime = _;
+        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+            this.createAnimation();
+        }
+        return this;
+    }
+
+    from(_) {
+        this.ff = _;
+        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+            this.createAnimation();
+        }
+        return this;
+    }
+
+    to(_) {
+        this.tt = _;
+        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+            this.createAnimation();
+        }
+        return this;
+    }
+
+    duration(_) {
+        this.duration = _;
+        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+            this.createAnimation();
+        }
+        return this;
+    }
+}
+
+export function Canvas(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.data = this.ctx.createImageData(canvas.width, canvas.height);
+    this.width = canvas.width;
+    this.height = canvas.height;
+    this.eventListener = new Int16Array(this.width * this.height);
+    this.Items = new Array();
+    this.render = () => {
+        this.Items.forEach(item => {
+            item.render(this);
+        });
+    };
+    const frames = [];
+    this.animation = (frame) => {
+        frame = frame || 0;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.Items.forEach(item => {
+            item.a += 1.0 / 30;
+            if (item.a > 1) {
+                item.a = 1;
+            }
+        });
+        this.render();
+        if (frame < 30)
+        setTimeout(this.animation, 10, frame + 1);
+    };
+    return this;
+}
+
+export function mergeItem(items) {
+    const l =
+        Array.concat(...items.map(item => item.lines))
+            .sort((a, b) => {
+                if (a.x !== b.x) {
+                    return a.x - b.x;
+                } else if (a.y1 !== b.y1) {
+                    return a.y1 - b.y1;
+                } else {
+                    return a.y2 - b.y2;
+                }
+            });
+    // need a merge processing here
+    const lines = [];
+    for (let i = 0; i < l.length; ++i) {
+        lines.push(l[i]);
+        while (lines.length > 1 &&
+            lines[lines.length - 1].x === lines[lines.length - 2].x &&
+            lines[lines.length - 1].y1 - lines[lines.length - 2].y2 < 20) {
+                lines[lines.length - 2].y2 = lines[lines.length - 1].y2;
+                lines.pop();
+            }
+    }
+    
+    const color = [0, 0, 0, 0];
+    let n = 0;
+    for (const item of items) {
+        for (let i = 0; i < 4; ++i) {
+            color[i] += (item.y2 - item.y1) * item.color[i];
+        }
+        n += item.y2 - item.y1;
+    }
+    for (let i = 0; i < 4; ++i) {
+        color[i] /= n;
+    }
+
+    const self = new Item({
+        lines,
+        color,
+    });
+
+    return self;
 }
 
 export function Item(item) {
