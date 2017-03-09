@@ -28,6 +28,36 @@ export function Canvas(canvas) {
     return this;
 }
 
+export class TCanvas {
+    constructor(canvas, width, height) {
+        width = width || canvas.width;
+        height = height || canvas.height;
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = width;
+        this.height = height;
+        this.items = new Array();
+        this.itemTables = new Array();
+    }
+
+    clear() {
+        const ctx = this.ctx;
+        const width = this.width;
+        const height = this.height;
+        ctx.clearRect(0, 0, width, height);  
+    }
+
+    render(timestamp) {
+        timestamp = timestamp || 0;
+        const items = this.itemTables[timestamp];
+        const canvas = this.canvas;
+        this.clear();
+        for (const item of items) {
+            item.render(this);
+        }
+    }
+}
+
 export function mergeItem(items) {
     const l =
         Array.concat(...items.map(item => item.lines))
@@ -70,6 +100,91 @@ export function mergeItem(items) {
     });
 
     return self;
+}
+
+export class TItem {
+    constructor(_) {
+        let lines, color;
+        if (_ instanceof Array) {
+            const items = _;
+            const l =
+                Array.concat(...items.map(item => item.lines))
+                    .sort((a, b) => {
+                        if (a.x !== b.x) {
+                            return a.x - b.x;
+                        } else if (a.y1 !== b.y1) {
+                            return a.y1 - b.y1;
+                        } else {
+                            return a.y2 - b.y2;
+                        }
+                    });
+
+            lines = [];
+            for (let i = 0; i < l.length; ++i) {
+                lines.push(l[i]);
+                let n = lines.length;
+                while (n > 1 && lines[n - 1].x === lines[n - 2].x && lines[n - 1].y1 - lines[n - 2].y2 < 20) {
+                    lines[n - 2].y2 = lines[n - 1].y2;
+                    --n;
+                    lines.pop();
+                }
+            }
+            
+            color = [0, 0, 0, 0];
+            let cnt = 0;
+            for (const item of items) {
+                for (let i = 0; i < 4; ++i) {
+                    color[i] += (item.y2 - item.y1) * item.color[i];
+                }
+                cnt += item.y2 - item.y1;
+            }
+            for (let i = 0; i < 4; ++i) {
+                color[i] /= cnt;
+            }
+        } else {
+            const item = _;
+            lines = item.lines;
+        }
+        this.lines = item.lines;
+        this.color = item.color;
+        this.x = Math.min(...lines.map(d => d.x));
+        this.y = Math.min(...lines.map(d => d.y1));
+        this.w = Math.max(...lines.map(d => d.x)) - this.x;
+        this.h = Math.max(...lines.map(d => d.y2)) - this.y;
+        this.x0 = this.x;
+        this.y0 = this.y;
+        this.w0 = this.w;
+        this.h0 = this.h;
+        this.alpha = 1;
+    }
+
+    render(canvas) {
+        const width = canvas.width;
+        const height = canvas.height;
+        const ctx = canvas.ctx;
+        const rw = 1.0 / this.w0 * this.w;
+        const rh = 1.0 / this.h0 * this.h;
+        const c = this.color;
+        const alpha = this.alpha;
+        ctx.strokeStyle = `rgba(${c[0]},${c[1]},${c[2]},${c[3] * alpha})`;
+
+        const lines = this.lines;
+        const x0 = this.x0;
+        const y0 = this.y0;
+        const x = this.x;
+        const y = this.y;
+
+        for (const line of lines) {
+            const xx = ~~((line.x - x0) * rw + x);
+            const y1 = ~~((line.y1 - y0) * rh + y);
+            const y2 = ~~((line.y2 - y0) * rh + y);
+            ctx.beginPath();  
+            ctx.moveTo(xx, y1 - 1);
+            ctx.lineTo(xx, y2 + 1);
+            ctx.stroke();
+            ctx.closePath();  
+        }
+    }
 }
 
 export function Item(item) {
