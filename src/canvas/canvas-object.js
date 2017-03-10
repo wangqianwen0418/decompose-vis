@@ -1,3 +1,5 @@
+const fps = 20;
+
 export class TCanvas {
     constructor(canvas, width, height) {
         width = width || canvas.width;
@@ -74,25 +76,45 @@ export class TItem {
             for (let i = 0; i < 4; ++i) {
                 color[i] /= cnt;
             }
-        } else {
+            this.lines = item.lines;
+            this.color = item.color;
+            this.x = Math.min(...lines.map(d => d.x));
+            this.y = Math.min(...lines.map(d => d.y1));
+            this.w = Math.max(...lines.map(d => d.x)) - this.x;
+            this.h = Math.max(...lines.map(d => d.y2)) - this.y;
+            this.x0 = this.x;
+            this.y0 = this.y;
+            this.w0 = this.w;
+            this.h0 = this.h;
+            this.alpha = 1;
+            this.appeartime = null;
+            this.fstatus = null;
+            this.tstatus = null;
+            this.duration = null;
+        } else if (!(_ instanceof TItem)) {
             const item = _;
             lines = item.lines;
+            this.lines = item.lines;
+            this.r = item.r;
+            this.g = item.g;
+            this.b = item.b;
+            this.x = Math.min(...lines.map(d => d.x));
+            this.y = Math.min(...lines.map(d => d.y1));
+            this.w = Math.max(...lines.map(d => d.x)) - this.x;
+            this.h = Math.max(...lines.map(d => d.y2)) - this.y;
+            this.x0 = this.x;
+            this.y0 = this.y;
+            this.w0 = this.w;
+            this.h0 = this.h;
+            this.alpha = 1;
+            this.appeartime = null;
+            this.fstatus = null;
+            this.tstatus = null;
+            this.duration = null;
+        } else {
+            this.lines = _.lines;
+            this.color = 
         }
-        this.lines = item.lines;
-        this.color = item.color;
-        this.x = Math.min(...lines.map(d => d.x));
-        this.y = Math.min(...lines.map(d => d.y1));
-        this.w = Math.max(...lines.map(d => d.x)) - this.x;
-        this.h = Math.max(...lines.map(d => d.y2)) - this.y;
-        this.x0 = this.x;
-        this.y0 = this.y;
-        this.w0 = this.w;
-        this.h0 = this.h;
-        this.alpha = 1;
-        this.appeartime = null;
-        this.ff = null;
-        this.tt = null;
-        this.duration = null;
     }
 
     render() {
@@ -126,32 +148,48 @@ export class TItem {
 
     createAnimation() {
         const fields = [];
-        for (const field of this.ff) {
-            if (this.tt.hasOwnProperty(field)) {
+        const from = this.fstatus;
+        const to = this.tstatus;
+        const start = this.appeartime;
+        const duration = this.duration;
+
+        for (const field of from) {
+            if (to.hasOwnProperty(field)) {
                 fields.push(field);
             }
         }
+        for (let i = 0; i < fields.length; ++i) {
+            const field = fields[i];
+            if (!isNaN(from[field]) && !isNaN(to[field])) {
+                // so both two value are Number
+            } else {
+                fields.splice(i, 1);
+                --i;
+            }
+        }
+
+
     }
 
     appear(_) {
         this.appeartime = _;
-        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+        if (this.appeartime !== null && this.fstatus !== null && this.tstatus !== null && this.duration !== null) {
             this.createAnimation();
         }
         return this;
     }
 
     from(_) {
-        this.ff = _;
-        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+        this.fstatus = _;
+        if (this.appeartime !== null && this.fstatus !== null && this.tstatus !== null && this.duration !== null) {
             this.createAnimation();
         }
         return this;
     }
 
     to(_) {
-        this.tt = _;
-        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+        this.tstatus = _;
+        if (this.appeartime !== null && this.fstatus !== null && this.tstatus !== null && this.duration !== null) {
             this.createAnimation();
         }
         return this;
@@ -159,7 +197,7 @@ export class TItem {
 
     duration(_) {
         this.duration = _;
-        if (this.appeartime !== null && this.ff !== null && this.tt !== null && this.duration !== null) {
+        if (this.appeartime !== null && this.fstatus !== null && this.tstatus !== null && this.duration !== null) {
             this.createAnimation();
         }
         return this;
