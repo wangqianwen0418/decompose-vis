@@ -1,5 +1,24 @@
 const fps = 20;
 
+function smooth(a) {
+    const window = 10;
+    const c = 1.0 / window;
+    const b = new Float32Array(a.length);
+    for (let i = 0, cnt = 0; i < a.length; ++i) {
+        cnt += a[i];
+        if (i >= window) {
+            cnt -= a[i - window];
+        }
+        b[i] = cnt * c;
+    }
+    for (let i = window - 1; i >= 0; --i) {
+        b[i] = b[window];
+    }
+    for (let i = 0; i < a.length; ++i) {
+        a[i] = b[i];
+    }
+}
+
 export class TCanvas {
     constructor(canvas, width, height) {
         width = width || canvas.width;
@@ -132,6 +151,50 @@ export class TItem {
         }
     }
 
+    compress() {
+        const width = this.w0 + 1;
+        const ys = new Float32Array(width);
+        const ws = new Float32Array(width);
+        const x0 = this.x0;
+        for (const line of lines) {
+            ys[line.x - x0] += (line.y1 + line.y2) * 0.5 * (line.y2 - line.y1);
+            ws[line.x - x0] += (line.y2 - line.y1);
+        }
+        for (let i = 0; i < ws.length; ++i) {
+            if (ws[i] !== 0) {
+                ys[i] /= ws[i];
+            }
+        }
+        this.ys = ys;
+        this.ws = ws;
+    }
+
+    transformat() {
+        const rw = 1.0 / this.w0 * this.w;
+        const rh = 1.0 / this.h0 * this.h;
+        const lines = this.lines;
+        const x0 = this.x0;
+        const y0 = this.y0;
+        const x = this.x;
+        const y = this.y;
+        const newlines = [];
+        for (const line of lines) {
+            const xx = ~~((line.x - x0) * rw + x);
+            const y1 = ~~((line.y1 - y0) * rh + y);
+            const y2 = ~~((line.y2 - y0) * rh + y);
+            newlines.push({
+                x: xx,
+                y1: y1,
+                y2: y2
+            });
+        }
+        this.lines = newlines;
+        this.x0 = this.x;
+        this.y0 = this.y;
+        this.w0 = this.w;
+        this.h0 = this.h;
+    }
+
     render() {
         const canvas = this.canvas;
         const width = canvas.width;
@@ -167,8 +230,8 @@ export class TItem {
         const fields = [];
         const from = this.fstatus;
         const to = this.tstatus;
-        const start = this.appeartime;
-        const duration = this.duration;
+        const start = ~~(this.appeartime / 1000 * fps);
+        const duration = ~~(this.duration / 1000 * fps);
         const canvas = this.canvas;
         const table = canvas.itemTables;
         const index = this.index;
