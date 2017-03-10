@@ -65,19 +65,23 @@ export class TItem {
                 }
             }
             
-            color = [0, 0, 0, 0];
+            color = [0, 0, 0];
             let cnt = 0;
             for (const item of items) {
-                for (let i = 0; i < 4; ++i) {
+                for (let i = 0; i < 3; ++i) {
                     color[i] += (item.y2 - item.y1) * item.color[i];
                 }
                 cnt += item.y2 - item.y1;
             }
-            for (let i = 0; i < 4; ++i) {
+            for (let i = 0; i < 3; ++i) {
                 color[i] /= cnt;
             }
+
             this.lines = item.lines;
-            this.color = item.color;
+            this.hue = color[0] * 360;
+            this.saturation = color[1];
+            this.lightness = color[2];
+            this.alpha = 1;
             this.x = Math.min(...lines.map(d => d.x));
             this.y = Math.min(...lines.map(d => d.y1));
             this.w = Math.max(...lines.map(d => d.x)) - this.x;
@@ -86,18 +90,19 @@ export class TItem {
             this.y0 = this.y;
             this.w0 = this.w;
             this.h0 = this.h;
-            this.alpha = 1;
             this.appeartime = null;
             this.fstatus = null;
             this.tstatus = null;
             this.duration = null;
         } else if (!(_ instanceof TItem)) {
             const item = _;
+            const color = item.color;
             lines = item.lines;
             this.lines = item.lines;
-            this.r = item.r;
-            this.g = item.g;
-            this.b = item.b;
+            this.hue = color[0] * 360;
+            this.saturation = color[1];
+            this.lightness = color[2];
+            this.alpha = 1;
             this.x = Math.min(...lines.map(d => d.x));
             this.y = Math.min(...lines.map(d => d.y1));
             this.w = Math.max(...lines.map(d => d.x)) - this.x;
@@ -106,14 +111,24 @@ export class TItem {
             this.y0 = this.y;
             this.w0 = this.w;
             this.h0 = this.h;
-            this.alpha = 1;
             this.appeartime = null;
             this.fstatus = null;
             this.tstatus = null;
             this.duration = null;
         } else {
             this.lines = _.lines;
-            this.color = 
+            this.hue = _.hue;
+            this.saturation = _.saturation;
+            this.lightness = _.lightness;
+            this.alpha = _.alpha;
+            this.x = _.x;
+            this.y = _.y;
+            this.w = _.w;
+            this.h = _.h;
+            this.x0 = _.x0;
+            this.y0 = _.y0;
+            this.w0 = _.w0;
+            this.h0 = _.h0;
         }
     }
 
@@ -124,9 +139,11 @@ export class TItem {
         const ctx = canvas.ctx;
         const rw = 1.0 / this.w0 * this.w;
         const rh = 1.0 / this.h0 * this.h;
-        const c = this.color;
+        const hue = ~~this.hue;
+        const saturation = ~~(this.saturation * 100);
+        const lightness = ~~(this.lightness * 100);
         const alpha = this.alpha;
-        ctx.strokeStyle = `rgba(${c[0]},${c[1]},${c[2]},${c[3] * alpha})`;
+        ctx.strokeStyle = `hsla(${hue},${saturation}%,${lightness}%,${alpha})`;
 
         const lines = this.lines;
         const x0 = this.x0;
@@ -152,12 +169,16 @@ export class TItem {
         const to = this.tstatus;
         const start = this.appeartime;
         const duration = this.duration;
+        const canvas = this.canvas;
+        const table = canvas.itemTables;
+        const index = this.index;
 
         for (const field of from) {
             if (to.hasOwnProperty(field)) {
                 fields.push(field);
             }
         }
+
         for (let i = 0; i < fields.length; ++i) {
             const field = fields[i];
             if (!isNaN(from[field]) && !isNaN(to[field])) {
@@ -168,7 +189,16 @@ export class TItem {
             }
         }
 
-
+        while (start + duration >= table.length) {
+            table.length.push(new Array());
+        }
+        for (let t = 0; t <= duration; ++t) {
+            const item = new TItem(this);
+            for (const field of fields) {
+                item[field] = (from[field] * (duration - t) + to[field] * t) / duration;
+            }
+            table[start + t][index] = item;
+        }
     }
 
     appear(_) {
