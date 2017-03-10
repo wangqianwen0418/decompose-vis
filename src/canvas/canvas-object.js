@@ -35,7 +35,6 @@ export class TCanvas {
     }
 }
 
-
 export class TItem {
     constructor(_) {
         let lines, color;
@@ -342,26 +341,6 @@ export function Item(item) {
         } else {
             this.lineRender(canvas);
         }
-    };
-    return this;
-}
-
-export function ItemSet(items) {
-    this.items = items.map((item) => (new Item(item)));
-    const x = Math.min(...items.map(item => item.x));
-    const w = Math.max(...items.map(item => item.x)) - this.x;
-    const y = Math.min(...items.map(item => item.y));
-    const h = Math.max(...items.map(item => item.y)) - this.y;
-    this.x = x;
-    this.w = w;
-    this.y = y;
-    this.h = h;
-    this.a = 1;
-    this.render = (canvas) => {
-        this.items.forEach((item) => {
-            item.a = this.a;
-            item.render(canvas);
-        });
     };
     return this;
 }
