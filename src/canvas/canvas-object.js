@@ -19,7 +19,7 @@ function smooth(a) {
     }
 }
 
-export class TCanvas {
+export class Canvas {
     constructor(canvas, width, height) {
         width = width || canvas.width;
         height = height || canvas.height;
@@ -36,6 +36,14 @@ export class TCanvas {
         const width = this.width;
         const height = this.height;
         ctx.clearRect(0, 0, width, height);  
+    }
+
+    removeItem(item) {
+        const items = this.items;
+        items.splice(item.index, 1);
+        for (let i = 0; i < items.length; ++i) {
+            items[i].index = i;
+        }
     }
 
     addItem(item) {
@@ -56,7 +64,7 @@ export class TCanvas {
     }
 }
 
-export class TItem {
+export class Item {
     constructor(_) {
         let lines, color;
         if (_ instanceof Array) {
@@ -113,7 +121,7 @@ export class TItem {
             this.fstatus = null;
             this.tstatus = null;
             this.duration = null;
-        } else if (!(_ instanceof TItem)) {
+        } else if (!(_ instanceof Item)) {
             const item = _;
             const color = item.color;
             lines = item.lines;
@@ -207,6 +215,7 @@ export class TItem {
         const lightness = ~~(this.lightness * 100);
         const alpha = this.alpha;
         ctx.strokeStyle = `hsla(${hue},${saturation}%,${lightness}%,${alpha})`;
+        ctx.lineWidth = rw;
 
         const lines = this.lines;
         const x0 = this.x0;
@@ -256,7 +265,7 @@ export class TItem {
             table.length.push(new Array());
         }
         for (let t = 0; t <= duration; ++t) {
-            const item = new TItem(this);
+            const item = new Item(this);
             for (const field of fields) {
                 item[field] = (from[field] * (duration - t) + to[field] * t) / duration;
             }
@@ -296,6 +305,8 @@ export class TItem {
         return this;
     }
 }
+
+/*
 
 export function Canvas(canvas) {
     this.canvas = canvas;
@@ -475,3 +486,5 @@ export function Item(item) {
     };
     return this;
 }
+
+*/
