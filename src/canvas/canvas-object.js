@@ -29,13 +29,26 @@ export class Canvas {
         this.height = height;
         this.items = new Array();
         this.itemTables = new Array();
+        this.backgroundImg = null;
+        this.bgAlpha = 1;
     }
 
     clear() {
         const ctx = this.ctx;
         const width = this.width;
         const height = this.height;
-        ctx.clearRect(0, 0, width, height);  
+        ctx.clearRect(0, 0, width, height);
+    }
+
+    drawBackground() {
+        if (this.backgroundImg === null) {
+            return;
+        }
+        const ctx = this.ctx;
+        const img = this.backgroundImg;
+        ctx.globalAlpha = this.bgAlpha;
+        ctx.drawImage(img, 0, 0);
+        ctx.globalAlpha = 1;
     }
 
     removeItem(item) {

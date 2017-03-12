@@ -34,14 +34,12 @@ export default {
     data() {
 		const blocks = ['overview', 'river', 'line', 'add'].map(d => ({
 				name: d,
-				selectedItems: [],
 				canvas: null,
 			}));
+		blocks[0].canvas = new Canvas(this.$el.getElementsByTagName('canvas')[0]);
 		return {
 			blocks: blocks,
 			activeBlock: blocks[0],
-			canvas: null,
-			editor: null,
 		};
     },
 	props: ['src', 'width', 'height'],
@@ -55,6 +53,7 @@ export default {
 			};
 		},
 		editorRender(event) {
+			/*
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const canvas2 = document.getElementsByClassName('editorCanvas')[0];
 			const ctx = canvas2.getContext('2d');
@@ -81,14 +80,11 @@ export default {
 					item.a = 0;
 				}
 			}
-			this.editor.animation(0);
+			*/
 		},
 		canvasRender(event) {
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const ctx = canvas.getContext('2d');
-			if (this.canvas === null) {
-				this.canvas = new Canvas(canvas);
-			}
 
 			if (this.activeBlock.name === 'overview') {
 				ctx.globalAlpha = 1;
@@ -115,7 +111,7 @@ export default {
 				group0 = findGroup(group0, currenttime);
 				const i = this.activeBlock.selectedItems.indexOf(group0.item);
 				if (i != -1) {
-					this.activeBlock.selectedItems.splice(i, 1);
+					this.activeBlock.selectedItems.canvas.removeItem(group0.item);
 					this.canvasRender(event);
 				}
 			}
@@ -132,10 +128,12 @@ export default {
 			console.log(event, event.shiftKey, event.ctrlKey, event.altKey);
 			
 			if (event.shiftKey && !event.ctrlKey && !event.altKey) {
+
+				// add a single item
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					this.activeBlock.selectedItems.push(group0.item);
+					this.activeBlock.selectedItems.canvas.addItem(group0.item);
 					this.canvasRender(event);
 				}
 			}
@@ -143,7 +141,9 @@ export default {
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					this.activeBlock.selectedItems.push(group0.item);
+
+					// add all the items
+					this.activeBlock.selectedItems.canvas.addItem(group0.item);
 					for (const group of groups) {
 						if (group.points.length > 10 &&
 							//group.tag === group0.tag && 
@@ -151,7 +151,7 @@ export default {
 							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
 							Math.abs(group.color[2] - group0.color[2]) < 0.5
 							) {
-							this.activeBlock.selectedItems.push(group.item);
+							this.activeBlock.selectedItems.canvas.addItem(group.item);
 						}
 					}
 					this.canvasRender(event);
@@ -172,15 +172,19 @@ export default {
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-				this.activeBlock.selectedItems.push(group0.item);
+				this.activeBlock.selectedItems.canvas.addItem(group0.item);
 				this.canvasRender(event);
-				this.activeBlock.selectedItems.pop();
+				this.activeBlock.selectedItems.canvas.removeItem(group0.item);
 			}
 
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onTabClick(item) {
 			this.activeBlock = item;
+			if (item.canvas === null) {
+				const canvas = this.$el.getElementsByTagName('canvas')[0];
+				item.canvas = new Canvas(canvas);
+			}
 			this.canvasRender();
 		},
 	},
@@ -197,12 +201,9 @@ export default {
 			const realWidth = canvas.parentNode.clientWidth;
 			const realHeight = canvas.parentNode.clientHeight;
 			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight);
-			console.log('image', img.width, img.height);
-			console.log('zoom', realWidth, realHeight, zoom_ratio);
-			ctx.drawImage(img, 0, 0);
+			blocks[0].canvas.backgroundImg = img;
+			blocks[0].canvas.bgAlpha = 1;
 			preprocessing(canvas);
-			//svg.attr('width', img.width / zoom_ratio)
-			//	.attr('height', img.height / zoom_ratio);
 		};
 		interactionInit();
 	}
