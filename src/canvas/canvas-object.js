@@ -53,7 +53,7 @@ export class Canvas {
 
     removeItem(item) {
         const items = this.items;
-        if (item.index < items.length || items[item.index] !== item) {
+        if (!item || item.index >= items.length || items[item.index] !== item) {
             return;
         }
         items.splice(item.index, 1);
@@ -67,6 +67,15 @@ export class Canvas {
         item.index = items.length;
         item.canvas = this;
         items.push(item);
+    }
+
+    getItem(x, y) {
+        for (const item of items) {
+            if (item.hasPixel(x, y)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     render(timestamp) {
@@ -97,31 +106,48 @@ export class Item {
                             return a.y2 - b.y2;
                         }
                     });
+            console.log('sort finish');
 
             lines = [];
-            for (let i = 0; i < l.length; ++i) {
-                lines.push(l[i]);
-                let n = lines.length;
-                while (n > 1 && lines[n - 1].x === lines[n - 2].x && lines[n - 1].y1 - lines[n - 2].y2 < 20) {
-                    lines[n - 2].y2 = lines[n - 1].y2;
-                    --n;
-                    lines.pop();
+            pts = [];
+            for (let i = 0, last = 0; i < l.length; ++i) {
+                if (i === l.length - 1 || l[i].x != l[i + 1].x) {
+                    pts.clear();
+                    for (let j = last; j <= i; ++j) {
+                        pts.push(l[j].y1);
+                        pts.push(l[j].y2);
+                    }
+                    while (pts.length > 2) {
+                        let mingap = Number.MAX_SAFE_INTEGER, k = -1;
+                        for (let j = 1; j < pts.length; j += 2) {
+                            if (pts[j + 1] - pts[j] < mingap) {
+                                mingap = pts[j + 1] - pts[j];
+                                k = j;
+                            }
+                        }
+                        if (pts[k + 1] - pts[k] )
+                    }
                 }
+                last = i + 1;
             }
+            console.log('merge finish');
             
             color = [0, 0, 0];
             let cnt = 0;
             for (const item of items) {
+                console.log(item.color);
                 for (let i = 0; i < 3; ++i) {
-                    color[i] += (item.y2 - item.y1) * item.color[i];
+                    color[i] += item.lines.length * item.color[i];
                 }
-                cnt += item.y2 - item.y1;
+                cnt += item.lines.length;
             }
+            console.log(color[0], color[1], color[2]);
             for (let i = 0; i < 3; ++i) {
                 color[i] /= cnt;
             }
+            console.log('color count finish', cnt, color);
 
-            this.lines = item.lines;
+            this.lines = lines;
             this.hue = color[0] * 360;
             this.saturation = color[1];
             this.lightness = color[2];
@@ -194,6 +220,8 @@ export class Item {
         this.ws = ws;
     }
 
+
+
     transformat() {
         const rw = 1.0 / this.w0 * this.w;
         const rh = 1.0 / this.h0 * this.h;
@@ -250,6 +278,16 @@ export class Item {
             ctx.stroke();
             ctx.closePath();  
         }
+    }
+
+    hasPixel(x, y) {
+        const rw = 1.0 / this.w0 * this.w;
+        for (const line of lines) {
+            if (Math.abs(line.x - x) <= rw && y >= line.y1 && y <= line.y2) {
+                return true;
+            }
+        }
+        return false;
     }
 
     createAnimation() {
@@ -320,6 +358,14 @@ export class Item {
             this.createAnimation();
         }
         return this;
+    }
+
+    createAppearAnimation() {
+
+    }
+
+    createDisappearAnimation() {
+        
     }
 }
 

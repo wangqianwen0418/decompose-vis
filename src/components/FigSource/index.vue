@@ -66,7 +66,7 @@ export default {
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-				this.activeBlock.canvas.removeItem(group0.item);
+				this.activeBlock.canvas.removeItem(this.activeBlock.canvas.getItem(x, y));
 				this.canvasRender(event);
 			}
 		},
@@ -87,7 +87,7 @@ export default {
 				let group0 = ngroup[y * canvas.width + x];
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					this.activeBlock.canvas.addItem(group0.item);
+					this.activeBlock.canvas.addItem(new Item(group0));
 					this.canvasRender(event);
 				}
 			}
@@ -97,7 +97,8 @@ export default {
 					group0 = findGroup(group0, currenttime);
 
 					// add all the items
-					this.activeBlock.canvas.addItem(group0.item);
+					const gs = new Array();
+					gs.push(group0);
 					for (const group of groups) {
 						if (group.points.length > 10 &&
 							//group.tag === group0.tag && 
@@ -105,9 +106,11 @@ export default {
 							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
 							Math.abs(group.color[2] - group0.color[2]) < 0.5
 							) {
-							this.activeBlock.canvas.addItem(group.item);
+							gs.push(group);
 						}
 					}
+					console.log('groups', gs);
+					this.activeBlock.canvas.addItem(new Item(gs));
 					this.canvasRender(event);
 				}
 			}
@@ -126,9 +129,10 @@ export default {
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-				this.activeBlock.canvas.addItem(group0.item);
+				const item = new Item(group0);
+				this.activeBlock.canvas.addItem(item);
 				this.canvasRender(event);
-				this.activeBlock.canvas.removeItem(group0.item);
+				this.activeBlock.canvas.removeItem(item);
 			}
 
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
@@ -238,12 +242,6 @@ function preprocessing(canvas) {
 	const decomposed = decompose(hsl_data, width, height);
 	console.info(`decompose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	const elements = compose(decomposed.elements, width, height);
-	elements.forEach(function(d) {
-		d.item = new Item({
-			lines: d.lines,
-			color: d.color,
-		});
-	});
 	// console.info(`compose: ${(new Date()).getTime() - start_time.getTime()} ms`);
 	ngroup = new Array(width * height);
 	groups = elements;
