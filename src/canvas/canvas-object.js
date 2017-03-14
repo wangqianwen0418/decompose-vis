@@ -1,4 +1,7 @@
 const fps = 20;
+const LineMergeThreshold1 = 10;
+const LineMergeThreshold2 = 2;
+const LineMergeThreshold3 = 0;
 
 function smooth(a) {
     const window = 10;
@@ -106,36 +109,72 @@ export class Item {
                             return a.y2 - b.y2;
                         }
                     });
-            console.log('sort finish');
+            console.log('sort finish', l);
 
             lines = [];
-            pts = [];
-            for (let i = 0, last = 0; i < l.length; ++i) {
-                if (i === l.length - 1 || l[i].x != l[i + 1].x) {
-                    pts.clear();
+            let ptn = 0, last = 0, lastnum = 0;
+            for (let i = 0; i < l.length; ++i) {
+                if (i === l.length - 1 || l[i].x !== l[i + 1].x) {
+                    const pts0 = [];
                     for (let j = last; j <= i; ++j) {
-                        pts.push(l[j].y1);
-                        pts.push(l[j].y2);
+                        pts0.push(l[j].y1);
+                        pts0.push(-l[j].y2);
                     }
-                    while (pts.length > 2) {
-                        let mingap = Number.MAX_SAFE_INTEGER, k = -1;
-                        for (let j = 1; j < pts.length; j += 2) {
+                    pts0.sort((a, b) => ((a > 0 ? a : -a) - (b > 0 ? b : -b)));
+                    let covered = 0, left = 0;
+                    const pts = [];
+                    for (let i = 0; i < pts0.length; ++i) {
+                        if (pts0[i] >= 0) {
+                            if (covered === 0) {
+                                left = pts0[i];
+                            }
+                            ++covered;
+                        } else {
+                            --covered;
+                            if (covered === 0) {
+                                pts.push(left);
+                                pts.push(-pts0[i]);
+                            }
+                        }
+                    }
+
+                    let mingap = LineMergeThreshold1;
+                    while (pts.length >= lastnum * 2) {
+                        let k = -1;
+                        for (let j = 1; j + 1 < pts.length; j += 2) {
                             if (pts[j + 1] - pts[j] < mingap) {
                                 mingap = pts[j + 1] - pts[j];
                                 k = j;
                             }
                         }
-                        if (pts[k + 1] - pts[k] )
+                        if (mingap < 0) {
+                            console.log('mingap', mingap, k, pts, pts[k], pts[k + 1]);
+                        }
+                        mingap = mingap * LineMergeThreshold2 + LineMergeThreshold3;
+                        if (k === -1 && pts.length <= (lastnum + 1) * 2) {
+                            break;
+                        } else if (k !== -1) {
+                            pts.splice(k, 2);
+                        } else {
+                            break;
+                        }
                     }
+                    for (let j = 0; j < pts.length; j += 2) {
+                        lines.push({
+                            x: l[i].x,
+                            y1: pts[j],
+                            y2: pts[j + 1],
+                        });
+                    }
+                    lastnum = pts.length / 2;
+                    console.log(lastnum);
+                    last = i + 1;
                 }
-                last = i + 1;
             }
-            console.log('merge finish');
             
             color = [0, 0, 0];
             let cnt = 0;
             for (const item of items) {
-                console.log(item.color);
                 for (let i = 0; i < 3; ++i) {
                     color[i] += item.lines.length * item.color[i];
                 }
@@ -145,7 +184,6 @@ export class Item {
             for (let i = 0; i < 3; ++i) {
                 color[i] /= cnt;
             }
-            console.log('color count finish', cnt, color);
 
             this.lines = lines;
             this.hue = color[0] * 360;

@@ -102,6 +102,7 @@ export default {
 					for (const group of groups) {
 						if (group.points.length > 10 &&
 							//group.tag === group0.tag && 
+							group !== group0 &&
 							Math.abs(group.color[0] - group0.color[0]) < 0.02 &&
 							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
 							Math.abs(group.color[2] - group0.color[2]) < 0.5
