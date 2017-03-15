@@ -191,17 +191,19 @@ export class Item {
                     last = i + 1;
                 }
             }
+            
             for (let x = xrange[1]; x >= xrange[0]; --x) if (!!c[x]) {
-                for (let i = 1; i < c[x].length; i += 2) {
+                for (let i = 1; i + 1 < c[x].length; i += 2) {
                     if (pre[x][i] !== 0) {
                         c[x - 1][pre[x][i]] = c[x][i];
                     }
-                    if (c[x][i] < 10) {
+                    if (c[x][i] < 20) {
                         L2[x][i] = L2[x][i + 1] = -1;
                     }
                 }
                 L2[x] = L2[x].filter(d => d !== -1);
             }
+            
 
             for (let x = xrange[0]; x <= xrange[1]; ++x) if (!!c[x]) {
                 for (let i = 0; i < L2[x].length; i += 2) {
