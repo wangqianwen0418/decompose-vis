@@ -1,3 +1,5 @@
+import introJs from 'intro.js';
+
 export default {
     data() {
         return {
@@ -20,6 +22,14 @@ export default {
                 message: 'Your NarVis is Saved !',
                 offset: 100,
             });
+            this.$http.post('http://localhost:9999/save', { name: 'wqw' }).then((res) => {
+                console.info(res);
+            }, (err) => {
+                console.info(err);
+            });
+        },
+        intro() {
+            introJs.introJs().start();
         },
     },
 };

@@ -1,5 +1,5 @@
 <template>
-    <div class="textSource">
+    <div class="textSource" data-step="7" data-intro="inspirations for your annotation" data-position='top'>
           <!--here is the corresponding text description-->
           <textarea
           v-model="exp"

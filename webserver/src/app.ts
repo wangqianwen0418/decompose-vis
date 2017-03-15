@@ -2,6 +2,7 @@ import * as Koa from "koa";
 import * as bodyParser from "koa-bodyparser";
 import * as Router from "koa-router";
 import * as Redis from "ioredis";
+import * as cors from "koa-cors";
 import { createServer, Server } from "http";
 
 const redis = new Redis({
@@ -37,9 +38,10 @@ const SaveLoadRouter: Router = new Router()
 function WebServer(): Koa {
     const app: Koa = new Koa();
 
+    app.use(cors());
     app.use(bodyParser());
     app.use(SaveLoadRouter.routes());
-    
+
     return app;
 }
 

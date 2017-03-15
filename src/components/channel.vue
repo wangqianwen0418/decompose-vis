@@ -1,5 +1,5 @@
 <template>
-    <li :style="styleObject" @click="selectChannel(channel)" v-if='!channel.removed'>
+    <li :style="styleObject" @click="selectChannel(channel)">
         <span class='channel'>{{channel.name}}</span>
         <i class="el-icon-close" @click="removeChannel" />
         </li>
@@ -10,7 +10,7 @@
     import { SELECT_CHANNEL } from '../store';
 
     export default {
-        props: ['channel'],
+        props: ['channel', 'mark'],
         computed: {
             styleObject() {
                 if (this.channel.selected) {
@@ -23,7 +23,10 @@
         },
         methods: {
             removeChannel() {
-                this.channel.removed = true;
+                const index = this.mark.channels.indexOf(this.channel);
+                if (index > -1) {
+                    this.mark.channels.splice(index, 1);
+                }
             },
             // selectChannel() {
             //     this.channel.selected = true;
@@ -36,25 +39,3 @@
 
 </script>
 
-<!--<style scoped>
-    .el-icon-close{
-        float:right;
-        font-size:10px;
-    }
-     li:before{
-        content:'•  ';
-        color:var(--color-white);
-        padding-left: 6px;
-    }
-     li:last-child:before{
-        content:' ';
-    }
-     li{
-        background-color: var(--color-blue-light);
-        color:var(--color-white);
-        margin:0.5vh 0.5vw ;
-    }
-     li:last-child{
-        text-align: center;
-    }
-</style>-->

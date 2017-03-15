@@ -1,7 +1,12 @@
 <div class="headline">
     <p id='name'> NarVis</p>
 
-    <span class="iconGroup">
+    <span class="iconGroup" data-step="8" data-intro="save and preview" data-position='bottom'>
+           <div style='float:right' @click="intro()" >
+            <i class="fa fa-question-circle"></i>
+            <br/>tutor
+            </div>
+
            <div style='float:right' @click=" " >
            <i class="fa fa-globe" ></i>
            <br/>explore
@@ -19,7 +24,8 @@
            </div>
 
 
-            <div style='float:right' @click="showForm = !showForm" >
+            <div data-step="1" data-intro="click here to import the visualization" data-position='bottom'
+            style='float:right' @click="showForm = !showForm" >
             <i class="fa fa-upload"></i>
             <br/>import
             </div>
