@@ -193,11 +193,12 @@ export class Item {
             }
             
             for (let x = xrange[1]; x >= xrange[0]; --x) if (!!c[x]) {
+                const height = L2[x][L2[x].length - 1] - L2[x][0];
                 for (let i = 1; i + 1 < c[x].length; i += 2) {
                     if (pre[x][i] !== 0) {
                         c[x - 1][pre[x][i]] = c[x][i];
                     }
-                    if (c[x][i] < 20) {
+                    if (c[x][i] < 20 && (L2[x][i + 1] - L2[x][i]) < height * 0.2) {
                         L2[x][i] = L2[x][i + 1] = -1;
                     }
                 }
