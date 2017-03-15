@@ -110,7 +110,6 @@ export default {
 							gs.push(group);
 						}
 					}
-					console.log('groups', gs);
 					this.activeBlock.canvas.addItem(new Item(gs));
 					this.canvasRender(event);
 				}

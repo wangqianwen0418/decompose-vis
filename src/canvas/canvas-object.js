@@ -1,7 +1,7 @@
 const fps = 20;
-const LineMergeThreshold1 = 10;
-const LineMergeThreshold2 = 2;
-const LineMergeThreshold3 = 0;
+const LineMergeThreshold1 = 15;
+const LineMergeThreshold2 = 1.2;
+const LineMergeThreshold3 = 10;
 
 function smooth(a) {
     const window = 10;
@@ -95,10 +95,12 @@ export class Canvas {
 
 export class Item {
     constructor(_) {
-        let lines, color;
+        let lines;
+        let color;
         if (_ instanceof Array) {
+            lines = [];
             const items = _;
-            const l =
+            const L1 =
                 Array.concat(...items.map(item => item.lines))
                     .sort((a, b) => {
                         if (a.x !== b.x) {
@@ -109,68 +111,108 @@ export class Item {
                             return a.y2 - b.y2;
                         }
                     });
-            console.log('sort finish', l);
 
-            lines = [];
+            const L2 = [];
+            const pre = [];
+            const c = [];
             let ptn = 0, last = 0, lastnum = 0;
-            for (let i = 0; i < l.length; ++i) {
-                if (i === l.length - 1 || l[i].x !== l[i + 1].x) {
-                    const pts0 = [];
+            const xrange = [L1[0].x, L1[L1.length - 1].x];
+            for (let i = 0; i < L1.length; ++i) {
+                if (i === L1.length - 1 || L1[i].x !== L1[i + 1].x) {
+                    const segments = [];
                     for (let j = last; j <= i; ++j) {
-                        pts0.push(l[j].y1);
-                        pts0.push(-l[j].y2);
+                        segments.push(+L1[j].y1);
+                        segments.push(-L1[j].y2);
                     }
-                    pts0.sort((a, b) => ((a > 0 ? a : -a) - (b > 0 ? b : -b)));
-                    let covered = 0, left = 0;
-                    const pts = [];
-                    for (let i = 0; i < pts0.length; ++i) {
-                        if (pts0[i] >= 0) {
-                            if (covered === 0) {
-                                left = pts0[i];
+                    segments.sort(
+                        (a, b) =>
+                            ((a > 0 ? a : -a) - (b > 0 ? b : -b))
+                    );
+                    let segcnt = 0, left = 0;
+                    const p = [];
+                    for (let i = 0; i < segments.length; ++i) {
+                        if (segments[i] >= 0) {
+                            if (segcnt === 0) {
+                                left = segments[i];
                             }
-                            ++covered;
+                            ++segcnt;
                         } else {
-                            --covered;
-                            if (covered === 0) {
-                                pts.push(left);
-                                pts.push(-pts0[i]);
+                            --segcnt;
+                            if (segcnt === 0) {
+                                p.push(left);
+                                p.push(-segments[i]);
                             }
                         }
                     }
 
                     let mingap = LineMergeThreshold1;
-                    while (pts.length >= lastnum * 2) {
+                    while (p.length >= lastnum * 2) {
                         let k = -1;
-                        for (let j = 1; j + 1 < pts.length; j += 2) {
-                            if (pts[j + 1] - pts[j] < mingap) {
-                                mingap = pts[j + 1] - pts[j];
+                        for (let j = 1; j + 1 < p.length; j += 2) {
+                            if (p[j + 1] - p[j] < mingap) {
+                                mingap = p[j + 1] - p[j];
                                 k = j;
                             }
                         }
-                        if (mingap < 0) {
-                            console.log('mingap', mingap, k, pts, pts[k], pts[k + 1]);
-                        }
                         mingap = mingap * LineMergeThreshold2 + LineMergeThreshold3;
-                        if (k === -1 && pts.length <= (lastnum + 1) * 2) {
+                        if (k === -1 && p.length <= (lastnum + 1) * 2) {
                             break;
                         } else if (k !== -1) {
-                            pts.splice(k, 2);
+                            p.splice(k, 2);
                         } else {
                             break;
                         }
                     }
-                    for (let j = 0; j < pts.length; j += 2) {
-                        lines.push({
-                            x: l[i].x,
-                            y1: pts[j],
-                            y2: pts[j + 1],
-                        });
+
+                    const x = L1[i].x;
+                    L2[x] = p;
+                    c[x] = new Int32Array(p.length);
+                    pre[x] = new Int32Array(p.length);
+                    if (!L2[x - 1]) {
+                        for (let i = 0; i < p.length; ++i) {
+                            c[x][i] = 0;
+                        }
+                    } else {
+                        const q = L2[x - 1];
+                        for (let i = 1, j = 2; i + 1 < p.length; i += 2) {
+                            while (j < q.length && q[j] < p[i]) {
+                                j += 2;
+                            }
+                            if (j >= q.length || q[j - 1] > p[i + 1]) {
+                                c[x][i] = 1;
+                            } else {
+                                c[x][i] = c[x - 1][j - 1] + 1;
+                                pre[x][i] = j - 1;
+                            }
+                        }
                     }
-                    lastnum = pts.length / 2;
-                    console.log(lastnum);
+
+                    lastnum = p.length / 2;
                     last = i + 1;
                 }
             }
+            for (let x = xrange[1]; x >= xrange[0]; --x) if (!!c[x]) {
+                for (let i = 1; i < c[x].length; i += 2) {
+                    if (pre[x][i] !== 0) {
+                        c[x - 1][pre[x][i]] = c[x][i];
+                    }
+                    if (c[x][i] < 10) {
+                        L2[x][i] = L2[x][i + 1] = -1;
+                    }
+                }
+                L2[x] = L2[x].filter(d => d !== -1);
+            }
+
+            for (let x = xrange[0]; x <= xrange[1]; ++x) if (!!c[x]) {
+                for (let i = 0; i < L2[x].length; i += 2) {
+                    lines.push({
+                        x,
+                        y1: L2[x][i],
+                        y2: L2[x][i + 1],
+                    });
+                }
+            }
+            console.log(c, L2);
             
             color = [0, 0, 0];
             let cnt = 0;
@@ -180,7 +222,7 @@ export class Item {
                 }
                 cnt += item.lines.length;
             }
-            console.log(color[0], color[1], color[2]);
+            console.log('color', color[0], color[1], color[2]);
             for (let i = 0; i < 3; ++i) {
                 color[i] /= cnt;
             }
@@ -238,6 +280,13 @@ export class Item {
             this.w0 = _.w0;
             this.h0 = _.h0;
         }
+    }
+
+    toString() {
+        return JSON.stringify({
+            lines: this.lines,
+            color: this.color,
+        });
     }
 
     compress() {
