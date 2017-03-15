@@ -1,5 +1,5 @@
 <template>
-    <div class='unitTree'>
+    <div class='unitTree' data-step="4" data-intro="drag and drop to modify the structure of visual units" data-position='right'>
         <!--<draggable :list="blocks">
                 <button v-for="block in blocks" @click='selectBlock(block)'>
                     {{block.name}}

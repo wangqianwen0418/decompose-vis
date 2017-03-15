@@ -1,7 +1,7 @@
 import templates from './templates';
 
 const state = {
-    blocks: templates,
+    blocks: [],
     temps: templates,
     marksTemp: [
         {

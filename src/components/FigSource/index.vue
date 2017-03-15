@@ -1,21 +1,6 @@
-<template>
-
-	<div class="figure-source">
-		<div class="figure-tabs_header">
-			<div v-for="item in blocks" :class="figure_tabs_class(item)" @click="onTabClick(item)">
-				{{item.name}}
-			</div>
-		</div>
-		<div class="figure-content">
-			<canvas class="figure-main-view"
-			@mousemove="onMousemove"
-			@click.prevent="onClick" @contextmenu.prevent="onRightClick"
-			>
-			</canvas>
-		</div>
-	</div>
-</template>
+<template src="./template.html"></template>
 <script>
+    import introJs from 'intro.js';
 import * as color from "../../utils/color.js";
 import { offset } from "../../utils/common-utils.js";
 import { decompose } from "../../algorithm/decompose.js";
@@ -25,32 +10,61 @@ import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
 import { Canvas, Item } from "../../canvas/canvas-object.js";
 import * as d3 from "d3";
+import { mapState} from 'vuex';
 
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
 let initalData, currentData, color_spaces = [], img;
 let zoom_ratio, bgtag;
 
 export default {
-    data() {
-		const blocks = ['overview', 'river', 'line', 'add'].map(d => ({
-				name: d
-			}));
+
+   data() {
+		const blocks = ['overview', '1', '2', '3'].map(d => ({
+				name: d,
+				selectedItems: [],
+			}))
+
 		return {
-			blocks: blocks,
+            blocks: blocks,
 			activeBlock: blocks[0],
 			editor: null,
 		};
     },
 	props: ['src', 'width', 'height'],
-	computed: {
-	},
+    computed:{
+        ...mapState({
+            temps:'temps',
+            blocksTrue: 'blocks',
+        })
+    },
 	methods: {
+        deleteTab() {
+            const index=this.blocks.indexOf(this.activeBlock);
+            this.blocks.splice(index,1);
+            this.blocksTrue.splice(index, 1);
+        },
+        addTab(){
+            const item = {};
+            // item.name = this.blocks.length.toString();
+            item.name="new";
+            item.selectedItems = [];
+            this.blocks.push(item);
+        },
+        addBlock(temp) {
+            this.blocksTrue.push(temp);
+            this.activeBlock.name=temp.name;
+            // this.blocks.forEach((blk)=>{
+            //     if(blk.name==this.activeBlock.name)
+            //      blk.name = temp.name;
+            // })
+        },
 		figure_tabs_class(item) {
 			return {
-				"figure-tabs_item": true, 
+				"figure-tabs_item": true,
 				"active": item == this.activeBlock
 			};
 		},
+
 		editorRender(event) {
 			if (this.editor !== null)
 				this.editor.canvas.render();
@@ -80,7 +94,7 @@ export default {
 				return;
 			}
 			console.log(event, event.shiftKey, event.ctrlKey, event.altKey);
-			
+
 			if (event.shiftKey && !event.ctrlKey && !event.altKey) {
 
 				// add a single item
@@ -101,8 +115,10 @@ export default {
 					gs.push(group0);
 					for (const group of groups) {
 						if (group.points.length > 10 &&
+
 							//group.tag === group0.tag && 
 							group !== group0 &&
+
 							Math.abs(group.color[0] - group0.color[0]) < 0.02 &&
 							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
 							Math.abs(group.color[2] - group0.color[2]) < 0.5
@@ -377,62 +393,4 @@ function ondragend() {
 }
 
 </script>
-
-<style scoped>
-	.figure-tabs_header {
-		border-bottom: 0px solid var(--color-blue-gray);
-		padding: 0;
-		position: relative;
-		margin: 0 0 1vh;
-		width: 100%;
-		height: 4vh;
-		/* border-radius: 6px 6px 0px 0px; */
-		/* color: var(--color-3); */
-		background-color: var(--color-blue-gray);
-		float: inherit;
-	}
-
-	.figure-tabs_item {   
-		padding: 0 14px;
-		height: 4vh;
-		/* box-sizing: border-box; */
-		line-height: 42px;
-		float: left;
-		list-style: none;
-		font-size: 18px;
-		font-family: var(--font-1);
-		/* color: rgb(131, 145, 165); */    
-		background-color: var(--color-blue-gray);
-		color: var(--color-white);
-		/* margin-bottom: -1px; */
-		position: relative;
-	}
-
-	.figure-tabs_item.active {
-		color: var(--color-gray-dark);
-		background-color: var(--color-white);
-	}
-
-	.figure-content {
-		height: 37vh;
-	}
-    
-    .figure-source {
-        height: 43vh;
-        /*font-family: 'Source Sans Pro', sans-serif;;*/
-        margin: 1vh 0.5vw 1vh 1vw;
-        border-radius: 0px;
-        border: none;
-        /*border: 0.3px solid var(--color-gray-dark);*/
-        margin: 5px 8px 5px 10px;
-        /*box-shadow: 2px 2px 1px var(--color-gray-dark);*/
-        background-color: var(--color-white);
-        color: var(--color-3);
-        box-shadow: 2px 2px 1px var(--color-gray);      
-    }
-
-	.figure-main-view {
-		max-width: 100%;
-		max-height: 100%;
-	}
-</style>
+<style scoped src="./style.css"></style>

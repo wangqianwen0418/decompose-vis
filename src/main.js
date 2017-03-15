@@ -4,6 +4,7 @@ import VueResource from 'vue-resource';
 import locale from 'element-ui/lib/locale/lang/en';
 import '../theme/index.css';
 // import './styles/index.css';
+import '../node_modules/intro.js/introjs.css';
 import store from './store';
 import App from './components/App';
 
