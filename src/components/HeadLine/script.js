@@ -1,3 +1,5 @@
+import introJs from 'intro.js';
+
 export default {
     data() {
         return {
@@ -25,6 +27,9 @@ export default {
             }, (err) => {
                 console.info(err);
             });
+        },
+        intro() {
+            introJs.introJs().start();
         },
     },
 };

@@ -6,11 +6,15 @@ import { mapGetters, mapState } from 'vuex';
 export default {
     computed: {
         ...mapGetters({
-            block: 'selectedBlock',
+            selectedBlock: 'selectedBlock',
         }),
         ...mapState({
             marksTemp: 'marksTemp',
+            blocks: 'blocks',
         }),
+        block() {
+            return this.selectedBlock || this.blocks[0];
+        },
     },
     components: {
         draggable,

@@ -1,4 +1,5 @@
-<div class="editor" id='positionTag'>
+<div class="editor" id='positionTag'
+data-step="6" data-intro="add annotation" data-position='bottom'>
 
 <div class='editPanel' v-if='selectedEle'
     draggable='true' @dragstart='dragstart' @drag='drag'
@@ -12,7 +13,7 @@
     </textarea>
     Animation <i class="el-icon-setting"></i>
     <el-select v-model="value" placeholder="add color"></el-select>
-    </div>
+</div>
     <canvas class='editorCanvas' width="600" height="400"></canvas>
     <!--
     <svg class='svgEditor' width="55vw" height="55vh" @drop.prevent='ondrop'>
