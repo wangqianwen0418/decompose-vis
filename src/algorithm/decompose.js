@@ -88,7 +88,7 @@ export function decompose(data, width, height, gradient = [0.02, 0.02, 0.01]) {
 					y2: j - 1
 				});
 				if (e.lines.length > 1 && e.lines[e.lines.length - 1].x === e.lines[e.lines.length - 2].x) {
-					if (e.lines[e.lines.length - 2].y2 + 40 >= e.lines[e.lines.length - 1].y1) {
+					if (e.lines[e.lines.length - 2].y2 + 10 >= e.lines[e.lines.length - 1].y1) {
 						e.lines[e.lines.length - 2].y2 = e.lines[e.lines.length - 1].y2;
 						e.lines.pop();
 					}
