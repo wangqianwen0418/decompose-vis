@@ -9,7 +9,7 @@
             <div  :class="figure_tabs_class(item)">
                 <el-dropdown >
                         <span class="el-dropdown-link" :class="figure_tabs_class(item)">
-                            call
+                           <i class="fa fa-volume-control-phone"></i>
                         </span>
                     <el-dropdown-menu slot="dropdown">
                             <span v-for='temp in temps' @click='addBlock(temp)'>

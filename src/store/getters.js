@@ -73,7 +73,7 @@ const getters =
             }
 
             const bTree = {
-                name: 'root',
+                name: 'a vis',
                 parent: [],
                 children: [],
             };
