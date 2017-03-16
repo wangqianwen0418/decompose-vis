@@ -8,7 +8,8 @@ import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
 import { Canvas, Item } from "../../canvas/canvas-object.js";
 import * as d3 from "d3";
-import { mapState} from 'vuex';
+import { mapState } from 'vuex';
+
 
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
 let initalData, currentData, color_spaces = [], img;
@@ -19,13 +20,14 @@ export default {
    data() {
 		const blocks = ['overview', '1', '2', '3'].map(d => ({
 				name: d,
-				selectedItems: [],
+				canvas: null,
+
 			}))
 
 		return {
             blocks: blocks,
 			activeBlock: blocks[0],
-			editor: null,
+
 		};
     },
 	props: ['src', 'width', 'height'],
@@ -45,25 +47,35 @@ export default {
             const item = {};
             // item.name = this.blocks.length.toString();
             item.name="new";
-            item.selectedItems = [];
+
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+            item.canvas = new Canvas(canvas);
             this.blocks.push(item);
         },
         addBlock(temp) {
-            this.blocksTrue.push(temp);
-            this.activeBlock.name=temp.name;
+			const block = JSON.parse(JSON.stringify(temp));
+			block.canvas = this.activeBlock.canvas;
+            this.blocksTrue.push(block);
+            this.activeBlock.name=block.name;
+
             // this.blocks.forEach((blk)=>{
             //     if(blk.name==this.activeBlock.name)
             //      blk.name = temp.name;
             // })
         },
-		figure_tabs_class(item) {
+
+		figureTabClass(item) {
 			return {
-				"figure-tabs_item": true,
+				"figure-tabs-item": true,
+
 				"active": item == this.activeBlock
 			};
 		},
 
 		editorRender(event) {
+
+			return;
+
 			if (this.editor !== null)
 				this.editor.canvas.render();
 		},
@@ -114,7 +126,7 @@ export default {
 					for (const group of groups) {
 						if (group.points.length > 10 &&
 
-							//group.tag === group0.tag &&
+
 							group !== group0 &&
 
 							Math.abs(group.color[0] - group0.color[0]) < 0.02 &&
@@ -152,8 +164,11 @@ export default {
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onTabClick(item) {
+
+			console.log(item);
 			this.activeBlock = item;
-			this.editor = item;
+			// this.editor = item;
+
 			this.canvasRender();
 		},
 	},
