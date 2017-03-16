@@ -40,20 +40,28 @@ export default {
             this.blocksTrue.splice(index, 1);
         },
         addTab(){
-            const item = {};
+            const item = new Object();
             // item.name = this.blocks.length.toString();
-            item.name="new";
+            item.name = "" + (this.blocks.length);
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
             item.canvas = new Canvas(canvas);
+			item.canvas.backgroundImg = img;
+			item.canvas.bgAlpha = 0.05;
             this.blocks.push(item);
+			this.activeBlock = this.blocks[this.blocks.length - 1];
+			this.canvasRender();
         },
         addBlock(temp) {
 			if (this.activeBlock.name === 'overview') {
 				return;
 			}
-			
 			const block = JSON.parse(JSON.stringify(temp));
-			block.canvas = this.activeBlock.canvas;
+			const canvas = this.$el.getElementsByTagName('canvas')[0];
+			const editorCanvas = document.getElementsByClassName('editorCanvas')[0];
+			block.canvas = new Canvas(editorCanvas, canvas.width, canvas.height);
+			for (const item of this.activeBlock.canvas.items) {
+				block.canvas.addItem(new Item(item));
+			}
 			const hasName = (name) => {
 				for (const b of this.blocksTrue) {
 					if (b.name === name) {

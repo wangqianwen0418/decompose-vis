@@ -227,6 +227,7 @@ const circleDragger =
                 blocks.forEach((blk) => {
                     if (blk.name === d.data.name) {
                         blk.selected = true;
+                        blk.canvas.render();
                     } else blk.selected = false;
                 });
             }
@@ -276,7 +277,6 @@ const myVue = {
     },
     watch: {
         bTree(val) {
-            console.info(blocks);
             bTree = val;
 
             const tree = d3.tree()
