@@ -1,6 +1,6 @@
     const line = {
         name: 'line',
-        parent: ['root'],
+        parent: ['a vis'],
         children: [],
         selected: false,
         marks: [{

@@ -206,8 +206,8 @@ const circleDragger =
                         block.parent = [`${selectedNode.data.name}`];
                     }
 
-                    if (block.name === selectedNode.data.name && draggingNode.data.parent[0] === 'root') {
-                        block.parent = ['root'];
+                    if (block.name === selectedNode.data.name && draggingNode.data.parent[0] === 'a vis') {
+                        block.parent = ['a vis'];
                     }
                 });
             }
@@ -216,7 +216,7 @@ const circleDragger =
             draggingNode = null;
 
             updateTree(nodes);
-            if (click && d.data.name !== 'root') {
+            if (click && d.data.name !== 'a vis') {
                 d3.selectAll('.fgrect').style('stroke', 'none');
 
                 d3.select(this)
@@ -276,6 +276,7 @@ const myVue = {
     },
     watch: {
         bTree(val) {
+            console.info(blocks);
             bTree = val;
 
             const tree = d3.tree()

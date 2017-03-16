@@ -6,19 +6,19 @@
 			    {{item.name}}
 			</div>
 
-            <el-dropdown>
-                <span class="figure-tabs-item el-dropdown-link">
-                    call
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <span v-for='temp in temps' @click='addBlock(temp)'>
-                        <el-dropdown-item >
-                            {{temp.name}}
-                        </el-dropdown-item>
-                    </span>
-                </el-dropdown-menu>
-            </el-dropdown>
-            <div class="figure-tabs-item">
+            <div  :class="figureTabClass(item)">
+                <el-dropdown >
+                        <span class="el-dropdown-link" :class="figureTabClass(item)">
+                           <i class="fa fa-volume-control-phone"></i>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                 </el-dropdown>
                  <i class="fa fa-plus-circle" @click="addTab() "></i>
             </div>
             <div class="figure-tabs-item">

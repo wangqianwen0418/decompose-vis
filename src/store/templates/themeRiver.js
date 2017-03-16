@@ -1,7 +1,7 @@
 const themeRiver =
     {
         name: 'streamGraph',
-        parent: ['root'],
+        parent: ['a vis'],
         children: [],
         selected: false,
         marks: [{

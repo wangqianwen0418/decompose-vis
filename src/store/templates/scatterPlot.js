@@ -1,6 +1,6 @@
 const scatterPlot = {
     name: 'scatter plot',
-    parent: ['root'],
+    parent: ['a vis'],
     children: [],
     selected: false,
     marks: [{
