@@ -20,7 +20,7 @@ export default {
       textDescription: {
         set(value) {
           let values = value.split('.');
-          let types = ['size','color-h','color-s','position'];
+          let types = ['size','color-h','color-s','position','glyph'];
           types.forEach((item) => {
             this.makeIt(item,values);
             values = value.split('.');
@@ -33,17 +33,19 @@ export default {
         let dict = {};
         let sentences = [];
         dict['color-s'] = ['color','saturation'];
-        dict['position'] = ['position','location','x-coordinate','points'];
-        dict['color-h'] = ['color','hue','shades'];
-        dict['size'] = ['size','width'];
+        dict['position'] = ['position','location','x-coordinate','points','distances'];
+        dict['color-h'] = ['color','hue','shades','scheme'];
+        dict['size'] = ['size','width','importance score','bigger','smaller'];
         dict['shape'] = ['shape','figure','glyph','triangle','square'];
         value.forEach(function(item,index,array) {
           dict[section].forEach(function(word){
             if(item.includes(word)) {
-                array[index] = "<b><span style='background-color: #FFFF00'>" + item + "</span></b>";
+                array[index] = "<b>" + item + "</b>";
             }
           });
         });
+        value[0] = "<textarea>" + value[0];
+        value[value.length - 1] = value[value.length - 1] + "</textarea>";
         this.$store.state.blocks.forEach(function(block) {
           block.marks.forEach(function(mark) {
             mark.channels.forEach(function(channel) {

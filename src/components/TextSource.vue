@@ -1,6 +1,6 @@
 <template>
-    <div class="textSource">
-          <p v-html = "exp">  <p>
+    <div class="textSource" v-html="exp">
+    <!-- <p v-html="exp"></p> -->
     </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
         exp: {
             get() {
                 const selectedChannel = this.$store.getters.selectedChannel;
-                return selectedChannel ? selectedChannel.explanation : '';
+                return selectedChannel ? `${selectedChannel.explanation}` : '';
             },
             set(value) {
                 this.$store.commit('EDIT_EXP', value);
