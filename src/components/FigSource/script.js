@@ -9,7 +9,6 @@ import { interactionInit } from "../../interaction/interaction.js"
 import { Canvas, Item } from "../../canvas/object.js";
 import * as d3 from "d3";
 import { mapState } from 'vuex';
-
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
 let initalData, currentData, color_spaces = [], img;
 let zoom_ratio, bgtag;
@@ -19,11 +18,13 @@ export default {
 		const blocks = ['overview', '1', '2', '3'].map(d => ({
 				name: d,
 				canvas: null,
+
 			}))
 
 		return {
             blocks: blocks,
 			activeBlock: blocks[0],
+
 		};
     },
 	props: ['src', 'width', 'height'],
@@ -36,7 +37,7 @@ export default {
 	methods: {
         deleteTab() {
             const index=this.blocks.indexOf(this.activeBlock);
-            this.blocks.splice(index, 1);
+            this.blocks.splice(index,1);
             this.blocksTrue.splice(index, 1);
         },
         addTab(){
@@ -115,9 +116,7 @@ export default {
 					gs.push(group0);
 					for (const group of groups) {
 						if (group.points.length > 10 &&
-
-							//group.tag === group0.tag && 
-							group !== group0 &&
+                			group !== group0 &&
 
 							Math.abs(group.color[0] - group0.color[0]) < 0.02 &&
 							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
@@ -154,9 +153,11 @@ export default {
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onTabClick(item) {
+
 			console.log(item);
 			this.activeBlock = item;
 			// this.editor = item;
+
 			this.canvasRender();
 		},
 	},

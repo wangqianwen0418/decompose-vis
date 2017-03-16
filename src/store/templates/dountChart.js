@@ -1,6 +1,6 @@
 const dountChart = {
     name: 'dountChart',
-    parent: ['root'],
+    parent: ['a vis'],
     children: [],
     selected: false,
     marks: [{

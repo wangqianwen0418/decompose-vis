@@ -1,6 +1,6 @@
 const grid = {
     name: 'grid',
-    parent: ['root'],
+    parent: ['a vis'],
     children: [],
     selected: false,
     marks: [{
