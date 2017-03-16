@@ -6,17 +6,14 @@ import { compose, findGroup } from "../../algorithm/compose.js";
 import color_space_divide from "../../algorithm/color-space-divide.js";
 import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
-import { Canvas, Item } from "../../canvas/canvas-object.js";
+import { Canvas, Item } from "../../canvas/object.js";
 import * as d3 from "d3";
 import { mapState } from 'vuex';
-
-
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
 let initalData, currentData, color_spaces = [], img;
 let zoom_ratio, bgtag;
 
 export default {
-
    data() {
 		const blocks = ['overview', '1', '2', '3'].map(d => ({
 				name: d,
@@ -47,7 +44,6 @@ export default {
             const item = {};
             // item.name = this.blocks.length.toString();
             item.name="new";
-
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
             item.canvas = new Canvas(canvas);
             this.blocks.push(item);
@@ -56,26 +52,21 @@ export default {
 			const block = JSON.parse(JSON.stringify(temp));
 			block.canvas = this.activeBlock.canvas;
             this.blocksTrue.push(block);
-            this.activeBlock.name=block.name;
-
+            this.activeBlock.name = block.name;
             // this.blocks.forEach((blk)=>{
             //     if(blk.name==this.activeBlock.name)
             //      blk.name = temp.name;
             // })
         },
-
 		figureTabClass(item) {
 			return {
 				"figure-tabs-item": true,
-
 				"active": item == this.activeBlock
 			};
 		},
 
 		editorRender(event) {
-
 			return;
-
 			if (this.editor !== null)
 				this.editor.canvas.render();
 		},
@@ -125,9 +116,7 @@ export default {
 					gs.push(group0);
 					for (const group of groups) {
 						if (group.points.length > 10 &&
-
-
-							group !== group0 &&
+                			group !== group0 &&
 
 							Math.abs(group.color[0] - group0.color[0]) < 0.02 &&
 							Math.abs(group.color[1] - group0.color[1]) < 0.5 &&
