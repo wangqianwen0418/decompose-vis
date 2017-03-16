@@ -18,7 +18,6 @@ export default {
 		const blocks = ['overview', '1', '2', '3'].map(d => ({
 				name: d,
 				canvas: null,
-
 			}))
 
 		return {
@@ -51,6 +50,12 @@ export default {
         addBlock(temp) {
 			const block = JSON.parse(JSON.stringify(temp));
 			block.canvas = this.activeBlock.canvas;
+			for (const b of this.blocksTrue) {
+				if (b.name === block.name) {
+					block.name = block.name + '2';
+					break;
+				}
+			}
             this.blocksTrue.push(block);
             this.activeBlock.name = block.name;
             // this.blocks.forEach((blk)=>{
