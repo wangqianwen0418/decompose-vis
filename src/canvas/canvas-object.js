@@ -289,6 +289,7 @@ export class Item {
         return JSON.stringify({
             lines: this.lines,
             color: this.color,
+            animation: null,
         });
     }
 
