@@ -6,7 +6,7 @@ import { compose, findGroup } from "../../algorithm/compose.js";
 import color_space_divide from "../../algorithm/color-space-divide.js";
 import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
-import { Canvas, Item } from "../../canvas/canvas-object.js";
+import { Canvas, Item } from "../../canvas/object.js";
 import * as d3 from "d3";
 import { mapState } from 'vuex';
 
@@ -36,7 +36,7 @@ export default {
 	methods: {
         deleteTab() {
             const index=this.blocks.indexOf(this.activeBlock);
-            this.blocks.splice(index,1);
+            this.blocks.splice(index, 1);
             this.blocksTrue.splice(index, 1);
         },
         addTab(){
@@ -51,7 +51,7 @@ export default {
 			const block = JSON.parse(JSON.stringify(temp));
 			block.canvas = this.activeBlock.canvas;
             this.blocksTrue.push(block);
-            this.activeBlock.name=block.name;
+            this.activeBlock.name = block.name;
             // this.blocks.forEach((blk)=>{
             //     if(blk.name==this.activeBlock.name)
             //      blk.name = temp.name;
