@@ -1,39 +1,31 @@
-<div data-step="2" data-intro="refine the auto cluser of components" data-position='right'
-    class="figure-source">
-		<div class="figure-tabs-header" data-step="3" data-intro="what is the structure of visual units" data-position='right'>
-
-            <div v-for="item in blocks" :class="figureTabClass(item)" @click="onTabClick(item)">
-			    {{item.name}}
-			</div>
-
-            <div  :class="figureTabClass(item)">
-                <el-dropdown >
-                        <span class="el-dropdown-link" :class="figureTabClass(item)">
-                           <i class="fa fa-volume-control-phone"></i>
-                        </span>
-                    <el-dropdown-menu slot="dropdown">
-                            <span v-for='temp in temps' @click='addBlock(temp)'>
-                            <el-dropdown-item >
-                               {{temp.name}}
-                            </el-dropdown-item>
-                              </span>
-                    </el-dropdown-menu>
-                 </el-dropdown>
-            </div>
-            <div class="figure-tabs-item">
-                 <i class="fa fa-plus-circle" @click="addTab() "></i>
-            </div>
-            <div class="figure-tabs-item">
-                 <i class="fa fa-trash-o" @click="deleteTab() "></i>
-            </div>
-		</div>
-
-		<div class="figure-content">
-			<canvas class="figure-main-view"
-			@mousemove="onMousemove"
-			@click.prevent="onClick" @contextmenu.prevent="onRightClick"
-			>
-			</canvas>
-		</div>
-
-	</div>
+<div data-step="2" data-intro="refine the auto cluser of components" data-position='right' class="figure-source">
+    <div class="figure-tabs-header" data-step="3" data-intro="what is the structure of visual units" data-position='right'>
+        <div v-for="item in blocks" :class="figureTabClass(item)" @click="onTabClick(item)">
+            {{item.name}}
+        </div>
+        <div class="figure-tabs-item">
+            <el-dropdown>
+                <span class="el-dropdown-link">
+                    <i class="fa fa-volume-control-phone"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <span v-for='temp in temps' @click='addBlock(temp)'>
+                        <el-dropdown-item >
+                            {{temp.name}}
+                        </el-dropdown-item>
+                    </span>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </div>
+        <div class="figure-tabs-item">
+            <i class="fa fa-plus-circle" @click="addTab() "></i>
+        </div>
+        <div class="figure-tabs-item">
+            <i class="fa fa-trash-o" @click="deleteTab() "></i>
+        </div>
+    </div>
+    <div class="figure-content">
+        <canvas class="figure-main-view" @mousemove="onMousemove" @click.prevent="onClick" @contextmenu.prevent="onRightClick">
+        </canvas>
+    </div>
+</div>

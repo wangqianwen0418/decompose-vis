@@ -15,7 +15,7 @@ let zoom_ratio, bgtag;
 
 export default {
    data() {
-		const blocks = ['overview', '1', '2', '3'].map(d => ({
+		const blocks = ['overview'].map(d => ({
 				name: d,
 				canvas: null,
 			}))
@@ -48,11 +48,24 @@ export default {
             this.blocks.push(item);
         },
         addBlock(temp) {
+			if (this.activeBlock.name === 'overview') {
+				return;
+			}
+			
 			const block = JSON.parse(JSON.stringify(temp));
 			block.canvas = this.activeBlock.canvas;
-			for (const b of this.blocksTrue) {
-				if (b.name === block.name) {
-					block.name = block.name + '2';
+			const hasName = (name) => {
+				for (const b of this.blocksTrue) {
+					if (b.name === name) {
+						return true;
+					}
+				}
+				return false;
+			}
+			for (let i = 1;; ++i) {
+				const name = block.name + (i === 1 ? '' : i);
+				if (!hasName(name)) {
+					block.name = name;
 					break;
 				}
 			}
@@ -68,12 +81,6 @@ export default {
 				"figure-tabs-item": true,
 				"active": item == this.activeBlock
 			};
-		},
-
-		editorRender(event) {
-			return;
-			if (this.editor !== null)
-				this.editor.canvas.render();
 		},
 		canvasRender(event) {
 			this.activeBlock.canvas.render();
@@ -134,7 +141,6 @@ export default {
 					this.canvasRender(event);
 				}
 			}
-			this.editorRender(event);
 		},
 		onMousemove(event) {
 			const start_time = new Date();
@@ -158,11 +164,7 @@ export default {
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onTabClick(item) {
-
-			console.log(item);
 			this.activeBlock = item;
-			// this.editor = item;
-
 			this.canvasRender();
 		},
 	},
