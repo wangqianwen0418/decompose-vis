@@ -12,13 +12,17 @@ let nodes;
 let bTree;
 let click = false;
 
-// function line(d) {
-//     // return `M${d.source.y},${d.source.x
-//     //    }C${(d.source.y + d.target.y) / 2},${d.source.x
-//     //    } ${(d.source.y + d.target.y) / 2},${d.target.x
-//     //    } ${d.target.y},${d.target.x}`;
-//     return `M${d.source.y},${d.source.x}L${d.target.y},${d.target.x}`;
-// }
+function line(d) {
+    return `M${d.y},${d.x
+       }C${(d.y + d.parent.y) / 2},${d.x
+       } ${(d.y + d.parent.y) / 2},${d.parent.x
+       } ${d.parent.y},${d.parent.x}`;
+    // return `M${d.source.y},${d.source.x}L${d.target.y},${d.target.x}`;
+    // return `M${d.y},${d.x
+    //         }L${(d.y + d.parent.y) / 2},${d.x
+    //         } ${(d.y + d.parent.y) / 2},${d.parent.x
+    //        } ${d.parent.y},${d.parent.x}`
+}
 
 // function connectNode() {
 //     let data = [];
@@ -51,16 +55,11 @@ function updateTree(nodes) {
         .attr('class', 'link')
         .style('stroke', 'var(--color-blue-light)')
         .style('stroke-width', '2')
-        .attr('d', d => `M${d.y},${d.x
-            }L${(d.y + d.parent.y) / 2},${d.x
-            } ${(d.y + d.parent.y) / 2},${d.parent.x
-            } ${d.parent.y},${d.parent.x}`)
-        .style('fill', 'none');
+        .attr('d', d => line(d))
+        .style('fill', 'none')
+        .style('z-index', '-2');
 
-    link.attr('d', d => `M${d.y},${d.x
-            }L${(d.y + d.parent.y) / 2},${d.x
-            } ${(d.y + d.parent.y) / 2},${d.parent.x
-            } ${d.parent.y},${d.parent.x}`);
+    link.attr('d', d => line(d));
 
     link.exit().remove();
 
