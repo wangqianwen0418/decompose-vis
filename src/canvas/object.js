@@ -99,6 +99,121 @@ export class Canvas {
     }
 }
 
+export class AnimatedCanvas {
+    constructor(canvas, width, height) {
+        width = width || canvas.width;
+        height = height || canvas.height;
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = width;
+        this.height = height;
+        if (canvas.width !== width) {
+            canvas.width = width;
+        }
+        if (canvas.height !== height) {
+            canvas.height = height;
+        }
+        this.items = new Array();
+        this.itemTables = new Array();
+        this.backgroundImg = null;
+        this.bgAlpha = 1;
+    }
+
+    clear() {
+        const ctx = this.ctx;
+        const width = this.width;
+        const height = this.height;
+        ctx.clearRect(0, 0, width, height);
+    }
+
+    drawBackground() {
+        if (this.backgroundImg === null) {
+            return;
+        }
+        const ctx = this.ctx;
+        const img = this.backgroundImg;
+        ctx.globalAlpha = this.bgAlpha;
+        ctx.drawImage(img, 0, 0);
+        ctx.globalAlpha = 1;
+    }
+
+    removeItem(item) {
+        const items = this.items;
+        if (!item || item.index >= items.length || items[item.index] !== item) {
+            return;
+        }
+        items.splice(item.index, 1);
+        for (let i = 0; i < items.length; ++i) {
+            items[i].index = i;
+        }
+    }
+
+    addItem(item) {
+        const items = this.items;
+        item.index = items.length;
+        item.canvas = this;
+        items.push(item);
+    }
+
+    getItem(x, y) {
+        for (const item of items) {
+            if (item.hasPixel(x, y)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    render(timestamp) {
+        timestamp = timestamp || 0;
+        const items = this.itemTables[timestamp] || this.items;
+        const canvas = this.canvas;
+        this.clear();
+        this.drawBackground();
+        for (const item of items) {
+            item.render(this);
+        }
+    }
+}
+
+export class Animation {
+    static duration = 1000;
+    static delay = 1000;
+    constructor(from, to, duration, delay) {
+        this.from = from;
+        this.to = to;
+        this.duration = duration || Animation.duration;
+        this.delay = delay || Animation.delay;
+    }
+
+    static hueInitialStatus(item) {
+
+    }
+
+    static satInitialStatus(item) {
+
+    }
+
+    static positionInitialStatus(item) {
+
+    }
+
+    static widthInitialStatus(item) { // length
+    }
+
+    static lengthInitialStatus(item) { // length
+
+    }
+
+    static shapeInitialStatus(item) {
+
+    }
+
+    render(timestamp) {
+        
+    }
+}
+
 export class Item {
     constructor(_) {
         let lines;

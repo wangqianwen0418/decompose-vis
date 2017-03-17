@@ -11,10 +11,10 @@
         </el-col>
         <el-col :span="8">
             <el-button-group>
-                <el-button type="primary" icon="arrow-left" @click="onPrev">上一页</el-button>
-                <el-button type="primary" @click="onPlay">播放</el-button>
-                <el-button type="primary" @click="onPause">暂停</el-button>
-                <el-button type="primary" @click="onNext">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                <el-button type="primary" icon="arrow-left" @click="onPrev">Prev</el-button>
+                <el-button type="primary" @click="onPlay">Play</el-button>
+                <el-button type="primary" @click="onPause">Pause</el-button>
+                <el-button type="primary" @click="onNext">Next<i class="el-icon-arrow-right el-icon--right"></i></el-button>
             </el-button-group>
         </el-col>
     </div>

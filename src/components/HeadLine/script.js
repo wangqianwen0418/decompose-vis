@@ -42,7 +42,7 @@ export default {
         },
         uploadlog() {
             const name = `user${Math.floor(Math.random() * 100000)}`;
-            this.$http.post('http://localhost:9999/save', {
+            this.$http.post('http://patpat.net:9999/save', {
                 name,
                 data: logdata,
             }).then((res) => {
