@@ -23,7 +23,6 @@ export default {
 		return {
             blocks: blocks,
 			activeBlock: blocks[0],
-
 		};
     },
 	props: ['src', 'width', 'height'],
