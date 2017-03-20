@@ -59,7 +59,8 @@ function updateTree(nodes) {
         .style('fill', 'none')
         .style('z-index', '-2');
 
-    link.attr('d', d => line(d));
+    link.attr('d', d => line(d))
+        .style('z-index', '-2');
 
     link.exit().remove();
 
