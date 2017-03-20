@@ -11,6 +11,7 @@ const redis = new Redis({
 });
 
 const logs = [];
+let currentId = 100;
 
 const SaveLoadRouter: Router = new Router()
     .get("/load", async (ctx, next) => {
@@ -40,8 +41,12 @@ const SaveLoadRouter: Router = new Router()
         logs.push({name, data});
         redis.set(name, data);
         await next();
-    });
-
+    })
+    .get("/id", async (ctx, next) => {
+        ctx.body = currentId;
+        currentId += 1;
+        await next();
+    })
 function WebServer(): Koa {
     const app: Koa = new Koa();
 

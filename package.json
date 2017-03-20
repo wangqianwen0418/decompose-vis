@@ -12,7 +12,8 @@
   "dependencies": {
     "intro.js": "^2.4.0",
     "vue": "^2.1.0",
-    "vue-resource": "^1.2.1"
+    "vue-resource": "^1.2.1",
+    "vue-router": "^2.3.0"
   },
   "devDependencies": {
     "d3": "^4.4.4",

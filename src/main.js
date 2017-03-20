@@ -6,7 +6,7 @@ import '../theme/index.css';
 // import './styles/index.css';
 import '../node_modules/intro.js/introjs.css';
 import store from './store';
-import App from './components/App';
+import App from './components/Survey';
 
 
 Vue.use(ElementUI, { locale });
