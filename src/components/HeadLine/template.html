@@ -19,7 +19,7 @@
            </div>
 
            <div style='float:right'>
-           <i class="fa fa-eye" @click="onPreview"></i>
+           <i class="fa fa-eye" @click="showView = !showView"></i>
            <br/>preview
            </div>
 
@@ -31,13 +31,7 @@
             </div>
        </span>
 
-    <el-dialog class='preview' v-model="showView" size='middle' title='Preview' @open='starttime=(new Date()).getTime()' @close='uploadlog()'>
-        <preview :src="
-        [require('assets/cat1.mp4'),
-        require('assets/cat2.mp4'),
-        require('assets/cat3.mp4')]" 
-        :start="starttime"
-        @log='updatelog'></preview>
+    <el-dialog class='preview' v-model="showView" size='large' title='Preview'>
     </el-dialog>
 
     <el-dialog class='selectImport' v-model="showForm" size='tiny' title="Import">

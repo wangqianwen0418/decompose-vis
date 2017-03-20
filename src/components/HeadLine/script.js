@@ -1,7 +1,5 @@
 import introJs from 'intro.js';
-import preview from '../Preview';
 
-let logdata = null;
 export default {
     data() {
         return {
@@ -16,7 +14,6 @@ export default {
             showView: false,
             value: '',
             textDescription: '',
-            starttime: null,
         };
     },
     methods: {
@@ -34,26 +31,5 @@ export default {
         intro() {
             introJs.introJs().start();
         },
-        onPreview() {
-            this.showView = !this.showView;
-        },
-        updatelog(data) {
-            logdata = data;
-        },
-        uploadlog() {
-            const name = `user${Math.floor(Math.random() * 100000)}`;
-            this.$http.post('http://patpat.net:9999/save', {
-                name,
-                data: logdata,
-            }).then((res) => {
-                console.info(res);
-            }, (err) => {
-                console.info(err);
-            });
-            console.info(logdata);
-        },
-    },
-    components: {
-        preview,
     },
 };

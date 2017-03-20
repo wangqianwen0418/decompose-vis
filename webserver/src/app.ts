@@ -2,6 +2,7 @@ import * as Koa from "koa";
 import * as bodyParser from "koa-bodyparser";
 import * as Router from "koa-router";
 import * as Redis from "ioredis";
+import * as cors from "koa-cors";
 import { createServer, Server } from "http";
 
 const redis = new Redis({
@@ -9,8 +10,6 @@ const redis = new Redis({
     port: 6379,
     db: 10
 });
-
-const logs = [];
 
 const SaveLoadRouter: Router = new Router()
     .get("/load", async (ctx, next) => {
@@ -23,21 +22,15 @@ const SaveLoadRouter: Router = new Router()
         }
         await next();
     })
-    .get("/log", async (ctx, next) => {
-        ctx.body = logs;
-        await next();
-    })
     .get("/save", async (ctx, next) => {
         const name: string = ctx.query.name;
         const data: string = JSON.stringify(ctx.query.data);
-        logs.push({name, data});
         redis.set(name, data);
         await next();
     })
     .post("/save", async (ctx, next) => {
         const name: string = ctx.request.body.name;
         const data: string = JSON.stringify(ctx.request.body.data);
-        logs.push({name, data});
         redis.set(name, data);
         await next();
     });
@@ -45,7 +38,7 @@ const SaveLoadRouter: Router = new Router()
 function WebServer(): Koa {
     const app: Koa = new Koa();
 
-    app.use(require('kcors')());
+    app.use(cors());
     app.use(bodyParser());
     app.use(SaveLoadRouter.routes());
 

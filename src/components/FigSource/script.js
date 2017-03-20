@@ -15,14 +15,16 @@ let zoom_ratio, bgtag;
 
 export default {
    data() {
-		const blocks = ['overview'].map(d => ({
+		const blocks = ['overview', '1', '2', '3'].map(d => ({
 				name: d,
 				canvas: null,
+
 			}))
 
 		return {
             blocks: blocks,
 			activeBlock: blocks[0],
+
 		};
     },
 	props: ['src', 'width', 'height'],
@@ -39,43 +41,16 @@ export default {
             this.blocksTrue.splice(index, 1);
         },
         addTab(){
-            const item = new Object();
+            const item = {};
             // item.name = this.blocks.length.toString();
-            item.name = "" + (this.blocks.length);
+            item.name="new";
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
             item.canvas = new Canvas(canvas);
-			item.canvas.backgroundImg = img;
-			item.canvas.bgAlpha = 0.05;
             this.blocks.push(item);
-			this.activeBlock = this.blocks[this.blocks.length - 1];
-			this.canvasRender();
         },
         addBlock(temp) {
-			if (this.activeBlock.name === 'overview') {
-				return;
-			}
 			const block = JSON.parse(JSON.stringify(temp));
-			const canvas = this.$el.getElementsByTagName('canvas')[0];
-			const editorCanvas = document.getElementsByClassName('editorCanvas')[0];
-			block.canvas = new Canvas(editorCanvas, canvas.width, canvas.height);
-			for (const item of this.activeBlock.canvas.items) {
-				block.canvas.addItem(new Item(item));
-			}
-			const hasName = (name) => {
-				for (const b of this.blocksTrue) {
-					if (b.name === name) {
-						return true;
-					}
-				}
-				return false;
-			}
-			for (let i = 1;; ++i) {
-				const name = block.name + (i === 1 ? '' : i);
-				if (!hasName(name)) {
-					block.name = name;
-					break;
-				}
-			}
+			block.canvas = this.activeBlock.canvas;
             this.blocksTrue.push(block);
             this.activeBlock.name = block.name;
             // this.blocks.forEach((blk)=>{
@@ -88,6 +63,12 @@ export default {
 				"figure-tabs-item": true,
 				"active": item == this.activeBlock
 			};
+		},
+
+		editorRender(event) {
+			return;
+			if (this.editor !== null)
+				this.editor.canvas.render();
 		},
 		canvasRender(event) {
 			this.activeBlock.canvas.render();
@@ -148,6 +129,7 @@ export default {
 					this.canvasRender(event);
 				}
 			}
+			this.editorRender(event);
 		},
 		onMousemove(event) {
 			const start_time = new Date();
@@ -171,7 +153,11 @@ export default {
 			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
 		onTabClick(item) {
+
+			console.log(item);
 			this.activeBlock = item;
+			// this.editor = item;
+
 			this.canvasRender();
 		},
 	},

@@ -7,7 +7,6 @@ src/canvas
 src/interaction/*.js
 src/components/VisFigure.vue
 src/components/FigSource
-src/components/Preview
 src/components/editor
 src/VisFigure.vue
 src/App.vue

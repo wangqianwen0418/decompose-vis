@@ -276,6 +276,7 @@ const myVue = {
     },
     watch: {
         bTree(val) {
+            console.info(blocks);
             bTree = val;
 
             const tree = d3.tree()
