@@ -407,6 +407,37 @@ export class Item {
         this.bottom = this.y + this.h;
     }
 
+    cross(x1, y1, x2, y2) {
+        if (x1 instanceof Object) {
+            const line = x1;
+            return this.cross(line.x1, line.y1, line.x2, line.y2);
+        } else {
+            if (x1 > x2) {
+                return this.cross(line.x2, line.y2, line.x1, line.y1);
+            } else if (x1 === x2) {
+                for (const line of lines) {
+                    if (line.x === x1 && line.y2 > y1 && line.y1 < y2) {
+                        return true;
+                    }
+                }
+                return false;
+            } else {
+                const c = (y2 - y1) / (x2 - x1);
+                const dy = y2 - y1;
+                for (const line of lines) {
+                    if (line.x < x1 || line.x > x2) {
+                        continue;
+                    }
+                    const y = (line.x - x1) * c;
+                    if (y > 0 && y < dy) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    }
+
     toString() {
         return JSON.stringify({
             lines: this.lines,

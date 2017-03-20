@@ -1,22 +1,31 @@
 <template>
-    <el-row>
-        <el-col :span="24">
-            <video id='videoplayer'>
-                <source :src='this.src[this.current]' type='video/mp4'/>
-            </video>
-        </el-col>
-        <el-col :span="15">
-            <el-progress :percentage="this.current/ this.src.length * 100" :show-text="false" :stroke-width="30">
-            </el-progress>
-        </el-col>
-        <el-col :span="8">
-            <el-button-group>
-                <el-button type="primary" icon="arrow-left" @click="onPrev">Prev</el-button>
-                <el-button type="primary" @click="onPlay">Play</el-button>
-                <el-button type="primary" @click="onPause">Pause</el-button>
-                <el-button type="primary" @click="onNext">Next<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-            </el-button-group>
-        </el-col>
+    <div>
+        <el-row>
+            <el-col :span="24">
+                <video id='videoplayer' :style='videoStyleObject'>
+                    <source :src='this.src[this.current]'/>
+                </video>
+                <img id='imageplayer' :style='imageStyleObject' :src='this.src[this.current]'>
+                </img>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="15">
+                <el-progress :percentage="this.current/ this.src.length * 100" :show-text="false" :stroke-width="30">
+                </el-progress>
+            </el-col>
+            <el-col :span="1">
+                <div class="grid-content bg-purple"></div>
+            </el-col>
+            <el-col :span="8">
+                <el-button-group>
+                    <el-button type="primary" :plain="true" icon="arrow-left" @click="onPrev">Prev</el-button>
+                    <el-button type="primary" :plain="true" @click="onPlay">Play</el-button>
+                    <el-button type="primary" :plain="true" @click="onPause">Pause</el-button>
+                    <el-button type="primary" :plain="true" @click="onNext">Next<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                </el-button-group>
+            </el-col>
+        </el-row>
     </div>
 </template>
 
@@ -27,6 +36,18 @@
                 current: 0,
                 log: [],
             }
+        },
+        computed: {
+            videoStyleObject() {
+                return {
+                    display: this.isvideo ? 'block' : 'none'
+                }
+            },
+            imageStyleObject() {
+                return {
+                    display: !this.isvideo ? 'block' : 'none'
+                }
+            },
         },
         methods: {
             onPrev() {
@@ -66,9 +87,13 @@
                 this.$emit('log', this.log);
             }
         },
-	    props: ['src', 'start']
+	    props: ['src', 'start', 'isvideo']
     }
 </script>
 
 <style scoped>
+    video {
+        min-width: 80%;
+        min-height: 80%;
+    }
 </style>
