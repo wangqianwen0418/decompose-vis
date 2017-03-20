@@ -1,15 +1,15 @@
-<div data-step="2" data-intro="refine the auto cluser of components" data-position='right'
-    class="figure-source">
-		<div class="figure-tabs-header" data-step="3" data-intro="what is the structure of visual units" data-position='right'>
+<div data-step="2" data-intro="refine the auto cluser of components" data-position='right' class="figure-source">
+    <div class="figure-tabs-header" data-step="3" data-intro="what is the structure of visual units" data-position='right'>
 
-            <div v-for="item in blocks" :class="figureTabClass(item)" @click="onTabClick(item)">
-			    {{item.name}}
-			</div>
+        <div v-for="item in blocks" :class="figureTabClass(item)" @click="onTabClick(item)">
+            {{item.name}}
+        </div>
 
-            <div  :class="figureTabClass(item)">
-                <el-dropdown >
+        <div :class="figureTabClass(item)">
+
+            <!--<el-dropdown >
                         <span class="el-dropdown-link" :class="figureTabClass(item)">
-                           <i class="fa fa-volume-control-phone"></i>
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
                         </span>
                     <el-dropdown-menu slot="dropdown">
                             <span v-for='temp in temps' @click='addBlock(temp)'>
@@ -18,20 +18,422 @@
                             </el-dropdown-item>
                               </span>
                     </el-dropdown-menu>
-                 </el-dropdown>
-                 <i class="fa fa-plus-circle" @click="addTab() "></i>
-            </div>
-            <div class="figure-tabs-item">
-                 <i class="fa fa-trash-o" @click="deleteTab() "></i>
-            </div>
-		</div>
+                 </el-dropdown>-->
 
-		<div class="figure-content">
-			<canvas class="figure-main-view"
-			@mousemove="onMousemove"
-			@click.prevent="onClick" @contextmenu.prevent="onRightClick"
-			>
-			</canvas>
-		</div>
+        </div>
+        <div class="figure-tabs-item">
+            <i class="fa fa-volume-control-phone" @click="tempShow=!tempShow"></i>
+            <i class="fa fa-plus-circle" @click="addTab() "></i>
+            <i class="fa fa-trash-o" @click="deleteTab() "></i>
+        </div>
+    </div>
 
-	</div>
+    <div class="figure-content">
+        <canvas class="figure-main-view" @mousemove="onMousemove" @click.prevent="onClick" @contextmenu.prevent="onRightClick">
+        </canvas>
+    </div>
+
+    <el-dialog class='Templates' v-model="tempShow" size='small' title='Narvis Library'>
+
+        <table style="width:100%">
+            <tr >
+                <th class='layout'> </th>
+                <th class='layout'>Radial</th>
+                <th class='layout'>Orthogonal</th>
+                <th class='layout'>Metric-dependent</th>
+            </tr>
+
+            <tr>
+                <th class='primitives'>Dot
+                     <img src="../../assets/temps/dot.png" alt="Smiley face" height="30" width="40">
+                </th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item >
+                               Scatter Plot
+                            </el-dropdown-item>
+                            <el-dropdown-item >
+                               Bubble Chart
+                            </el-dropdown-item>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+
+
+            <tr>
+                <th class='primitives'>Link
+                    <img src="../../assets/temps/link.png" alt="Smiley face" height="20" width="35">
+                </th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+
+
+            <tr>
+                <th class='primitives'>Line
+                    <img src="../../assets/temps/line.png" alt="Smiley face" height="20" width="40">
+                </th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <th class='primitives'>Wedge
+                    <img src="../../assets/temps/wedge.png" alt="Smiley face" height="22" width="42">
+                </th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+
+
+            <tr>
+                <th class='primitives'>Bar
+                     <img src="../../assets/temps/bar.png" alt="Smiley face" height="30" width="40">
+                </th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+            <tr>
+                <th class='primitives'>Area
+                    <img src="../../assets/temps/area.png" alt="Smiley face" height="30" width="40">
+                </th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+
+
+
+            <tr>
+                <th class='primitives'>Text</th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <th class='primitives'>Image</th>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+                <td>
+                    <el-dropdown  trigger="click">
+                        <span class="el-dropdown-link" >
+                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
+                        </span>
+                    <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <el-dropdown-item >
+                               {{temp.name}}
+                            </el-dropdown-item>
+                              </span>
+                    </el-dropdown-menu>
+                   </el-dropdown>
+                </td>
+            </tr>
+        </table>
+
+    </el-dialog>
+
+</div>

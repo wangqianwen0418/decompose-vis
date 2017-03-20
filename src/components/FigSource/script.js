@@ -24,6 +24,7 @@ export default {
 		return {
             blocks: blocks,
 			activeBlock: blocks[0],
+            tempShow: false,
 
 		};
     },
@@ -49,6 +50,7 @@ export default {
             this.blocks.push(item);
         },
         addBlock(temp) {
+            this.tempShow=false;
 			const block = JSON.parse(JSON.stringify(temp));
 			block.canvas = this.activeBlock.canvas;
             this.blocksTrue.push(block);

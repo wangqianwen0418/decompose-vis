@@ -48,6 +48,7 @@
     --font-2:'Source Sans Pro', sans-serif;
     --font-3: 'Playfair Display', serif;
     --font-4:'Dancing Script', cursive;
+    --font-5:'Gidugu', sans-serif;
 }
 .app{
     /*font-family: var(--font-1);*/
