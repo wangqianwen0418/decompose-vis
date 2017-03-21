@@ -22,7 +22,8 @@ export default {
     },
     methods: {
         addMark(markTemp) {
-            this.block.marks.push(markTemp);
+            const clone = JSON.parse(JSON.stringify(markTemp));
+            this.block.marks.push(clone);
         },
     },
 };

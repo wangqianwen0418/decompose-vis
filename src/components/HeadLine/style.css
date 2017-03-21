@@ -18,7 +18,8 @@
         left: 0%;
         -ms-transform: translate(0%, -50%);
         transform: translate(0%, -50%);
-        /*font-family: var(--font-4);*/
+        font-family: var(--font-5);
+        font-size: 70px;
     }
 
     .iconGroup {

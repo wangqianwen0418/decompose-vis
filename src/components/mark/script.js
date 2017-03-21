@@ -20,7 +20,7 @@ export default {
         //     removeMark: REMOVE_MARK,
         // }),
         addChannel(channelTemp) {
-            console.info(channelTemp);
+            // console.info(channelTemp);
             const clone = JSON.parse(JSON.stringify(channelTemp));
             this.mark.channels.push(clone);
         },
