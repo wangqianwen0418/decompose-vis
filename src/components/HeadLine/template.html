@@ -19,7 +19,7 @@
            </div>
 
            <div style='float:right'>
-           <i class="fa fa-eye" @click="onPreview"></i>
+           <i class="fa fa-eye" @click="showView = !showView"></i>
            <br/>preview
            </div>
 
@@ -31,7 +31,9 @@
             </div>
        </span>
 
+
     <el-dialog class='preview' v-model="showView" size='middle' title='Preview' @open='starttime=(new Date()).getTime()' @close='uploadlog()'>
+
     </el-dialog>
 
     <el-dialog class='selectImport' v-model="showForm" size='tiny' title="Import">

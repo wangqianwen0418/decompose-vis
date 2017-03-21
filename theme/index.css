@@ -4663,7 +4663,7 @@
 .el-dropdown-menu {
     margin: 5px 0;
     background-color: #fff;
-    border: 1px solid var(--color-3);
+    border: 1px solid var(--color-gray);
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
     padding: 6px 0;
     z-index: 10;
@@ -4674,7 +4674,9 @@
 }
 .el-dropdown-menu__item {
     list-style: none;
-    line-height: 36px;
+    line-height: 26px;
+    font-size:14px;
+    color: var(--color-blue-dark);
     padding: 0 10px;
     margin: 0;
     cursor: pointer;

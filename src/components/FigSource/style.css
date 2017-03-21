@@ -54,6 +54,21 @@
 		max-height: 100%;
 	}
 
+    table {
+        text-align: center;
+    }
+    th.primitives{
+        height: 7vh;
+    }
+
+    th.layout, div.callTemp{
+        width: 6vw;
+    }
+
+    .fa{
+        margin: 5px;
+    }
+
     /*i.fa-times{
         display:none;
     }

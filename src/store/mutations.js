@@ -38,23 +38,16 @@ const mutations = {
         blocks.forEach((block) => {
             block.marks.forEach((mark) => {
                 mark.channels.forEach((ch) => {
-                    if (ch === channel) {
-                        console.info(ch);
-                        ch.selected = true;
-                        block.canvas.render();
-                    } else {
-                        ch.selected = false;
-                    }
+                    ch.selected = false;
                 });
             });
         });
-        // channel.selected = true;
+        channel.selected = true;
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
             blk.selected = false;
         });
-        block.canvas.render();
         block.selected = true;
     },
     [EDIT_ELE](state, message) {
