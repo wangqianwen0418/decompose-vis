@@ -56,5 +56,11 @@ export default {
           })
         })
     },
+    save() {
+        this.$notify.success({
+            message: 'Your NarVis is Saved !',
+            offset: 100,
+        });
+    },
     },
 };

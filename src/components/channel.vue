@@ -1,13 +1,13 @@
 <template>
     <li :style="styleObject" @click="selectChannel(channel)" v-if='!channel.removed'>
         <span class='channel'>{{channel.name}}</span>
-        <i class="el-icon-close" @click="removeChannel(channel)" />
+        <i class="el-icon-close" @click="removeChannel" />
         </li>
 </template>
 
 <script>
     import { mapActions } from 'vuex';
-    import { REMOVE_CHANNEL, SELECT_CHANNEL } from '../store';
+    import { SELECT_CHANNEL } from '../store';
 
     export default {
         props: ['channel'],
@@ -22,8 +22,13 @@
             },
         },
         methods: {
+            removeChannel() {
+                this.channel.removed = true;
+            },
+            // selectChannel() {
+            //     this.channel.selected = true;
+            // },
             ...mapActions({
-                removeChannel: REMOVE_CHANNEL,
                 selectChannel: SELECT_CHANNEL,
             }),
         },
