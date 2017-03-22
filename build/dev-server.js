@@ -54,11 +54,14 @@ app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
 app.use(devMiddleware)
-console.log("Inside dev-server js file");
+app.use(function(req, res, next) {
+  console.log("After dev")
+  next()
+});
 // enable hot-reload and state-preserving
 // compilation error display
 app.use(hotMiddleware)
-
+console.log("After hot");
 app.get('/', function(req, res) {
   console.log("We are here");
   res.send("Hello World");
@@ -73,14 +76,6 @@ devMiddleware.waitUntilValid(function () {
   console.log('> Listening at ' + uri + '\n')
 })
 
-module.exports = app.listen(port, function (err) {
-  if (err) {
-    console.log(err)
-    return
-  }
-
-  // when env is testing, don't need open it
-  if (process.env.NODE_ENV !== 'testing') {
-    opn(uri)
-  }
-})
+app.listen(port, function() {
+  console.log('Node app is running on port', port);
+});
