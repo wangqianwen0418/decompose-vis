@@ -15,6 +15,10 @@ var port = process.env.PORT || config.dev.port
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+app.get('/', function(req, res) {
+  console.log("We are here");
+  res.send("Hello World");
+});
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -51,10 +55,7 @@ Object.keys(proxyTable).forEach(function (context) {
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
-app.get('/', function(req, res) {
-  console.log("We are here");
-  res.send("Hello World");
-});
+
 // serve webpack bundle output
 app.use(devMiddleware)
 
