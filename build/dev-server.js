@@ -51,13 +51,13 @@ Object.keys(proxyTable).forEach(function (context) {
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
-
-// serve webpack bundle output
-app.use(devMiddleware)
 app.get('/', function(req, res) {
   console.log("We are here");
   res.send("Hello World");
 });
+// serve webpack bundle output
+app.use(devMiddleware)
+
 app.use(function(req, res, next) {
   console.log("After dev")
   next()
