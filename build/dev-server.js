@@ -54,11 +54,15 @@ app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
 app.use(devMiddleware)
-
+console.log("Inside dev-server js file");
 // enable hot-reload and state-preserving
 // compilation error display
 app.use(hotMiddleware)
 
+app.get('/', function(req, res) {
+  console.log("We are here");
+  res.send("Hello World");
+});
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
