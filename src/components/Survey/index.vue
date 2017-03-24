@@ -11,19 +11,20 @@
             </el-col>
         </el-row>
         <el-row>
-            <el-col :span="12">
-                <el-progress :percentage="(currentPage+1)/slides[currentSlide].list.length * 100" :show-text="false" :stroke-width="30">
-                </el-progress>
+            <el-col :span="15">
+                <svg id="progressbar">
+                </svg>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="5">
                 <el-button-group>
                     <el-button type="primary" :plain="true"
                         :disabled="currentPage===0 || forbidden"
                         icon="arrow-left" @click="onPrev">
                         Prev
                     </el-button>
-                    <el-button type="primary" :disabled="!isVideo || forbidden" :plain="true" @click="onPlay">Play</el-button>
+                    <!--el-button type="primary" :disabled="!isVideo || forbidden" :plain="true" @click="onPlay">Play</el-button>
                     <el-button type="primary" :disabled="!isVideo || forbidden" :plain="true" @click="onPause">Pause</el-button>
+                    !-->
                     <el-button type="primary" :plain="true" @click="onNext"
                         :disabled="currentPage===slides[currentSlide].list.length-1 || forbidden">
                         Next
@@ -56,18 +57,34 @@
 
 
 <script>
+    import * as d3 from 'd3';
+    let progressbar;
     const log = [];
     const hello = {
         list: [require('assets/slides/hello/1.png'),],
         type: 'image',
+        name: 'hello',
     };
     let isSurvey = false, url = null;
     const ratingUrl = 'https://goo.gl/forms/hsI4Yz2RA6haojXf2';
+
+
+    const surveyintro = {
+        list: [require('assets/slides/intro/2.png'),],
+        type: 'image',
+        name: 'intro',
+    };
+
+    const quizintro = {
+        list: [require('assets/slides/intro/1.png'),],
+        type: 'image',
+        name: 'intro',
+    };
+
     const case1 = {
         list: [
             require('assets/slides/animated/1.mp4'),
             require('assets/slides/animated/3.mp4'),
-            require('assets/slides/animated/4.mp4'),
             require('assets/slides/animated/5.mp4'),
             require('assets/slides/animated/6.mp4'),
             require('assets/slides/animated/7.mp4'),
@@ -154,7 +171,6 @@
             require('assets/slides/xuke/2.png'),
             require('assets/slides/xuke/3.png'),
             require('assets/slides/xuke/4.png'),
-            require('assets/slides/xuke/5.png'),
             require('assets/slides/xuke/6.png'),
             require('assets/slides/xuke/7.png'),
             require('assets/slides/xuke/8.png'),
@@ -174,6 +190,7 @@
                 currentPage: 0,
                 userid: 0,
                 forbidden: false,
+                lasttime: new Date(),
             };
         },
         computed: {
@@ -189,30 +206,98 @@
             },
             isVideo() {
                 return this.slides[this.currentSlide].type === 'video';
-            }
+            },
+        },
+        mounted() {
+            progressbar = d3.select('#progressbar');
+            parent = document.getElementById('progressbar').parentNode;
+            progressbar
+                .attr('width', parent.clientWidth)
+                .attr('height', 36);
+            console.log('ready');
+            const self = this;
+            setInterval(function(){
+                self.progress();
+            }, 50);
         },
         methods: {
+            progress() {
+                const width = progressbar.attr('width');
+                const height = progressbar.attr('height');
+
+                if (this.currentSlide === 0) {
+                    return;
+                }
+                
+                const value = (this.currentPage) / this.slides[this.currentSlide].list.length;
+                const bar1 = progressbar
+                    .selectAll('.progress1')
+                    .data([value]);
+
+                bar1.enter()
+                    .append('rect')
+                    .attr('class', 'progress1');
+
+                bar1
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('height', height)
+                    .attr('width', value * width)
+                    .style('fill', '#20A0FF');
+                
+                const bar2 = progressbar
+                    .selectAll('.progress2')
+                    .data([value]);
+
+                bar2.enter()
+                    .append('rect')
+                    .attr('class', 'progress2');
+
+                let length;
+                let passed;
+                if (this.isVideo) {
+                    const video = this.$el.getElementsByTagName('video')[0];
+                    passed = video.currentTime / video.duration;
+                    length = width * passed / this.slides[this.currentSlide].list.length;
+                } else {
+                    passed = Math.min(3000, (new Date() - this.lasttime)) / 3000;
+                    length = width * passed / this.slides[this.currentSlide].list.length;
+                }
+
+                bar2
+                    .attr('x', value * width - 1)
+                    .attr('y', 0)
+                    .attr('height', height)
+                    .attr('width', length + 1)
+                    .style('fill', '#20A0FF')
+                    .style('opacity', passed >= 1 ? 1 : 0.3);
+
+            },
             onPrev() {
                 log.push([(new Date()).getTime() - start, 'prev', this.slides[this.currentSlide].name, this.currentPage]);
                 this.currentPage -= 1;
                 const video = this.$el.getElementsByTagName('video')[0];
                 video.load();
+                this.lasttime = new Date();
             },
             onNext() {
                 log.push([(new Date()).getTime() - start, 'next', this.slides[this.currentSlide].name, this.currentPage]);
                 this.currentPage += 1;
                 const video = this.$el.getElementsByTagName('video')[0];
                 video.load();
+                this.lasttime = new Date();
             },
             onPlay() {
                 log.push([(new Date()).getTime() - start, 'play', this.slides[this.currentSlide].name, this.currentPage]);
                 const video = this.$el.getElementsByTagName('video')[0];
                 video.play();
+                this.lasttime = new Date();
             },
             onPause() {
                 log.push([(new Date()).getTime() - start, 'pause', this.slides[this.currentSlide].name, this.currentPage]);
                 const video = this.$el.getElementsByTagName('video')[0];
                 video.pause();
+                this.lasttime = new Date();
             },
             onContinue() {
                 if (this.currentSlide === 0) {
@@ -232,6 +317,12 @@
                         });
                         console.info(log);
                         const type = isSurvey ? 'survey' : 'quiz';
+                        setTimeout(function(){
+                            console.info(document.getElementsByClassName("el-message-box__message"));
+                            console.info(document.getElementsByClassName("el-message-box__message")[0].innerHTML);
+                            document.getElementsByClassName("el-message-box__message")[0].innerHTML = 
+                                `<p>Please remember your userid <span style="font-size:40px; color:#1D8CE0">${name}</span>, click the button to </p>`;
+                        }, 100);
                         this.$alert(`Please remember your userid ${name}, click the button to `, `${isSurvey ? 'SURVEY' : 'QUIZ'}`, {
                         confirmButtonText: `go to the ${type}`,
                             callback: action => {
@@ -246,16 +337,18 @@
                     this.currentSlide = this.currentSlide + 1;
                     this.currentPage = 0;
                 }
+                this.lasttime = new Date();
             },
             onQuiz() {
                 start = new Date();
                 const i = Math.floor(Math.random() * (4 - 1e-7)) + 1;
-                this.slides = [this.slides[0], this.slides[i]];
+                this.slides = [this.slides[0], quizintro, this.slides[i]];
                 this.currentSlide = this.currentSlide + 1;
                 this.currentPage = 0;
-                url = this.slides[this.currentSlide].url;
+                url = this.slides[this.slides.length - 1].url;
                 document.getElementById('quiz_or_survey').style.display = 'none';
                 log.push('quiz');
+                this.lasttime = new Date();
             },
             onSurvey() {
                 start = new Date();
@@ -268,10 +361,12 @@
                     this.slides[a] = this.slides[b];
                     this.slides[b] = t;
                 }
+                this.slides.splice(1, 0, surveyintro);
                 this.currentSlide = this.currentSlide + 1;
                 this.currentPage = 0;
                 document.getElementById('quiz_or_survey').style.display = 'none';
                 log.push('survey');
+                this.lasttime = new Date();
             },
         },
     };
@@ -295,5 +390,8 @@
         left: 35%;
         top: 60%;
         display: none;
+    }
+    .el-message-box__message{
+        font-size: 18px;
     }
 </style>
