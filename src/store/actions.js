@@ -8,6 +8,7 @@ import {
     UPDATE_BLOCKS,
     SELECT_BLOCK,
     EDIT_EXP,
+    UPDATE_CHANNEL,
 } from './types';
 
 const actions = {
@@ -37,6 +38,9 @@ const actions = {
     },
     [UPDATE_BLOCKS]({ commit }, blocks) {
         commit(UPDATE_BLOCKS, blocks);
+    },
+    [UPDATE_CHANNEL]({ commit }, items) {
+        commit(UPDATE_CHANNEL, items);
     },
 };
 

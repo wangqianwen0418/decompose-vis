@@ -6,7 +6,7 @@ import { compose, findGroup } from "../../algorithm/compose.js";
 import color_space_divide from "../../algorithm/color-space-divide.js";
 import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
-import { Canvas, Item } from "../../canvas/object.js";
+import { Canvas, AnimatedCanvas, Item } from "../../canvas/object.js";
 import * as d3 from "d3";
 import { mapState } from 'vuex';
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
@@ -42,7 +42,7 @@ export default {
         addTab(){
             const item = new Object();
             // item.name = this.blocks.length.toString();
-            item.name = "" + (this.blocks.length);
+            item.name = "" + this.blocks.length;
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
             item.canvas = new Canvas(canvas);
 			item.canvas.backgroundImg = img;
@@ -52,14 +52,14 @@ export default {
 			this.canvasRender();
         },
         addBlock(temp) {
-			this.tempShow=false;
+			this.tempShow = false;
 			if (this.activeBlock.name === 'overview') {
 				return;
 			}
 			const block = JSON.parse(JSON.stringify(temp));
 			const canvas = this.$el.getElementsByTagName('canvas')[0];
 			const editorCanvas = document.getElementsByClassName('editorCanvas')[0];
-			block.canvas = new Canvas(editorCanvas, canvas.width, canvas.height);
+			block.canvas = new AnimatedCanvas(editorCanvas, canvas.width, canvas.height);
 			for (const item of this.activeBlock.canvas.items) {
 				block.canvas.addItem(new Item(item));
 			}
@@ -70,8 +70,8 @@ export default {
 					}
 				}
 				return false;
-			}
-			
+			};
+
 			for (let i = 1;; ++i) {
 				const name = block.name + (i === 1 ? '' : i);
 				if (!hasName(name)) {
@@ -81,10 +81,6 @@ export default {
 			}
             this.blocksTrue.push(block);
             this.activeBlock.name = block.name;
-            // this.blocks.forEach((blk)=>{
-            //     if(blk.name==this.activeBlock.name)
-            //      blk.name = temp.name;
-            // })
         },
 		figureTabClass(item) {
 			return {
@@ -290,15 +286,12 @@ function preprocessing(canvas) {
 		}
 		element.tag = color2tag(element.color);
 	}
-	console.log(elements);
 
 	currenttime = maxtimestamp;
 	ctx.putImageData(imgData, 0, 0);
 	currentData = ctx.getImageData(0, 0, width, height);
 	console.info(`total time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 }
-
-
 
 function calc(canvas) {
 	const start_time = new Date();

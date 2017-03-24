@@ -164,9 +164,9 @@ export class AnimatedCanvas {
         return null;
     }
 
-    render(timestamp) {
-        timestamp = timestamp || 0;
-        const items = this.itemTables[timestamp] || this.items;
+    render(index) {
+        index = index || 0;
+        const items = this.itemTables[index] || this.items;
         const canvas = this.canvas;
         this.clear();
         this.drawBackground();
@@ -187,26 +187,37 @@ export class Animation {
     }
 
     static hueInitialStatus(item) {
-
+        const ret = new Item(item);
+        ret.hue = 0;
+        return ret;
     }
 
     static satInitialStatus(item) {
-
+        const ret = new Item(item);
+        ret.saturation = 0;
+        return ret;
     }
 
     static positionInitialStatus(item) {
-
+        const ret = new Item(item);
+        return ret;
     }
 
     static widthInitialStatus(item) { // length
+        const ret = new Item(item);
+        ret.w /= 2;
+        ret.x += ret.w / 2;
+        return ret;
     }
 
     static lengthInitialStatus(item) { // length
-
+        const ret = new Item(item);
+        return ret;
     }
 
     static shapeInitialStatus(item) {
-
+        const ret = new Item(item);
+        return ret;
     }
 
     render(timestamp) {

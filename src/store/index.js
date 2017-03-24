@@ -23,4 +23,5 @@ export {
     UPDATE_BLOCKS,
     SELECT_BLOCK,
     EDIT_EXP,
+    UPDATE_CHANNEL,
 } from './types';

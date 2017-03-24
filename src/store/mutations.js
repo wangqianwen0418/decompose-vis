@@ -7,6 +7,7 @@ import {
     EDIT_ELE,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
+    UPDATE_CHANNEL,
     EDIT_EXP,
 } from './types';
 
@@ -49,6 +50,8 @@ const mutations = {
             });
         });
         // channel.selected = true;
+    },
+    [UPDATE_CHANNEL](state, channels) {
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
