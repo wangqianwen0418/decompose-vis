@@ -71,6 +71,7 @@ export default {
 				}
 				return false;
 			}
+			
 			for (let i = 1;; ++i) {
 				const name = block.name + (i === 1 ? '' : i);
 				if (!hasName(name)) {
