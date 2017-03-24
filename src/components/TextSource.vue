@@ -47,6 +47,8 @@ textarea{
     border: none;
     border-top: 2px solid var(--color-blue-gray);
     box-shadow: 2px 2px 1px var(--color-gray);
+    font-size: 20px;
+    overflow-y:scroll;
 
 }
 textarea:focus{

@@ -90,7 +90,7 @@ function updateTree(nodes) {
 
     nodeGroup1.append('rect')
         .attr('class', 'fgrect')
-        .attr('width', 50)
+        .attr('width', 90)
         .attr('height', 25)
         .attr('rx', 3)
         .attr('ry', 3)
@@ -121,7 +121,7 @@ function updateTree(nodes) {
 
     nodeGroup2.append('rect')
         .attr('class', 'fgrect')
-        .attr('width', 50)
+        .attr('width', 90)
         .attr('height', 25)
         .attr('y', '-10')
         .attr('rx', 3)
@@ -152,7 +152,7 @@ function updateTree(nodes) {
 
     nodeGroup3.append('rect')
         .attr('class', 'fgrect')
-        .attr('width', 50)
+        .attr('width', 90)
         .attr('height', 25)
         .attr('y', '-10')
         .attr('rx', 3)
@@ -239,7 +239,7 @@ const circleDragger =
 const myVue = {
     data() {
         return {
-            height: 280,
+            height: 260,
             width: 220,
         };
     },
@@ -262,7 +262,7 @@ const myVue = {
     },
     mounted() {
         const tree = d3.tree()
-                .size([this.height, this.width * 0.7]);
+                .size([this.height, this.width * 0.6]);
 
         nodes = d3.hierarchy(this.bTree, d => d.children);
         nodes = tree(nodes);
@@ -280,7 +280,7 @@ const myVue = {
             bTree = val;
 
             const tree = d3.tree()
-                .size([(this.height), this.width * 0.7]);
+                .size([this.height, this.width * 0.6]);
             nodes = d3.hierarchy(bTree, d => d.children);
             nodes = tree(nodes);
             updateTree(nodes);

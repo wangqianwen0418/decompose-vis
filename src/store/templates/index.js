@@ -4,6 +4,7 @@ import point from './point';
 import scatterPlot from './scatterPlot';
 import themeRiver from './themeRiver';
 import dountChart from './dountChart';
+import stackedBar from './stackedBar';
 
 const templates = [
     grid,
@@ -12,6 +13,7 @@ const templates = [
     scatterPlot,
     themeRiver,
     dountChart,
+    stackedBar,
 ];
 
 export default templates;

@@ -1,5 +1,5 @@
     const line = {
-        name: 'LineChart',
+        name: 'StackedBar',
         parent: ['a vis'],
         children: [],
         selected: false,

@@ -1,5 +1,5 @@
 const grid = {
-    name: 'grid',
+    name: 'Grid',
     parent: ['a vis'],
     children: [],
     selected: false,

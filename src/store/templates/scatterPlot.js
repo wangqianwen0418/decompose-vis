@@ -1,5 +1,5 @@
 const scatterPlot = {
-    name: 'scatter plot',
+    name: 'ScatterPlot',
     parent: ['a vis'],
     children: [],
     selected: false,

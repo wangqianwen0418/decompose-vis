@@ -1,5 +1,5 @@
 const dountChart = {
-    name: 'dountChart',
+    name: 'DountChart',
     parent: ['a vis'],
     children: [],
     selected: false,
