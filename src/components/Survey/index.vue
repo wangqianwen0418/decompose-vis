@@ -18,19 +18,19 @@
             <el-col :span="8">
                 <el-button-group>
                     <el-button type="primary" :plain="true"
-                        :disabled="currentPage===0"
+                        :disabled="currentPage===0 || forbidden"
                         icon="arrow-left" @click="onPrev">
                         Prev
                     </el-button>
-                    <el-button type="primary" :disabled="!isVideo" :plain="true" @click="onPlay">Play</el-button>
-                    <el-button type="primary" :disabled="!isVideo" :plain="true" @click="onPause">Pause</el-button>
+                    <el-button type="primary" :disabled="!isVideo || forbidden" :plain="true" @click="onPlay">Play</el-button>
+                    <el-button type="primary" :disabled="!isVideo || forbidden" :plain="true" @click="onPause">Pause</el-button>
                     <el-button type="primary" :plain="true" @click="onNext"
-                        :disabled="currentPage===slides[currentSlide].list.length-1">
+                        :disabled="currentPage===slides[currentSlide].list.length-1 || forbidden">
                         Next
                         <i class="el-icon-arrow-right el-icon--right"></i>
                     </el-button>
                     <el-button type="primary"
-                        :disabled="!(currentPage===slides[currentSlide].list.length-1)||currentSlide===0"
+                        :disabled="!(currentPage===slides[currentSlide].list.length-1)||currentSlide===0||forbidden"
                         :plain="true" @click="onContinue">Continue
                     </el-button>
                     <el-button type="text" :disabled="true">Slide: {{currentSlide}}/{{slides.length-1}}</el-button>
@@ -66,7 +66,6 @@
     const case1 = {
         list: [
             require('assets/slides/animated/1.mp4'),
-            require('assets/slides/animated/2.mp4'),
             require('assets/slides/animated/3.mp4'),
             require('assets/slides/animated/4.mp4'),
             require('assets/slides/animated/5.mp4'),
@@ -78,7 +77,6 @@
             require('assets/slides/animated/11.mp4'),
             require('assets/slides/animated/12.mp4'),
             require('assets/slides/animated/13.mp4'),
-            require('assets/slides/animated/14.mp4'),
             require('assets/slides/animated/15.mp4'),
             require('assets/slides/animated/16.mp4'),
             require('assets/slides/animated/17.mp4'),
@@ -89,7 +87,6 @@
             require('assets/slides/animated/22.mp4'),
             require('assets/slides/animated/23.mp4'),
             require('assets/slides/animated/24.mp4'),
-            require('assets/slides/animated/25.mp4'),
             require('assets/slides/animated/26.mp4'),
             require('assets/slides/animated/27.mp4'),
             require('assets/slides/animated/28.mp4'),
@@ -103,7 +100,7 @@
         ],
         name: 'animation',
         type: 'video',
-        url: 'https://goo.gl/forms/QkX6oJglorZWBLxv1',
+        url: 'https://goo.gl/forms/QcEydAxzZaOO1wyd2',
     };
     
     const case2 = {
@@ -135,7 +132,7 @@
         ],
         name: 'short animation',
         type: 'image',
-        url: 'https://goo.gl/forms/ReiyODKohjWPtn822',
+        url: 'https://goo.gl/forms/f575dVCyeKCBMFj52',
     };
     
     const case3 = {
@@ -148,7 +145,7 @@
         ],
         name: 'annotation',
         type: 'image',
-        url: 'https://goo.gl/forms/pGdw37zvlfXBTYr02',
+        url: 'https://goo.gl/forms/U3CfBzib9GuhArZt2',
     };
     
     const case4 = {
@@ -165,7 +162,7 @@
         ],
         name: 'text',
         type: 'image',
-        url: 'https://goo.gl/forms/iHaa9d0yA1OXgQht2',
+        url: 'https://goo.gl/forms/Y2pYfYXtcv4vZ4B52',
     };
     let start = new Date();
     
@@ -176,6 +173,7 @@
                 currentSlide: 0,
                 currentPage: 0,
                 userid: 0,
+                forbidden: false,
             };
         },
         computed: {
@@ -223,6 +221,7 @@
                     this.currentPage = 0;
                 } else if (this.currentSlide === this.slides.length - 1) {
                     this.$http.get("http://patpat.net:9999/id", {}).then((name) => {
+                        name = parseInt(name.body);
                         this.$http.post('http://patpat.net:9999/save', {
                             name,
                             data: log,
@@ -233,12 +232,13 @@
                         });
                         console.info(log);
                         const type = isSurvey ? 'survey' : 'quiz';
-                        this.$alert(`Please remember your userid ${name}, click the button to go to the ${type}`, `${isSurvey ? 'SURVEY' : 'QUIZ'}`, {
-                        confirmButtonText: 'Confirm',
+                        this.$alert(`Please remember your userid ${name}, click the button to `, `${isSurvey ? 'SURVEY' : 'QUIZ'}`, {
+                        confirmButtonText: `go to the ${type}`,
                             callback: action => {
                                 window.open(url);
                                 this.userid = name;
                                 document.getElementById("userid").style.display = 'block';
+                                this.forbidden = true;
                             }
                         });
                     });
@@ -255,6 +255,7 @@
                 this.currentPage = 0;
                 url = this.slides[this.currentSlide].url;
                 document.getElementById('quiz_or_survey').style.display = 'none';
+                log.push('quiz');
             },
             onSurvey() {
                 start = new Date();
@@ -270,6 +271,7 @@
                 this.currentSlide = this.currentSlide + 1;
                 this.currentPage = 0;
                 document.getElementById('quiz_or_survey').style.display = 'none';
+                log.push('survey');
             },
         },
     };
