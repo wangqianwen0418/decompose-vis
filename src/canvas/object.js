@@ -316,6 +316,17 @@ export class Item {
         }
     }
 
+    split(x1, y1, x2, y2) {
+        if (x1 instanceof Object) {
+            const line = x1;
+            return this.split(line.x1, line.y1, line.x2, line.y2);
+        } else {
+            if (x1 > x2) {
+                return this.split(line.x2, line.y2, line.x1, line.y1);
+            }
+        }
+    }
+
     toString() {
         return JSON.stringify({
             lines: this.lines,

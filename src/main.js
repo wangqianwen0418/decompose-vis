@@ -7,7 +7,7 @@ import '../theme/index.css';
 import '../font-awesome-4.7.0/css/font-awesome.min.css';
 import '../node_modules/intro.js/introjs.css';
 import store from './store';
-import App from './components/Survey';
+import App from './components/App';
 
 
 Vue.use(ElementUI, { locale });
