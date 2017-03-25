@@ -52,6 +52,7 @@ const mutations = {
         // channel.selected = true;
     },
     [UPDATE_CHANNEL](state, channels) {
+        console.info(channels);
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
