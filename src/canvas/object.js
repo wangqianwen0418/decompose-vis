@@ -79,6 +79,7 @@ export class Canvas {
     }
 
     getItem(x, y) {
+        const items = this.items;
         for (const item of items) {
             if (item.hasPixel(x, y)) {
                 return item;
@@ -171,7 +172,9 @@ export class AnimatedCanvas {
         this.clear();
         this.drawBackground();
         for (const item of items) {
-            item.render(this);
+            if (item) {
+                item.render(this);
+            }
         }
     }
 }
@@ -247,6 +250,7 @@ export class Item {
             const L2 = [];
             const pre = [];
             const c = [];
+            const len = [];
             let ptn = 0, last = 0, lastnum = 0;
             const xrange = [L1[0].x, L1[L1.length - 1].x];
             for (let i = 0; i < L1.length; ++i) {
@@ -260,7 +264,7 @@ export class Item {
                         (a, b) =>
                             ((a > 0 ? a : -a) - (b > 0 ? b : -b))
                     );
-                    let segcnt = 0, left = 0;
+                    let segcnt = 0, left = 0, length = 0;
                     const p = [];
                     for (let i = 0; i < segments.length; ++i) {
                         if (segments[i] >= 0) {
@@ -273,6 +277,7 @@ export class Item {
                             if (segcnt === 0) {
                                 p.push(left);
                                 p.push(-segments[i]);
+                                length += -segments[i] - left;
                             }
                         }
                     }
@@ -286,17 +291,21 @@ export class Item {
                                 k = j;
                             }
                         }
-                        mingap = mingap * LineMergeThreshold2 + LineMergeThreshold3;
+                        if (mingap > length) {
+                            break;
+                        }
                         if (k === -1 && p.length <= (lastnum + 1) * 2) {
                             break;
                         } else if (k !== -1) {
                             p.splice(k, 2);
+                            mingap = mingap * LineMergeThreshold2 + LineMergeThreshold3;
                         } else {
                             break;
                         }
                     }
 
                     const x = L1[i].x;
+                    len[x] = length;
                     L2[x] = p;
                     c[x] = new Int32Array(p.length);
                     pre[x] = new Int32Array(p.length);
@@ -326,11 +335,12 @@ export class Item {
             
             for (let x = xrange[1]; x >= xrange[0]; --x) if (!!c[x]) {
                 const height = L2[x][L2[x].length - 1] - L2[x][0];
+                const H = Math.min(len[x], height * 0.2);
                 for (let i = 1; i + 1 < c[x].length; i += 2) {
                     if (pre[x][i] !== 0) {
                         c[x - 1][pre[x][i]] = c[x][i];
                     }
-                    if (c[x][i] < 20 && (L2[x][i + 1] - L2[x][i]) < height * 0.2) {
+                    if (c[x][i] < 20 && (L2[x][i + 1] - L2[x][i]) < H) {
                         L2[x][i] = L2[x][i + 1] = -1;
                     }
                 }
@@ -545,6 +555,7 @@ export class Item {
     }
 
     hasPixel(x, y) {
+        const lines = this.lines;
         const rw = 1.0 / this.w0 * this.w;
         for (const line of lines) {
             if (Math.abs(line.x - x) <= rw && y >= line.y1 && y <= line.y2) {

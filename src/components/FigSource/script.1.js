@@ -192,22 +192,10 @@ export default {
 			const realWidth = canvas.parentNode.clientWidth;
 			const realHeight = canvas.parentNode.clientHeight;
 			zoom_ratio = Math.max(img.width / realWidth, img.height / realHeight);
-			for (const block of this.tabs) {
-				block.canvas = new Canvas(canvas);
-				block.canvas.backgroundImg = img;
-				block.canvas.bgAlpha = 0.05;
-			}
+			preprocessing(canvas);
 			this.tabs[0].canvas.bgAlpha = 1;
 			this.tabs[0].canvas.render();
-			preprocessing(canvas);
-			for (const block of this.tabs) {
-				if (!!block.colors) {
-					for (const color of block.colors) {
-						const items = getItemsByColor(color);
-						block.canvas.addItem(new Item(items));
-					}
-				}
-			}
+			console.log(groups);
 		};
 		interactionInit();
 	}
