@@ -15,7 +15,7 @@ let dragstartTop = -1;
 
 function onmouseenter(event) {
     if (event.target.tagName === "DIV") {
-        console.log("onmouseenter", event);
+        // console.log("onmouseenter", event);
     }
     return;
 }

@@ -26,6 +26,7 @@ export default {
         addChannel(channelTemp) {
             // console.info(channelTemp);
             const clone = JSON.parse(JSON.stringify(channelTemp));
+            clone.parent = this.mark;
             this.mark.channels.push(clone);
         },
         removeMark() {

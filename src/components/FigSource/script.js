@@ -7,8 +7,9 @@ import color_space_divide from "../../algorithm/color-space-divide.js";
 import { systematic_sampling_seq } from "../../algorithm/sampling.js";
 import { interactionInit } from "../../interaction/interaction.js"
 import { Canvas, AnimatedCanvas, Item } from "../../canvas/object.js";
+import { UPDATE_CHANNEL } from '../../store';
 import * as d3 from "d3";
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 let ngroup, groups, maxtimestamp, currenttime, lastgroup, tags;
 let initalData, currentData, color_spaces = [], img;
 let zoom_ratio, bgtag;
@@ -55,9 +56,12 @@ export default {
 		...mapState({
 			temps: 'temps',
 			blocks: 'blocks',
-		})
+		}),
 	},
 	methods: {
+        ...mapActions({
+            updateChannel: UPDATE_CHANNEL,
+        }),
 		deleteTab() {
 			const index = this.tabs.indexOf(this.activeTab);
 			this.tabs.splice(index, 1);
@@ -103,6 +107,14 @@ export default {
 					break;
 				}
 			}
+			block.marks.forEach((mark) => {
+				mark.parent = block;
+				mark.canvas = block.canvas;
+				mark.channels.forEach((channel) => {
+					channel.parent = mark;
+				});
+				this.updateChannel(mark.channels);
+			});
 			this.blocks.push(block);
 			this.activeTab.name = block.name;
 		},
@@ -173,6 +185,9 @@ export default {
 				this.activeTab.canvas.removeItem(item);
 			}
 //			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+		},
+		onMouseout(event) {
+			this.canvasRender(event);
 		},
 		onTabClick(item) {
 			this.activeTab = item;

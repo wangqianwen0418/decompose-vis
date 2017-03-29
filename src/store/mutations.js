@@ -10,6 +10,7 @@ import {
     UPDATE_CHANNEL,
     EDIT_EXP,
 } from './types';
+import { Animation } from '../canvas/object';
 
 
 const mutations = {
@@ -38,11 +39,11 @@ const mutations = {
         const blocks = state.blocks;
         blocks.forEach((block) => {
             block.marks.forEach((mark) => {
-                mark.channels.forEach((ch) => {
+                mark.channels.forEach((ch, i) => {
                     if (ch === channel) {
                         console.info(ch);
                         ch.selected = true;
-                        block.canvas.render();
+                        mark.canvas.render(i);
                     } else {
                         ch.selected = false;
                     }
@@ -52,12 +53,24 @@ const mutations = {
         // channel.selected = true;
     },
     [UPDATE_CHANNEL](state, channels) {
-        console.info(channels);
+        const len = channels.length;
+        const canvas = channels[0].parent.canvas;
+        canvas.itemTables = new Array(len + 1);
+        canvas.itemTables[len] = canvas.items;
+        const n = canvas.items.length;
+        for (let i = len - 1; i >= 0; --i) {
+            canvas.itemTables[i] = new Array(n);
+            for (let j = 0; j < n; ++j) {
+                canvas.itemTables[i][j] =
+                    Animation.initialStatus(canvas.itemTables[i + 1][j], channels[i].name);
+            }
+        }
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
             blk.selected = false;
         });
+        console.info(block);
         block.canvas.render();
         block.selected = true;
     },

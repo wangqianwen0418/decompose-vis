@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import { mapActions, mapGetters } from 'vuex';
 import { EDIT_ELE } from '../../store';
+import SymbolButton from '../Symbol';
 
 export default {
     data() {
@@ -9,6 +10,9 @@ export default {
             editing: false,
             selectedText: null,
         };
+    },
+    components: {
+        SymbolButton,
     },
     computed: {
         message: {
@@ -91,11 +95,16 @@ export default {
             svg.selectAll('*')
                 .remove();
 
+            if (!val.annotations || val.annotations.length === 0) {
+                val.annotations = ['add text'];
+            }
             if (val.annotations.length > 0 && typeof val.annotations[0] === 'string') {
-                val.annotations = val.annotations.map((d, i) => ({
+                val.annotations = [val.annotations.join(' ')].map((d, i) => ({
                     text: d,
                     x: 100,
                     y: 100 + i * 30,
+                    dx: 0,
+                    dy: 0
                 }))
             }
             

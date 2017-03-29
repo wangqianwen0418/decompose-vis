@@ -4,23 +4,6 @@
         <div v-for="item in tabs" :class="figureTabClass(item)" @click="onTabClick(item)">
             {{item.name}}
         </div>
-
-        <div :class="figureTabClass(item)">
-
-            <!--<el-dropdown >
-                        <span class="el-dropdown-link" :class="figureTabClass(item)">
-                          <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
-                        </span>
-                    <el-dropdown-menu slot="dropdown">
-                            <span v-for='temp in temps' @click='addBlock(temp)'>
-                            <el-dropdown-item >
-                               {{temp.name}}
-                            </el-dropdown-item>
-                              </span>
-                    </el-dropdown-menu>
-                 </el-dropdown>-->
-
-        </div>
         <div class="figure-tabs-item">
             <i class="fa fa-volume-control-phone" @click="tempShow=!tempShow"></i>
             <i class="fa fa-plus-circle" @click="addTab() "></i>
@@ -29,7 +12,7 @@
     </div>
 
     <div class="figure-content">
-        <canvas class="figure-main-view" @mousemove="onMousemove" @click.prevent="onClick" @contextmenu.prevent="onRightClick">
+        <canvas class="figure-main-view" @mousemove="onMousemove" @mouseout="onMouseout" @click.prevent="onClick" @contextmenu.prevent="onRightClick">
         </canvas>
     </div>
 

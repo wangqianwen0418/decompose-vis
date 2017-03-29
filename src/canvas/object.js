@@ -90,10 +90,10 @@ export class Canvas {
 
     render(timestamp) {
         timestamp = timestamp || 0;
-        const items = this.itemTables[timestamp] || this.items;
-        const canvas = this.canvas;
         this.clear();
         this.drawBackground();
+        const items = this.itemTables[timestamp] || this.items;
+        const canvas = this.canvas;
         for (const item of items) {
             item.render(this);
         }
@@ -171,9 +171,11 @@ export class AnimatedCanvas {
         const canvas = this.canvas;
         this.clear();
         this.drawBackground();
-        for (const item of items) {
-            if (item) {
-                item.render(this);
+        for (let i = 0; i < items.length; ++i) {
+            if (items[i]) {
+                items[i].render(this);
+            } else if (this.items[i]) {
+                this.items[i].render(this);
             }
         }
     }
@@ -221,6 +223,22 @@ export class Animation {
     static shapeInitialStatus(item) {
         const ret = new Item(item);
         return ret;
+    }
+
+    static initialStatus(item, type) {
+        if (type === 'position') {
+            return Animation.positionInitialStatus(item);
+        } else if (type === 'color-h') {
+            return Animation.hueInitialStatus(item);
+        } else if (type === 'color-s') {
+            return Animation.satInitialStatus(item);
+        } else if (type === 'size') {
+            return Animation.widthInitialStatus(item);
+        } else if (type === 'shape') {
+            return Animation.shapeInitialStatus(item);
+        } else {
+            return new Item(item);
+        }
     }
 
     render(timestamp) {
@@ -408,6 +426,8 @@ export class Item {
             this.tstatus = null;
             this.duration = null;
         } else {
+            this.canvas = _.canvas;
+            this.index = _.index;
             this.lines = _.lines;
             this.hue = _.hue;
             this.saturation = _.saturation;
