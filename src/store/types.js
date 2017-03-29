@@ -7,3 +7,4 @@ export const EDIT_ELE = 'EDIT_ELE';
 export const EDIT_EXP = 'EDIT_EXP';
 export const UPDATE_BLOCKS = 'UPDATE_BLOCKS';
 export const SELECT_BLOCK = 'SELECT_BLOCK';
+export const UPDATE_CHANNEL = 'UPDATE_CHANNEL';

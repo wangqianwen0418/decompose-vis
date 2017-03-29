@@ -1,19 +1,22 @@
-<div class="inBlock"  data-step="5" data-intro="select a visual unit in the tree left, modify it here by adding, deleting and dragging" data-position='right'>
-        <div>
+<div class="inBlock" data-step="5" data-intro="select a visual unit in the tree left, modify it here by adding, deleting and dragging"
+    data-position='right'>
+    <div>
         <ul v-if="block" id='mark_list'>
-            <div class='block'>{{block.name}}<hr/></div>
+            <div class='block'>{{block.name}}
+                <hr/>
+            </div>
             <draggable :list="block.marks">
-             <markv v-for='mark in block.marks' :mark='mark' :block= 'block'>
+                <markv v-for='mark in block.marks' :mark='mark' :block='block' :channels='mark.channels'>
                 </markv>
                 <li>
-                    <el-dropdown >
+                    <el-dropdown>
                         <span class="el-dropdown-link">
                             add another mark<i class="el-icon-caret-bottom el-icon--right"></i>
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <span v-for='markTemp in marksTemp' @click='addMark(markTemp)'>
                             <el-dropdown-item >
-                                    {{markTemp.name}}
+                                {{markTemp.name}}
                             </el-dropdown-item>
                              </span>
                             <!--<el-dropdown-item command="d">size</el-dropdown-item>-->
@@ -23,5 +26,5 @@
                 </li>
             </draggable>
         </ul>
-        </div>
     </div>
+</div>

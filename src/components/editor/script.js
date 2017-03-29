@@ -1,20 +1,26 @@
 import * as d3 from 'd3';
 import { mapActions, mapGetters } from 'vuex';
 import { EDIT_ELE } from '../../store';
+import SymbolButton from '../Symbol';
 
 export default {
     data() {
         return {
             animation: '',
+            editing: false,
+            selectedText: null,
         };
+    },
+    components: {
+        SymbolButton,
     },
     computed: {
         message: {
             get() {
-                const selectedEle = this.$store.getters.selectedEle;
-                return selectedEle ? selectedEle.description.text : '';
+                return this.selectedText ? this.selectedText.text : '';
             },
             set(value) {
+                this.selectedText.text = value;
                 this.$store.commit('EDIT_ELE', value);
                 d3.select('.current')
                     .select('#description')
@@ -23,11 +29,10 @@ export default {
         },
         ...mapGetters({
             selectedChannel: 'selectedChannel',
-            selectedEle: 'selectedEle',
         }),
         currentText() {
-            if (this.selectedEle) {
-                return this.selectedEle.description.text;
+            if (this.selectedText) {
+                return this.selectedText.text;
             }
             return '';
         },
@@ -37,14 +42,14 @@ export default {
             const left = offsets.left;
             return {
                 position: 'absolute',
-                left: `${this.selectedEle.x + left}px`,
-                top: `${this.selectedEle.y + top}px`,
+                left: `${this.selectedText.x + left}px`,
+                top: `${this.selectedText.y + top}px`,
             };
         },
     },
     methods: {
         exit() {
-            this.selectedEle.selected = false;
+            this.editing = false;
             d3.select('#editTag').remove();
         },
         dragstart(event) {
@@ -81,16 +86,38 @@ export default {
         selectedChannel(val) {
             if(val){
             const svg = d3.select(this.$el).select('svg');
+            const svgdom = this.$el.getElementsByTagName('svg')[0];
+            const width = svgdom.clientWidth;
+            const height = svgdom.clientHeight;
+            svg.attr('width', width)
+                .attr('height', height);
 
             svg.selectAll('*')
                 .remove();
 
-            if(val.attachedEles) {
-            const g = svg.selectAll('circle')
-                .data(val.attachedEles)
+            if (!val.annotations || val.annotations.length === 0) {
+                val.annotations = ['add text'];
+            }
+            if (val.annotations.length > 0 && typeof val.annotations[0] === 'string') {
+                val.annotations = [val.annotations.join(' ')].map((d, i) => ({
+                    text: d,
+                    x: 100,
+                    y: 100 + i * 30,
+                    dx: 0,
+                    dy: 0
+                }))
+            }
+            
+            const self = this;
+            if(val.annotations) {
+            const g = svg.selectAll('.element')
+                .data(val.annotations)
                 .enter()
                 .append('g')
-                .attr('transform', d => `translate(${d.x},${d.y})`)
+                .attr('class', 'element')
+                .attr('transform', d => {
+                    return `translate(${d.x},${d.y})`;
+                })
                 .on('click', function (d) {
                     d.selected = !d.selected;
                     const group = d3.select(this);
@@ -110,6 +137,8 @@ export default {
                             .attr('x', 0)
                             .attr('y', 0)
                             .text('editing...');
+                        self.editing = true;
+                        self.selectedText = d;
                     } else {
                         group.classed('current', false);
 
@@ -120,6 +149,8 @@ export default {
                         // .style('fill', 'black');
 
                         group.select('#editTag').remove();
+                        self.editing = false;
+                        self.selectedText = null;
                     }
                 })
                 .call(d3.drag()
@@ -139,34 +170,14 @@ export default {
                     // })
                 );
 
-            const path = d3.arc()
-                .innerRadius(10)
-                .outerRadius(24)
-                .startAngle(0)
-                .endAngle(7);
-
-            g.append('path')
-                // .attr('d', d => d.path)
-                .attr('d', path)
-                .style('fill', 'var(--color-blue-gray)');
-            // .on('mouseover', function (d) {
-            //     d3.select(this)
-            //     .style('stroke', 'var(--color-1)')
-            //     .style('stroke-width', '2px');
-            // })
-            // .on('mouseout', function (d) {
-            //     d3.select(this)
-            //     .style('stroke', 'none');
-            // });
-
             g.attr('text-anchor', 'start')
                 .append('text')
                 .attr('id', 'description')
-                .attr('transform', d => `translate(${d.description.dx},${d.description.dy})`)
+                .attr('transform', d => `translate(${d.dx},${d.dy})`)
                 .attr('class', 'description')
                 .attr('font-family', 'Source Sans Pro')
                 .attr('font-size', 20)
-                .text(d => d.description.text)
+                .text(d => d.text)
                 // .on('mouseover', function (d) {
                 //     d3.select(this)
                 //     .style('fill', 'yellow');
@@ -178,8 +189,8 @@ export default {
                 .call(d3.drag()
                     .on('drag', function (d) {
                         d3.select(this).attr('transform', `translate(${d3.event.x - d.x},${d3.event.y - d.y})`);
-                        d.description.dx = d3.event.x - d.x;
-                        d.description.dy = d3.event.y - d.y;
+                        d.dx = d3.event.x - d.x;
+                        d.dy = d3.event.y - d.y;
                     }));
             // .call(d3.drag()
             //     .on('drag'), function (d) {
