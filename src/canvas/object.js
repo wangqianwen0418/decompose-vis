@@ -479,6 +479,80 @@ export class Item {
         }
     }
 
+    split(x1, y1, x2, y2) {
+        if (x1 > x2) {
+            return this.split(line.x2, line.y2, line.x1, line.y1);
+        } else {
+            const c = (y2 - y1) / (x2 - x1);
+            let lines = this.lines;
+            for (let i = 0; i < lines.length; ++i) {
+                const line = lines[i];
+                if (line.x < x1 || line.x > x2) {
+                    continue;
+                }
+                const y = (line.x - x1) * c + y1;
+                if (y > line.y1 && y < line.y2) {
+                    lines.push({
+                        x: line.x,
+                        y1: y + 2,
+                        y2: line.y2,
+                    });
+                    line.y2 = y - 2;
+                }
+            }
+            lines = lines
+                .filter((d) => d.y1 <= d.y2)
+                .sort((a, b) => {
+                    if (a.x === b.x) {
+                        return a.x - b.x;
+                    } else {
+                        return a.y1 - b.y1;
+                    };
+                });
+
+            function root(x) {
+                if (x.parent) {
+                    return x.parent = root(x.parent);
+                } else {
+                    return x;
+                }
+            }
+
+            function merge(x, y) {
+                x = root(x);
+                y = root(y);
+                if (x !== y) {
+                    y.parent = x;
+                }
+            }
+
+            function same(x, y) {
+                x = root(x);
+                y = root(y);
+                return x === y;
+            }
+
+            for (let i = 0, j = 0; i < lines.length; ++i) {
+                lines[i].parent = null;
+                while (lines[j].x + 1 < lines[i].x) {
+                    ++j;
+                }
+                for (let k = j; k < i; ++k) {
+                    if (Math.max(lines[k].y1, lines[i].y1) <= Math.min(lines[k].y2, lines[i].y2)) {
+                        merge(lines[k], lines[i]);
+                    }
+                }
+            }
+
+            const newlines = lines.filter((d) => !same(d, lines[0]));
+            lines = lines.filter((d) => same(d, lines[0]));
+
+            this.lines = lines;
+
+            return new Item(newlines);
+        }
+    }
+
     toString() {
         return JSON.stringify({
             lines: this.lines,
