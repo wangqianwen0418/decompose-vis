@@ -1,9 +1,9 @@
 const fps = 20;
 const LineMergeThreshold1 = 15;
-const LineMergeThreshold2 = 1.2;
-const LineMergeThreshold3 = 10;
+const LineMergeThreshold2 = 1;
+const LineMergeThreshold3 = 12;
 
-function smooth(a, windowSize = 10) {
+function smooth(a, windowSize = 100) {
     const c = 1.0 / window;
     const b = new Float32Array(a.length);
     for (let i = 0, cnt = 0; i < a.length; ++i) {
@@ -119,6 +119,8 @@ export class AnimatedCanvas {
         this.itemTables = new Array();
         this.backgroundImg = null;
         this.bgAlpha = 1;
+
+        this.currentChannel = -1;
     }
 
     clear() {
@@ -158,25 +160,35 @@ export class AnimatedCanvas {
     }
 
     getItem(x, y) {
-        for (const item of items) {
-            if (item.hasPixel(x, y)) {
-                return item;
+        if (this.currentChannel === -1) {
+            for (const item of this.items) {
+                if (item.hasPixel(x, y)) {
+                    return item;
+                }
+            }
+        } else {
+            for (const item of this.itemTables[this.currentChannel]) {
+                if (item.hasPixel(x, y)) {
+                    return item;
+                }
             }
         }
         return null;
     }
 
-    render(index) {
-        index = index || 0;
-        const items = this.itemTables[index] || this.items;
+    render(index, highlightedItem) {
+        index = index || -1;
+        const items = index !== -1 ? this.itemTables[index] : this.items;
         const canvas = this.canvas;
+        this.currentChannel = index;
         this.clear();
         this.drawBackground();
         for (let i = 0; i < items.length; ++i) {
-            if (items[i]) {
-                items[i].render();
-            } else if (this.items[i]) {
-                this.items[i].render();
+            const item = items[i] || this.items[i];
+            if (highlightedItem === item || !highlightedItem) {
+                item.render(1);
+            } else {
+                item.render(0.66);
             }
         }
     }
@@ -209,8 +221,6 @@ export class Animation {
         const canvas = item.canvas;
         const n = canvas.items.length;
         ret.y = canvas.height / (n + 1) * item.index;
-        ret.transformat();
-        console.info('position', item.index, ret.y, item.area());
         return ret;
     }
 
@@ -218,7 +228,6 @@ export class Animation {
         const ret = new Item(item);
         ret.w /= 2;
         ret.x += ret.w / 2;
-        ret.transformat();
         return ret;
     }
 
@@ -226,7 +235,6 @@ export class Animation {
         const ret = new Item(item);
         ret.w /= 2;
         ret.x += ret.w / 2;
-        ret.transformat();
         return ret;
     }
 
@@ -370,7 +378,7 @@ export class Item {
                     if (pre[x][i] !== 0) {
                         c[x - 1][pre[x][i]] = c[x][i];
                     }
-                    if (c[x][i] < 20 && (L2[x][i + 1] - L2[x][i]) < H) {
+                    if (c[x][i] < 25 && (L2[x][i + 1] - L2[x][i]) < H) {
                         L2[x][i] = L2[x][i + 1] = -1;
                     }
                 }
@@ -454,10 +462,10 @@ export class Item {
             this.w0 = _.w0;
             this.h0 = _.h0;
         }
-        this.left = this.x;
-        this.right = this.x + this.w;
-        this.top = this.y;
-        this.bottom = this.y + this.h;
+        this.left = 0;
+        this.right = (this.canvas && this.canvas.width) || 2048;
+        this.top = 0;
+        this.bottom = (this.canvas && this.canvas.height) || 2048;
     }
 
     cross(x1, y1, x2, y2) {
@@ -476,7 +484,6 @@ export class Item {
                 }
                 return false;
             } else {
-                console.info('check cross relation with' + x1 + ' ' + y1 + ' ' + x2 + ' ' + y2);
                 const c = (y2 - y1) / (x2 - x1);
                 let lines = this.lines;
                 for (let i = 0; i < lines.length; ++i) {
@@ -655,6 +662,18 @@ export class Item {
         const right = this.right;
         const top = this.top;
         const bottom = this.bottom;
+
+/*
+        ctx.beginPath();  
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y + this.h);
+        ctx.lineTo(x + this.w, y + this.h);
+        ctx.lineTo(x + this.w, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.closePath();
+*/
+        // console.log(this.area());
 
         for (const line of lines) {
             const xx = ~~((line.x - x0) * rw + x);

@@ -35,7 +35,7 @@ export default {
 			canvas: null,
 		}));
 
-		const riverColors = [[0.0020083391403067237, 0.7991378594747043, 0.7972484069155104], 
+		const riverColors = [[0.0020083391403067237, 0.7991378594747043, 0.7972484069155104],
 		[0.17091630819043235, 0.24427248600612952, 0.6785767693715141]];
 		const lineColors = [[0.6126223569330962, 0.4529497680456742, 0.37725490927696226],
 		[0.4829212535793583, 0.6061479896306992, 0.5492647190888723]];
@@ -162,6 +162,7 @@ export default {
 				console.info(y * canvas.width + x);
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
+					console.info(group0.color);
 					const items = getItemsByColor(group0.color);
 					this.activeTab.canvas.addItem(new Item(items));
 					this.canvasRender(event);
@@ -184,10 +185,11 @@ export default {
 				const canvas = this.activeTab.canvas;
 				const currentItem = canvas.getItem(x, y);
 				if (currentItem) {
-					canvas.render(this.activeTab.canvas.getItem(x, y));
+					canvas.render(currentItem);
 				} else {
 					const tempItem = new Item(group0);
 					canvas.addItem(tempItem);
+					this.canvasRender(event);
 					canvas.removeItem(tempItem);
 				}
 			}

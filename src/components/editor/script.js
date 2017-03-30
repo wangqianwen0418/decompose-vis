@@ -2,6 +2,7 @@ import * as d3 from 'd3';
 import { mapActions, mapGetters } from 'vuex';
 import { EDIT_ELE } from '../../store';
 import SymbolButton from '../Symbol';
+import { offset } from "../../utils/common-utils.js";
 
 export default {
     data() {
@@ -81,6 +82,37 @@ export default {
         ...mapActions({
             editEle: EDIT_ELE,
         }),
+        canvasClick(event) {
+            const vcanvas = this.selectedChannel.parent.canvas;
+            const canvas = vcanvas.canvas;
+			const realWidth = canvas.parentNode.clientWidth;
+			const realHeight = canvas.parentNode.clientHeight;
+			const zoom_ratio = Math.max(canvas.width / realWidth, canvas.height / realHeight);
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+            const currentItem = vcanvas.getItem(x, y);
+            console.info('click item ' + currentItem.index);
+        },
+		canvasMousemove(event) {
+            const vcanvas = this.selectedChannel.parent.canvas;
+            const canvas = vcanvas.canvas;
+			const realWidth = canvas.parentNode.clientWidth;
+			const realHeight = canvas.parentNode.clientHeight;
+			const zoom_ratio = Math.max(canvas.width / realWidth, canvas.height / realHeight);
+			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
+			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+            const currentItem = vcanvas.getItem(x, y);
+            if (currentItem) {
+                vcanvas.render(this.selectedChannel.index, currentItem);
+            } else {
+                vcanvas.render(this.selectedChannel.index);
+            }
+//			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
+		},
+        canvasMouseout(event) {
+            const vcanvas = this.selectedChannel.parent.canvas;
+            vcanvas.render(this.selectedChannel.index);
+        }
     },
     watch: {
         selectedChannel(val) {

@@ -1,7 +1,7 @@
 <div class="editor" id='positionTag' data-step="6" data-intro="add annotation" data-position='bottom'>
     <div id='editorView'>
         <canvas class='editorCanvas'></canvas>
-        <svg class='editorSVG'><svg>
+        <svg class='editorSVG' @click='canvasClick' @mousemove='canvasMousemove' @mouseout='canvasMouseout'><svg>
     </div>
     <div class='editPanel' v-if='editing' draggable='true' @dragstart='dragstart' @drag='drag' :style="styleObject">
         Text Based Annotation
