@@ -209,6 +209,7 @@ export class Animation {
         const canvas = item.canvas;
         const n = canvas.items.length;
         ret.y = canvas.height / (n + 1) * item.index;
+        ret.transformat();
         console.info('position', item.index, ret.y, item.area());
         return ret;
     }
@@ -217,16 +218,22 @@ export class Animation {
         const ret = new Item(item);
         ret.w /= 2;
         ret.x += ret.w / 2;
+        ret.transformat();
         return ret;
     }
 
     static lengthInitialStatus(item) { // length
         const ret = new Item(item);
+        ret.w /= 2;
+        ret.x += ret.w / 2;
+        ret.transformat();
         return ret;
     }
 
-    static shapeInitialStatus(item) {
+    static shapeInitialStatus(item) { // should be height initial status
         const ret = new Item(item);
+        item.compress();
+        const lines = [];
         return ret;
     }
 
@@ -486,7 +493,6 @@ export class Item {
             }
         }
     }
-
     area() {
         let ret = 0;
         for (const line of this.lines) {
@@ -587,7 +593,7 @@ export class Item {
         const ys = new Float32Array(width);
         const ws = new Float32Array(width);
         const x0 = this.x0;
-        for (const line of lines) {
+        for (const line of this.lines) {
             ys[line.x - x0] += (line.y1 + line.y2) * 0.5 * (line.y2 - line.y1);
             ws[line.x - x0] += (line.y2 - line.y1);
         }
@@ -596,8 +602,7 @@ export class Item {
                 ys[i] /= ws[i];
             }
         }
-        this.ys = ys;
-        this.ws = ws;
+
     }
 
     transformat() {
@@ -646,13 +651,18 @@ export class Item {
         const x = this.x;
         const y = this.y;
 
+        const left = this.left;
+        const right = this.right;
+        const top = this.top;
+        const bottom = this.bottom;
+
         for (const line of lines) {
             const xx = ~~((line.x - x0) * rw + x);
             if (xx < left || xx > right) {
                 continue;
             }
-            const y1 = (~~((line.y1 - y0) * rh + y));
-            const y2 = (~~((line.y2 - y0) * rh + y));
+            const y1 = Math.max(~~((line.y1 - y0) * rh + y), top);
+            const y2 = Math.min(~~((line.y2 - y0) * rh + y), bottom);
             if (y1 > y2) {
                 continue;
             }

@@ -223,10 +223,17 @@ export default {
 			this.tabs[0].canvas.bgAlpha = 1;
 			this.tabs[0].canvas.render();
 			preprocessing(canvas);
-			for (const block of this.tabs) {
+			for (let t = 0; t < this.tabs.length; ++t) {
+				const block = this.tabs[t];
 				if (!!block.colors) {
-					for (const color of block.colors) {
+					for (let c = 0; c < block.colors.length; ++c) {
+						const color = block.colors[c];
 						const items = getItemsByColor(color);
+						if (c === 1 && t === 1) {
+							items.forEach(item => {
+								item.lines = item.lines.filter((d) => d.y1 > 595);
+							});
+						}
 						block.canvas.addItem(new Item(items));
 					}
 				}
