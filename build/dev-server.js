@@ -8,6 +8,7 @@ var opn = require('opn')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
 
+app.use(express.static('dist'))
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
 // Define HTTP proxies to your custom API backend
@@ -16,8 +17,7 @@ var proxyTable = config.dev.proxyTable
 
 var app = express()
 app.get('/', function(req, res) {
-  console.log("We are here");
-  res.send("Hello World");
+  res.send();
 });
 var compiler = webpack(webpackConfig)
 
