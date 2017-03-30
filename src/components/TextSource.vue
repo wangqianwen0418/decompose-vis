@@ -1,10 +1,6 @@
 <template>
-    <div class="textSource" data-step="7" data-intro="inspirations for your annotation" data-position='top'>
-          <!--here is the corresponding text description-->
-          <textarea
-          v-model="exp"
-          placeholder="here is the corresponding text description">
-          </textarea>
+    <div class="textSource" v-html="exp">
+    <!-- <p v-html="exp"></p> -->
     </div>
 </template>
 
