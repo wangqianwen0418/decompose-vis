@@ -45,6 +45,8 @@ export default {
 		tabs[2].colors = lineColors;
 		tabs[3].colors = glyphColors;
 
+		tabs[1].dividingLines = [[25, 752, 265, 451], [672, 451, 921, 377]];//[1216, 764, 1289, 723]];
+
 		return {
 			tabs: tabs,
 			activeTab: tabs[0],
@@ -141,6 +143,7 @@ export default {
 			const ctx = canvas.getContext('2d');
 			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			console.log('click point', x, y);
 			if (tags[y * canvas.width + x] === bgtag) {
 				return;
 			}
@@ -159,7 +162,6 @@ export default {
 				console.info(y * canvas.width + x);
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					console.log(group0.color);
 					const items = getItemsByColor(group0.color);
 					this.activeTab.canvas.addItem(new Item(items));
 					this.canvasRender(event);
@@ -179,10 +181,15 @@ export default {
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-				const item = new Item(group0);
-				this.activeTab.canvas.addItem(item);
-				this.canvasRender(event);
-				this.activeTab.canvas.removeItem(item);
+				const canvas = this.activeTab.canvas;
+				const currentItem = canvas.getItem(x, y);
+				if (currentItem) {
+					canvas.render(this.activeTab.canvas.getItem(x, y));
+				} else {
+					const tempItem = new Item(group0);
+					canvas.addItem(tempItem);
+					canvas.removeItem(tempItem);
+				}
 			}
 //			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
@@ -192,6 +199,7 @@ export default {
 		onTabClick(item) {
 			this.activeTab = item;
 			this.canvasRender();
+			console.info('Current canvas has ' + this.activeTab.canvas.items.length + ' items');
 		},
 	},
 
@@ -222,7 +230,23 @@ export default {
 						block.canvas.addItem(new Item(items));
 					}
 				}
+				if (!!block.dividingLines) {
+					const items = block.canvas.items;
+					for (let i = 0; i < items.length; ++i) {
+						for (const line of block.dividingLines) {
+							if (items[i].cross(line[0], line[1], line[2], line[3])) {
+								block.canvas.addItem(items[i].split(line[0], line[1], line[2], line[3]));
+								--i;
+								break;
+							}
+						}
+					}
+					for (let i = 0; i < items.length; ++i) {
+						items[i].index = i;
+					}
+				}
 			}
+			// this.tabs[1].canvas.addItem(this.tabs[1].canvas.items[0].split());
 		};
 		interactionInit();
 	}

@@ -3,8 +3,7 @@ const LineMergeThreshold1 = 15;
 const LineMergeThreshold2 = 1.2;
 const LineMergeThreshold3 = 10;
 
-function smooth(a) {
-    const window = 10;
+function smooth(a, windowSize = 10) {
     const c = 1.0 / window;
     const b = new Float32Array(a.length);
     for (let i = 0, cnt = 0; i < a.length; ++i) {
@@ -37,7 +36,6 @@ export class Canvas {
             canvas.height = height;
         }
         this.items = new Array();
-        this.itemTables = new Array();
         this.backgroundImg = null;
         this.bgAlpha = 1;
     }
@@ -88,14 +86,17 @@ export class Canvas {
         return null;
     }
 
-    render(timestamp) {
-        timestamp = timestamp || 0;
+    render(highlightedItem) {
         this.clear();
         this.drawBackground();
-        const items = this.itemTables[timestamp] || this.items;
+        const items = this.items;
         const canvas = this.canvas;
         for (const item of items) {
-            item.render(this);
+            if (highlightedItem === item || !highlightedItem) {
+                item.render(1);
+            } else {
+                item.render(0.66);
+            }
         }
     }
 }
@@ -173,9 +174,9 @@ export class AnimatedCanvas {
         this.drawBackground();
         for (let i = 0; i < items.length; ++i) {
             if (items[i]) {
-                items[i].render(this);
+                items[i].render();
             } else if (this.items[i]) {
-                this.items[i].render(this);
+                this.items[i].render();
             }
         }
     }
@@ -205,6 +206,10 @@ export class Animation {
 
     static positionInitialStatus(item) {
         const ret = new Item(item);
+        const canvas = item.canvas;
+        const n = canvas.items.length;
+        ret.y = canvas.height / (n + 1) * item.index;
+        console.info('position', item.index, ret.y, item.area());
         return ret;
     }
 
@@ -409,9 +414,9 @@ export class Item {
             const color = item.color;
             lines = item.lines;
             this.lines = item.lines;
-            this.hue = color[0] * 360;
-            this.saturation = color[1];
-            this.lightness = color[2];
+            this.hue = item.hue || color[0] * 360;
+            this.saturation = item.saturation || color[1];
+            this.lightness = item.lightness || color[2];
             this.alpha = 1;
             this.x = Math.min(...lines.map(d => d.x));
             this.y = Math.min(...lines.map(d => d.y1));
@@ -456,6 +461,7 @@ export class Item {
             if (x1 > x2) {
                 return this.cross(line.x2, line.y2, line.x1, line.y1);
             } else if (x1 === x2) {
+                let lines = this.lines;
                 for (const line of lines) {
                     if (line.x === x1 && line.y2 > y1 && line.y1 < y2) {
                         return true;
@@ -463,20 +469,30 @@ export class Item {
                 }
                 return false;
             } else {
+                console.info('check cross relation with' + x1 + ' ' + y1 + ' ' + x2 + ' ' + y2);
                 const c = (y2 - y1) / (x2 - x1);
-                const dy = y2 - y1;
-                for (const line of lines) {
+                let lines = this.lines;
+                for (let i = 0; i < lines.length; ++i) {
+                    const line = lines[i];
                     if (line.x < x1 || line.x > x2) {
                         continue;
                     }
-                    const y = (line.x - x1) * c;
-                    if (y > 0 && y < dy) {
+                    const y = ~~((line.x - x1) * c + y1);
+                    if (y > line.y1 && y < line.y2) {
                         return true;
                     }
                 }
                 return false;
             }
         }
+    }
+
+    area() {
+        let ret = 0;
+        for (const line of this.lines) {
+            ret += line.y2 - line.y1;
+        }
+        return ret;
     }
 
     split(x1, y1, x2, y2) {
@@ -490,20 +506,20 @@ export class Item {
                 if (line.x < x1 || line.x > x2) {
                     continue;
                 }
-                const y = (line.x - x1) * c + y1;
+                const y = ~~((line.x - x1) * c + y1);
                 if (y > line.y1 && y < line.y2) {
                     lines.push({
                         x: line.x,
-                        y1: y + 2,
+                        y1: y + 4,
                         y2: line.y2,
                     });
-                    line.y2 = y - 2;
+                    line.y2 = y - 4;
                 }
             }
             lines = lines
                 .filter((d) => d.y1 <= d.y2)
                 .sort((a, b) => {
-                    if (a.x === b.x) {
+                    if (a.x !== b.x) {
                         return a.x - b.x;
                     } else {
                         return a.y1 - b.y1;
@@ -534,7 +550,7 @@ export class Item {
 
             for (let i = 0, j = 0; i < lines.length; ++i) {
                 lines[i].parent = null;
-                while (lines[j].x + 1 < lines[i].x) {
+                while (lines[j].x + 3 < lines[i].x) {
                     ++j;
                 }
                 for (let k = j; k < i; ++k) {
@@ -549,7 +565,12 @@ export class Item {
 
             this.lines = lines;
 
-            return new Item(newlines);
+            return new Item({
+                lines: newlines,
+                hue: this.hue,
+                saturation: this.saturation,
+                lightness: this.lightness,
+            });
         }
     }
 
@@ -605,7 +626,7 @@ export class Item {
         this.h0 = this.h;
     }
 
-    render() {
+    render(alpha0) {
         const canvas = this.canvas;
         const width = canvas.width;
         const height = canvas.height;
@@ -615,7 +636,7 @@ export class Item {
         const hue = ~~this.hue;
         const saturation = ~~(this.saturation * 100);
         const lightness = ~~(this.lightness * 100);
-        const alpha = this.alpha;
+        const alpha = alpha0 || this.alpha;
         ctx.strokeStyle = `hsla(${hue},${saturation}%,${lightness}%,${alpha})`;
         ctx.lineWidth = rw;
 
@@ -625,18 +646,13 @@ export class Item {
         const x = this.x;
         const y = this.y;
 
-        const left = this.left;
-        const right = this.right;
-        const top = this.top;
-        const bottom = this.bottom;
-
         for (const line of lines) {
             const xx = ~~((line.x - x0) * rw + x);
             if (xx < left || xx > right) {
                 continue;
             }
-            const y1 = Math.max(~~((line.y1 - y0) * rh + y), top);
-            const y2 = Math.min(~~((line.y2 - y0) * rh + y), bottom);
+            const y1 = (~~((line.y1 - y0) * rh + y));
+            const y2 = (~~((line.y2 - y0) * rh + y));
             if (y1 > y2) {
                 continue;
             }
