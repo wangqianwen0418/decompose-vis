@@ -59,6 +59,7 @@ const mutations = {
         canvas.itemTables[len] = canvas.items;
         const n = canvas.items.length;
         for (let i = len - 1; i >= 0; --i) {
+            channels[i].index = i;
             canvas.itemTables[i] = new Array(n);
             for (let j = 0; j < n; ++j) {
                 canvas.itemTables[i][j] =

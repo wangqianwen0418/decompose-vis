@@ -53,7 +53,7 @@ export function decompose(data, width, height, gradient = [0.02, 0.02, 0.01]) {
 			}
 			const n = tail + 1;
 
-            if (n >= 10) {
+            if (n >= 2) {
 				const points = new Int16Array(n * 2);
 				for (let i = 0; i <= tail; ++i) {
 					points[(i << 1)] = Queue[i][0];

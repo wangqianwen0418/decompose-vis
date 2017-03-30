@@ -1,10 +1,9 @@
 const fps = 20;
 const LineMergeThreshold1 = 15;
-const LineMergeThreshold2 = 1.2;
-const LineMergeThreshold3 = 10;
+const LineMergeThreshold2 = 1;
+const LineMergeThreshold3 = 12;
 
-function smooth(a) {
-    const window = 10;
+function smooth(a, windowSize = 100) {
     const c = 1.0 / window;
     const b = new Float32Array(a.length);
     for (let i = 0, cnt = 0; i < a.length; ++i) {
@@ -37,7 +36,6 @@ export class Canvas {
             canvas.height = height;
         }
         this.items = new Array();
-        this.itemTables = new Array();
         this.backgroundImg = null;
         this.bgAlpha = 1;
     }
@@ -88,14 +86,17 @@ export class Canvas {
         return null;
     }
 
-    render(timestamp) {
-        timestamp = timestamp || 0;
+    render(highlightedItem) {
         this.clear();
         this.drawBackground();
-        const items = this.itemTables[timestamp] || this.items;
+        const items = this.items;
         const canvas = this.canvas;
         for (const item of items) {
-            item.render(this);
+            if (highlightedItem === item || !highlightedItem) {
+                item.render(1);
+            } else {
+                item.render(0.66);
+            }
         }
     }
 }
@@ -118,6 +119,8 @@ export class AnimatedCanvas {
         this.itemTables = new Array();
         this.backgroundImg = null;
         this.bgAlpha = 1;
+
+        this.currentChannel = -1;
     }
 
     clear() {
@@ -157,25 +160,35 @@ export class AnimatedCanvas {
     }
 
     getItem(x, y) {
-        for (const item of items) {
-            if (item.hasPixel(x, y)) {
-                return item;
+        if (this.currentChannel === -1) {
+            for (const item of this.items) {
+                if (item.hasPixel(x, y)) {
+                    return item;
+                }
+            }
+        } else {
+            for (const item of this.itemTables[this.currentChannel]) {
+                if (item.hasPixel(x, y)) {
+                    return item;
+                }
             }
         }
         return null;
     }
 
-    render(index) {
-        index = index || 0;
-        const items = this.itemTables[index] || this.items;
+    render(index, highlightedItem) {
+        index = index || -1;
+        const items = index !== -1 ? this.itemTables[index] : this.items;
         const canvas = this.canvas;
+        this.currentChannel = index;
         this.clear();
         this.drawBackground();
         for (let i = 0; i < items.length; ++i) {
-            if (items[i]) {
-                items[i].render(this);
-            } else if (this.items[i]) {
-                this.items[i].render(this);
+            const item = items[i] || this.items[i];
+            if (highlightedItem === item || !highlightedItem) {
+                item.render(1);
+            } else {
+                item.render(0.66);
             }
         }
     }
@@ -205,6 +218,9 @@ export class Animation {
 
     static positionInitialStatus(item) {
         const ret = new Item(item);
+        const canvas = item.canvas;
+        const n = canvas.items.length;
+        ret.y = canvas.height / (n + 1) * item.index;
         return ret;
     }
 
@@ -217,11 +233,15 @@ export class Animation {
 
     static lengthInitialStatus(item) { // length
         const ret = new Item(item);
+        ret.w /= 2;
+        ret.x += ret.w / 2;
         return ret;
     }
 
-    static shapeInitialStatus(item) {
+    static shapeInitialStatus(item) { // should be height initial status
         const ret = new Item(item);
+        item.compress();
+        const lines = [];
         return ret;
     }
 
@@ -358,7 +378,7 @@ export class Item {
                     if (pre[x][i] !== 0) {
                         c[x - 1][pre[x][i]] = c[x][i];
                     }
-                    if (c[x][i] < 20 && (L2[x][i + 1] - L2[x][i]) < H) {
+                    if (c[x][i] < 25 && (L2[x][i + 1] - L2[x][i]) < H) {
                         L2[x][i] = L2[x][i + 1] = -1;
                     }
                 }
@@ -409,9 +429,9 @@ export class Item {
             const color = item.color;
             lines = item.lines;
             this.lines = item.lines;
-            this.hue = color[0] * 360;
-            this.saturation = color[1];
-            this.lightness = color[2];
+            this.hue = item.hue || color[0] * 360;
+            this.saturation = item.saturation || color[1];
+            this.lightness = item.lightness || color[2];
             this.alpha = 1;
             this.x = Math.min(...lines.map(d => d.x));
             this.y = Math.min(...lines.map(d => d.y1));
@@ -442,10 +462,10 @@ export class Item {
             this.w0 = _.w0;
             this.h0 = _.h0;
         }
-        this.left = this.x;
-        this.right = this.x + this.w;
-        this.top = this.y;
-        this.bottom = this.y + this.h;
+        this.left = 0;
+        this.right = (this.canvas && this.canvas.width) || 2048;
+        this.top = 0;
+        this.bottom = (this.canvas && this.canvas.height) || 2048;
     }
 
     cross(x1, y1, x2, y2) {
@@ -456,6 +476,7 @@ export class Item {
             if (x1 > x2) {
                 return this.cross(line.x2, line.y2, line.x1, line.y1);
             } else if (x1 === x2) {
+                let lines = this.lines;
                 for (const line of lines) {
                     if (line.x === x1 && line.y2 > y1 && line.y1 < y2) {
                         return true;
@@ -464,18 +485,105 @@ export class Item {
                 return false;
             } else {
                 const c = (y2 - y1) / (x2 - x1);
-                const dy = y2 - y1;
-                for (const line of lines) {
+                let lines = this.lines;
+                for (let i = 0; i < lines.length; ++i) {
+                    const line = lines[i];
                     if (line.x < x1 || line.x > x2) {
                         continue;
                     }
-                    const y = (line.x - x1) * c;
-                    if (y > 0 && y < dy) {
+                    const y = ~~((line.x - x1) * c + y1);
+                    if (y > line.y1 && y < line.y2) {
                         return true;
                     }
                 }
                 return false;
             }
+        }
+    }
+    area() {
+        let ret = 0;
+        for (const line of this.lines) {
+            ret += line.y2 - line.y1;
+        }
+        return ret;
+    }
+
+    split(x1, y1, x2, y2) {
+        if (x1 > x2) {
+            return this.split(line.x2, line.y2, line.x1, line.y1);
+        } else {
+            const c = (y2 - y1) / (x2 - x1);
+            let lines = this.lines;
+            for (let i = 0; i < lines.length; ++i) {
+                const line = lines[i];
+                if (line.x < x1 || line.x > x2) {
+                    continue;
+                }
+                const y = ~~((line.x - x1) * c + y1);
+                if (y > line.y1 && y < line.y2) {
+                    lines.push({
+                        x: line.x,
+                        y1: y + 4,
+                        y2: line.y2,
+                    });
+                    line.y2 = y - 4;
+                }
+            }
+            lines = lines
+                .filter((d) => d.y1 <= d.y2)
+                .sort((a, b) => {
+                    if (a.x !== b.x) {
+                        return a.x - b.x;
+                    } else {
+                        return a.y1 - b.y1;
+                    };
+                });
+
+            function root(x) {
+                if (x.parent) {
+                    return x.parent = root(x.parent);
+                } else {
+                    return x;
+                }
+            }
+
+            function merge(x, y) {
+                x = root(x);
+                y = root(y);
+                if (x !== y) {
+                    y.parent = x;
+                }
+            }
+
+            function same(x, y) {
+                x = root(x);
+                y = root(y);
+                return x === y;
+            }
+
+            for (let i = 0, j = 0; i < lines.length; ++i) {
+                lines[i].parent = null;
+                while (lines[j].x + 3 < lines[i].x) {
+                    ++j;
+                }
+                for (let k = j; k < i; ++k) {
+                    if (Math.max(lines[k].y1, lines[i].y1) <= Math.min(lines[k].y2, lines[i].y2)) {
+                        merge(lines[k], lines[i]);
+                    }
+                }
+            }
+
+            const newlines = lines.filter((d) => !same(d, lines[0]));
+            lines = lines.filter((d) => same(d, lines[0]));
+
+            this.lines = lines;
+
+            return new Item({
+                lines: newlines,
+                hue: this.hue,
+                saturation: this.saturation,
+                lightness: this.lightness,
+            });
         }
     }
 
@@ -492,7 +600,7 @@ export class Item {
         const ys = new Float32Array(width);
         const ws = new Float32Array(width);
         const x0 = this.x0;
-        for (const line of lines) {
+        for (const line of this.lines) {
             ys[line.x - x0] += (line.y1 + line.y2) * 0.5 * (line.y2 - line.y1);
             ws[line.x - x0] += (line.y2 - line.y1);
         }
@@ -501,8 +609,7 @@ export class Item {
                 ys[i] /= ws[i];
             }
         }
-        this.ys = ys;
-        this.ws = ws;
+
     }
 
     transformat() {
@@ -531,7 +638,7 @@ export class Item {
         this.h0 = this.h;
     }
 
-    render() {
+    render(alpha0) {
         const canvas = this.canvas;
         const width = canvas.width;
         const height = canvas.height;
@@ -541,7 +648,7 @@ export class Item {
         const hue = ~~this.hue;
         const saturation = ~~(this.saturation * 100);
         const lightness = ~~(this.lightness * 100);
-        const alpha = this.alpha;
+        const alpha = alpha0 || this.alpha;
         ctx.strokeStyle = `hsla(${hue},${saturation}%,${lightness}%,${alpha})`;
         ctx.lineWidth = rw;
 
@@ -555,6 +662,18 @@ export class Item {
         const right = this.right;
         const top = this.top;
         const bottom = this.bottom;
+
+/*
+        ctx.beginPath();  
+        ctx.moveTo(x, y);
+        ctx.lineTo(x, y + this.h);
+        ctx.lineTo(x + this.w, y + this.h);
+        ctx.lineTo(x + this.w, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+        ctx.closePath();
+*/
+        // console.log(this.area());
 
         for (const line of lines) {
             const xx = ~~((line.x - x0) * rw + x);

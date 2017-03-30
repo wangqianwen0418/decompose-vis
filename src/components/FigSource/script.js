@@ -35,7 +35,7 @@ export default {
 			canvas: null,
 		}));
 
-		const riverColors = [[0.0020083391403067237, 0.7991378594747043, 0.7972484069155104], 
+		const riverColors = [[0.0020083391403067237, 0.7991378594747043, 0.7972484069155104],
 		[0.17091630819043235, 0.24427248600612952, 0.6785767693715141]];
 		const lineColors = [[0.6126223569330962, 0.4529497680456742, 0.37725490927696226],
 		[0.4829212535793583, 0.6061479896306992, 0.5492647190888723]];
@@ -44,6 +44,8 @@ export default {
 		tabs[1].colors = riverColors;
 		tabs[2].colors = lineColors;
 		tabs[3].colors = glyphColors;
+
+		tabs[1].dividingLines = [[25, 752, 265, 451], [672, 451, 921, 377]];//[1216, 764, 1289, 723]];
 
 		return {
 			tabs: tabs,
@@ -141,6 +143,7 @@ export default {
 			const ctx = canvas.getContext('2d');
 			const x = Math.floor((event.pageX - offset.x(canvas)) * zoom_ratio);
 			const y = Math.floor((event.pageY - offset.y(canvas)) * zoom_ratio);
+			console.log('click point', x, y);
 			if (tags[y * canvas.width + x] === bgtag) {
 				return;
 			}
@@ -159,7 +162,7 @@ export default {
 				console.info(y * canvas.width + x);
 				if (group0 != null) {
 					group0 = findGroup(group0, currenttime);
-					console.log(group0.color);
+					console.info(group0.color);
 					const items = getItemsByColor(group0.color);
 					this.activeTab.canvas.addItem(new Item(items));
 					this.canvasRender(event);
@@ -179,10 +182,16 @@ export default {
 			let group0 = ngroup[y * canvas.width + x];
 			if (group0 != null) {
 				group0 = findGroup(group0, currenttime);
-				const item = new Item(group0);
-				this.activeTab.canvas.addItem(item);
-				this.canvasRender(event);
-				this.activeTab.canvas.removeItem(item);
+				const canvas = this.activeTab.canvas;
+				const currentItem = canvas.getItem(x, y);
+				if (currentItem) {
+					canvas.render(currentItem);
+				} else {
+					const tempItem = new Item(group0);
+					canvas.addItem(tempItem);
+					this.canvasRender(event);
+					canvas.removeItem(tempItem);
+				}
 			}
 //			console.info(x, y, event, `time used: ${(new Date()).getTime() - start_time.getTime()} ms`);
 		},
@@ -192,6 +201,7 @@ export default {
 		onTabClick(item) {
 			this.activeTab = item;
 			this.canvasRender();
+			console.info('Current canvas has ' + this.activeTab.canvas.items.length + ' items');
 		},
 	},
 
@@ -215,14 +225,37 @@ export default {
 			this.tabs[0].canvas.bgAlpha = 1;
 			this.tabs[0].canvas.render();
 			preprocessing(canvas);
-			for (const block of this.tabs) {
+			for (let t = 0; t < this.tabs.length; ++t) {
+				const block = this.tabs[t];
 				if (!!block.colors) {
-					for (const color of block.colors) {
+					for (let c = 0; c < block.colors.length; ++c) {
+						const color = block.colors[c];
 						const items = getItemsByColor(color);
+						if (c === 1 && t === 1) {
+							items.forEach(item => {
+								item.lines = item.lines.filter((d) => d.y1 > 595);
+							});
+						}
 						block.canvas.addItem(new Item(items));
 					}
 				}
+				if (!!block.dividingLines) {
+					const items = block.canvas.items;
+					for (let i = 0; i < items.length; ++i) {
+						for (const line of block.dividingLines) {
+							if (items[i].cross(line[0], line[1], line[2], line[3])) {
+								block.canvas.addItem(items[i].split(line[0], line[1], line[2], line[3]));
+								--i;
+								break;
+							}
+						}
+					}
+					for (let i = 0; i < items.length; ++i) {
+						items[i].index = i;
+					}
+				}
 			}
+			// this.tabs[1].canvas.addItem(this.tabs[1].canvas.items[0].split());
 		};
 		interactionInit();
 	}
