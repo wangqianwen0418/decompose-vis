@@ -117,7 +117,7 @@ const mutations = {
                         } else if (animations[j].name == "grow" && channels[i].name == "position") {
                             animations[j].status[blkIndex].position = 0;
                             animations[j].nextStatus[blkIndex].position = 1;
-                        } else if (animations[j].name == "change-size") {
+                        } else if (animations[j].name == "grow" && channels[i].name == "size") {
                             animations[j].status[blkIndex].length = 0;
                             animations[j].nextStatus[blkIndex].length = 1;
                         } else if (animations[j].name == "high-light") {

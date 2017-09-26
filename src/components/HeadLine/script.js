@@ -55,6 +55,9 @@ export default {
           })
         })
     },
+    play() {
+      console.log("do play");
+    },
     save() {
         this.$notify.success({
             message: 'Your NarVis is Saved !',

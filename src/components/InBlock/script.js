@@ -29,8 +29,8 @@ const aniMargin = {
 };
 const animationTypes = {
     color: ["anno", "fade-in", "fade-out", "add-color", "high-light"],
-    size: ["anno", "fade-in", "fade-out", "change-size", "high-light"],
-    position: ["anno", "fade-in", "fade-out", "grow", "change-size", "high-light"],
+    size: ["anno", "fade-in", "fade-out", "grow", "change-size", "high-light"],
+    position: ["anno", "fade-in", "fade-out", "grow", "high-light"],
     shape: [],
 };
 const animationColumnNum = 4;

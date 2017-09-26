@@ -30,6 +30,7 @@
     color:var(--color-blue-dark);
     font-size:20px;
     background-color: #fafafa;
+    outline:none;
     border: 2px solid var(--color-blue-light);
 }
 
