@@ -72,37 +72,54 @@ const mutations = {
             if (blk.selected) {
                 // console.log(channels);
                 for (var i = channels.length - 1; i >= 0; --i) {
-                    var len = channels[i].animations.length;
+                    var animations = channels[i].animations;
+                    var len = animations.length;
                     if (len == 0) continue;
 
-                    channels[i].animations[len - 1].nextStatus = null;
+                    animations[len - 1].nextStatus = null;
                     var k = i + 1;
                     for (; k < channels.length; ++k)
                         if (channels[k].animations.length > 0) {
-                            channels[i].animations[len - 1].nextStatus = channels[k].animations[0].status;
-                            channels[i].animations[len - 1].status = JSON.parse(JSON.stringify(channels[i].animations[len - 1].nextStatus));
+                            animations[len - 1].nextStatus = channels[k].animations[0].status;
+                            animations[len - 1].status = JSON.parse(JSON.stringify(animations[len - 1].nextStatus));
                             if (channels[k].name === "color") {
-                                channels[i].animations[len - 1].status[blkIndex].sat = 0;
+                                animations[len - 1].status[blkIndex].sat = 0;
                             } else if (channels[k].name === "position") {
-                                channels[i].animations[len - 1].status[blkIndex].length = 0;
+                                animations[len - 1].status[blkIndex].length = 0;
                             } else if (channels[k].name === "size") {
-                                channels[i].animations[len - 1].status[blkIndex].size = 0;
+                                animations[len - 1].status[blkIndex].size = 0;
                             }
                             break;
                         }
                     if (k == channels.length) {
-                        channels[i].animations[len - 1].nextStatus = blk.endStatus;
-                        channels[i].animations[len - 1].status = JSON.parse(JSON.stringify(channels[i].animations[len - 1].nextStatus));
+                        animations[len - 1].nextStatus = JSON.parse(JSON.stringify(blk.endStatus));
+                        animations[len - 1].status = JSON.parse(JSON.stringify(animations[len - 1].nextStatus));
                     }
 
-                    for (var j = len - 2; j >= 0; --j) {
-                        channels[i].animations[j].nextStatus = channels[i].animations[j + 1].status;
-                        channels[i].animations[j].status = JSON.parse(JSON.stringify(channels[i].animations[j].nextStatus));
-                    }                
-                    // console.log(i, channels[i].animations);
+                    for (var j = len - 1; j >= 0; --j) {
+                        if (j != len - 1) {
+                            animations[j].nextStatus = animations[j + 1].status;
+                            if (animations[j].name == "anno" && animations[j + 1].name == "anno") {
+                                animations[j].status = animations[j].nextStatus;
+                            } else {
+                                animations[j].status = JSON.parse(JSON.stringify(animations[j].nextStatus));
+                            }
+                        }
+                        if (animations[j].name == "fade-in") {
+                            animations[j].status[blkIndex].opacity = 0;
+                            animations[j].nextStatus[blkIndex].opacity = 1;
+                        } else if (animations[j].name == "fade-out") {
+                            animations[j].status[blkIndex].opacity = 1;
+                            animations[j].nextStatus[blkIndex].opacity = 0;
+                        } else if (animations[j].name == "add-color") {
+                            animations[j].status[blkIndex].sat = 0;
+                            animations[j].nextStatus[blkIndex].sat = 1;
+                        }
+                    }
+                    // console.log(i, animations);
                 }
                 blk.marks[0].channels = channels;
-                // console.log(blk.marks[0].channels);
+                console.log(blk.marks[0].channels);
             }
         });
     },

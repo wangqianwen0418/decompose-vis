@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 
-var filterCounter = 0;
 export function opinionseer(svg, width, height, config = [{
         isBackground: true,
         name: 'parallelLinks'
@@ -322,6 +321,15 @@ export function opinionseer(svg, width, height, config = [{
         }
     }
 
+    for (var i = 0; i <= 30; ++i) {
+        const filter = paint.append("filter")
+            .attr("id", `gray-filter${i}`);
+
+        filter.append("feColorMatrix")
+            .attr('type', 'saturate')
+            .attr('values', i / 30);
+    }
+
     function drawOuterRing(size, length, hue, sat, opacity) {
         if (hue !== 1 && length === 1) length = hue;
 
@@ -329,18 +337,10 @@ export function opinionseer(svg, width, height, config = [{
         var outerRing = paint.append("g")
             .attr("class", "outerRing");
 
-        const grayFilter = svg.append("filter")
-            .attr("id", `gray-filter${filterCounter}`);
-
-        grayFilter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', sat);
-
         outerRing
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
-            .style('filter', `url(#gray-filter${filterCounter}`);
-        filterCounter++;
+            .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var leftNum = Math.floor(length * outerElements.length);
         var outerRings = outerRing
@@ -394,18 +394,10 @@ export function opinionseer(svg, width, height, config = [{
         var innerRing = paint.append("g")
             .attr("class", "innerRing");
 
-        const grayFilter = svg.append("filter")
-            .attr("id", `gray-filter${filterCounter}`);
-
-        grayFilter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', sat);
-
         innerRing
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
-            .style('filter', `url(#gray-filter${filterCounter}`);
-        filterCounter++;
+            .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var ringHeatMap = innerRing.append("g")
             .attr("class", "heatmap");
@@ -487,18 +479,10 @@ export function opinionseer(svg, width, height, config = [{
         var parallelLinks = paint.append("g")
             .attr("class", "parallelLinks");
 
-        const grayFilter = svg.append("filter")
-            .attr("id", `gray-filter${filterCounter}`);
-
-        grayFilter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', sat);
-
         parallelLinks
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
-            .style('filter', `url(#gray-filter${filterCounter}`);
-        filterCounter++;
+            .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var leftNum = Math.floor(length * 12);
         for (var i = 0, margin = outerRingMargin, angle0 = startAngle; i < leftLinks.length; ++i) {
@@ -644,18 +628,10 @@ export function opinionseer(svg, width, height, config = [{
         var innerCircle = paint.append("g")
             .attr("class", "innerCircle");
 
-        const grayFilter = svg.append("filter")
-            .attr("id", `gray-filter${filterCounter}`);
-
-        grayFilter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', sat);
-
         innerCircle
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
-            .style('filter', `url(#gray-filter${filterCounter}`);
-        filterCounter++;
+            .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var spokes = innerCircle.append("g")
             .attr("class", "spokes");
@@ -768,18 +744,10 @@ export function opinionseer(svg, width, height, config = [{
         var innerBar = paint.append("g")
             .attr("class", "innerBar");
 
-        const grayFilter = svg.append("filter")
-            .attr("id", `gray-filter${filterCounter}`);
-
-        grayFilter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', sat);
-
         innerBar
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
-            .style('filter', `url(#gray-filter${filterCounter}`);
-        filterCounter++;
+            .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var windowSize = Math.floor(aggregatedData.length * 0.2);
         var leftNum = Math.floor(aggregatedData.length * length);

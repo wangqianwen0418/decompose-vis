@@ -65,9 +65,17 @@ export default {
         },
         shapeTransition(prevStatus, nextStatus) {
             var counter = 0;
+            if (this.refreshIntervalId != null) {
+                clearInterval(this.refreshIntervalId);
+                this.refreshIntervalId = null
+                setTimeout(() => this.shapeTransition(prevStatus, nextStatus), frame);
+                return;
+            }
             this.refreshIntervalId = setInterval(() => {
                 if (++counter > maxCounter) {
                     clearInterval(this.refreshIntervalId);
+                    this.refreshIntervalId = null;
+                    return;
                 }
                 var status = JSON.parse(JSON.stringify(prevStatus));
                 for (var i = 0; i < status.length; ++i) {
@@ -143,10 +151,11 @@ export default {
             const height = this.$el.getElementsByTagName('svg')[0].clientHeight;
             svg.attr('width', width).attr('height', height);
 
+            console.log("selectedAnimation", val)
             if (val) {
                 svg.selectAll('*').remove();
                 if (val.name === "anno") {
-                    opinionseer(svg, width, height, val.nextStatus);
+                    opinionseer(svg, width, height, val.status);
                     this.selectAnnotation(val);
                 } else {
                     opinionseer(svg, width, height, val.status);
