@@ -19,19 +19,19 @@ const defaultTemp = {
 		removed: false,
 		selected: false,
 		channels: [{
-			name: 'color-h',
-			selected: false,
-			animations: ["fade-in", "anno"],
-		}, {
-			name: 'color-s',
-			selected: false,
-			animations: ["fade-in", "anno"],
-		}, {
 			name: 'size',
 			selected: false,
 			animations: ["fade-in", "anno"],
 		}, {
 			name: 'position',
+			selected: false,
+			animations: ["fade-in", "anno"],
+		}, {
+			name: 'color-h',
+			selected: false,
+			animations: [],
+		}, {
+			name: 'color-s',
 			selected: false,
 			animations: ["fade-in", "anno"],
 		}],
