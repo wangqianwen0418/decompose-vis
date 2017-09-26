@@ -1,6 +1,6 @@
 <template>
     <div class="resource bg-purple-light">
-		<fig-source :src="require('assets/textflow-hi.png')"></fig-source>
+		<fig-source></fig-source>
 		<!--<text-source></text-source>-->
         <el-row>
             <unit-tree/>
