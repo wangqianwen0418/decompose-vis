@@ -146,7 +146,8 @@ export default {
             const block = JSON.parse(JSON.stringify(defaultTemp));
             block.startStatus = [
                 i > 1 ? {
-                    length: 1,
+					length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -158,6 +159,7 @@ export default {
                 },
                 i > 2 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -169,6 +171,7 @@ export default {
                 },
                 i > 3 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -180,6 +183,7 @@ export default {
                 },
                 i > 4 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -191,6 +195,7 @@ export default {
                 },
                 i > 5 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -204,6 +209,7 @@ export default {
             block.endStatus = [
                 i >= 1 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -215,6 +221,7 @@ export default {
                 },
                 i >= 2 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -226,6 +233,7 @@ export default {
                 },
                 i >= 3 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -237,6 +245,7 @@ export default {
                 },
                 i >= 4 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -248,6 +257,7 @@ export default {
                 },
                 i >= 5 ? {
                     length: 1,
+					position: 1,
                     hue: 1,
                     sat: 1,
                     size: 1,
@@ -260,6 +270,7 @@ export default {
             ];
             block.startStatus[i - 1] = {
                 length: 0,
+				position: 0,
                 hue: 0,
                 sat: 0,
                 size: 0,

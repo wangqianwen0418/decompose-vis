@@ -196,9 +196,9 @@ export function opinionseer(svg, width, height, config = [{
 
     if (typeof config === "number") {
         const code = config;
-        config = [
-            code === 0 || code === 1 ? {
+        config = [ code === 0 || code === 1 ? {
                 length: 1,
+                position: 1,
                 hue: 1,
                 sat: 1,
                 size: 1,
@@ -210,6 +210,7 @@ export function opinionseer(svg, width, height, config = [{
             },
             code === 0 || code === 2 ? {
                 length: 1,
+                position: 1,
                 hue: 1,
                 sat: 1,
                 size: 1,
@@ -221,6 +222,7 @@ export function opinionseer(svg, width, height, config = [{
             },
             code === 0 || code === 3 ? {
                 length: 1,
+                position: 1,
                 hue: 1,
                 sat: 1,
                 size: 1,
@@ -232,6 +234,7 @@ export function opinionseer(svg, width, height, config = [{
             },
             code === 0 || code === 4 ? {
                 length: 1,
+                position: 1,
                 hue: 1,
                 sat: 1,
                 size: 1,
@@ -243,6 +246,7 @@ export function opinionseer(svg, width, height, config = [{
             },
             code === 0 || code === 5 ? {
                 length: 1,
+                position: 1,
                 hue: 1,
                 sat: 1,
                 size: 1,
@@ -259,9 +263,10 @@ export function opinionseer(svg, width, height, config = [{
         if (config[3].ignore) {
 
         } else if (config[3].isBackground) {
-            drawparallelLinks(1, 1, 1, 0, 0.1);
+            drawparallelLinks(1, 1, 1, 1, 0, 0.1);
         } else {
             drawparallelLinks(config[3].size,
+                config[3].position,
                 config[3].length,
                 config[3].hue,
                 config[3].sat,
@@ -272,9 +277,10 @@ export function opinionseer(svg, width, height, config = [{
         if (config[4].ignore) {
 
         } else if (config[4].isBackground) {
-            drawOuterRing(1, 1, 1, 0, 0.1);
+            drawOuterRing(1, 1, 1, 1, 0, 0.1);
         } else {
             drawOuterRing(config[4].size,
+                config[4].position,
                 config[4].length,
                 config[4].hue,
                 config[4].sat,
@@ -285,9 +291,10 @@ export function opinionseer(svg, width, height, config = [{
         if (config[2].ignore) {
 
         } else if (config[2].isBackground) {
-            drawInnerRing(1, 1, 1, 0, 0.1);
+            drawInnerRing(1, 1, 1, 1, 0, 0.1);
         } else {
             drawInnerRing(config[2].size,
+                config[2].position,
                 config[2].length,
                 config[2].hue,
                 config[2].sat,
@@ -298,9 +305,10 @@ export function opinionseer(svg, width, height, config = [{
         if (config[1].ignore) {
 
         } else if (config[1].isBackground) {
-            drawInnerBar(1, 1, 1, 0, 0.1);
+            drawInnerBar(1, 1, 1, 1, 0, 0.1);
         } else {
             drawInnerBar(config[1].size,
+                config[1].position,
                 config[1].length,
                 config[1].hue,
                 config[1].sat,
@@ -311,9 +319,10 @@ export function opinionseer(svg, width, height, config = [{
         if (config[0].ignore) {
 
         } else if (config[0].isBackground) {
-            drawInnerCircle(1, 1, 1, 0, 0.1);
+            drawInnerCircle(1, 1, 1, 1, 0, 0.1);
         } else {
             drawInnerCircle(config[0].size,
+                config[0].position,
                 config[0].length,
                 config[0].hue,
                 config[0].sat,
@@ -330,7 +339,7 @@ export function opinionseer(svg, width, height, config = [{
             .attr('values', i / 30);
     }
 
-    function drawOuterRing(size, length, hue, sat, opacity) {
+    function drawOuterRing(size, position, length, hue, sat, opacity) {
         if (hue !== 1 && length === 1) length = hue;
 
         paint.select(".outerRing").remove();
@@ -354,7 +363,7 @@ export function opinionseer(svg, width, height, config = [{
         var outerColor = d3.scaleLinear().domain([0, 1]).range(['white', grey]);
 
         outerRings
-            .attr("transform", (d, i) => `rotate(${i * 360 / 8})`)
+            .attr("transform", (d, i) => `rotate(${i * 360 / 8 * position})`)
             .attr("d", (d) => {
                 var r0 = outerRingR;
                 var r1 = outerRingR + outerRingH;
@@ -387,7 +396,7 @@ export function opinionseer(svg, width, height, config = [{
             .style("opacity", (d, i) => i < leftNum ? 1 : length * outerElements.length - i);
     }
 
-    function drawInnerRing(size, length, hue, sat, opacity) {
+    function drawInnerRing(size, position, length, hue, sat, opacity) {
         if (hue !== 1 && length === 1) length = hue;
 
         paint.select(".innerRing").remove();
@@ -440,7 +449,7 @@ export function opinionseer(svg, width, height, config = [{
             .attr("transform", (d, i) => {
                 var a = -(15 + i * 360 / monthName.length) / 180 * Math.PI;
                 var r = -(innerRingR + innerRingH + 20);
-                return `translate(${r * Math.sin(a)}, ${r * Math.cos(a)})`;
+                return `translate(${r * Math.sin(a * position)}, ${r * Math.cos(a * position)})`;
             })
             .attr("fill", grey)
             .attr("text-anchor", "middle")
@@ -455,7 +464,7 @@ export function opinionseer(svg, width, height, config = [{
             });
 
         rings
-            .attr("transform", (d) => `rotate(${d[1] * 360 / monthName.length})`)
+            .attr("transform", (d) => `rotate(${d[1] * 360 / monthName.length * position})`)
             .attr("d", (d) => {
                 var r0 = innerRingR + innerRingH / yearNum * (d[0] - startYear);
                 var r1 = innerRingR + innerRingH / yearNum * (d[0] - startYear + 1);
@@ -472,7 +481,7 @@ export function opinionseer(svg, width, height, config = [{
             .style("opacity", 0.9);
     }
 
-    function drawparallelLinks(size, length, hue, sat, opacity) {
+    function drawparallelLinks(size, position, length, hue, sat, opacity) {
         if (hue !== 1 && length === 1) length = hue;
 
         paint.select(".parallelLinks").remove();
@@ -622,7 +631,7 @@ export function opinionseer(svg, width, height, config = [{
         }
     }
 
-    function drawInnerCircle(size, length, hue, sat, opacity) {
+    function drawInnerCircle(size, position, length, hue, sat, opacity) {
 
         paint.select(".innerCircle").remove();
         var innerCircle = paint.append("g")
@@ -729,7 +738,7 @@ export function opinionseer(svg, width, height, config = [{
             .attr("cy", (d) => {
                 var angle = d[0] % 120 - 60;
                 if (angle < 0) angle = -angle;
-                return d[1] * 0.5 / Math.cos(angle / 180 * Math.PI);
+                return d[1] * 0.5 / Math.cos(angle / 180 * Math.PI) * position;
             })
             .attr("r", 4)
             .style("stroke-width", 2)
@@ -738,7 +747,7 @@ export function opinionseer(svg, width, height, config = [{
             .style("opacity", (d) => d[2] + 1 < hue * 4 ? 0.9 : 0.9 * (hue * 4 - d[2]));
     }
 
-    function drawInnerBar(size, length, hue, sat, opacity) {
+    function drawInnerBar(size, position, length, hue, sat, opacity) {
 
         paint.select(".innerBar").remove();
         var innerBar = paint.append("g")
@@ -760,7 +769,7 @@ export function opinionseer(svg, width, height, config = [{
         var sinTheta = Math.sin(2 * Math.PI / partitionNum);
         for (var i = 0; i < typeNumber * hue; ++i) {
             bars.append("path")
-                .attr("transform", (d, n) => `rotate(${n * 360 / partitionNum})`)
+                .attr("transform", (d, n) => `rotate(${n * 360 / partitionNum * position})`)
                 .attr("d", (d, n) => {
                     var ratio = 0;
                     if (n < leftNum) {

@@ -63,34 +63,55 @@ export default {
             this.editing = false;
             this.$store.commit('EDIT_ELE', this.selectedText);
         },
-        shapeTransition(prevStatus, nextStatus) {
+        shapeTransition(prevStatus, nextStatus, name) {
             var counter = 0;
             if (this.refreshIntervalId != null) {
                 clearInterval(this.refreshIntervalId);
                 this.refreshIntervalId = null
-                setTimeout(() => this.shapeTransition(prevStatus, nextStatus), frame);
+                setTimeout(() => this.shapeTransition(prevStatus, nextStatus, name), frame);
                 return;
             }
-            this.refreshIntervalId = setInterval(() => {
-                if (++counter > maxCounter) {
-                    clearInterval(this.refreshIntervalId);
-                    this.refreshIntervalId = null;
-                    return;
-                }
-                var status = JSON.parse(JSON.stringify(prevStatus));
-                for (var i = 0; i < status.length; ++i) {
-                    if (JSON.stringify(prevStatus[i]) == JSON.stringify(nextStatus[i])) {
-                        status[i].ignore = true;
-                    } else {
-                        status[i].sat = (prevStatus[i].sat * (maxCounter - counter) + nextStatus[i].sat * counter) / maxCounter;
-                        status[i].hue = (prevStatus[i].hue * (maxCounter - counter) + nextStatus[i].hue * counter) / maxCounter;
-                        status[i].size = (prevStatus[i].size * (maxCounter - counter) + nextStatus[i].size * counter) / maxCounter;
-                        status[i].length = (prevStatus[i].length * (maxCounter - counter) + nextStatus[i].length * counter) / maxCounter;
-                        status[i].opacity = (prevStatus[i].opacity * (maxCounter - counter) + nextStatus[i].opacity * counter) / maxCounter;
+
+            if (name == "high-light") {
+                this.refreshIntervalId = setInterval(() => {
+                    if (++counter > maxCounter * 2) {
+                        clearInterval(this.refreshIntervalId);
+                        this.refreshIntervalId = null;
+                        return;
                     }
-                }
-                opinionseer(this.svg, this.width, this.height, status);
-            }, frame);
+                    var status = JSON.parse(JSON.stringify(prevStatus));
+                    var cnt = counter > maxCounter ? maxCounter * 2 - counter : counter;
+                    cnt = Math.min(cnt * 2, maxCounter);
+                    for (var i = 0; i < status.length; ++i) {
+                        if (status[i].highlight) break;
+                        status[i].sat = (prevStatus[i].sat * (maxCounter - cnt)) / maxCounter;
+                        status[i].opacity = (prevStatus[i].opacity * (maxCounter - cnt) + 0.1 * cnt) / maxCounter;
+                    }
+                    opinionseer(this.svg, this.width, this.height, status);
+                }, frame);
+            } else {
+                this.refreshIntervalId = setInterval(() => {
+                    if (++counter > maxCounter) {
+                        clearInterval(this.refreshIntervalId);
+                        this.refreshIntervalId = null;
+                        return;
+                    }
+                    var status = JSON.parse(JSON.stringify(prevStatus));
+                    for (var i = 0; i < status.length; ++i) {
+                        if (JSON.stringify(prevStatus[i]) == JSON.stringify(nextStatus[i])) {
+                            status[i].ignore = true;
+                        } else {
+                            status[i].sat = (prevStatus[i].sat * (maxCounter - counter) + nextStatus[i].sat * counter) / maxCounter;
+                            status[i].hue = (prevStatus[i].hue * (maxCounter - counter) + nextStatus[i].hue * counter) / maxCounter;
+                            status[i].size = (prevStatus[i].size * (maxCounter - counter) + nextStatus[i].size * counter) / maxCounter;
+                            status[i].length = (prevStatus[i].length * (maxCounter - counter) + nextStatus[i].length * counter) / maxCounter;
+                            status[i].opacity = (prevStatus[i].opacity * (maxCounter - counter) + nextStatus[i].opacity * counter) / maxCounter;
+                            status[i].position = (prevStatus[i].position * (maxCounter - counter) + nextStatus[i].position * counter) / maxCounter;
+                        }
+                    }
+                    opinionseer(this.svg, this.width, this.height, status);
+                }, frame);
+            }
         },
         selectAnnotation(val) {
             const svg = d3.select(this.$el).select('svg');
@@ -141,8 +162,14 @@ export default {
     },
     watch: {
         selectedBlock(val) {
-            const svg = d3.select(this.$el).select('svg');
-            svg.selectAll('*').remove();
+            this.svg.selectAll('*').remove();
+            if (this.refreshIntervalId != null) {
+                clearInterval(this.refreshIntervalId);
+                this.refreshIntervalId = null
+            }
+            if (this.selectedAnimation != null) {
+                this.selectedAnimation.selected = false;
+            }
         },
 
         selectedAnimation(val) {
@@ -151,7 +178,6 @@ export default {
             const height = this.$el.getElementsByTagName('svg')[0].clientHeight;
             svg.attr('width', width).attr('height', height);
 
-            console.log("selectedAnimation", val)
             if (val) {
                 svg.selectAll('*').remove();
                 if (val.name === "anno") {
@@ -160,7 +186,7 @@ export default {
                 } else {
                     opinionseer(svg, width, height, val.status);
                     this.selectedText = null;
-                    this.shapeTransition(val.status, val.nextStatus)
+                    this.shapeTransition(val.status, val.nextStatus, val.name);
                 }
             }
         }
