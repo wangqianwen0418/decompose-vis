@@ -71,11 +71,13 @@ const mutations = {
         state.blocks.forEach((blk, blkIndex) => {
             if (blk.selected) {
                 for (var i = channels.length - 1; i >= 0; --i) {
-                    channels[i].status = JSON.parse(JSON.stringify(i === channels.length - 1 ? blk.endStatus : channels[i + 1].status));
-                    applyChannel(channels[i].status[blkIndex], channels[i]);
+                    channels[i].nextStatus = i === channels.length - 1 ? blk.endStatus : channels[i + 1].status;
+                    channels[i].status = JSON.parse(JSON.stringify(channels[i].nextStatus));
+                    if (channels[i].animations.length > 0) {
+                        applyChannel(channels[i].status[blkIndex], channels[i]);
+                    }
                 }
                 blk.marks[0].channels = channels;
-                console.log(channels);
             }
         });
     },

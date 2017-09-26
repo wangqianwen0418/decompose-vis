@@ -4,6 +4,12 @@ import { EDIT_ELE, EDIT_EXP } from '../../store';
 import { opinionseer } from "../../algorithm/opinionseer.js";
 import { offset } from "../../utils/common-utils.js";
 
+function transition(prevStatus, nextStatus) {
+    for (var i = 0; i <= 40; ++i) {
+
+    }
+}
+
 export default {
     mounted() {
         var figureContent = document.getElementsByClassName('editor-view')[0];
@@ -106,6 +112,7 @@ export default {
             const svg = d3.select(this.$el).select('svg');
             svg.selectAll('*').remove();
         },
+
         selectedAnimation(val) {
             const svg = d3.select(this.$el).select('svg');
             const width = this.$el.getElementsByTagName('svg')[0].clientWidth;
@@ -113,12 +120,12 @@ export default {
             svg.attr('width', width).attr('height', height);
 
             if (val) {
-                console.log(val.parent.status);
                 svg.selectAll('*').remove();
-                opinionseer(svg, width, height, val.parent.status);
                 if (val.name === "anno") {
+                    opinionseer(svg, width, height, val.parent.nextStatus);
                     this.selectAnnotation(val);
                 } else {
+                    opinionseer(svg, width, height, val.parent.status);
                     this.selectedText = null;
                 }
             }

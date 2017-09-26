@@ -186,7 +186,9 @@ export function opinionseer(svg, width, height, config = [
     }
 
     if (config[3]) {
-        if (config[3].isBackground) {
+        if (config[3].ignore) {
+
+        } else if (config[3].isBackground) {
             drawparallelLinks(1, 1, 1, 0, 0.1);
         } else {
             drawparallelLinks(config[3].size,
@@ -197,7 +199,9 @@ export function opinionseer(svg, width, height, config = [
         }
     }
     if (config[4]) {
-        if (config[4].isBackground) {
+        if (config[4].ignore) {
+
+        } else if (config[4].isBackground) {
             drawOuterRing(1, 1, 1, 0, 0.1);
         } else {
             drawOuterRing(config[4].size,
@@ -208,7 +212,9 @@ export function opinionseer(svg, width, height, config = [
         }
     }
     if (config[2]) {
-        if (config[2].isBackground) {
+        if (config[2].ignore) {
+
+        } else if (config[2].isBackground) {
             drawInnerRing(1, 1, 1, 0, 0.1);
         } else {
             drawInnerRing(config[2].size,
@@ -219,7 +225,9 @@ export function opinionseer(svg, width, height, config = [
         }
     }
     if (config[1]) {
-        if (config[1].isBackground) {
+        if (config[1].ignore) {
+            
+        } else if (config[1].isBackground) {
             drawInnerBar(1, 1, 1, 0, 0.1);
         } else {
             drawInnerBar(config[1].size,
@@ -230,7 +238,9 @@ export function opinionseer(svg, width, height, config = [
         }
     }
     if (config[0]) {
-        if (config[0].isBackground) {
+        if (config[0].ignore) {
+            
+        } else if (config[0].isBackground) {
             drawInnerCircle(1, 1, 1, 0, 0.1);
         } else {
             drawInnerCircle(config[0].size,
