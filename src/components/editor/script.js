@@ -4,18 +4,16 @@ import { EDIT_ELE, EDIT_EXP } from '../../store';
 import { opinionseer } from "../../algorithm/opinionseer.js";
 import { offset } from "../../utils/common-utils.js";
 
-function transition(prevStatus, nextStatus) {
-    for (var i = 0; i <= 40; ++i) {
-
-    }
-}
+const maxCounter = 30;
+const frame = 50;
+const duration = 500;
 
 export default {
     mounted() {
         var figureContent = document.getElementsByClassName('editor-view')[0];
         this.width = figureContent.clientWidth;
         this.height = figureContent.clientHeight;
-        d3.select(".editor-svg")
+        this.svg = d3.select(".editor-svg")
             .attr("width", figureContent.clientWidth)
             .attr("height", figureContent.clientHeight);
 
@@ -30,6 +28,7 @@ export default {
             selectedText: null,
             width: null,
             height: null,
+            svg: null,
         };
     },
     computed: {
@@ -62,6 +61,27 @@ export default {
         exit() {
             this.editing = false;
             this.$store.commit('EDIT_ELE', this.selectedText);
+        },
+        shapeTransition(prevStatus, nextStatus) {
+            var counter = 0;
+            var refreshIntervalId = setInterval(() => {
+                if (++counter > maxCounter) {
+                    clearInterval(refreshIntervalId);
+                }
+                var status = JSON.parse(JSON.stringify(prevStatus));
+                for (var i = 0; i < status.length; ++i) {
+                    if (JSON.stringify(prevStatus[i]) == JSON.stringify(nextStatus[i])) {
+                        status[i].ignore = true;
+                    } else {
+                        status[i].sat = (prevStatus[i].sat * (maxCounter - counter) + nextStatus[i].sat * counter) / maxCounter;
+                        status[i].hue = (prevStatus[i].hue * (maxCounter - counter) + nextStatus[i].hue * counter) / maxCounter;
+                        status[i].size = (prevStatus[i].size * (maxCounter - counter) + nextStatus[i].size * counter) / maxCounter;
+                        status[i].length = (prevStatus[i].length * (maxCounter - counter) + nextStatus[i].length * counter) / maxCounter;
+                        status[i].opacity = (prevStatus[i].opacity * (maxCounter - counter) + nextStatus[i].opacity * counter) / maxCounter;
+                    }
+                }
+                opinionseer(this.svg, this.width, this.height, status);
+            }, frame);
         },
         selectAnnotation(val) {
             const svg = d3.select(this.$el).select('svg');
@@ -96,6 +116,7 @@ export default {
                 .attr('font-family', 'Source Sans Pro')
                 .attr('font-size', 24)
                 .style('fill', 'var(--color-blue-dark)')
+                .style('opacity', 0)
                 .text(val.annotation.text)
                 .call(d3.drag()
                     .on('drag', function (d) {
@@ -105,6 +126,8 @@ export default {
                         d3.select(this).attr('transform', `translate(${val.annotation.x},${val.annotation.y})`);
                     })
                 );
+            
+            g.select('#description').transition().duration(duration).style("opacity", 1);
         },
     },
     watch: {
@@ -127,6 +150,7 @@ export default {
                 } else {
                     opinionseer(svg, width, height, val.parent.status);
                     this.selectedText = null;
+                    this.shapeTransition(val.parent.status, val.parent.nextStatus)
                 }
             }
         }
