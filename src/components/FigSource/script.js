@@ -134,20 +134,21 @@ export default {
 		
 		for (var i = 1; i < this.tabs.length; ++i) {
 			const block = JSON.parse(JSON.stringify(defaultTemp));
-			block.startStatus = {
-				innerCircle : i > 1 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				innerBar : i > 2 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				innerRing : i > 3 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				parallelLinks: i > 4 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				outerRing: i > 5 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-			};
-			block.endStatus = {
-				innerCircle : i >= 1 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				innerBar : i >= 2 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				innerRing : i >= 3 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				parallelLinks: i >= 4 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-				outerRing: i >= 5 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-			};
+			block.startStatus = [
+				i > 1 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerCircle'} : { isBackground: true, part: 'innerCircle'},
+				i > 2 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerBar'} : { isBackground: true, part: 'innerBar'},
+				i > 3 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerRing'} : { isBackground: true, part: 'innerRing'},
+				i > 4 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'parallelLinks'} : { isBackground: true, part: 'parallelLinks'},
+				i > 5 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'outerRing'} : { isBackground: true, part: 'outerRing'},
+			];
+			block.endStatus = [
+				i >= 1 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerCircle'} : { isBackground: true, part: 'innerCircle'},
+				i >= 2 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerBar'} : { isBackground: true, part: 'innerBar'},
+				i >= 3 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerRing'} : { isBackground: true, part: 'innerRing'},
+				i >= 4 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'parallelLinks'} : { isBackground: true, part: 'parallelLinks'},
+				i >= 5 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'outerRing'} : { isBackground: true, part: 'outerRing'},
+			];
+			block.startStatus[i - 1] = { length : 0, hue: 0, sat: 0, size: 0, opacity: 0.2 };
 			block.marks.forEach((mark) => {
 				mark.parent = block;
 				mark.channels.forEach((channel) => {

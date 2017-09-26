@@ -113,9 +113,9 @@ export default {
             svg.attr('width', width).attr('height', height);
 
             if (val) {
-                console.log(val);
+                console.log(val.parent.status);
                 svg.selectAll('*').remove();
-                opinionseer(svg, width, height, val.parent.parent.startStatus);
+                opinionseer(svg, width, height, val.parent.status);
                 if (val.name === "anno") {
                     this.selectAnnotation(val);
                 } else {

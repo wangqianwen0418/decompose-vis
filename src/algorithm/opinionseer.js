@@ -1,13 +1,13 @@
 import * as d3 from "d3";
 
 var filterCounter = 0;
-export function opinionseer(svg, width, height, config = {
-    parallelLinks: { isBackground: true },
-    outerRing: { isBackground: true },
-    innerRing : { isBackground: true },
-    innerBar : { isBackground: true },
-    innerCircle : { isBackground: true },
-}) {
+export function opinionseer(svg, width, height, config = [
+    { isBackground: true, name: 'parallelLinks' },
+    { isBackground: true, name: 'outerRing' },
+    { isBackground: true, name: 'innerRing' },
+    { isBackground: true, name: 'innerBar' },
+    { isBackground: true, name: 'innerCircle' },
+]) {
     function getNumberInNormalDistribution(mean, std_dev) {
         return mean + (randomNormalDistribution() * std_dev);
     }
@@ -176,68 +176,68 @@ export function opinionseer(svg, width, height, config = {
 
     if (typeof config === "number") {
         const code = config;
-        config = {
-            parallelLinks: code === 0 || code === 4 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-            outerRing: code === 0 || code === 5 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-            innerRing : code === 0 || code === 3 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-            innerBar : code === 0 || code === 2 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-            innerCircle : code === 0 || code === 1 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1 } : { isBackground: true },
-        }
+        config = [
+            code === 0 || code === 1 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerCircle'} : { isBackground: true, part: 'innerCircle'},
+            code === 0 || code === 2 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerBar'} : { isBackground: true, part: 'innerBar'},
+            code === 0 || code === 3 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerRing'} : { isBackground: true, part: 'innerRing'},
+            code === 0 || code === 4 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'parallelLinks'} : { isBackground: true, part: 'parallelLinks'},
+            code === 0 || code === 5 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'outerRing'} : { isBackground: true, part: 'outerRing'},
+        ];
     }
 
-    if (config.parallelLinks) {
-        if (config.parallelLinks.isBackground) {
+    if (config[3]) {
+        if (config[3].isBackground) {
             drawparallelLinks(1, 1, 1, 0, 0.1);
         } else {
-            drawparallelLinks(config.parallelLinks.size,
-                config.parallelLinks.length,
-                config.parallelLinks.hue,
-                config.parallelLinks.sat,
-                config.parallelLinks.opacity);
+            drawparallelLinks(config[3].size,
+                config[3].length,
+                config[3].hue,
+                config[3].sat,
+                config[3].opacity);
         }
     }
-    if (config.outerRing) {
-        if (config.outerRing.isBackground) {
+    if (config[4]) {
+        if (config[4].isBackground) {
             drawOuterRing(1, 1, 1, 0, 0.1);
         } else {
-            drawOuterRing(config.outerRing.size,
-                config.outerRing.length,
-                config.outerRing.hue,
-                config.outerRing.sat,
-                config.outerRing.opacity);
+            drawOuterRing(config[4].size,
+                config[4].length,
+                config[4].hue,
+                config[4].sat,
+                config[4].opacity);
         }
     }
-    if (config.innerRing) {
-        if (config.innerRing.isBackground) {
+    if (config[2]) {
+        if (config[2].isBackground) {
             drawInnerRing(1, 1, 1, 0, 0.1);
         } else {
-            drawInnerRing(config.innerRing.size,
-                config.innerRing.length,
-                config.innerRing.hue,
-                config.innerRing.sat,
-                config.innerRing.opacity);
+            drawInnerRing(config[2].size,
+                config[2].length,
+                config[2].hue,
+                config[2].sat,
+                config[2].opacity);
         }
     }
-    if (config.innerBar) {
-        if (config.innerBar.isBackground) {
+    if (config[1]) {
+        if (config[1].isBackground) {
             drawInnerBar(1, 1, 1, 0, 0.1);
         } else {
-            drawInnerBar(config.innerBar.size,
-                config.innerBar.length,
-                config.innerBar.hue,
-                config.innerBar.sat,
-                config.innerBar.opacity);
+            drawInnerBar(config[1].size,
+                config[1].length,
+                config[1].hue,
+                config[1].sat,
+                config[1].opacity);
         }
     }
-    if (config.innerCircle) {
-        if (config.innerCircle.isBackground) {
+    if (config[0]) {
+        if (config[0].isBackground) {
             drawInnerCircle(1, 1, 1, 0, 0.1);
         } else {
-            drawInnerCircle(config.innerCircle.size,
-                config.innerCircle.length,
-                config.innerCircle.hue,
-                config.innerCircle.sat,
-                config.innerCircle.opacity);
+            drawInnerCircle(config[0].size,
+                config[0].length,
+                config[0].hue,
+                config[0].sat,
+                config[0].opacity);
         }
     }
 

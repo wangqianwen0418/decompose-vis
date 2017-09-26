@@ -12,6 +12,17 @@ import {
     EDIT_EXP,
 } from './types';
 
+function applyChannel(status, channel) {
+    if (channel.name === "color-h") {
+        status.hue = 0;
+    } else if (channel.name === "color-s") {
+        status.sat = 0;
+    } else if (channel.name === "size") {
+        status.size = 0;
+    } else if (channel.name === "position") {
+        status.length = 0;
+    }
+}
 
 const mutations = {
     // [ADD_CHANNEL](state, channelTemp) {
@@ -43,7 +54,7 @@ const mutations = {
                     if (ch === channel) {
                         ch.selected = true;
                         if (ch.img) {
-		                    const img = document.getElementsByClassName('editorIMG')[0];
+                            const img = document.getElementsByClassName('editorIMG')[0];
                             img.src = ch.img;
                         } else {
                             // mark.canvas.render(i);
@@ -57,9 +68,14 @@ const mutations = {
         // channel.selected = true;
     },
     [UPDATE_CHANNEL](state, channels) {
-        state.blocks.forEach((blk) => {
+        state.blocks.forEach((blk, blkIndex) => {
             if (blk.selected) {
+                for (var i = channels.length - 1; i >= 0; --i) {
+                    channels[i].status = JSON.parse(JSON.stringify(i === channels.length - 1 ? blk.endStatus : channels[i + 1].status));
+                    applyChannel(channels[i].status[blkIndex], channels[i]);
+                }
                 blk.marks[0].channels = channels;
+                console.log(channels);
             }
         });
     },
