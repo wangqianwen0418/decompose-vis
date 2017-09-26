@@ -12,7 +12,7 @@ import {
 var width, height;
 
 const aniWidth = 80;
-const channelMinWidth = 80;
+const channelMinWidth = 70;
 const addButtonWidth = 25;
 const duration = 300;
 const channelMargin = {
@@ -27,7 +27,12 @@ const aniMargin = {
     left: 7,
     right: 7
 };
-const animationTypes = ["anno", "fade-in", "fade-out", "grow", "change-size", "add-color", "high-light"];
+const animationTypes = {
+    color: ["anno", "fade-in", "fade-out", "add-color", "high-light"],
+    size: ["anno", "fade-in", "fade-out", "change-size", "high-light"],
+    position: ["anno", "fade-in", "fade-out", "grow", "change-size", "high-light"],
+    shape: [],
+};
 const animationColumnNum = 4;
 const animationExpandedWidth = 170;
 
@@ -235,10 +240,11 @@ export default {
                 .style('display', 'none');
 
             const addAni = closeGroup.selectAll(".addanimation")
-                .data(d => animationTypes.map(a => ({
-                    animation: a,
-                    channel: d,
-                }))).enter()
+                .data(d => animationTypes[d.name].map(a => ({
+                        animation: a,
+                        channel: d,
+                    }))
+                ).enter()
                 .append("g")
                 .attr("class", "addanimation")
                 .attr("transform", "translate(0, 0) scale(0.5)")

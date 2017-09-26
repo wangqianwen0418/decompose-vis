@@ -29,6 +29,7 @@ export default {
             width: null,
             height: null,
             svg: null,
+            refreshIntervalId: null,
         };
     },
     computed: {
@@ -64,9 +65,9 @@ export default {
         },
         shapeTransition(prevStatus, nextStatus) {
             var counter = 0;
-            var refreshIntervalId = setInterval(() => {
+            this.refreshIntervalId = setInterval(() => {
                 if (++counter > maxCounter) {
-                    clearInterval(refreshIntervalId);
+                    clearInterval(this.refreshIntervalId);
                 }
                 var status = JSON.parse(JSON.stringify(prevStatus));
                 for (var i = 0; i < status.length; ++i) {
@@ -145,12 +146,12 @@ export default {
             if (val) {
                 svg.selectAll('*').remove();
                 if (val.name === "anno") {
-                    opinionseer(svg, width, height, val.parent.nextStatus);
+                    opinionseer(svg, width, height, val.nextStatus);
                     this.selectAnnotation(val);
                 } else {
-                    opinionseer(svg, width, height, val.parent.status);
+                    opinionseer(svg, width, height, val.status);
                     this.selectedText = null;
-                    this.shapeTransition(val.parent.status, val.parent.nextStatus)
+                    this.shapeTransition(val.status, val.nextStatus)
                 }
             }
         }

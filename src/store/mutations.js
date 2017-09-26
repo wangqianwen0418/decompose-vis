@@ -70,14 +70,39 @@ const mutations = {
     [UPDATE_CHANNEL](state, channels) {
         state.blocks.forEach((blk, blkIndex) => {
             if (blk.selected) {
+                // console.log(channels);
                 for (var i = channels.length - 1; i >= 0; --i) {
-                    channels[i].nextStatus = i === channels.length - 1 ? blk.endStatus : channels[i + 1].status;
-                    channels[i].status = JSON.parse(JSON.stringify(channels[i].nextStatus));
-                    if (channels[i].animations.length > 0) {
-                        applyChannel(channels[i].status[blkIndex], channels[i]);
+                    var len = channels[i].animations.length;
+                    if (len == 0) continue;
+
+                    channels[i].animations[len - 1].nextStatus = null;
+                    var k = i + 1;
+                    for (; k < channels.length; ++k)
+                        if (channels[k].animations.length > 0) {
+                            channels[i].animations[len - 1].nextStatus = channels[k].animations[0].status;
+                            channels[i].animations[len - 1].status = JSON.parse(JSON.stringify(channels[i].animations[len - 1].nextStatus));
+                            if (channels[k].name === "color") {
+                                channels[i].animations[len - 1].status[blkIndex].sat = 0;
+                            } else if (channels[k].name === "position") {
+                                channels[i].animations[len - 1].status[blkIndex].length = 0;
+                            } else if (channels[k].name === "size") {
+                                channels[i].animations[len - 1].status[blkIndex].size = 0;
+                            }
+                            break;
+                        }
+                    if (k == channels.length) {
+                        channels[i].animations[len - 1].nextStatus = blk.endStatus;
+                        channels[i].animations[len - 1].status = JSON.parse(JSON.stringify(channels[i].animations[len - 1].nextStatus));
                     }
+
+                    for (var j = len - 2; j >= 0; --j) {
+                        channels[i].animations[j].nextStatus = channels[i].animations[j + 1].status;
+                        channels[i].animations[j].status = JSON.parse(JSON.stringify(channels[i].animations[j].nextStatus));
+                    }                
+                    // console.log(i, channels[i].animations);
                 }
                 blk.marks[0].channels = channels;
+                // console.log(blk.marks[0].channels);
             }
         });
     },

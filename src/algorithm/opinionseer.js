@@ -1,12 +1,26 @@
 import * as d3 from "d3";
 
 var filterCounter = 0;
-export function opinionseer(svg, width, height, config = [
-    { isBackground: true, name: 'parallelLinks' },
-    { isBackground: true, name: 'outerRing' },
-    { isBackground: true, name: 'innerRing' },
-    { isBackground: true, name: 'innerBar' },
-    { isBackground: true, name: 'innerCircle' },
+export function opinionseer(svg, width, height, config = [{
+        isBackground: true,
+        name: 'parallelLinks'
+    },
+    {
+        isBackground: true,
+        name: 'outerRing'
+    },
+    {
+        isBackground: true,
+        name: 'innerRing'
+    },
+    {
+        isBackground: true,
+        name: 'innerBar'
+    },
+    {
+        isBackground: true,
+        name: 'innerCircle'
+    },
 ]) {
     function getNumberInNormalDistribution(mean, std_dev) {
         return mean + (randomNormalDistribution() * std_dev);
@@ -86,7 +100,11 @@ export function opinionseer(svg, width, height, config = [
 
         for (var year = startYear; year <= endYear; ++year) {
             for (var d = 0; d < monthName.length; ++d) {
-                calendarData.push([year, d, getNumberInNormalDistribution(monthData[d], monthData[d] * 0.33)]);
+                calendarData.push(
+                    [year,
+                        d,
+                        getNumberInNormalDistribution(monthData[d], monthData[d] * 0.33)
+                    ]);
             }
         }
         console.log(JSON.stringify(calendarData));
@@ -172,16 +190,69 @@ export function opinionseer(svg, width, height, config = [
 
     paint
         .attr("class", "graph")
-        .attr("transform", `translate(${width / 2},${height / 2}) scale(${1.05 * Math.min(width, height) / Math.min(width0, height0)})`);
+        .attr("transform",
+            `translate(${width / 2},${height / 2})
+            scale(${1.00 * Math.min(width, height) / Math.min(width0, height0)})`
+        );
 
     if (typeof config === "number") {
         const code = config;
         config = [
-            code === 0 || code === 1 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerCircle'} : { isBackground: true, part: 'innerCircle'},
-            code === 0 || code === 2 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerBar'} : { isBackground: true, part: 'innerBar'},
-            code === 0 || code === 3 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'innerRing'} : { isBackground: true, part: 'innerRing'},
-            code === 0 || code === 4 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'parallelLinks'} : { isBackground: true, part: 'parallelLinks'},
-            code === 0 || code === 5 ? { length: 1, hue: 1, sat: 1, size: 1, opacity: 1, part: 'outerRing'} : { isBackground: true, part: 'outerRing'},
+            code === 0 || code === 1 ? {
+                length: 1,
+                hue: 1,
+                sat: 1,
+                size: 1,
+                opacity: 1,
+                part: 'innerCircle'
+            } : {
+                isBackground: true,
+                part: 'innerCircle'
+            },
+            code === 0 || code === 2 ? {
+                length: 1,
+                hue: 1,
+                sat: 1,
+                size: 1,
+                opacity: 1,
+                part: 'innerBar'
+            } : {
+                isBackground: true,
+                part: 'innerBar'
+            },
+            code === 0 || code === 3 ? {
+                length: 1,
+                hue: 1,
+                sat: 1,
+                size: 1,
+                opacity: 1,
+                part: 'innerRing'
+            } : {
+                isBackground: true,
+                part: 'innerRing'
+            },
+            code === 0 || code === 4 ? {
+                length: 1,
+                hue: 1,
+                sat: 1,
+                size: 1,
+                opacity: 1,
+                part: 'parallelLinks'
+            } : {
+                isBackground: true,
+                part: 'parallelLinks'
+            },
+            code === 0 || code === 5 ? {
+                length: 1,
+                hue: 1,
+                sat: 1,
+                size: 1,
+                opacity: 1,
+                part: 'outerRing'
+            } : {
+                isBackground: true,
+                part: 'outerRing'
+            },
         ];
     }
 
@@ -226,7 +297,7 @@ export function opinionseer(svg, width, height, config = [
     }
     if (config[1]) {
         if (config[1].ignore) {
-            
+
         } else if (config[1].isBackground) {
             drawInnerBar(1, 1, 1, 0, 0.1);
         } else {
@@ -239,7 +310,7 @@ export function opinionseer(svg, width, height, config = [
     }
     if (config[0]) {
         if (config[0].ignore) {
-            
+
         } else if (config[0].isBackground) {
             drawInnerCircle(1, 1, 1, 0, 0.1);
         } else {
@@ -264,7 +335,7 @@ export function opinionseer(svg, width, height, config = [
         grayFilter.append("feColorMatrix")
             .attr('type', 'saturate')
             .attr('values', sat);
-            
+
         outerRing
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
@@ -329,7 +400,7 @@ export function opinionseer(svg, width, height, config = [
         grayFilter.append("feColorMatrix")
             .attr('type', 'saturate')
             .attr('values', sat);
-            
+
         innerRing
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
@@ -422,7 +493,7 @@ export function opinionseer(svg, width, height, config = [
         grayFilter.append("feColorMatrix")
             .attr('type', 'saturate')
             .attr('values', sat);
-            
+
         parallelLinks
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
@@ -579,7 +650,7 @@ export function opinionseer(svg, width, height, config = [
         grayFilter.append("feColorMatrix")
             .attr('type', 'saturate')
             .attr('values', sat);
-            
+
         innerCircle
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
@@ -687,7 +758,7 @@ export function opinionseer(svg, width, height, config = [
             .attr("r", 4)
             .style("stroke-width", 2)
             .style("stroke", grey)
-            .style("fill", (d) => d[2] < hue * 4 ? color(d[2]): "none")
+            .style("fill", (d) => d[2] < hue * 4 ? color(d[2]) : "none")
             .style("opacity", (d) => d[2] + 1 < hue * 4 ? 0.9 : 0.9 * (hue * 4 - d[2]));
     }
 
@@ -703,7 +774,7 @@ export function opinionseer(svg, width, height, config = [
         grayFilter.append("feColorMatrix")
             .attr('type', 'saturate')
             .attr('values', sat);
-            
+
         innerBar
             .attr("opacity", opacity)
             .attr("transform", `scale(${size})`)
