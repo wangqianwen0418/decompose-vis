@@ -7,11 +7,6 @@
             <br/>tutor
             </div>
 
-           <div style='float:right' @click=" " >
-           <i class="fa fa-globe" ></i>
-           <br/>explore
-            </div>
-
 
            <div style='float:right' @click="save" >
            <i class="fa fa-download"></i>
@@ -39,11 +34,10 @@
     <el-dialog class='selectImport' v-model="showForm" size='tiny' title="Import">
         <el-upload class="upload-demo" action="//jsonplaceholder.typicode.com/posts/">
             <el-button size="small" :plain="true" type="info">upload a picture</el-button>
-            only jpg/png less then 500kb
         </el-upload>
         <el-input type="textarea" :rows="6" :cols="40" placeholder="add the text description here" v-model="textDescription">
         </el-input>
-        <el-button type="info" size="mini">import</el-button>
+        <el-button type="info" size="mini" @click='onImport'>import</el-button>
         <br/> OR
         <br/>
         <el-select v-model="value" placeholder="choose an example">

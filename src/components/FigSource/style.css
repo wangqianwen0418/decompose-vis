@@ -19,6 +19,7 @@
 		float: left;
 		list-style: none;
 		font-size: 18px;
+		font-family: 'Source Sans Pro';
 		/* color: rgb(131, 145, 165); */
 		background-color: var(--color-blue-gray);
 		color: var(--color-white);

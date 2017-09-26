@@ -1,21 +1,10 @@
 <div class="editor" id='positionTag' data-step="6" data-intro="add annotation" data-position='bottom'>
-    <div id='editorView'>
-        <canvas class='editorCanvas'></canvas>
-        <svg class='editorSVG' @click='canvasClick' @mousemove='canvasMousemove' @mouseout='canvasMouseout'><svg>
+    <div class='editor-view'>
+        <svg class='editor-svg'><svg>
     </div>
-    <div class='editPanel' v-if='editing' draggable='true' @dragstart='dragstart' @drag='drag' :style="styleObject">
-        Text Based Annotation
-        <textarea @keydown.enter='exit()' v-model="message" @input='editEle(message)' placeholder="edit the selected element here">
+
+    <div class='editPanel' v-if='editing' :style="styleObject" >
+        <textarea @keydown.enter='exit()' v-model="message" placeholder="edit the text here">
         </textarea>
-        Symbol Based Annotation
-        <i class="el-icon-setting"></i>
-        <SymbolButton category='size' type='horizontal'>
-        </SymbolButton>
-        <SymbolButton category='size' type='vertical'>
-        </SymbolButton>
     </div>
-    <!--
-    <svg class='svgEditor' width="55vw" height="55vh" @drop.prevent='ondrop'>
-    </svg>
-    !-->
 </div>

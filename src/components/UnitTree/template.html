@@ -4,8 +4,12 @@
                     {{block.name}}
                 </button>
         </draggable>-->
-        <div class="tittle">Tree of Visual Units
+        <div class="title">Graph of Visual Units
         <hr/>
         </div>
-        <svg id='bTree' :width="width" :height="height"></svg>
+        <button type="button" class="change">
+            <span>{{status === "ordered" ? "back" : "process"}} </span>
+        </button>
+        <svg id='bTree'>
+        </svg>
     </div>

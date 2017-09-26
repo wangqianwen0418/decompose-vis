@@ -1,5 +1,5 @@
-<div data-step="2" data-intro="refine the auto cluser of components" data-position='right' class="figure-source">
-    <div class="figure-tabs-header" data-step="3" data-intro="what is the structure of visual units" data-position='right'>
+<div data-step="2" data-intro="refine the auto cluster of components" data-position='right' class="figure-source">
+    <div class="figure-tabs-header" data-step="3" data-intro="What is the structure of visual units?" data-position='right'>
 
         <div v-for="item in tabs" :class="figureTabClass(item)" @click="onTabClick(item)">
             {{item.name}}
@@ -12,8 +12,8 @@
     </div>
 
     <div class="figure-content">
-        <canvas class="figure-main-view" @mousemove="onMousemove" @mouseout="onMouseout" @click.prevent="onClick" @contextmenu.prevent="onRightClick">
-        </canvas>
+        <svg class="figure-main-view">
+        </svg>
     </div>
 
     <el-dialog class='Templates' v-model="tempShow" size='small' title='Narvis Library'>
@@ -50,12 +50,11 @@
                           <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
                         </span>
                     <el-dropdown-menu slot="dropdown">
+                            <span v-for='temp in [temps[1], {name: "Bubble Chart"}, {name: "Dot Chart"}]' @click='addBlock(temp)'>
                             <el-dropdown-item >
-                               Scatter Plot
+                               {{temp.name}}
                             </el-dropdown-item>
-                            <el-dropdown-item >
-                               Bubble Chart
-                            </el-dropdown-item>
+                              </span>
                     </el-dropdown-menu>
                    </el-dropdown>
                 </td>
@@ -149,7 +148,7 @@
                           <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
                         </span>
                     <el-dropdown-menu slot="dropdown">
-                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <span v-for='temp in [temps[2], {name:"Parallel Coordinates"}, {name:"Arc Diagram"}]' @click='addBlock(temp)'>
                             <el-dropdown-item >
                                {{temp.name}}
                             </el-dropdown-item>
@@ -295,7 +294,7 @@
                           <div class="callTemp"> <i class="fa fa-volume-control-phone"></i></div>
                         </span>
                     <el-dropdown-menu slot="dropdown">
-                            <span v-for='temp in temps' @click='addBlock(temp)'>
+                            <span v-for='temp in [temps[4]]' @click='addBlock(temp)'>
                             <el-dropdown-item >
                                {{temp.name}}
                             </el-dropdown-item>
@@ -371,7 +370,7 @@
 
 
             <tr>
-                <th class='primitives'>Image</th>
+                <th class='primitives'>Grid</th>
                 <td>
                     <el-dropdown  trigger="click">
                         <span class="el-dropdown-link" >

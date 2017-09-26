@@ -13,7 +13,6 @@ export default {
             showForm: false,
             showView: false,
             value: '',
-            textDescription: '',
         };
     },
     computed: {
@@ -69,6 +68,13 @@ export default {
     },
     intro() {
         introJs.introJs().start();
+    },
+    onImport() {
+      setTimeout(function() {
+        const canvas = document.getElementsByTagName('canvas')[0];
+        this.showForm = false;
+        canvas.style.display = 'block';
+      }, 2000);
     },
   },
 };

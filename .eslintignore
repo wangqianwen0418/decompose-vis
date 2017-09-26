@@ -10,5 +10,6 @@ src/components/FigSource
 src/components/editor
 src/components/Survey
 src/components/Symbol.vue
+src
 src/VisFigure.vue
 src/App.vue

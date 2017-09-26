@@ -5,12 +5,12 @@ import {
     // REMOVE_MARK,
     SELECT_CHANNEL,
     EDIT_ELE,
+    UPDATE_BLOCK,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
     UPDATE_CHANNEL,
     EDIT_EXP,
 } from './types';
-import { Animation } from '../canvas/object';
 
 
 const mutations = {
@@ -41,9 +41,13 @@ const mutations = {
             block.marks.forEach((mark) => {
                 mark.channels.forEach((ch, i) => {
                     if (ch === channel) {
-                        console.info(ch);
                         ch.selected = true;
-                        mark.canvas.render(i);
+                        if (ch.img) {
+		                    const img = document.getElementsByClassName('editorIMG')[0];
+                            img.src = ch.img;
+                        } else {
+                            // mark.canvas.render(i);
+                        }
                     } else {
                         ch.selected = false;
                     }
@@ -53,37 +57,32 @@ const mutations = {
         // channel.selected = true;
     },
     [UPDATE_CHANNEL](state, channels) {
-        const len = channels.length;
-        const canvas = channels[0].parent.canvas;
-        canvas.itemTables = new Array(len + 1);
-        canvas.itemTables[len] = canvas.items;
-        const n = canvas.items.length;
-        for (let i = len - 1; i >= 0; --i) {
-            channels[i].index = i;
-            canvas.itemTables[i] = new Array(n);
-            for (let j = 0; j < n; ++j) {
-                canvas.itemTables[i][j] =
-                    Animation.initialStatus(canvas.itemTables[i + 1][j], channels[i].name);
+        state.blocks.forEach((blk) => {
+            if (blk.selected) {
+                blk.marks[0].channels = channels;
             }
-        }
+        });
+    },
+    [UPDATE_BLOCK](state, blocks) {
+        state.blocks = blocks;
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
             blk.selected = false;
         });
-        console.info(block);
-        block.canvas.render();
         block.selected = true;
     },
     [EDIT_ELE](state, message) {
         state.blocks.forEach((block) => {
             block.marks.forEach((mark) => {
                 mark.channels.forEach((channel) => {
-                    if (channel.selected) {
-                        channel.attachedEles.forEach((ele) => {
-                            if (ele.selected) { ele.description.text = message; }
-                        });
-                    }
+                    channel.animations.forEach((ani) => {
+                        if (ani.selected) {
+                            ani.annotation.text = message.text;
+                            ani.annotation.x = message.x;
+                            ani.annotation.y = message.y;
+                        }
+                    });
                 });
             });
         });

@@ -5,6 +5,7 @@ import {
     // REMOVE_MARK,
     SELECT_CHANNEL,
     EDIT_ELE,
+    UPDATE_BLOCK,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
     EDIT_EXP,
@@ -38,6 +39,9 @@ const actions = {
     },
     [UPDATE_BLOCKS]({ commit }, blocks) {
         commit(UPDATE_BLOCKS, blocks);
+    },
+    [UPDATE_BLOCK]({ commit }, block) {
+        commit(UPDATE_BLOCK, block);
     },
     [UPDATE_CHANNEL]({ commit }, items) {
         commit(UPDATE_CHANNEL, items);

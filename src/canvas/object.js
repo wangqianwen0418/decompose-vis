@@ -175,9 +175,19 @@ export class AnimatedCanvas {
         }
         return null;
     }
+    
+    renderImage(img) {
+        this.clear();
+        const ctx = this.ctx;
+        ctx.globalAlpha = 1;
+        ctx.drawImage(img, 0, 0);
+        ctx.globalAlpha = 1;
+    }
 
     render(index, highlightedItem) {
-        index = index || -1;
+        if (index === undefined) {
+            index = -1;
+        }
         const items = index !== -1 ? this.itemTables[index] : this.items;
         const canvas = this.canvas;
         this.currentChannel = index;
