@@ -62,8 +62,8 @@ const myVue = {
             }
         },
         updateTree(nodes) {
-            var x = this.isSeriesView ? [50, 200, 350, 50, 200, 350] : [230, 233, 433, 40, 379, 140];
-            var y = this.isSeriesView ? [70, 70, 70, 200, 200, 200] : [180, 70, 120, 170, 268, 290];
+            var x = this.isSeriesView ? [0, 50, 200, 350, 50, 200, 350] : [230, 233, 433, 40, 379, 140];
+            var y = this.isSeriesView ? [0, 70, 70, 70, 200, 200, 200] : [180, 70, 120, 170, 268, 290];
             var ratio = [
                 [0.7, 0.81, 0.66, 0.82, 0.83],
                 [0.7, 0.7, 0.81, 0.74, 0.79],
@@ -181,10 +181,10 @@ const myVue = {
         
             nodeRect.append('text')
                 .text(d => d.data.name)
-                .attr('dx', '30')
-                .attr('dy', '10')
+                .attr('dx', '50')
+                .attr('dy', '50')
                 .attr('text-anchor', 'middle')
-                .attr('font-size', '30px')
+                .attr('font-size', '20px')
                 .style('fill', 'var(--color-blue-light)')
                 .style('opacity', 0.9);
         
