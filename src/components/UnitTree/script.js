@@ -68,6 +68,10 @@ const myVue = {
             var self = this;
             var last = -1;
             nodes = nodes.descendants();
+            if (this.isSeriesView) {
+                nodes = nodes.slice(1);
+            }
+
             nodes.forEach((d, i) => {
                 d.x = x[i];
                 d.y = y[i];
