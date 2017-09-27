@@ -13,6 +13,7 @@
     "intro.js": "^2.4.0",
     "vue": "^2.1.0",
     "vue-awesome-swiper": "^2.6.4",
+    "vue-js-toggle-button": "^1.1.5",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.3.0"
   },

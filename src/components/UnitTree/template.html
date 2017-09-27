@@ -3,9 +3,15 @@
     <div class="title">Graph of Visual Units
         <hr/>
     </div>
-    <button type="button" @click="changeView" class="change">
+    <button type="button" v-if="!processed" @click="changeView" class="changebutton">
         <span z-index="1">{{isSeriesView ? "back" : "process"}} </span>
     </button>
+    <toggle-button class="changetoggle" v-if="processed" @change="changeView"
+        id="changed-font"
+        :labels = "{checked:'graph view', unchecked:'sequence view'}"
+        :width = "130"
+        :height = "30"
+        :color="{unchecked:'var(--color-blue-light)', checked:'var(--color-gray)'}"/>
     <svg id='bTree'>
     </svg>
 </div>

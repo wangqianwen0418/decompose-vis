@@ -24,7 +24,7 @@
     font-size:20px;
 }
 
-.change {
+.changebutton {
     float:right;
     margin:1vw;
     color:var(--color-blue-dark);
@@ -34,14 +34,14 @@
     border: 2px solid var(--color-blue-light);
 }
 
-.change span {
+.changebutton span {
   cursor: pointer;
   display: inline-block;
   position: relative;
   transition: 0.5s;
 }
 
-.change span:after {
+.changebutton span:after {
   content: '\00bb';
   position: absolute;
   opacity: 0;
@@ -50,13 +50,24 @@
   transition: 0.5s;
 }
 
-.change:hover span {
+.changebutton:hover span {
   padding-right: 25px;
 }
 
-.change:hover span:after {
+.changebutton:hover span:after {
   opacity: 1;
   right: 0;
+}
+
+.changetoggle {
+    float:right;
+    margin:1vw;
+    font-size:20px;
+    outline:none;
+}
+
+.vue-js-switch#changed-font {
+  font-size: 15px;
 }
 
 hr {

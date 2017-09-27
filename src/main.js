@@ -8,7 +8,9 @@ import '../font-awesome-4.7.0/css/font-awesome.min.css';
 // import '../node_modules/intro.js/introjs.css';
 import store from './store';
 import App from './components/App';
+import ToggleButton from 'vue-js-toggle-button';
 
+Vue.use(ToggleButton)
 Vue.use(ElementUI, { locale });
 Vue.use(VueResource);
 
