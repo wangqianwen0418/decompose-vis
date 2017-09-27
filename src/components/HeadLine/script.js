@@ -13,7 +13,6 @@ export default {
             showForm: false,
             showView: false,
             value: '',
-            textDescription: '',
         };
     },
     computed: {
@@ -56,6 +55,9 @@ export default {
           })
         })
     },
+    play() {
+      console.log("do play");
+    },
     save() {
         this.$notify.success({
             message: 'Your NarVis is Saved !',
@@ -69,6 +71,13 @@ export default {
     },
     intro() {
         introJs.introJs().start();
+    },
+    onImport() {
+      setTimeout(function() {
+        const canvas = document.getElementsByTagName('canvas')[0];
+        this.showForm = false;
+        canvas.style.display = 'block';
+      }, 2000);
     },
   },
 };

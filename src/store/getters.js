@@ -20,21 +20,21 @@ const getters =
             });
             return channel;
         },
-        selectedEle:
+        selectedAnimation:
         (state) => {
-            let returnEle = null;
+            let returnAni = null;
             state.blocks.forEach((block) => {
                 block.marks.forEach((mark) => {
-                    mark.channels.forEach((channel) => {
-                        if (channel.selected && channel.attachedEles) {
-                            channel.attachedEles.forEach((ele) => {
-                                if (ele.selected) returnEle = ele;
+                    mark.channels.forEach((channel) => { 
+                        if (channel.animations) {
+                            channel.animations.forEach((ani) => {
+                                if (ani.selected) returnAni = ani;
                             });
                         }
                     });
                 });
             });
-            return returnEle;
+            return returnAni;
         },
         bTree:
         (state) => {

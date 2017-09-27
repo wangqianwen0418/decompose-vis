@@ -1,8 +1,6 @@
-import templates from './templates';
-
 const state = {
     blocks: [],
-    temps: templates,
+    temps: [],
     marksTemp: [
         {
             name: 'point',
@@ -76,9 +74,14 @@ const state = {
     ],
     channelsTemp: [
         {
-            name: 'positon',
+            name: 'position',
+            more: 'x-y',
             selected: false,
-
+            removed: false,
+            attachedEles: [],
+            animations: ['x1', 'anotation', 'x2', 'anotation', 'y-move', 'anotation', 'appear-all'], // the  first ele move at x-direction, then move at y-direction, the all eles show at their position
+            annotations: ['start point means xxxxx', 'end point means xxxx', 'y position means xxxxx'],
+            explanation: 'x position means _, y position means _',
         }, {
             name: 'color-s',
             selected: false,

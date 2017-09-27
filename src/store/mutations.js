@@ -5,13 +5,24 @@ import {
     // REMOVE_MARK,
     SELECT_CHANNEL,
     EDIT_ELE,
+    UPDATE_BLOCK,
     UPDATE_BLOCKS,
     SELECT_BLOCK,
     UPDATE_CHANNEL,
     EDIT_EXP,
 } from './types';
-import { Animation } from '../canvas/object';
 
+function applyChannel(status, channel) {
+    if (channel.name === "color-h") {
+        status.hue = 0;
+    } else if (channel.name === "color-s") {
+        status.sat = 0;
+    } else if (channel.name === "size") {
+        status.size = 0;
+    } else if (channel.name === "position") {
+        status.length = 0;
+    }
+}
 
 const mutations = {
     // [ADD_CHANNEL](state, channelTemp) {
@@ -41,9 +52,13 @@ const mutations = {
             block.marks.forEach((mark) => {
                 mark.channels.forEach((ch, i) => {
                     if (ch === channel) {
-                        console.info(ch);
                         ch.selected = true;
-                        mark.canvas.render(i);
+                        if (ch.img) {
+                            const img = document.getElementsByClassName('editorIMG')[0];
+                            img.src = ch.img;
+                        } else {
+                            // mark.canvas.render(i);
+                        }
                     } else {
                         ch.selected = false;
                     }
@@ -53,37 +68,89 @@ const mutations = {
         // channel.selected = true;
     },
     [UPDATE_CHANNEL](state, channels) {
-        const len = channels.length;
-        const canvas = channels[0].parent.canvas;
-        canvas.itemTables = new Array(len + 1);
-        canvas.itemTables[len] = canvas.items;
-        const n = canvas.items.length;
-        for (let i = len - 1; i >= 0; --i) {
-            channels[i].index = i;
-            canvas.itemTables[i] = new Array(n);
-            for (let j = 0; j < n; ++j) {
-                canvas.itemTables[i][j] =
-                    Animation.initialStatus(canvas.itemTables[i + 1][j], channels[i].name);
+        state.blocks.forEach((blk, blkIndex) => {
+            if (blk.selected) {
+                // console.log(channels);
+                for (var i = channels.length - 1; i >= 0; --i) {
+                    var animations = channels[i].animations;
+                    var len = animations.length;
+                    if (len == 0) continue;
+
+                    animations[len - 1].nextStatus = null;
+                    var k = i + 1;
+                    for (; k < channels.length; ++k)
+                        if (channels[k].animations.length > 0) {
+                            animations[len - 1].nextStatus = channels[k].animations[0].status;
+                            animations[len - 1].status = JSON.parse(JSON.stringify(animations[len - 1].nextStatus));
+                            if (channels[k].name === "color") {
+                                animations[len - 1].status[blkIndex].sat = 0;
+                            } else if (channels[k].name === "position") {
+                                animations[len - 1].status[blkIndex].length = 0;
+                            } else if (channels[k].name === "size") {
+                                animations[len - 1].status[blkIndex].size = 0;
+                            }
+                            break;
+                        }
+                    if (k == channels.length) {
+                        animations[len - 1].nextStatus = JSON.parse(JSON.stringify(blk.endStatus));
+                        animations[len - 1].status = JSON.parse(JSON.stringify(animations[len - 1].nextStatus));
+                    }
+
+                    for (var j = len - 1; j >= 0; --j) {
+                        if (j != len - 1) {
+                            animations[j].nextStatus = animations[j + 1].status;
+                            if (animations[j].name == "anno" && animations[j + 1].name == "anno") {
+                                animations[j].status = animations[j].nextStatus;
+                            } else {
+                                animations[j].status = JSON.parse(JSON.stringify(animations[j].nextStatus));
+                            }
+                        }
+                        if (animations[j].name == "fade-in") {
+                            animations[j].status[blkIndex].opacity = 0;
+                            animations[j].nextStatus[blkIndex].opacity = 1;
+                        } else if (animations[j].name == "fade-out") {
+                            animations[j].status[blkIndex].opacity = 1;
+                            animations[j].nextStatus[blkIndex].opacity = 0;
+                        } else if (animations[j].name == "add-color") {
+                            animations[j].status[blkIndex].sat = 0;
+                            animations[j].nextStatus[blkIndex].sat = 1;
+                        } else if (animations[j].name == "grow" && channels[i].name == "position") {
+                            animations[j].status[blkIndex].position = 0;
+                            animations[j].nextStatus[blkIndex].position = 1;
+                        } else if (animations[j].name == "grow" && channels[i].name == "size") {
+                            animations[j].status[blkIndex].length = 0;
+                            animations[j].nextStatus[blkIndex].length = 1;
+                        } else if (animations[j].name == "high-light") {
+                            animations[j].status[blkIndex].highlight = true;
+                        }
+                    }
+                    // console.log(i, animations);
+                }
+                blk.marks[0].channels = channels;
+                console.log(blk.marks[0].channels);
             }
-        }
+        });
+    },
+    [UPDATE_BLOCK](state, blocks) {
+        state.blocks = blocks;
     },
     [SELECT_BLOCK](state, block) {
         state.blocks.forEach((blk) => {
             blk.selected = false;
         });
-        console.info(block);
-        block.canvas.render();
         block.selected = true;
     },
     [EDIT_ELE](state, message) {
         state.blocks.forEach((block) => {
             block.marks.forEach((mark) => {
                 mark.channels.forEach((channel) => {
-                    if (channel.selected) {
-                        channel.attachedEles.forEach((ele) => {
-                            if (ele.selected) { ele.description.text = message; }
-                        });
-                    }
+                    channel.animations.forEach((ani) => {
+                        if (ani.selected) {
+                            ani.annotation.text = message.text;
+                            ani.annotation.x = message.x;
+                            ani.annotation.y = message.y;
+                        }
+                    });
                 });
             });
         });

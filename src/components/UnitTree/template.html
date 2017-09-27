@@ -1,11 +1,17 @@
 <div class='unitTree' data-step="4" data-intro="drag and drop to modify the structure of visual units" data-position='right'>
-        <!--<draggable :list="blocks">
-                <button v-for="block in blocks" @click='selectBlock(block)'>
-                    {{block.name}}
-                </button>
-        </draggable>-->
-        <div class="tittle">Tree of Visual Units
+
+    <div class="title">Graph of Visual Units
         <hr/>
-        </div>
-        <svg id='bTree' :width="width" :height="height"></svg>
     </div>
+    <button type="button" v-if="!processed" @click="changeView" class="changebutton">
+        <span z-index="1">{{isSeriesView ? "back" : "process"}} </span>
+    </button>
+    <toggle-button class="changetoggle" v-if="processed" @change="changeView"
+        id="changed-font"
+        :labels = "{checked:'graph view', unchecked:'sequence view'}"
+        :width = "130"
+        :height = "30"
+        :color="{unchecked:'var(--color-blue-light)', checked:'var(--color-gray)'}"/>
+    <svg id='bTree'>
+    </svg>
+</div>

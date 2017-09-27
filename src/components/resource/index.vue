@@ -1,14 +1,9 @@
 <template>
     <div class="resource bg-purple-light">
-		<fig-source :src="require('assets/textflow-hi.png')"></fig-source>
+		<fig-source></fig-source>
 		<!--<text-source></text-source>-->
         <el-row>
-            <el-col :span='12'>
-                <unit-tree/>
-            </el-col>
-            <el-col :span='12'>
-                <in-block/>
-            </el-col>
+            <unit-tree/>
         </el-row>
     </div>
 </template>

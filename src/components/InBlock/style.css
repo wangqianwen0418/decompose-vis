@@ -1,163 +1,25 @@
-  /*.inBlock {
-        border-radius: 6px;
-        min-height: 43vh;
-        overflow-y: scroll;
-        overflow-x:hidden;
-        width: 20vw;
-        margin: 4px 0px;
-        background-color:var(--color-0);
-        color: var(--color-blue-dark);
-        box-shadow: 2px 2px 1px var(--color-blue-dark);
-    }
-    .inBlock::-webkit-scrollbar {
-    width: 0.1vh;
-}
 
-    .inBlock::-webkit-scrollbar-thumb {
-        border-radius: 3px;
-        background-color:#4F8C91;
-        width: 1vh;
-    }
+  .inBlock {
+      min-height: 15vh;
+      overflow-y: scroll;
+      overflow-x: hidden;
+      width: 57vw;
+      margin: 1vh 0.5vw;
+      background-color: var(--color-white);
+      color: var(--color-blue-dark);
+      box-shadow: 2px 2px 1px var(--color-gray);
+  }
 
-    #mark_list{
-        margin: 0px;
-        list-style-type: none;
-        padding:0px;
-    }
-    #mark_list li{
-        border:3px solid var(--color-2);
-        margin:3px;
-    }
-    #mark_list li:before{
-        content:' ◦ ';
-        color:var(--color-blue-dark);
-        padding-left:6px;
-    }
-    #channel_list{
-        font-size:15px;
-        list-style-type: none;
-        padding:0px;
-    }
-    #channel_list li:before{
-        content:'•  ';
-        color:var(--color-blue-dark);
-        padding-left: 6px;
-    }
-    #channel_list li{
-        background-color: var(--color-2);
-        margin:2px;
-    }
+  .inBlock::-webkit-scrollbar {
+      width: 1vh;
+  }
 
-    .el-icon-close{
-        float:right;
-        font-size:10px;
-    }
-    #channel_list li.channel{
-        margin-left:12px;
-        font-size: 15px;
-    }
-    #mark_list li.mark{
-        margin-left:3px;
-        font-size: 18px;
-    }
-    .block{
-        margin-left:10px;
-        margin-bottom: 0px;
-        font-size: 20px;
-    }*/
+  .inBlock::-webkit-scrollbar-thumb {
+      border-radius: 3px;
+      background-color: var(--color-blue-dark);
+      width: 1vh;
+  }
 
-/*version 2*/
-
-.inBlock {
-        min-height: 40vh;
-        overflow-y: scroll;
-        overflow-x:hidden;
-        width: 20vw;
-        margin: 1vh 0.5vw;
-        background-color:var(--color-white);
-        color: var(--color-blue-dark);
-        box-shadow: 2px 2px 1px var(--color-gray);
-    }
-    .inBlock::-webkit-scrollbar {
-    width: 1vh;
-}
-
-    .inBlock::-webkit-scrollbar-thumb {
-        border-radius: 3px;
-        background-color:var(--color-blue-dark);
-        width: 1vh;
-    }
-
-    #mark_list{
-        margin: 0px;
-        list-style-type: none;
-        padding:0px;
-    }
-    #mark_list li{
-        border:3px solid var(--color-blue-light);
-        margin: 0.5vh 0.5vw 0.5vh 1vw;
-    }
-
-    #mark_list li:before{
-        content:' ◦ ';
-        color:var(--color-blue-dark);
-        padding-left:6px;
-    }
-    #mark_list li:last-child{
-        text-align: center;
-    }
-    #mark_list li:last-child::before{
-        content: ' ';
-    }
-    #mark_list li.mark{
-        margin-left:3px;
-        font-size: 18px;
-    }
-        #mark_list span{
-        color: var(--color-blue-dark);
-        background-color:var(--color-white);
-        font-size: 15px;
-    }
-    #channel_list{
-        font-size:15px;
-        list-style-type: none;
-        padding:0px;
-    }
-    #channel_list li:before{
-        content:'•  ';
-        color:var(--color-white);
-        padding-left: 6px;
-    }
-    #channel_list li:last-child:before{
-        content:' ';
-    }
-    #channel_list li, #channel_list span{
-        background-color: var(--color-blue-light);
-        color:var(--color-white);
-        margin:0.5vh 0.5vw ;
-    }
-    #channel_list li:last-child{
-        text-align: center;
-    }
-
-    .el-icon-close{
-        float:right;
-        font-size:10px;
-    }
-    #channel_list li.channel{
-        margin-left:12px;
-        font-size: 15px;
-    }
-    .block{
-        margin:1vw;
-        color:var(--color-blue-dark);
-        font-size:20px;
-    }
-    hr {
-        background: var(--color-blue-dark);
-        width: 120%;
-        height: 0.3vh;
-        border:none;
-        margin:0px;
-        margin-left: -1vw;
-    }
+  .slide-view {
+      min-height: 15vh; 
+  }
