@@ -4,6 +4,7 @@
     </div>
 
     <div class='editPanel' v-if='editing' :style="styleObject" >
+        <span>Title</span>
         <textarea @keydown.enter='exit()' v-model="message" placeholder="edit the text here">
         </textarea>
     </div>

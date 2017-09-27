@@ -107,7 +107,7 @@ export default {
             this.bgrWidth = x;
 
             this.updateChannel(channels);
-        }, 
+        },
         updateSlide(root) {
             const svg = d3.select(".slide-svg");
             const svgWidth = +svg.attr("width");
@@ -120,6 +120,7 @@ export default {
             this.bgrWidth = 0;
             var lastSelectedAnimation = null;
             var thisSlide = this;
+            var self = this;
 
             thisSlide.calcLayout(root);
             this.bgrWidth += 200;
@@ -184,6 +185,9 @@ export default {
                     thisSlide.calcLayout(root);
                     channel.transition().duration(duration).attr("transform", d => `translate(${d.x},${d.y})`);
                     animation.transition().duration(duration).attr("transform", d => `translate(${d.x},${d.y})`);
+                    setTimeout(() => {
+                        self.updateSlide(root)
+                    }, duration);
                 });
 
             drawChannel();
@@ -198,11 +202,11 @@ export default {
 
             drawAnimation();
 
-            const addAniGroup = channel.append("g")
+            var addAniGroup = channel.append("g")
                 .attr("class", "add-button")
                 .attr("transform", d => `translate(${d.addButtonX},${aniMargin.top})`);
 
-            const addAniButton = addAniGroup.append("g")
+            var addAniButton = addAniGroup.append("g")
                 .attr("class", "button")
                 .style('opacity', 0.6)
                 .on("mouseenter", function (d) {
@@ -224,84 +228,18 @@ export default {
                 .style('fill', '#bbd8e2')
                 .style('opacity', 1);
 
-            addAniButton.append("path")
+            addAniButton.append('text')
+                .attr('font-family', 'FontAwesome')
+                .attr('font-size', '20px' )
+                .text(function(d) { return '\uf055' })
                 .attr("class", "open-group")
-                .attr("d", `M${addButtonWidth * 0.25},${aniHeight * 0.5 - 20}L${addButtonWidth * 0.25},${aniHeight * 0.5 + 20}L${addButtonWidth * 0.75},${aniHeight * 0.5}Z`)
-                .style('stroke', 'none')
+                .attr("dy", aniHeight * 0.6)
+                .attr("dx", 4)
                 .style("fill", "var(--color-blue-light)")
                 .style('opacity', 1)
                 .style('display', 'block')
                 .on("mouseenter", function (d) {
                     d3.select(this.parentNode).style("opacity", 1);
-                });
-
-            const closeGroup = addAniGroup.append("g")
-                .attr("class", "close-group")
-                .style('display', 'none');
-
-            const addAni = closeGroup.selectAll(".addanimation")
-                .data(d => animationTypes[d.name].map(a => ({
-                        animation: a,
-                        channel: d,
-                    }))
-                ).enter()
-                .append("g")
-                .attr("class", "addanimation")
-                .attr("transform", "translate(0, 0) scale(0.5)")
-                .style('opacity', 0.7)
-                .on("click", onAddAnimationItemClick);
-
-            addAni.append("rect")
-                .attr("width", aniWidth)
-                .attr("height", aniHeight)
-                .attr("rx", 10)
-                .attr("ry", 10)
-                .style("stroke", "none")
-                .style('fill', '#5EA3BA')
-                .on("mouseenter", function () {
-                    d3.select(this.parentNode).style("opacity", 1);
-                    d3.select(this)
-                        .style("stroke", "#264C58")
-                        .style("stroke-width", 4)
-                })
-                .on("mouseout", function () {
-                    d3.select(this.parentNode).style("opacity", 0.7);
-                    d3.select(this).style("stroke", "none");
-                });
-
-            addAni.selectAll(".name")
-                .data(function (d) {
-                    return d.animation.split('-').map(
-                        s => [s, d.animation.split('-').length]
-                    );
-                }).enter()
-                .append("text")
-                .attr("class", "name")
-                .text(d => d[0])
-                .attr("dx", d => 40)
-                .attr("dy", (d, i) => aniHeight * 0.6 + 5 - (d[1] - 1) * 10 + i * 20)
-                .style('fill', '#f7fbfe')
-                .attr('text-anchor', 'middle')
-                .style('font-size', '22px')
-                .style('font-family', 'Helvetica')
-                .on("mouseenter", function () {
-                    d3.select(this.parentNode).style("opacity", 1);
-                    d3.select(this.parentNode).select("rect")
-                        .style("stroke", "#264C58")
-                        .style("stroke-width", 4)
-                });
-
-            closeGroup
-                .append("path")
-                .attr("d", `M${addButtonWidth * 0.75},${aniHeight * 0.5 - 20}L${addButtonWidth * 0.75},${aniHeight * 0.5 + 20}L${addButtonWidth * 0.25},${aniHeight * 0.5}Z`)
-                .style('stroke', 'none')
-                .style("fill", "var(--color-blue-light)")
-                .style('opacity', 1)
-                .on("mouseenter", function () {
-                    d3.select(this.parentNode.parentNode).select(".button").style("opacity", 1);
-                })
-                .on("click", function (d) {
-                    onAddAnimationButtonClick(this.parentNode, d);
                 });
 
             function drawAnimation() {
@@ -337,7 +275,7 @@ export default {
                                     if (lastSelectedAnimation != null) {
                                         lastSelectedAnimation.style("opacity", 0.6);
                                         lastSelectedAnimation.select("rect").style("stroke", "none");
-                                        if (thisSlide.selectedAnimation) 
+                                        if (thisSlide.selectedAnimation)
                                             thisSlide.selectedAnimation.selected = false;
                                     }
                                     d.selected = true;
@@ -485,9 +423,81 @@ export default {
                 const aniGroup = d3.select(self.parentNode);
                 const active = !aniGroup.classed("active");
                 aniGroup.classed("active", active);
-                aniGroup.select(".close-group").style("display", active ? "block" : "none");
                 aniGroup.select(".open-group").style("display", active ? "none" : "block");
+
                 if (active) {
+                    const closeGroup = aniGroup.append("g")
+                        .attr("class", "close-group")
+                        .style('display', 'block');
+
+                    const addAni = closeGroup.selectAll(".addanimation")
+                        .data(d => animationTypes[d.name].map(a => ({
+                            animation: a,
+                            channel: d,
+                        }))
+                        ).enter()
+                        .append("g")
+                        .attr("class", "addanimation")
+                        .attr("transform", "translate(0, 0) scale(0.5)")
+                        .style('opacity', 0.7)
+                        .on("click", onAddAnimationItemClick);
+
+                    addAni.append("rect")
+                        .attr("width", aniWidth)
+                        .attr("height", aniHeight)
+                        .attr("rx", 10)
+                        .attr("ry", 10)
+                        .style("stroke", "none")
+                        .style('fill', '#5EA3BA')
+                        .on("mouseenter", function () {
+                            d3.select(this.parentNode).style("opacity", 1);
+                            d3.select(this)
+                                .style("stroke", "#264C58")
+                                .style("stroke-width", 4)
+                        })
+                        .on("mouseout", function () {
+                            d3.select(this.parentNode).style("opacity", 0.7);
+                            d3.select(this).style("stroke", "none");
+                        });
+
+                    addAni.selectAll(".name")
+                        .data(function (d) {
+                            return d.animation.split('-').map(
+                                s => [s, d.animation.split('-').length]
+                            );
+                        }).enter()
+                        .append("text")
+                        .attr("class", "name")
+                        .text(d => d[0])
+                        .attr("dx", d => 40)
+                        .attr("dy", (d, i) => aniHeight * 0.6 + 5 - (d[1] - 1) * 10 + i * 20)
+                        .style('fill', '#f7fbfe')
+                        .attr('text-anchor', 'middle')
+                        .style('font-size', '22px')
+                        .style('font-family', 'Helvetica')
+                        .on("mouseenter", function () {
+                            d3.select(this.parentNode).style("opacity", 1);
+                            d3.select(this.parentNode).select("rect")
+                                .style("stroke", "#264C58")
+                                .style("stroke-width", 4)
+                        });
+
+                    closeGroup
+                        .append('text')
+                        .attr('font-family', 'FontAwesome')
+                        .attr('font-size', '20px' )
+                        .text(function(d) { return '\uf056' })
+                        .attr("dy", aniHeight * 0.6)
+                        .attr("dx", 4)
+                        .style("fill", "var(--color-blue-light)")
+                        .style('opacity', 1)
+                        .style('display', 'block')
+                        .on("mouseenter", function () {
+                            d3.select(this.parentNode.parentNode).select(".button").style("opacity", 1);
+                        })
+                        .on("click", function (d) {
+                            onAddAnimationButtonClick(this.parentNode, d);
+                        });   
                     aniGroup.selectAll(".addanimation")
                         .transition().duration(duration / 2)
                         .attr("transform", (d, i) => `scale(0.5) translate(
@@ -502,11 +512,12 @@ export default {
                             return d.width;
                         });
                     channel.transition().duration(duration).attr("transform", d => `translate(${d.x},${d.y})`);
-                    animation.transition().duration(duration).attr("transform", d => `translate(${d.x},${d.y})`);
-                } else {
+                    animation.transition().duration(duration).attr("transform", d => `translate(${d.x},${d.y})`);    
+                } else {           
+                    const currChannel = d3.select(self.parentNode.parentNode);
+                    aniGroup.select(".close-group").remove();         
                     d.expanded = false;
                     thisSlide.calcLayout(root);
-                    const currChannel = d3.select(self.parentNode.parentNode);
                     currChannel.select(".bgrect")
                         .transition().duration(duration)
                         .attr("width", function (d) {

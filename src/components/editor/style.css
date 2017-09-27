@@ -26,15 +26,28 @@ textarea{
     box-shadow: 2px 2px 1px var(--color-gray);
     margin:1vh 1vw 0vh 0.5vw;
 }
+.editPanel{
+    border-radius:4px;
+    height:17vh;
+    width:15vw;
+    
+    background-color: var(--color-blue-gray);
+    box-shadow: 1px 1px 0.5px var(--color-gray);
+    opacity: 0.92;
+    z-index:1;
+}
+.editPanel span {
+    margin:5px;
+}
 
 textarea:active,textarea:focus {
     outline: none;
 }
 textarea{
     /*position: float;*/
-    margin:2px;
+    margin:4px;
     width:95%;
-    border-radius: 5px;
+    height:12vh;
     border:1px solid var(--color-gray);
     box-shadow: 1px 1px 0.5px var(--color-gray);
     opacity: 0.92;

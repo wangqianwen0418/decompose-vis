@@ -33,13 +33,13 @@ const defaultTemp = {
             selected: false,
             animations: ["fade-in", "anno"],
         }, {
-            name: 'position',
-            selected: false,
-            animations: ["fade-in", "anno"],
-        }, {
             name: 'color',
             selected: false,
             animations: [],
+        }, {
+            name: 'position',
+            selected: false,
+            animations: ["fade-in", "anno"],
         }, {
             name: 'shape',
             selected: false,

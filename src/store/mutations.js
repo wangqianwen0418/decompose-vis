@@ -84,10 +84,6 @@ const mutations = {
                             animations[len - 1].status = JSON.parse(JSON.stringify(animations[len - 1].nextStatus));
                             if (channels[k].name === "color") {
                                 animations[len - 1].status[blkIndex].sat = 0;
-                            } else if (channels[k].name === "position") {
-                                animations[len - 1].status[blkIndex].length = 0;
-                            } else if (channels[k].name === "size") {
-                                animations[len - 1].status[blkIndex].size = 0;
                             }
                             break;
                         }

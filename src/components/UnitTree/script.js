@@ -26,7 +26,7 @@ const myVue = {
     data() {
         return {
             isSeriesView: false,
-            processed: false,
+            processed: true,
             svg: null,
         };
     },
@@ -36,6 +36,7 @@ const myVue = {
         }),
         ...mapGetters({
             bTree: 'bTree',
+            selectedBlock: 'selectedBlock',
         }),
     },
     methods: {
@@ -149,7 +150,7 @@ const myVue = {
             const nodeLabel = node.append('g')
                 .attr('transform', 'translate(80, -20)')
                 .attr('class', 'nodelabel')
-                .style('opacity', this.processed ? 1 : 0);
+                .style('opacity', this.isSeriesView ? 1 : 0);
                 
             nodeLabel.append('circle')
                 .attr('class', 'label')
@@ -175,8 +176,22 @@ const myVue = {
                 .attr('y', -30)
                 .attr('rx', 3)
                 .attr('ry', 3)
-                .style('stroke', 'var(--color-blue-light)')
-                .style('stroke-width', 2)
+                .style('stroke', (d) => {
+                    if (this.selectedBlock) {
+                        return d.data.name == this.selectedBlock.name ? 
+                        'var(--color-blue-highlight)':
+                        'var(--color-blue-light)';
+                    } else {
+                        return 'var(--color-blue-light)';
+                    }
+                })
+                .style('stroke-width', (d) => {
+                    if (this.selectedBlock) {
+                        return d.data.name == this.selectedBlock.name ? 4 : 2
+                    } else {
+                        return 2;
+                    }
+                })
                 .style('fill', 'white');
         
             nodeRect.append('text')
@@ -212,6 +227,7 @@ const myVue = {
                             .data(links)
                             .enter().append("g")
                             .attr("class", "link");
+
                         link.append('line')
                             .style('stroke', 'var(--color-blue-light)')
                             .style('stroke-width', '2')
@@ -223,13 +239,6 @@ const myVue = {
                             .style('stroke-width', 1.5)
                             .attr("marker-end", "url(#arrow)");
                     } else {
-                        d3.selectAll('.fgrect')
-                            .style('stroke', 'var(--color-blue-light)')
-                            .style('stroke-width', 2)
-                        d3.select(this)
-                            .select('.fgrect')
-                            .style('stroke', 'var(--color-blue-highlight)')
-                            .style('stroke-width', '4');
                         last = i;
                     }
 
@@ -240,7 +249,13 @@ const myVue = {
                             } else blk.selected = false;
                         });
                     } else {
-
+                        nodeRect
+                        .select("rect")
+                        .style('stroke', (d, k) => (last == k) ? 
+                                'var(--color-blue-highlight)':
+                                'var(--color-blue-light)'
+                        )
+                        .style('stroke-width',  (d, k) => (last == k) ? 4 : 2);
                     }
                 }
             });
