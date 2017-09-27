@@ -68,6 +68,10 @@ const myVue = {
             var self = this;
             var last = -1;
             nodes = nodes.descendants();
+            nodes.forEach((d, i) => {
+                d.background = i;
+            });
+            
             if (this.isSeriesView) {
                 nodes = nodes.slice(1);
             }
@@ -173,8 +177,8 @@ const myVue = {
             node.append('g')
                 .attr('class', 'thumb')
                 .attr('transform', 'translate(-30, -30)')
-                .style('opacity', function (d, i) {
-                    opinionseer(d3.select(this), 100, 60, i);
+                .style('opacity', function (d) {
+                    opinionseer(d3.select(this), 100, 60, d.background);
                 });
         
             node.on("click", function(d, i){
