@@ -84,7 +84,9 @@ const myVue = {
             }
         
             this.svg.selectAll('.svgGroup').remove();
-            const svgGroup = this.svg.append('g').attr('class', 'svgGroup');
+            const svgGroup = this.svg.append('g')
+                .attr('class', 'svgGroup')
+                .attr('transform', `scale(${this.height < 360 && !this.isSeriesView? this.height / 360 : 1})`);
 
             const linkGroup = svgGroup.append("g")
                 .attr("class", "linkGroup")
