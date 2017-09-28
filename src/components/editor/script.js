@@ -37,7 +37,7 @@ export default {
             set(value) {
                 this.selectedText.text = value;
                 const svg = d3.select(this.$el).select('svg');
-                svg.select('#description').text(value);
+                svg.select('.description').text(value);
             },
         },
         ...mapGetters({

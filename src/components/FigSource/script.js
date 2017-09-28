@@ -31,15 +31,15 @@ const defaultTemp = {
         channels: [ {
             name: 'position',
             selected: false,
-            animations: ["fade-in", "anno"],
+            animations: ["fade-in", "grow", "anno"],
         }, {
             name: 'size',
             selected: false,
-            animations: ["grow", "anno"],
+            animations: ["change-size", "anno"],
         }, {
             name: 'color',
             selected: false,
-            animations: ["add-color", "anno", "high-light", "anno"],
+            animations: ["add-color", "anno", "anno"],
         }, {
             name: 'shape',
             selected: false,

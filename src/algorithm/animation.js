@@ -1,5 +1,5 @@
-const maxCounter = 30;
-const frame = 50;
+const maxCounter = 15;
+const frame = 100;
 const duration = 500;
 import { opinionseer } from "./opinionseer.js";
 
@@ -11,7 +11,7 @@ export function annoTransition(val, svg) {
     g.attr('text-anchor', 'start')
         .append('text')
         .attr('transform', `translate(${val.annotation.x},${val.annotation.y})`)
-        .attr('id', 'description')
+        .attr('class', 'description')
         .attr('font-family', 'Source Sans Pro')
         .attr('font-size', 24)
         .style('fill', 'var(--color-blue-dark)')

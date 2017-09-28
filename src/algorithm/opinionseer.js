@@ -195,7 +195,8 @@ export function opinionseer(svg, width, height, config = [{
         );
     
     paint.selectAll("filter").remove();
-    
+    paint.selectAll(".description").remove();
+
     for (var i = 0; i <= 30; ++i) {
         const filter = paint.append("filter")
             .attr("id", `gray-filter${i}`);
@@ -484,7 +485,6 @@ export function opinionseer(svg, width, height, config = [{
 
         parallelLinks
             .attr("opacity", opacity)
-            .attr("transform", `scale(${size})`)
             .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var leftNum = Math.floor(length * 12);
@@ -756,7 +756,6 @@ export function opinionseer(svg, width, height, config = [{
 
         innerBar
             .attr("opacity", opacity)
-            .attr("transform", `scale(${size})`)
             .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var windowSize = Math.floor(aggregatedData.length * 0.2);

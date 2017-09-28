@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { shapeTransition, annoTransition, stopTransition } from "../../algorithm/animation.js";
 import { opinionseer } from "../../algorithm/opinionseer.js";
 
-const stepDuration = 500;
+const stepDuration = 1000;
 
 export default {
     data() {
