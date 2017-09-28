@@ -111,11 +111,15 @@ export default {
             }, 2);
         },
         onBackward() {
-            this.playIndex = Math.min(this.playIndex + 2, this.animations.length - 1);
+            this.playIndex = Math.max(this.playIndex - 2, 0);
+            this.svg.selectAll("*").remove();
+            opinionseer(this.svg, this.playerWidth, this.playerHeight, this.animations[this.playIndex].status);
             stopTransition();
         },
         onForward() {
-            this.playIndex = Math.max(this.playIndex - 2, 0);
+            this.playIndex = Math.min(this.playIndex + 2, this.animations.length - 1);
+            this.svg.selectAll("*").remove();
+            opinionseer(this.svg, this.playerWidth, this.playerHeight, this.animations[this.playIndex].status);
             stopTransition();
         },
         onPlay() {

@@ -2,8 +2,11 @@ const maxCounter = 15;
 const frame = 100;
 const duration = 500;
 import { opinionseer } from "./opinionseer.js";
+import * as d3 from "d3";
 
 export function annoTransition(val, svg) {
+    d3.selectAll(".annotation").remove();
+
     const g = svg.append('g')
         .attr('class', 'annotation')
         .style('opacity', 0);
