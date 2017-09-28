@@ -31,15 +31,15 @@ const defaultTemp = {
         channels: [ {
             name: 'position',
             selected: false,
-            animations: ["fade-in", "grow", "anno"],
+            animations: ["fade-in", "grow"],
         }, {
             name: 'size',
             selected: false,
-            animations: ["change-size", "anno"],
+            animations: ["change-size"],
         }, {
             name: 'color',
             selected: false,
-            animations: ["add-color", "anno", "anno"],
+            animations: ["add-color"],
         }, {
             name: 'shape',
             selected: false,
@@ -50,7 +50,7 @@ const defaultTemp = {
 
 export default {
     data() {
-        const tabs = ['overview', 'scatter', 'bar', 'ring', 'para', 'ring2'].map((d, i) => ({
+        const tabs = ['overview', 'triangle', 'bar', 'ring', 'ring2', 'sankey'].map((d, i) => ({
             name: d,
             mask: i,
         }));

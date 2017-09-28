@@ -97,13 +97,6 @@ const myVue = {
                     y2: nodes[2].y,
                     ratio: ratio[0][2],
                 });
-                links.push({
-                    x1: nodes[0].x,
-                    y1: nodes[0].y,
-                    x2: nodes[4].x,
-                    y2: nodes[4].y,
-                    ratio: ratio[0][4],
-                });
             }
         
             this.svg.selectAll('.svgGroup').remove();

@@ -397,7 +397,7 @@ export default {
                     channel: d.channel.name,
                     x: bgrWidth,
                     parent: d.channel,
-                    annotation: name == 'anno' ? {
+                    annotation: d.animation == 'anno' ? {
                         text: 'Add text here',
                         x: 70,
                         y: 100,

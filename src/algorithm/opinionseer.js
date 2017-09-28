@@ -342,7 +342,7 @@ export function opinionseer(svg, width, height, config = [{
         }
     }
 
-    function drawOuterRing(size, position, length, hue, sat, opacity) {
+    function drawparallelLinks(size, position, length, hue, sat, opacity) {
         paint.select(".outerRing").remove();
         var outerRing = paint.append("g")
             .attr("class", "outerRing");
@@ -478,7 +478,7 @@ export function opinionseer(svg, width, height, config = [{
             .style("opacity", 0.9);
     }
 
-    function drawparallelLinks(size, position, length, hue, sat, opacity) {
+    function drawOuterRing(size, position, length, hue, sat, opacity) {
         paint.select(".parallelLinks").remove();
         var parallelLinks = paint.append("g")
             .attr("class", "parallelLinks");

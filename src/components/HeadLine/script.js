@@ -42,6 +42,8 @@ export default {
                 return;
             }
             if (this.playIndex >= this.animations.length) {
+                this.playIndex = 0;
+                stopTransition();
                 return;
             }
             const ani = this.animations[this.playIndex];
