@@ -3,9 +3,21 @@
         <svg class='editor-svg'><svg>
     </div>
 
-    <div class='editPanel' v-if='editing' :style="styleObject" >
-        <span>Title</span>
+    <div class='editPanel' v-if='editing' :style="styleObject">
+        <div class="title">Text Based Annotation</div>
         <textarea @keydown.enter='exit()' v-model="message" placeholder="edit the text here">
         </textarea>
+        <div class="title">Symbol Based Annotation</div>
+        <div class="symbolgroup">
+            <div class="symbol">                     
+                <img src="../../assets/symbol4.png" height="40" width="40"/>
+            </div>
+            <div class="symbol">
+                <img src="../../assets/symbol5.png" height="40" width="40"/>
+            </div>
+            <div class="symbol">
+                <img src="../../assets/symbol6.png" height="40" width="40"/>
+            </div>
+        </div>
     </div>
 </div>

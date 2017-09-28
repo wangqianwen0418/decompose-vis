@@ -31,7 +31,7 @@ const animationTypes = {
     color: ["anno", "fade-in", "fade-out", "add-color", "high-light"],
     size: ["anno", "fade-in", "fade-out", "grow", "change-size", "high-light"],
     position: ["anno", "fade-in", "fade-out", "grow", "high-light"],
-    shape: [],
+    shape: ["anno", "morphing", "high-light"],
 };
 const animationColumnNum = 4;
 const animationExpandedWidth = 170;
