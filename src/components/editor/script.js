@@ -62,54 +62,15 @@ export default {
         },
         selectAnnotation(val) {
             const svg = d3.select(this.$el).select('svg');
-
-            if (!val.annotation) {
-                val.annotation = {
-                    text: 'Add text here',
-                    x: 70,
-                    y: 100,
-                };
-            }
             this.selectedText = val.annotation;
-            this.$store.commit('EDIT_ELE', val.annotation);
-
-            const self = this;
-            const g = svg.append('g')
-                .attr('class', 'annotation')
-                .style('opacity', 0)
-                .on('click', function () {
-                    val.annotation.selected = !val.annotation.selected;
-                    const group = d3.select(this);
-                    if (val.annotation.selected) {
-                        self.editing = true;
-                    } else {
-                        self.editing = false;
-                    }
-                });
-
-            g.attr('text-anchor', 'start')
-                .append('text')
-                .attr('transform', `translate(${val.annotation.x},${val.annotation.y})`)
-                .attr('id', 'description')
-                .attr('font-family', 'Source Sans Pro')
-                .attr('font-size', 24)
-                .style('fill', 'var(--color-blue-dark)')
-                .text(val.annotation.text)
-                .call(d3.drag()
-                    .on('drag', function (d) {
-                        val.annotation.x += d3.event.dx;
-                        val.annotation.y += d3.event.dy;
-                        self.$store.commit('EDIT_ELE', val.annotation);
-                        d3.select(this).attr('transform', `translate(${val.annotation.x},${val.annotation.y})`);
-                    })
-                );
-            
+            this.$store.commit('EDIT_ELE', val.annotation);            
         },
     },
     watch: {
         selectedBlock(val) {
             stopTransition();
             this.svg.selectAll('*').remove();
+            this.editing = false;
             if (this.selectedAnimation != null) {
                 this.selectedAnimation.selected = false;
             }
@@ -120,17 +81,31 @@ export default {
             const width = this.$el.getElementsByTagName('svg')[0].clientWidth;
             const height = this.$el.getElementsByTagName('svg')[0].clientHeight;
             svg.attr('width', width).attr('height', height);
+            this.editing = false;
 
             if (val) {
                 svg.selectAll('*').remove();
                 if (val.name === "anno") {
                     opinionseer(svg, width, height, val.status);
                     this.selectAnnotation(val);
-                    annoTransition(this.svg);
+                    annoTransition(val, this.svg);
+                    const anno = this.svg.select(".annotation").select("text");
+
+                    setTimeout(() => {
+                        this.editing = true;
+                        anno.call(d3.drag()
+                            .on('drag',(d) => {
+                                val.annotation.x += d3.event.dx;
+                                val.annotation.y += d3.event.dy;
+                                this.$store.commit('EDIT_ELE', val.annotation);
+                                anno.attr('transform', `translate(${val.annotation.x},${val.annotation.y})`);
+                            })
+                        );
+                    }, 500);
                 } else {
                     opinionseer(svg, width, height, val.status);
                     this.selectedText = null;
-                    shapeTransition(val.status, val.nextStatus, val.name, this.svg);
+                    shapeTransition(val, this.svg);
                 }
             }
         }

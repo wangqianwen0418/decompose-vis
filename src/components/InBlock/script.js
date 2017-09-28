@@ -397,6 +397,11 @@ export default {
                     channel: d.channel.name,
                     x: bgrWidth,
                     parent: d.channel,
+                    annotation: name == 'anno' ? {
+                        text: 'Add text here',
+                        x: 70,
+                        y: 100,
+                    } : null,
                 });
                 thisSlide.calcLayout(root);
                 channel = slide.selectAll(".channel").data(root.marks[0].channels);

@@ -193,6 +193,17 @@ export function opinionseer(svg, width, height, config = [{
             `translate(${width / 2},${height / 2})
             scale(${1.00 * Math.min(width, height) / Math.min(width0, height0)})`
         );
+    
+    paint.selectAll("filter").remove();
+    
+    for (var i = 0; i <= 30; ++i) {
+        const filter = paint.append("filter")
+            .attr("id", `gray-filter${i}`);
+
+        filter.append("feColorMatrix")
+            .attr('type', 'saturate')
+            .attr('values', i / 30.0);
+    }
 
     if (typeof config === "number") {
         const code = config;
@@ -328,15 +339,6 @@ export function opinionseer(svg, width, height, config = [{
                 config[0].sat,
                 config[0].opacity);
         }
-    }
-
-    for (var i = 0; i <= 30; ++i) {
-        const filter = paint.append("filter")
-            .attr("id", `gray-filter${i}`);
-
-        filter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', i / 30);
     }
 
     function drawOuterRing(size, position, length, hue, sat, opacity) {

@@ -17,9 +17,11 @@ export default {
             }],
             showForm: false,
             showView: false,
+            isPlaying: false,
             value: '',
             svg: null,
             animations: [],
+            playIndex: 0,
         };
     },
     computed: {
@@ -35,8 +37,24 @@ export default {
         },
     },
     methods: {
-        playing(index) {
-
+        playing() {
+            if (!this.showView || !this.isPlaying) {
+                return;
+            }
+            if (this.playIndex >= this.animations.length) {
+                return;
+            }
+            const ani = this.animations[this.playIndex];
+            if (ani.name == "anno") {
+                annoTransition(ani, this.svg);
+            } else {
+                shapeTransition(ani, this.svg);
+            }
+            setTimeout(() => {
+                stopTransition();
+                this.playIndex += 1;
+                this.playing();
+            }, ani.duration + stepDuration);
         },
         makeIt(section, value) {
             let dict = {};
@@ -87,19 +105,29 @@ export default {
                         });
                     });
                 });
-                opinionseer(this.svg, this.playerWidth, this.playerHeight, 7);
+                opinionseer(this.svg, this.playerWidth, this.playerHeight);
             }, 2);
         },
         onBackward() {
+            this.playIndex = Math.min(this.playIndex + 2, this.animations.length - 1);
+            stopTransition();
         },
         onForward() {
+            this.playIndex = Math.max(this.playIndex - 2, 0);
+            stopTransition();
         },
         onPlay() {
+            this.isPlaying = true;
+            this.playing();
         },
         onPause() {
+            this.isPlaying = false;
+            stopTransition();
         },
         closePlayer() {
             this.showView = false;
+            this.svg.selectAll("*").remove();
+            stopTransition();
         },
         save() {
             this.$notify.success({

@@ -3,9 +3,22 @@ const frame = 50;
 const duration = 500;
 import { opinionseer } from "./opinionseer.js";
 
-export function annoTransition(svg) {
+export function annoTransition(val, svg) {
+    const g = svg.append('g')
+        .attr('class', 'annotation')
+        .style('opacity', 0);
+        
+    g.attr('text-anchor', 'start')
+        .append('text')
+        .attr('transform', `translate(${val.annotation.x},${val.annotation.y})`)
+        .attr('id', 'description')
+        .attr('font-family', 'Source Sans Pro')
+        .attr('font-size', 24)
+        .style('fill', 'var(--color-blue-dark)')
+        .text(val.annotation.text);
+
     svg.select('.annotation')
-        .transition().duration(duration)
+        .transition().duration(val.duration)
         .style("opacity", 1);
 }
 
@@ -18,7 +31,7 @@ export function stopTransition() {
     }
 }
 
-export function shapeTransition(prevStatus, nextStatus, name, svg) {
+export function shapeTransition(val, svg) {
     var counter = 0;
     var width = +svg.attr("width");
     var height = +svg.attr("height");
@@ -26,11 +39,14 @@ export function shapeTransition(prevStatus, nextStatus, name, svg) {
     if (refreshIntervalId != null) {
         clearInterval(refreshIntervalId);
         refreshIntervalId = null;
-        setTimeout(() => shapeTransition(prevStatus, nextStatus, name), frame, svg);
+        setTimeout(() => shapeTransition(val, svg), frame, svg);
         return;
     }
 
-    if (name == "high-light") {
+    const prevStatus = val.status;
+    const nextStatus = val.nextStatus;
+    console.log(prevStatus, nextStatus);
+    if (val.name == "high-light") {
         refreshIntervalId = setInterval(() => {
             if (++counter > maxCounter * 2) {
                 clearInterval(refreshIntervalId);

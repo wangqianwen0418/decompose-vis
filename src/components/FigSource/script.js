@@ -35,11 +35,11 @@ const defaultTemp = {
         }, {
             name: 'size',
             selected: false,
-            animations: ["fade-in", "anno"],
+            animations: ["grow", "anno"],
         }, {
             name: 'color',
             selected: false,
-            animations: [],
+            animations: ["add-color", "anno", "high-light", "anno"],
         }, {
             name: 'shape',
             selected: false,
@@ -276,6 +276,10 @@ export default {
                 size: 0,
                 opacity: 0.2
             };
+            block.selected = true;
+            this.blocks.push(block);
+            block.name = this.tabs[i].name;
+
             block.marks.forEach((mark) => {
                 mark.parent = block;
                 mark.channels.forEach((channel) => {
@@ -283,13 +287,17 @@ export default {
                         'name': name,
                         'channel': channel.name,
                         'parent': channel,
+                        'annotation': name == 'anno' ? {
+                            text: 'Add text here',
+                            x: 70,
+                            y: 100,
+                        } : null,
                     }));
                     channel.parent = block;
                 });
                 this.updateChannel(mark.channels);
             });
-            block.name = this.tabs[i].name;
-            this.blocks.push(block);
+            block.selected = false;
         }
     }
 };

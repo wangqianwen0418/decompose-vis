@@ -107,6 +107,7 @@ const mutations = {
                                 animations[j].status = JSON.parse(JSON.stringify(animations[j].nextStatus));
                             }
                         }
+                        animations[j].duration = 1500;
                         if (animations[j].name == "fade-in") {
                             animations[j].status[blkIndex].opacity = 0;
                             animations[j].nextStatus[blkIndex].opacity = 1;
@@ -121,8 +122,12 @@ const mutations = {
                             animations[j].status[blkIndex].length = 0.2;
                         } else if (animations[j].name == "high-light") {
                             animations[j].status[blkIndex].highlight = true;
+                            animations[j].duration = 3000;
                         } else if (animations[j].name == "morphing") {
                             animations[j].status[blkIndex].highlight = true;
+                            animations[j].duration = 3000;
+                        } else if (animations[j].name == "anno") {
+                            animations[j].duration = 500;
                         }
                     }
                 }
