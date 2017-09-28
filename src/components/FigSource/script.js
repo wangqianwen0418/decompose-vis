@@ -28,7 +28,11 @@ const defaultTemp = {
         name: 'point',
         removed: false,
         selected: false,
-        channels: [{
+        channels: [ {
+            name: 'position',
+            selected: false,
+            animations: ["fade-in", "anno"],
+        }, {
             name: 'size',
             selected: false,
             animations: ["fade-in", "anno"],
@@ -36,10 +40,6 @@ const defaultTemp = {
             name: 'color',
             selected: false,
             animations: [],
-        }, {
-            name: 'position',
-            selected: false,
-            animations: ["fade-in", "anno"],
         }, {
             name: 'shape',
             selected: false,

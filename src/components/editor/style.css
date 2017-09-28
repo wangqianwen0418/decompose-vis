@@ -64,8 +64,8 @@ textarea{
     border-radius:5px;
     margin-left:5px;
     margin-right:5px;
-    max-width:95%;
     height:6vh;
+    width:14vw;
     border:0px;
     box-shadow: 1px 1px 0.5px var(--color-gray);
     opacity: 0.1;

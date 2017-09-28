@@ -28,10 +28,10 @@ const aniMargin = {
     right: 7
 };
 const animationTypes = {
-    color: ["anno", "fade-in", "fade-out", "add-color", "high-light"],
-    size: ["anno", "fade-in", "fade-out", "grow", "change-size", "high-light"],
-    position: ["anno", "fade-in", "fade-out", "grow", "high-light"],
-    shape: ["anno", "morphing", "high-light"],
+    color: ["anno", "fade-in", "fade-out", "add-color", "grow", "change-size", "high-light", "morphing"],
+    size: ["anno", "fade-in", "fade-out", "add-color", "grow", "change-size", "high-light", "morphing"],
+    position:["anno", "fade-in", "fade-out", "add-color", "grow", "change-size", "high-light", "morphing"],
+    shape: ["anno", "fade-in", "fade-out", "add-color", "grow", "change-size", "high-light", "morphing"],
 };
 const animationColumnNum = 4;
 const animationExpandedWidth = 170;

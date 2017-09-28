@@ -14,10 +14,9 @@
            </div>
 
            <div style='float:right'>
-           <i class="fa fa-play" @click="play"></i>
+           <i class="fa fa-play" @click="startPlayer()"></i>
            <br/>play
            </div>
-
 
             <div data-step="1" data-intro="click here to import the visualization" data-position='bottom'
             style='float:right' @click="showForm = !showForm" >
@@ -27,8 +26,7 @@
        </span>
 
 
-    <el-dialog class='preview' v-model="showView" size='middle' title='Preview' @open='starttime=(new Date()).getTime()' @close='uploadlog()'>
-
+    <el-dialog class='preview' v-model="showView" size='middle' title='Preview' @open='starttime=(new Date()).getTime()' @close='showView = false'>
     </el-dialog>
 
     <el-dialog class='selectImport' v-model="showForm" size='tiny' title="Import">

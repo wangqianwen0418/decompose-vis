@@ -55,8 +55,8 @@ export default {
           })
         })
     },
-    play() {
-      console.log("do play");
+    startPlayer() {
+      this.showView = true;
     },
     save() {
         this.$notify.success({

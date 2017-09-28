@@ -109,18 +109,16 @@ const mutations = {
                             animations[j].nextStatus[blkIndex].opacity = 0;
                         } else if (animations[j].name == "add-color") {
                             animations[j].status[blkIndex].sat = 0;
-                            animations[j].nextStatus[blkIndex].sat = 1;
-                        } else if (animations[j].name == "grow" && channels[i].name == "position") {
+                        } else if (animations[j].name == "change-size") {
                             animations[j].status[blkIndex].position = 0;
-                            animations[j].nextStatus[blkIndex].position = 1;
-                        } else if (animations[j].name == "grow" && channels[i].name == "size") {
+                        } else if (animations[j].name == "grow") {
                             animations[j].status[blkIndex].length = 0;
-                            animations[j].nextStatus[blkIndex].length = 1;
                         } else if (animations[j].name == "high-light") {
+                            animations[j].status[blkIndex].highlight = true;
+                        } else if (animations[j].name == "morphing") {
                             animations[j].status[blkIndex].highlight = true;
                         }
                     }
-                    // console.log(i, animations);
                 }
                 blk.marks[0].channels = channels;
                 console.log(blk.marks[0].channels);

@@ -8,6 +8,63 @@ const maxCounter = 30;
 const frame = 50;
 const duration = 500;
 
+function annoTransition(ctx) {
+    ctx.svg.select('.annotation')
+        .transition().duration(duration)
+        .style("opacity", 1);
+}
+
+function shapeTransition(prevStatus, nextStatus, name, ctx) {
+    var counter = 0;
+    if (ctx.refreshIntervalId != null) {
+        clearInterval(ctx.refreshIntervalId);
+        ctx.refreshIntervalId = null
+        setTimeout(() => shapeTransition(prevStatus, nextStatus, name), frame, ctx);
+        return;
+    }
+
+    if (name == "high-light") {
+        ctx.refreshIntervalId = setInterval(() => {
+            if (++counter > maxCounter * 2) {
+                clearInterval(ctx.refreshIntervalId);
+                ctx.refreshIntervalId = null;
+                return;
+            }
+            var status = JSON.parse(JSON.stringify(prevStatus));
+            var cnt = counter > maxCounter ? maxCounter * 2 - counter : counter;
+            cnt = Math.min(cnt * 2, maxCounter);
+            for (var i = 0; i < status.length; ++i) {
+                if (status[i].highlight) break;
+                status[i].sat = (prevStatus[i].sat * (maxCounter - cnt)) / maxCounter;
+                status[i].opacity = (prevStatus[i].opacity * (maxCounter - cnt) + 0.1 * cnt) / maxCounter;
+            }
+            opinionseer(ctx.svg, ctx.width, ctx.height, status);
+        }, frame);
+    } else {
+        ctx.refreshIntervalId = setInterval(() => {
+            if (++counter > maxCounter) {
+                clearInterval(ctx.refreshIntervalId);
+                ctx.refreshIntervalId = null;
+                return;
+            }
+            var status = JSON.parse(JSON.stringify(prevStatus));
+            for (var i = 0; i < status.length; ++i) {
+                if (JSON.stringify(prevStatus[i]) == JSON.stringify(nextStatus[i])) {
+                    status[i].ignore = true;
+                } else {
+                    status[i].sat = (prevStatus[i].sat * (maxCounter - counter) + nextStatus[i].sat * counter) / maxCounter;
+                    status[i].hue = (prevStatus[i].hue * (maxCounter - counter) + nextStatus[i].hue * counter) / maxCounter;
+                    status[i].size = (prevStatus[i].size * (maxCounter - counter) + nextStatus[i].size * counter) / maxCounter;
+                    status[i].length = (prevStatus[i].length * (maxCounter - counter) + nextStatus[i].length * counter) / maxCounter;
+                    status[i].opacity = (prevStatus[i].opacity * (maxCounter - counter) + nextStatus[i].opacity * counter) / maxCounter;
+                    status[i].position = (prevStatus[i].position * (maxCounter - counter) + nextStatus[i].position * counter) / maxCounter;
+                }
+            }
+            opinionseer(ctx.svg, ctx.width, ctx.height, status);
+        }, frame);
+    }
+}
+
 export default {
     mounted() {
         var figureContent = document.getElementsByClassName('editor-view')[0];
@@ -63,56 +120,6 @@ export default {
             this.editing = false;
             this.$store.commit('EDIT_ELE', this.selectedText);
         },
-        shapeTransition(prevStatus, nextStatus, name) {
-            var counter = 0;
-            if (this.refreshIntervalId != null) {
-                clearInterval(this.refreshIntervalId);
-                this.refreshIntervalId = null
-                setTimeout(() => this.shapeTransition(prevStatus, nextStatus, name), frame);
-                return;
-            }
-
-            if (name == "high-light") {
-                this.refreshIntervalId = setInterval(() => {
-                    if (++counter > maxCounter * 2) {
-                        clearInterval(this.refreshIntervalId);
-                        this.refreshIntervalId = null;
-                        return;
-                    }
-                    var status = JSON.parse(JSON.stringify(prevStatus));
-                    var cnt = counter > maxCounter ? maxCounter * 2 - counter : counter;
-                    cnt = Math.min(cnt * 2, maxCounter);
-                    for (var i = 0; i < status.length; ++i) {
-                        if (status[i].highlight) break;
-                        status[i].sat = (prevStatus[i].sat * (maxCounter - cnt)) / maxCounter;
-                        status[i].opacity = (prevStatus[i].opacity * (maxCounter - cnt) + 0.1 * cnt) / maxCounter;
-                    }
-                    opinionseer(this.svg, this.width, this.height, status);
-                }, frame);
-            } else {
-                this.refreshIntervalId = setInterval(() => {
-                    if (++counter > maxCounter) {
-                        clearInterval(this.refreshIntervalId);
-                        this.refreshIntervalId = null;
-                        return;
-                    }
-                    var status = JSON.parse(JSON.stringify(prevStatus));
-                    for (var i = 0; i < status.length; ++i) {
-                        if (JSON.stringify(prevStatus[i]) == JSON.stringify(nextStatus[i])) {
-                            status[i].ignore = true;
-                        } else {
-                            status[i].sat = (prevStatus[i].sat * (maxCounter - counter) + nextStatus[i].sat * counter) / maxCounter;
-                            status[i].hue = (prevStatus[i].hue * (maxCounter - counter) + nextStatus[i].hue * counter) / maxCounter;
-                            status[i].size = (prevStatus[i].size * (maxCounter - counter) + nextStatus[i].size * counter) / maxCounter;
-                            status[i].length = (prevStatus[i].length * (maxCounter - counter) + nextStatus[i].length * counter) / maxCounter;
-                            status[i].opacity = (prevStatus[i].opacity * (maxCounter - counter) + nextStatus[i].opacity * counter) / maxCounter;
-                            status[i].position = (prevStatus[i].position * (maxCounter - counter) + nextStatus[i].position * counter) / maxCounter;
-                        }
-                    }
-                    opinionseer(this.svg, this.width, this.height, status);
-                }, frame);
-            }
-        },
         selectAnnotation(val) {
             const svg = d3.select(this.$el).select('svg');
 
@@ -129,6 +136,7 @@ export default {
             const self = this;
             const g = svg.append('g')
                 .attr('class', 'annotation')
+                .style('opacity', 0)
                 .on('click', function () {
                     val.annotation.selected = !val.annotation.selected;
                     const group = d3.select(this);
@@ -146,7 +154,6 @@ export default {
                 .attr('font-family', 'Source Sans Pro')
                 .attr('font-size', 24)
                 .style('fill', 'var(--color-blue-dark)')
-                .style('opacity', 0)
                 .text(val.annotation.text)
                 .call(d3.drag()
                     .on('drag', function (d) {
@@ -157,7 +164,6 @@ export default {
                     })
                 );
             
-            g.select('#description').transition().duration(duration).style("opacity", 1);
         },
     },
     watch: {
@@ -183,10 +189,11 @@ export default {
                 if (val.name === "anno") {
                     opinionseer(svg, width, height, val.status);
                     this.selectAnnotation(val);
+                    annoTransition(this);
                 } else {
                     opinionseer(svg, width, height, val.status);
                     this.selectedText = null;
-                    this.shapeTransition(val.status, val.nextStatus, val.name);
+                    shapeTransition(val.status, val.nextStatus, val.name, this);
                 }
             }
         }
