@@ -1,69 +1,9 @@
 import * as d3 from 'd3';
 import { mapActions, mapGetters } from 'vuex';
 import { EDIT_ELE, EDIT_EXP } from '../../store';
+import { shapeTransition, annoTransition, stopTransition } from "../../algorithm/animation.js";
 import { opinionseer } from "../../algorithm/opinionseer.js";
 import { offset } from "../../utils/common-utils.js";
-
-const maxCounter = 30;
-const frame = 50;
-const duration = 500;
-
-function annoTransition(ctx) {
-    ctx.svg.select('.annotation')
-        .transition().duration(duration)
-        .style("opacity", 1);
-}
-
-function shapeTransition(prevStatus, nextStatus, name, ctx) {
-    var counter = 0;
-    if (ctx.refreshIntervalId != null) {
-        clearInterval(ctx.refreshIntervalId);
-        ctx.refreshIntervalId = null
-        setTimeout(() => shapeTransition(prevStatus, nextStatus, name), frame, ctx);
-        return;
-    }
-
-    if (name == "high-light") {
-        ctx.refreshIntervalId = setInterval(() => {
-            if (++counter > maxCounter * 2) {
-                clearInterval(ctx.refreshIntervalId);
-                ctx.refreshIntervalId = null;
-                return;
-            }
-            var status = JSON.parse(JSON.stringify(prevStatus));
-            var cnt = counter > maxCounter ? maxCounter * 2 - counter : counter;
-            cnt = Math.min(cnt * 2, maxCounter);
-            for (var i = 0; i < status.length; ++i) {
-                if (status[i].highlight) break;
-                status[i].sat = (prevStatus[i].sat * (maxCounter - cnt)) / maxCounter;
-                status[i].opacity = (prevStatus[i].opacity * (maxCounter - cnt) + 0.1 * cnt) / maxCounter;
-            }
-            opinionseer(ctx.svg, ctx.width, ctx.height, status);
-        }, frame);
-    } else {
-        ctx.refreshIntervalId = setInterval(() => {
-            if (++counter > maxCounter) {
-                clearInterval(ctx.refreshIntervalId);
-                ctx.refreshIntervalId = null;
-                return;
-            }
-            var status = JSON.parse(JSON.stringify(prevStatus));
-            for (var i = 0; i < status.length; ++i) {
-                if (JSON.stringify(prevStatus[i]) == JSON.stringify(nextStatus[i])) {
-                    status[i].ignore = true;
-                } else {
-                    status[i].sat = (prevStatus[i].sat * (maxCounter - counter) + nextStatus[i].sat * counter) / maxCounter;
-                    status[i].hue = (prevStatus[i].hue * (maxCounter - counter) + nextStatus[i].hue * counter) / maxCounter;
-                    status[i].size = (prevStatus[i].size * (maxCounter - counter) + nextStatus[i].size * counter) / maxCounter;
-                    status[i].length = (prevStatus[i].length * (maxCounter - counter) + nextStatus[i].length * counter) / maxCounter;
-                    status[i].opacity = (prevStatus[i].opacity * (maxCounter - counter) + nextStatus[i].opacity * counter) / maxCounter;
-                    status[i].position = (prevStatus[i].position * (maxCounter - counter) + nextStatus[i].position * counter) / maxCounter;
-                }
-            }
-            opinionseer(ctx.svg, ctx.width, ctx.height, status);
-        }, frame);
-    }
-}
 
 export default {
     mounted() {
@@ -168,11 +108,8 @@ export default {
     },
     watch: {
         selectedBlock(val) {
+            stopTransition();
             this.svg.selectAll('*').remove();
-            if (this.refreshIntervalId != null) {
-                clearInterval(this.refreshIntervalId);
-                this.refreshIntervalId = null
-            }
             if (this.selectedAnimation != null) {
                 this.selectedAnimation.selected = false;
             }
@@ -189,11 +126,11 @@ export default {
                 if (val.name === "anno") {
                     opinionseer(svg, width, height, val.status);
                     this.selectAnnotation(val);
-                    annoTransition(this);
+                    annoTransition(this.svg);
                 } else {
                     opinionseer(svg, width, height, val.status);
                     this.selectedText = null;
-                    shapeTransition(val.status, val.nextStatus, val.name, this);
+                    shapeTransition(val.status, val.nextStatus, val.name, this.svg);
                 }
             }
         }

@@ -85,6 +85,12 @@ const mutations = {
                             if (channels[k].name === "color") {
                                 animations[len - 1].status[blkIndex].sat = 0;
                             }
+                            if (channels[k].name === "position") {
+                                animations[len - 1].status[blkIndex].position = 0.2;
+                            }
+                            if (channels[k].name === "size") {
+                                animations[len - 1].status[blkIndex].length = 0.2;
+                            }
                             break;
                         }
                     if (k == channels.length) {
@@ -110,9 +116,9 @@ const mutations = {
                         } else if (animations[j].name == "add-color") {
                             animations[j].status[blkIndex].sat = 0;
                         } else if (animations[j].name == "change-size") {
-                            animations[j].status[blkIndex].position = 0;
+                            animations[j].status[blkIndex].length = 0.6;
                         } else if (animations[j].name == "grow") {
-                            animations[j].status[blkIndex].length = 0;
+                            animations[j].status[blkIndex].length = 0.2;
                         } else if (animations[j].name == "high-light") {
                             animations[j].status[blkIndex].highlight = true;
                         } else if (animations[j].name == "morphing") {

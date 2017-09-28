@@ -14,8 +14,8 @@
            </div>
 
            <div style='float:right'>
-           <i class="fa fa-play" @click="startPlayer()"></i>
-           <br/>play
+           <i class="fa fa-play" @click="openPlayer()"></i>
+           <br/>player
            </div>
 
             <div data-step="1" data-intro="click here to import the visualization" data-position='bottom'
@@ -26,7 +26,34 @@
        </span>
 
 
-    <el-dialog class='preview' v-model="showView" size='middle' title='Preview' @open='starttime=(new Date()).getTime()' @close='showView = false'>
+    <el-dialog class='preview' v-model="showView" size='middle' title='Player' @open='starttime=(new Date()).getTime()' @close='closePlayer()'>
+        <svg style="float:left" id='previewCanvas'></svg>
+        <textarea id='previewComments' style="
+        margin-left:5px;
+        margin-top:7px;
+        height:97%;
+        width:20%;
+        border: solid 1px var(--color-gray);
+        border-radius:5px;
+        box-shadow: 1px 1px 0.5px var(--color-gray);
+        background-color: '#cccccc';
+        font-size: 17px;
+        resize:none;
+        opacity: 1;">Add your comments here.</textarea>
+        <div>
+            <div style='float:right' @click="onBackward()" >
+                <i class="fa fa-step-backward"></i>
+            </div>
+            <div style='float:right' @click="onPause()" >
+                <i class="fa fa-pause"></i>
+            </div>
+            <div style='float:right' @click="onPlay()" >
+                <i class="fa fa-play"></i>
+            </div>
+            <div style='float:right' @click="onForward()" >
+                <i class="fa fa-step-forward"></i>
+            </div>
+        </div>
     </el-dialog>
 
     <el-dialog class='selectImport' v-model="showForm" size='tiny' title="Import">
