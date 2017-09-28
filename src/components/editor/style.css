@@ -28,15 +28,17 @@ textarea{
 }
 .editPanel{
     border-radius:2px;
-    height:20vh;
+    height:34vh;
     width:15vw;
-    background-color: var(--color-blue-gray);
+    background-color: var(--color-blue);
     box-shadow: 1px 1px 0.5px var(--color-gray);
     opacity: 0.92;
     z-index:1;
 }
 .editPanel .title {
-    margin-left:5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left:13px;
     margin-top: 5px;
     width: 90%;
 }
@@ -48,19 +50,33 @@ textarea{
     margin-left: 5px;
     font-size: 30px;
     text-align: center;
+    height: 4.1vh;
+    width: 14.2vw;
+}
+
+.questiongroup {
+    border-radius:5px;
+    background-color:var(--color-white);
+    opacity: 0.95;
+    margin-top:0.5vh;
+    margin-left: 5px;
+    text-align: center;
+    height: 13.5vh;
+    width: 14.2vw;
 }
 
 .symbol {
     float:left;
-    width: 3vw;
-    height: 4vh;
-    margin-left: 0.5vw;
+    width: 2.7vw;
+    height: 3.5vh;
+    margin-left: 0.1vw;
 }
 
 textarea:active,textarea:focus {
     outline: none;
 }
-textarea{
+
+.annotext {
     border-radius:5px;
     margin-left:5px;
     margin-right:5px;
@@ -68,16 +84,36 @@ textarea{
     width:14vw;
     border:0px;
     box-shadow: 1px 1px 0.5px var(--color-gray);
-    opacity: 0.1;
+    background-color:var(--color-white);
+    opacity: 0.95;
+    resize:none;
 }
+
+.simpletext  {
+    margin-top: 3px;
+    height:1.8vh;
+    width:11vw;
+    border:0px;
+    border-radius:3px;
+    resize:none;
+    box-shadow: 0px 0px 0px white;
+}
+
+.question  {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 3px;
+}
+.option {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 18px;
+}
+
+
 .el-select{
     width:95%;
     margin:2px;
-}
-
-textarea {
-    resize:none;
-    opacity: 0.85;
 }
 
 .editor-view {
