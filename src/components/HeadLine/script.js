@@ -31,6 +31,9 @@ export default {
             }, {
                 value: '3',
                 label: 'ChordDiagram',
+            }, {
+                value: '4',
+                label: 'ComicNarritive',
             }],
             showForm: false,
             showView: false,
@@ -134,6 +137,9 @@ export default {
             } else if (this.value == '3') {
                 ChordAnimation(this.svg);
                 return;
+            } else if (this.value == '4') {
+                ComicNarritiveAnimation(this.svg);
+                return;
             }
             if (!this.showView || !this.isPlaying) {
                 return;
@@ -177,7 +183,6 @@ export default {
                     .attr("height", this.playerHeight);
                 this.animations = [];
                 
-                return;
                 this.$store.state.blocks.forEach((block) => {
                     block.marks.forEach((mark) => {
                         mark.channels.forEach((channel) => {
@@ -241,6 +246,1264 @@ export default {
         },
     },
 };
+
+function parallelSetAnimation(svg) {
+    const duration = 600;
+    const delta = 300;
+
+    document.getElementById("previewCanvas").innerHTML = ParallelSetSVG;
+
+    var defs = svg.append("defs");
+    var arrowMarker = defs.append("marker")
+        .attr("id", "arrow")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", "12")
+        .attr("markerHeight", "12")
+        .attr("viewBox", "0 0 12 12") 
+        .attr("refX", "6")
+        .attr("refY", "6")
+        .attr("orient", "auto");
+    var arrow_path = "M2,2 L10,6 L2,10 L6,6 L2,2";
+    arrowMarker.append("path")
+        .attr("d", arrow_path)
+        .attr("fill", 'var(--color-blue-dark)');    
+
+    const animations = [];
+
+    animations.push([() => svg.selectAll("g.dimension")
+        .transition().duration(duration)
+        .delay((d, i) => i * duration)
+        .selectAll(".category")
+        .style("opacity", 1)
+    , duration * 4]);
+
+    animations.push([() => svg.selectAll("g.dimension")
+        .transition().duration(duration)
+        .delay((d, i) => i * duration + (i != 0) * duration * 6)
+        .select("text.dimension")
+        .style("opacity", 1)
+    , duration]);
+
+    animations.push([() => svg.append('line')
+            .style("opacity", 0)
+            .style('stroke', 'var(--color-blue-dark)')
+            .style('stroke-width', '2')
+            .attr('x1', 130)
+            .attr('y1', 260)
+            .attr('x2', 150)
+            .attr('y2', 150)
+            .style('fill', 'none')
+            .style('stroke-width', 2)
+            .attr("marker-end", "url(#arrow)")
+            .transition().duration(duration)
+            .style("opacity", 1)
+            .transition().duration(duration * 3)
+            .transition().duration(duration * 0.5)
+            .style("opacity", 0)
+            .remove()
+    , duration]);
+
+    animations.push([() => svg.append('text')
+        .style('opacity', 0)
+        .text("The length of 'Survived' means the percentage of survived people.")
+        .attr("transform", "translate(100, 270)")
+        .attr('font-family', 'Source Sans Pro')
+        .attr('font-size', 24)
+        .style('fill', 'var(--color-blue-dark)')
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration * 0.5)
+        .style('opacity', 0)
+        .remove()
+    , duration * 6]);
+
+    animations.push([() => svg.selectAll(".ribbon1")
+        .attr("transform", "translate(0, 45) scale(1, 0) ")
+        .style("opacity", 1)
+        .transition().duration(duration * 2)
+        .attr("transform", "translate(0, 0) scale(1, 1) ")
+    , duration]);
+
+    animations.push([() => svg.selectAll(".ribbon2")
+        .attr("transform", "translate(0, 229.3) scale(1, 0) ")
+        .style("opacity", 1)
+        .transition().duration(duration * 2)
+        .attr("transform", "translate(0, 0) scale(1, 1) ")
+    , duration]);
+
+    animations.push([() => svg.selectAll(".ribbon3")
+        .attr("transform", "translate(0, 413.6) scale(1, 0) ")
+        .style("opacity", 1)
+        .transition().duration(duration * 2)
+        .attr("transform", "translate(0, 0) scale(1, 1) ")
+    , duration]);
+
+    animations.push([() => svg.selectAll("#ribbon1saturateleft")
+        .select("feColorMatrix")
+        .transition().duration(duration)
+        .attr("values", 1)
+    , duration]);
+
+    animations.push([() => svg.append('line')
+        .style("opacity", 0)
+        .style('stroke', 'var(--color-blue-dark)')
+        .style('stroke-width', '2')
+        .attr('x1', 230)
+        .attr('y1', 30)
+        .attr('x2', 250)
+        .attr('y2', 130)
+        .style('fill', 'none')
+        .style('stroke-width', 2)
+        .attr("marker-end", "url(#arrow)")
+        .transition().duration(duration)
+        .style("opacity", 1)
+        .transition().duration(duration * 3)
+        .transition().duration(duration * 0.5)
+        .style("opacity", 0)
+        .remove()
+    , duration]);
+
+    animations.push([() => svg.append('text')
+        .style('opacity', 0)
+        .text("the color blue for survived people")
+        .attr("transform", "translate(200, 20)")
+        .attr('font-family', 'Source Sans Pro')
+        .attr('font-size', 24)
+        .style('fill', 'var(--color-blue-dark)')
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration * 0.5)
+        .style('opacity', 0)
+        .remove()
+    , duration * 3]);
+
+    animations.push([() => svg.selectAll("#ribbon2saturateleft")
+        .select("feColorMatrix")
+        .transition().duration(duration)
+        .attr("values", 1)
+    , duration]);
+
+    animations.push([() => svg.selectAll("#ribbon3saturateleft")
+        .select("feColorMatrix")
+        .transition().duration(duration)
+        .attr("values", 1)
+    , duration]);
+
+    animations.push([() => svg.selectAll("#ribbon1saturateright")
+        .select("feColorMatrix")
+        .transition().duration(duration)
+        .attr("values", 1)
+    , duration]);
+    
+    animations.push([() => svg.append('line')
+        .style("opacity", 0)
+        .style('stroke', 'var(--color-blue-dark)')
+        .style('stroke-width', '2')
+        .attr('x1', 530)
+        .attr('y1', 30)
+        .attr('x2', 550)
+        .attr('y2', 130)
+        .style('fill', 'none')
+        .style('stroke-width', 2)
+        .attr("marker-end", "url(#arrow)")
+        .transition().duration(duration)
+        .style("opacity", 1)
+        .transition().duration(duration * 3)
+        .transition().duration(duration * 0.5)
+        .style("opacity", 0)
+        .remove()
+    , duration]);
+
+    animations.push([() => svg.append('text')
+        .style('opacity', 0)
+        .text("the color orange for perished people")
+        .attr("transform", "translate(500, 20)")
+        .attr('font-family', 'Source Sans Pro')
+        .attr('font-size', 24)
+        .style('fill', 'var(--color-blue-dark)')
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration * 0.5)
+        .style('opacity', 0)
+        .remove()
+    , duration * 3]);
+
+    animations.push([() => svg.selectAll("#ribbon2saturateright")
+        .select("feColorMatrix")
+        .transition().duration(duration)
+        .attr("values", 1)
+    , duration]);
+
+    animations.push([() => svg.selectAll("#ribbon3saturateright")
+        .select("feColorMatrix")
+        .transition().duration(duration)
+        .attr("values", 1)
+    , duration]);
+
+    animations.push([() => svg.select(".ribbon1")
+        .selectAll(".male")
+        .transition().duration(duration)
+        .style("fill-opacity", 0.8)
+    , duration]);
+
+    animations.push([() => svg.append('line')
+        .style("opacity", 0)
+        .style('stroke', 'var(--color-blue-dark)')
+        .style('stroke-width', '2')
+        .attr('x1', 480)
+        .attr('y1', 200)
+        .attr('x2', 400)
+        .attr('y2', 300)
+        .style('fill', 'none')
+        .style('stroke-width', 2)
+        .attr("marker-end", "url(#arrow)")
+        .transition().duration(duration)
+        .style("opacity", 1)
+        .transition().duration(duration * 3)
+        .transition().duration(duration * 0.5)
+        .style("opacity", 0)
+        .remove()
+    , duration]);
+
+    animations.push([() => svg.append('text')
+        .style('opacity', 0)
+        .text("half of the survived people are male")
+        .attr("transform", "translate(490, 190)")
+        .attr('font-family', 'Source Sans Pro')
+        .attr('font-size', 24)
+        .style('fill', 'var(--color-blue-dark)')
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration * 0.5)
+        .style('opacity', 0)
+        .remove()
+    , duration * 3]);
+
+    animations.push([() => svg.select(".ribbon2")
+        .selectAll(".male")
+        .transition().duration(duration)
+        .style("fill-opacity", 0.8)
+    , duration]);
+
+    animations.push([() => svg.append('line')
+        .style("opacity", 0)
+        .style('stroke', 'var(--color-blue-dark)')
+        .style('stroke-width', '2')
+        .attr('x1', 480)
+        .attr('y1', 385)
+        .attr('x2', 400)
+        .attr('y2', 485)
+        .style('fill', 'none')
+        .style('stroke-width', 2)
+        .attr("marker-end", "url(#arrow)")
+        .transition().duration(duration)
+        .style("opacity", 1)
+        .transition().duration(duration * 3)
+        .transition().duration(duration * 0.5)
+        .style("opacity", 0)
+        .remove()
+    , duration]);
+
+    animations.push([() => svg.append('text')
+        .style('opacity', 0)
+        .text("most of them are adults")
+        .attr("transform", "translate(490, 375)")
+        .attr('font-family', 'Source Sans Pro')
+        .attr('font-size', 24)
+        .style('fill', 'var(--color-blue-dark)')
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration * 0.5)
+        .style('opacity', 0)
+        .remove()
+    , duration * 3]);
+
+    animations.push([() => svg.select(".ribbon3")
+        .selectAll(".male")
+        .transition().duration(duration)
+        .style("fill-opacity", 0.8)
+    , duration]);
+
+    animations.push([() => svg.append('line')
+        .style("opacity", 0)
+        .style('stroke', 'var(--color-blue-dark)')
+        .style('stroke-width', '2')
+        .attr('x1', 480)
+        .attr('y1', 750)
+        .attr('x2', 400)
+        .attr('y2', 670)
+        .style('fill', 'none')
+        .style('stroke-width', 2)
+        .attr("marker-end", "url(#arrow)")
+        .transition().duration(duration)
+        .style("opacity", 1)
+        .transition().duration(duration * 3)
+        .transition().duration(duration * 0.5)
+        .style("opacity", 0)
+        .remove()
+    , duration]);
+
+    animations.push([() => svg.append('text')
+        .style('opacity', 0)
+        .text("yet only a small part of male survived")
+        .attr("transform", "translate(490, 760)")
+        .attr('font-family', 'Source Sans Pro')
+        .attr('font-size', 24)
+        .style('fill', 'var(--color-blue-dark)')
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration)
+        .style('opacity', 1)
+        .transition().duration(duration * 0.5)
+        .style('opacity', 0)
+        .remove()
+    , duration * 3]);
+    
+    var play = (i) => {
+        if (i >= animations.length) return;
+        animations[i][0]();
+        setTimeout(() => play(i + 1), animations[i][1] + delta);
+    }
+
+    play(0);
+}
+
+function ComicNarritiveAnimation(svg) {
+    const duration = 1000;
+    const delta = 300;
+
+    document.getElementById("previewCanvas").innerHTML = ComicNarritiveSVG;
+
+    var defs = svg.append("defs");
+    var arrowMarker = defs.append("marker")
+        .attr("id", "arrow")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", "12")
+        .attr("markerHeight", "12")
+        .attr("viewBox", "0 0 12 12") 
+        .attr("refX", "6")
+        .attr("refY", "6")
+        .attr("orient", "auto");
+    var arrow_path = "M2,2 L10,6 L2,10 L6,6 L2,2";
+    arrowMarker.append("path")
+        .attr("d", arrow_path)
+        .attr("fill", 'var(--color-blue-dark)');    
+
+    const animations = [];
+
+    animations.push([() => svg.selectAll("path")
+        .transition().duration(duration)
+        .delay((d, i) => i * 100)
+        .style("opacity", 1)
+    , duration * 10]);
+
+    animations.push([() => svg.selectAll("g.node")
+        .transition().duration(duration)
+        .delay((d, i) => i * 100)
+        .selectAll("rect")
+        .style("opacity", 0.7)
+    , 0]);
+
+    animations.push([() => svg.selectAll("g.node")
+        .transition().duration(duration)
+        .delay((d, i) => i * 200)
+        .selectAll("text")
+        .style("opacity", 1)
+    , 0]);
+
+    var play = (i) => {
+        if (i >= animations.length) return;
+        animations[i][0]();
+        setTimeout(() => play(i + 1), animations[i][1] + delta);
+    }
+
+    play(0);
+}
+
+function ChordAnimation(svg) {
+    const duration = 1000;
+    const delta = 300;
+
+    document.getElementById("previewCanvas").innerHTML = ChordDiagramSVG;
+
+    var defs = svg.append("defs");
+    var arrowMarker = defs.append("marker")
+        .attr("id", "arrow")
+        .attr("markerUnits", "strokeWidth")
+        .attr("markerWidth", "12")
+        .attr("markerHeight", "12")
+        .attr("viewBox", "0 0 12 12") 
+        .attr("refX", "6")
+        .attr("refY", "6")
+        .attr("orient", "auto");
+    var arrow_path = "M2,2 L10,6 L2,10 L6,6 L2,2";
+    arrowMarker.append("path")
+        .attr("d", arrow_path)
+        .attr("fill", 'var(--color-blue-dark)');    
+
+    const animations = [];
+
+    svg.selectAll(".group").style("opacity", 0);
+    svg.selectAll(".chord").style("opacity", 0);
+
+    animations.push([() => svg.selectAll("g.group")
+        .transition().duration(duration)
+        .delay((d, i) => i * duration)
+        .style("opacity", 1)
+    , duration * 10]);
+
+    animations.push([() => svg.selectAll(".chord")
+        .transition().duration(duration)
+        .delay((d, i) => i * duration)
+        .style("opacity", 0.7)
+    , duration * 10]);
+
+    var play = (i) => {
+        if (i >= animations.length) return;
+        animations[i][0]();
+        setTimeout(() => play(i + 1), animations[i][1] + delta);
+    }
+
+    play(0);
+}
+
+const ComicNarritiveSVG = `
+<g transform="translate(80, 300) scale(1.1)">
+<g data-v-7057edc8="">
+    <path d="M116.7190082644628,92.2C131.09327036599765,92.2 131.09327036599765,92.2 145.4675324675325,92.2"
+        from="tintin23_0" to="tintin23_2" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M145.4675324675325,92.2C156.96694214876035,92.2 156.96694214876035,117.2 168.4663518299882,117.2"
+        from="tintin23_2" to="tintin23_3" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M168.4663518299882,117.2C199.51475796930345,117.2 199.51475796930345,92.2 230.56316410861868,92.2"
+        from="tintin23_3" to="tintin23_4" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M230.56316410861868,92.2C239.76269185360098,92.2 239.76269185360098,134.86666666666667 248.96221959858326,134.86666666666667"
+        from="tintin23_4" to="tintin23_5" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M248.96221959858326,134.86666666666667C250.11216056670605,134.86666666666667 250.11216056670605,97.53333333333333 251.26210153482882,97.53333333333333"
+        from="tintin23_5" to="tintin23_6" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M251.26210153482882,97.53333333333333C257.58677685950414,97.53333333333333 257.58677685950414,122.30000000000001 263.9114521841795,122.30000000000001"
+        from="tintin23_6" to="tintin23_7" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M263.9114521841795,122.30000000000001C335.20779220779224,122.30000000000001 335.20779220779224,94.30000000000001 406.504132231405,94.30000000000001"
+        from="tintin23_7" to="tintin23_17" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M406.504132231405,94.30000000000001C420.8783943329398,94.30000000000001 420.8783943329398,98 435.25265643447466,98"
+        from="tintin23_17" to="tintin23_19" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M435.25265643447466,98C449.0519480519481,98 449.0519480519481,100.60000000000001 462.8512396694215,100.60000000000001"
+        from="tintin23_19" to="tintin23_20" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M462.8512396694215,100.60000000000001C479.5253837072019,100.60000000000001 479.5253837072019,99.60000000000001 496.19952774498233,99.60000000000001"
+        from="tintin23_20" to="tintin23_21" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M496.19952774498233,99.60000000000001C509.9988193624558,99.60000000000001 509.9988193624558,123.45714285714287 523.7981109799292,123.45714285714287"
+        from="tintin23_21" to="tintin23_23" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M523.7981109799292,123.45714285714287C547.9468713105077,123.45714285714287 547.9468713105077,131.70000000000002 572.0956316410862,131.70000000000002"
+        from="tintin23_23" to="tintin23_24" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,131.70000000000002C578.9952774498229,131.70000000000002 578.9952774498229,134.88571428571427 585.8949232585596,134.88571428571427"
+        from="tintin23_24" to="tintin23_25" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M585.8949232585596,134.88571428571427C599.1192443919717,134.88571428571427 599.1192443919717,99.60000000000001 612.3435655253837,99.60000000000001"
+        from="tintin23_25" to="tintin23_26" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M612.3435655253837,99.60000000000001C614.6434474616293,99.60000000000001 614.6434474616293,99.60000000000001 616.9433293978749,99.60000000000001"
+        from="tintin23_26" to="tintin23_28" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M616.9433293978749,99.60000000000001C639.3671782762692,99.60000000000001 639.3671782762692,112.02857142857144 661.7910271546635,112.02857142857144"
+        from="tintin23_28" to="tintin23_29" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M661.7910271546635,112.02857142857144C728.4876033057851,112.02857142857144 728.4876033057851,120.80000000000001 795.1841794569068,120.80000000000001"
+        from="tintin23_29" to="tintin23_33" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,120.80000000000001C833.7072018890201,120.80000000000001 833.7072018890201,118.30000000000001 872.2302243211335,118.30000000000001"
+        from="tintin23_33" to="tintin23_35" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M872.2302243211335,118.30000000000001C875.6800472255018,118.30000000000001 875.6800472255018,118.30000000000001 879.1298701298701,118.30000000000001"
+        from="tintin23_35" to="tintin23_36" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M879.1298701298701,118.30000000000001C880.2798110979929,118.30000000000001 880.2798110979929,122.31428571428573 881.4297520661157,122.31428571428573"
+        from="tintin23_36" to="tintin23_37" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M881.4297520661157,122.31428571428573C911.9031877213696,122.31428571428573 911.9031877213696,100.2 942.3766233766235,100.2"
+        from="tintin23_37" to="tintin23_39" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M942.3766233766235,100.2C946.4014167650532,100.2 946.4014167650532,114 950.4262101534829,114"
+        from="tintin23_39" to="tintin23_40" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M950.4262101534829,114C954.4510035419127,114 954.4510035419127,98.42222222222225 958.4757969303424,98.42222222222225"
+        from="tintin23_40" to="tintin23_41" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M958.4757969303424,98.42222222222225C964.8004722550177,98.42222222222225 964.8004722550177,125.74285714285715 971.125147579693,125.74285714285715"
+        from="tintin23_41" to="tintin23_42" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M971.125147579693,125.74285714285715C976.2998819362456,125.74285714285715 976.2998819362456,94.30000000000001 981.4746162927981,94.30000000000001"
+        from="tintin23_42" to="tintin23_43" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M116.7190082644628,96C131.09327036599765,96 131.09327036599765,96 145.4675324675325,96"
+        from="tintin23_0" to="tintin23_2" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M145.4675324675325,96C156.96694214876035,96 156.96694214876035,121 168.4663518299882,121"
+        from="tintin23_2" to="tintin23_3" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M168.4663518299882,121C199.51475796930345,121 199.51475796930345,96 230.56316410861868,96"
+        from="tintin23_3" to="tintin23_4" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M230.56316410861868,96C247.23730814639907,96 247.23730814639907,126.10000000000001 263.9114521841795,126.10000000000001"
+        from="tintin23_4" to="tintin23_7" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M263.9114521841795,126.10000000000001C335.20779220779224,126.10000000000001 335.20779220779224,98.10000000000001 406.504132231405,98.10000000000001"
+        from="tintin23_7" to="tintin23_17" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M406.504132231405,98.10000000000001C420.8783943329398,98.10000000000001 420.8783943329398,101.8 435.25265643447466,101.8"
+        from="tintin23_17" to="tintin23_19" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M435.25265643447466,101.8C449.0519480519481,101.8 449.0519480519481,104.4 462.8512396694215,104.4"
+        from="tintin23_19" to="tintin23_20" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M462.8512396694215,104.4C479.5253837072019,104.4 479.5253837072019,103.4 496.19952774498233,103.4"
+        from="tintin23_20" to="tintin23_21" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M496.19952774498233,103.4C509.9988193624558,103.4 509.9988193624558,127.25714285714287 523.7981109799292,127.25714285714287"
+        from="tintin23_21" to="tintin23_23" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M523.7981109799292,127.25714285714287C547.9468713105077,127.25714285714287 547.9468713105077,135.50000000000003 572.0956316410862,135.50000000000003"
+        from="tintin23_23" to="tintin23_24" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,135.50000000000003C578.9952774498229,135.50000000000003 578.9952774498229,138.68571428571428 585.8949232585596,138.68571428571428"
+        from="tintin23_24" to="tintin23_25" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M585.8949232585596,138.68571428571428C599.1192443919717,138.68571428571428 599.1192443919717,103.4 612.3435655253837,103.4"
+        from="tintin23_25" to="tintin23_26" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M612.3435655253837,103.4C614.6434474616293,103.4 614.6434474616293,103.4 616.9433293978749,103.4"
+        from="tintin23_26" to="tintin23_28" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M616.9433293978749,103.4C639.3671782762692,103.4 639.3671782762692,115.82857142857144 661.7910271546635,115.82857142857144"
+        from="tintin23_28" to="tintin23_29" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M661.7910271546635,115.82857142857144C728.4876033057851,115.82857142857144 728.4876033057851,124.60000000000001 795.1841794569068,124.60000000000001"
+        from="tintin23_29" to="tintin23_33" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,124.60000000000001C876.8299881936246,124.60000000000001 876.8299881936246,102.22222222222224 958.4757969303424,102.22222222222224"
+        from="tintin23_33" to="tintin23_41" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M958.4757969303424,102.22222222222224C969.9752066115702,102.22222222222224 969.9752066115702,98.10000000000001 981.4746162927981,98.10000000000001"
+        from="tintin23_41" to="tintin23_43" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M116.7190082644628,99.8C131.09327036599765,99.8 131.09327036599765,99.8 145.4675324675325,99.8"
+        from="tintin23_0" to="tintin23_2" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M145.4675324675325,99.8C156.96694214876035,99.8 156.96694214876035,124.8 168.4663518299882,124.8"
+        from="tintin23_2" to="tintin23_3" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M168.4663518299882,124.8C199.51475796930345,124.8 199.51475796930345,99.8 230.56316410861868,99.8"
+        from="tintin23_3" to="tintin23_4" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M230.56316410861868,99.8C239.76269185360098,99.8 239.76269185360098,138.66666666666669 248.96221959858326,138.66666666666669"
+        from="tintin23_4" to="tintin23_5" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M248.96221959858326,138.66666666666669C250.11216056670605,138.66666666666669 250.11216056670605,101.33333333333333 251.26210153482882,101.33333333333333"
+        from="tintin23_5" to="tintin23_6" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M251.26210153482882,101.33333333333333C257.58677685950414,101.33333333333333 257.58677685950414,129.9 263.9114521841795,129.9"
+        from="tintin23_6" to="tintin23_7" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M263.9114521841795,129.9C271.3860684769776,129.9 271.3860684769776,108.2 278.8606847697757,108.2"
+        from="tintin23_7" to="tintin23_8" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M278.8606847697757,108.2C293.2349468713105,108.2 293.2349468713105,108.2 307.60920897284535,108.2"
+        from="tintin23_8" to="tintin23_9" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M307.60920897284535,108.2C309.90909090909093,108.2 309.90909090909093,136.3 312.2089728453365,136.3"
+        from="tintin23_9" to="tintin23_10" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M312.2089728453365,136.3C323.133412042503,136.3 323.133412042503,104 334.05785123966945,104"
+        from="tintin23_10" to="tintin23_12" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M334.05785123966945,104C337.50767414403776,104 337.50767414403776,104 340.95749704840614,104"
+        from="tintin23_12" to="tintin23_13" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M340.95749704840614,104C347.2821723730815,104 347.2821723730815,145.53333333333336 353.6068476977568,145.53333333333336"
+        from="tintin23_13" to="tintin23_15" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M353.6068476977568,145.53333333333336C374.305785123967,145.53333333333336 374.305785123967,166.1 395.0047225501771,166.1"
+        from="tintin23_15" to="tintin23_16" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M395.0047225501771,166.1C400.7544273907911,166.1 400.7544273907911,101.9 406.504132231405,101.9"
+        from="tintin23_16" to="tintin23_17" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M406.504132231405,101.9C420.8783943329398,101.9 420.8783943329398,105.6 435.25265643447466,105.6"
+        from="tintin23_17" to="tintin23_19" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M435.25265643447466,105.6C449.0519480519481,105.6 449.0519480519481,108.2 462.8512396694215,108.2"
+        from="tintin23_19" to="tintin23_20" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M462.8512396694215,108.2C479.5253837072019,108.2 479.5253837072019,107.2 496.19952774498233,107.2"
+        from="tintin23_20" to="tintin23_21" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M496.19952774498233,107.2C509.9988193624558,107.2 509.9988193624558,131.05714285714288 523.7981109799292,131.05714285714288"
+        from="tintin23_21" to="tintin23_23" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M523.7981109799292,131.05714285714288C547.9468713105077,131.05714285714288 547.9468713105077,139.3 572.0956316410862,139.3"
+        from="tintin23_23" to="tintin23_24" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,139.3C578.9952774498229,139.3 578.9952774498229,142.48571428571427 585.8949232585596,142.48571428571427"
+        from="tintin23_24" to="tintin23_25" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M585.8949232585596,142.48571428571427C599.1192443919717,142.48571428571427 599.1192443919717,107.2 612.3435655253837,107.2"
+        from="tintin23_25" to="tintin23_26" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M612.3435655253837,107.2C614.6434474616293,107.2 614.6434474616293,107.2 616.9433293978749,107.2"
+        from="tintin23_26" to="tintin23_28" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M616.9433293978749,107.2C639.3671782762692,107.2 639.3671782762692,119.62857142857143 661.7910271546635,119.62857142857143"
+        from="tintin23_28" to="tintin23_29" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M661.7910271546635,119.62857142857143C728.4876033057851,119.62857142857143 728.4876033057851,128.4 795.1841794569068,128.4"
+        from="tintin23_29" to="tintin23_33" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,128.4C833.7072018890201,128.4 833.7072018890201,122.10000000000001 872.2302243211335,122.10000000000001"
+        from="tintin23_33" to="tintin23_35" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M872.2302243211335,122.10000000000001C875.6800472255018,122.10000000000001 875.6800472255018,122.10000000000001 879.1298701298701,122.10000000000001"
+        from="tintin23_35" to="tintin23_36" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M879.1298701298701,122.10000000000001C880.2798110979929,122.10000000000001 880.2798110979929,126.11428571428573 881.4297520661157,126.11428571428573"
+        from="tintin23_36" to="tintin23_37" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M881.4297520661157,126.11428571428573C911.9031877213696,126.11428571428573 911.9031877213696,104 942.3766233766235,104"
+        from="tintin23_37" to="tintin23_39" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M942.3766233766235,104C946.4014167650532,104 946.4014167650532,117.8 950.4262101534829,117.8"
+        from="tintin23_39" to="tintin23_40" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M950.4262101534829,117.8C954.4510035419127,117.8 954.4510035419127,106.02222222222224 958.4757969303424,106.02222222222224"
+        from="tintin23_40" to="tintin23_41" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M958.4757969303424,106.02222222222224C964.8004722550177,106.02222222222224 964.8004722550177,129.54285714285714 971.125147579693,129.54285714285714"
+        from="tintin23_41" to="tintin23_42" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M971.125147579693,129.54285714285714C976.2998819362456,129.54285714285714 976.2998819362456,101.9 981.4746162927981,101.9"
+        from="tintin23_42" to="tintin23_43" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M140.86776859504133,32.4C461.1263282172373,32.4 461.1263282172373,24 781.3848878394333,24"
+        from="tintin23_1" to="tintin23_31" charid="tintin23_3" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M781.3848878394333,24C785.4096812278631,24 785.4096812278631,24 789.4344746162928,24"
+        from="tintin23_31" to="tintin23_32" charid="tintin23_3" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M789.4344746162928,24C873.9551357733176,24 873.9551357733176,87.02222222222224 958.4757969303424,87.02222222222224"
+        from="tintin23_32" to="tintin23_41" charid="tintin23_3" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M140.86776859504133,36.199999999999996C549.6717827626919,36.199999999999996 549.6717827626919,90.82222222222224 958.4757969303424,90.82222222222224"
+        from="tintin23_1" to="tintin23_41" charid="tintin23_4" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M140.86776859504133,40C549.6717827626919,40 549.6717827626919,94.62222222222223 958.4757969303424,94.62222222222223"
+        from="tintin23_1" to="tintin23_41" charid="tintin23_5" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M140.86776859504133,43.8C459.4014167650531,43.8 459.4014167650531,242.1 777.9350649350649,242.1"
+        from="tintin23_1" to="tintin23_30" charid="tintin23_6" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M777.9350649350649,242.1C858.43093270366,242.1 858.43093270366,242.1 938.9268004722551,242.1"
+        from="tintin23_30" to="tintin23_38" charid="tintin23_6" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M938.9268004722551,242.1C944.676505312869,242.1 944.676505312869,125.4 950.4262101534829,125.4"
+        from="tintin23_38" to="tintin23_40" charid="tintin23_6" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M950.4262101534829,125.4C954.4510035419127,125.4 954.4510035419127,113.62222222222223 958.4757969303424,113.62222222222223"
+        from="tintin23_40" to="tintin23_41" charid="tintin23_6" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M140.86776859504133,47.6C459.4014167650531,47.6 459.4014167650531,245.9 777.9350649350649,245.9"
+        from="tintin23_1" to="tintin23_30" charid="tintin23_7" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M777.9350649350649,245.9C858.43093270366,245.9 858.43093270366,245.9 938.9268004722551,245.9"
+        from="tintin23_30" to="tintin23_38" charid="tintin23_7" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M938.9268004722551,245.9C944.676505312869,245.9 944.676505312869,129.2 950.4262101534829,129.2"
+        from="tintin23_38" to="tintin23_40" charid="tintin23_7" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M950.4262101534829,129.2C954.4510035419127,129.2 954.4510035419127,117.42222222222225 958.4757969303424,117.42222222222225"
+        from="tintin23_40" to="tintin23_41" charid="tintin23_7" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M168.4663518299882,128.6C209.8642266824085,128.6 209.8642266824085,105.13333333333333 251.26210153482882,105.13333333333333"
+        from="tintin23_3" to="tintin23_6" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M251.26210153482882,105.13333333333333C265.06139315230223,105.13333333333333 265.06139315230223,112 278.8606847697757,112"
+        from="tintin23_6" to="tintin23_8" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M278.8606847697757,112C293.2349468713105,112 293.2349468713105,112 307.60920897284535,112"
+        from="tintin23_8" to="tintin23_9" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M307.60920897284535,112C309.90909090909093,112 309.90909090909093,140.10000000000002 312.2089728453365,140.10000000000002"
+        from="tintin23_9" to="tintin23_10" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M312.2089728453365,140.10000000000002C332.90791027154665,140.10000000000002 332.90791027154665,149.33333333333337 353.6068476977568,149.33333333333337"
+        from="tintin23_10" to="tintin23_15" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M353.6068476977568,149.33333333333337C380.0554899645809,149.33333333333337 380.0554899645809,105.70000000000002 406.504132231405,105.70000000000002"
+        from="tintin23_15" to="tintin23_17" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M406.504132231405,105.70000000000002C420.8783943329398,105.70000000000002 420.8783943329398,109.4 435.25265643447466,109.4"
+        from="tintin23_17" to="tintin23_19" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M435.25265643447466,109.4C449.0519480519481,109.4 449.0519480519481,112 462.8512396694215,112"
+        from="tintin23_19" to="tintin23_20" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M462.8512396694215,112C479.5253837072019,112 479.5253837072019,111 496.19952774498233,111"
+        from="tintin23_20" to="tintin23_21" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M496.19952774498233,111C509.9988193624558,111 509.9988193624558,134.85714285714286 523.7981109799292,134.85714285714286"
+        from="tintin23_21" to="tintin23_23" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M523.7981109799292,134.85714285714286C547.9468713105077,134.85714285714286 547.9468713105077,143.10000000000002 572.0956316410862,143.10000000000002"
+        from="tintin23_23" to="tintin23_24" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,143.10000000000002C578.9952774498229,143.10000000000002 578.9952774498229,146.28571428571428 585.8949232585596,146.28571428571428"
+        from="tintin23_24" to="tintin23_25" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M585.8949232585596,146.28571428571428C599.1192443919717,146.28571428571428 599.1192443919717,111 612.3435655253837,111"
+        from="tintin23_25" to="tintin23_26" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M612.3435655253837,111C614.6434474616293,111 614.6434474616293,111 616.9433293978749,111"
+        from="tintin23_26" to="tintin23_28" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M616.9433293978749,111C639.3671782762692,111 639.3671782762692,123.42857142857144 661.7910271546635,123.42857142857144"
+        from="tintin23_28" to="tintin23_29" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M661.7910271546635,123.42857142857144C728.4876033057851,123.42857142857144 728.4876033057851,132.20000000000002 795.1841794569068,132.20000000000002"
+        from="tintin23_29" to="tintin23_33" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,132.20000000000002C829.1074380165289,132.20000000000002 829.1074380165289,260.2 863.0306965761512,260.2"
+        from="tintin23_33" to="tintin23_34" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M863.0306965761512,260.2C917.077922077922,260.2 917.077922077922,133.34285714285716 971.125147579693,133.34285714285716"
+        from="tintin23_34" to="tintin23_42" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M971.125147579693,133.34285714285716C976.2998819362456,133.34285714285716 976.2998819362456,105.70000000000002 981.4746162927981,105.70000000000002"
+        from="tintin23_42" to="tintin23_43" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M168.4663518299882,132.4C208.71428571428572,132.4 208.71428571428572,142.46666666666667 248.96221959858326,142.46666666666667"
+        from="tintin23_3" to="tintin23_5" charid="tintin23_10" class="link" style="stroke: rgb(25, 99, 150); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M248.96221959858326,142.46666666666667C256.4368358913814,142.46666666666667 256.4368358913814,133.70000000000002 263.9114521841795,133.70000000000002"
+        from="tintin23_5" to="tintin23_7" charid="tintin23_10" class="link" style="stroke: rgb(25, 99, 150); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M278.8606847697757,115.8C293.2349468713105,115.8 293.2349468713105,115.8 307.60920897284535,115.8"
+        from="tintin23_8" to="tintin23_9" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M307.60920897284535,115.8C309.90909090909093,115.8 309.90909090909093,143.9 312.2089728453365,143.9"
+        from="tintin23_9" to="tintin23_10" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M312.2089728453365,143.9C320.258559622196,143.9 320.258559622196,282.09999999999997 328.3081463990555,282.09999999999997"
+        from="tintin23_10" to="tintin23_11" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M328.3081463990555,282.09999999999997C336.93270365997637,282.09999999999997 336.93270365997637,282.09999999999997 345.5572609208973,282.09999999999997"
+        from="tintin23_11" to="tintin23_14" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M345.5572609208973,282.09999999999997C386.9551357733176,282.09999999999997 386.9551357733176,282.09999999999997 428.3530106257379,282.09999999999997"
+        from="tintin23_14" to="tintin23_18" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M428.3530106257379,282.09999999999997C445.6021251475797,282.09999999999997 445.6021251475797,115.80000000000001 462.8512396694215,115.80000000000001"
+        from="tintin23_18" to="tintin23_20" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M462.8512396694215,115.80000000000001C491.02479338842977,115.80000000000001 491.02479338842977,122.10000000000001 519.198347107438,122.10000000000001"
+        from="tintin23_20" to="tintin23_22" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M519.198347107438,122.10000000000001C566.9208972845337,122.10000000000001 566.9208972845337,282.09999999999997 614.6434474616293,282.09999999999997"
+        from="tintin23_22" to="tintin23_27" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M614.6434474616293,282.09999999999997C748.0365997638726,282.09999999999997 748.0365997638726,129.91428571428574 881.4297520661157,129.91428571428574"
+        from="tintin23_27" to="tintin23_37" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M881.4297520661157,129.91428571428574C911.9031877213696,129.91428571428574 911.9031877213696,107.8 942.3766233766235,107.8"
+        from="tintin23_37" to="tintin23_39" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M942.3766233766235,107.8C946.4014167650532,107.8 946.4014167650532,121.6 950.4262101534829,121.6"
+        from="tintin23_39" to="tintin23_40" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M950.4262101534829,121.6C954.4510035419127,121.6 954.4510035419127,109.82222222222224 958.4757969303424,109.82222222222224"
+        from="tintin23_40" to="tintin23_41" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M312.2089728453365,147.70000000000002C332.90791027154665,147.70000000000002 332.90791027154665,153.13333333333335 353.6068476977568,153.13333333333335"
+        from="tintin23_10" to="tintin23_15" charid="tintin23_15" class="link" style="stroke: rgb(106, 106, 106); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M353.6068476977568,153.13333333333335C374.305785123967,153.13333333333335 374.305785123967,169.9 395.0047225501771,169.9"
+        from="tintin23_15" to="tintin23_16" charid="tintin23_15" class="link" style="stroke: rgb(106, 106, 106); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M328.3081463990555,285.9C336.93270365997637,285.9 336.93270365997637,285.9 345.5572609208973,285.9"
+        from="tintin23_11" to="tintin23_14" charid="tintin23_16" class="link" style="stroke: rgb(123, 86, 158); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M345.5572609208973,285.9C386.9551357733176,285.9 386.9551357733176,285.9 428.3530106257379,285.9"
+        from="tintin23_14" to="tintin23_18" charid="tintin23_16" class="link" style="stroke: rgb(123, 86, 158); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M428.3530106257379,285.9C521.4982290436836,285.9 521.4982290436836,285.9 614.6434474616293,285.9"
+        from="tintin23_18" to="tintin23_27" charid="tintin23_16" class="link" style="stroke: rgb(123, 86, 158); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M614.6434474616293,285.9C748.0365997638726,285.9 748.0365997638726,145.11428571428573 881.4297520661157,145.11428571428573"
+        from="tintin23_27" to="tintin23_37" charid="tintin23_16" class="link" style="stroke: rgb(123, 86, 158); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M435.25265643447466,113.2C449.0519480519481,113.2 449.0519480519481,119.60000000000001 462.8512396694215,119.60000000000001"
+        from="tintin23_19" to="tintin23_20" charid="tintin23_17" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M462.8512396694215,119.60000000000001C491.02479338842977,119.60000000000001 491.02479338842977,125.9 519.198347107438,125.9"
+        from="tintin23_20" to="tintin23_22" charid="tintin23_17" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M519.198347107438,125.9C700.314049586777,125.9 700.314049586777,133.71428571428572 881.4297520661157,133.71428571428572"
+        from="tintin23_22" to="tintin23_37" charid="tintin23_17" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M462.8512396694215,123.4C479.5253837072019,123.4 479.5253837072019,114.80000000000001 496.19952774498233,114.80000000000001"
+        from="tintin23_20" to="tintin23_21" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M496.19952774498233,114.80000000000001C509.9988193624558,114.80000000000001 509.9988193624558,138.65714285714287 523.7981109799292,138.65714285714287"
+        from="tintin23_21" to="tintin23_23" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M523.7981109799292,138.65714285714287C547.9468713105077,138.65714285714287 547.9468713105077,146.9 572.0956316410862,146.9"
+        from="tintin23_23" to="tintin23_24" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,146.9C592.219598583235,146.9 592.219598583235,114.80000000000001 612.3435655253837,114.80000000000001"
+        from="tintin23_24" to="tintin23_26" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M612.3435655253837,114.80000000000001C614.6434474616293,114.80000000000001 614.6434474616293,114.80000000000001 616.9433293978749,114.80000000000001"
+        from="tintin23_26" to="tintin23_28" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M616.9433293978749,114.80000000000001C639.3671782762692,114.80000000000001 639.3671782762692,127.22857142857144 661.7910271546635,127.22857142857144"
+        from="tintin23_28" to="tintin23_29" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M661.7910271546635,127.22857142857144C728.4876033057851,127.22857142857144 728.4876033057851,136 795.1841794569068,136"
+        from="tintin23_29" to="tintin23_33" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,136C833.7072018890201,136 833.7072018890201,125.9 872.2302243211335,125.9"
+        from="tintin23_33" to="tintin23_35" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M872.2302243211335,125.9C875.6800472255018,125.9 875.6800472255018,125.9 879.1298701298701,125.9"
+        from="tintin23_35" to="tintin23_36" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M879.1298701298701,125.9C880.2798110979929,125.9 880.2798110979929,137.51428571428573 881.4297520661157,137.51428571428573"
+        from="tintin23_36" to="tintin23_37" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M881.4297520661157,137.51428571428573C926.2774498229044,137.51428571428573 926.2774498229044,137.14285714285714 971.125147579693,137.14285714285714"
+        from="tintin23_37" to="tintin23_42" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M523.7981109799292,142.45714285714288C547.9468713105077,142.45714285714288 547.9468713105077,150.70000000000002 572.0956316410862,150.70000000000002"
+        from="tintin23_23" to="tintin23_24" charid="tintin23_19" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,150.70000000000002C578.9952774498229,150.70000000000002 578.9952774498229,150.08571428571426 585.8949232585596,150.08571428571426"
+        from="tintin23_24" to="tintin23_25" charid="tintin23_19" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M523.7981109799292,146.25714285714287C547.9468713105077,146.25714285714287 547.9468713105077,154.50000000000003 572.0956316410862,154.50000000000003"
+        from="tintin23_23" to="tintin23_24" charid="tintin23_20" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,154.50000000000003C578.9952774498229,154.50000000000003 578.9952774498229,153.88571428571427 585.8949232585596,153.88571428571427"
+        from="tintin23_24" to="tintin23_25" charid="tintin23_20" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M572.0956316410862,158.3C578.9952774498229,158.3 578.9952774498229,157.68571428571428 585.8949232585596,157.68571428571428"
+        from="tintin23_24" to="tintin23_25" charid="tintin23_21" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M661.7910271546635,131.02857142857144C728.4876033057851,131.02857142857144 728.4876033057851,139.8 795.1841794569068,139.8"
+        from="tintin23_29" to="tintin23_33" charid="tintin23_22" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,139.8C829.1074380165289,139.8 829.1074380165289,264 863.0306965761512,264"
+        from="tintin23_33" to="tintin23_34" charid="tintin23_22" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M863.0306965761512,264C917.077922077922,264 917.077922077922,140.94285714285715 971.125147579693,140.94285714285715"
+        from="tintin23_34" to="tintin23_42" charid="tintin23_22" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M661.7910271546635,134.82857142857145C728.4876033057851,134.82857142857145 728.4876033057851,143.6 795.1841794569068,143.6"
+        from="tintin23_29" to="tintin23_33" charid="tintin23_23" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,143.6C833.7072018890201,143.6 833.7072018890201,129.70000000000002 872.2302243211335,129.70000000000002"
+        from="tintin23_33" to="tintin23_35" charid="tintin23_23" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M872.2302243211335,129.70000000000002C875.6800472255018,129.70000000000002 875.6800472255018,129.70000000000002 879.1298701298701,129.70000000000002"
+        from="tintin23_35" to="tintin23_36" charid="tintin23_23" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M879.1298701298701,129.70000000000002C880.2798110979929,129.70000000000002 880.2798110979929,141.31428571428572 881.4297520661157,141.31428571428572"
+        from="tintin23_36" to="tintin23_37" charid="tintin23_23" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,147.4C883.1546635182999,147.4 883.1546635182999,144.74285714285716 971.125147579693,144.74285714285716"
+        from="tintin23_33" to="tintin23_42" charid="tintin23_24" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M795.1841794569068,151.20000000000002C829.1074380165289,151.20000000000002 829.1074380165289,267.8 863.0306965761512,267.8"
+        from="tintin23_33" to="tintin23_34" charid="tintin23_25" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M863.0306965761512,267.8C917.077922077922,267.8 917.077922077922,148.54285714285714 971.125147579693,148.54285714285714"
+        from="tintin23_34" to="tintin23_42" charid="tintin23_25" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,88.9C112.10655253837072,88.9 112.10655253837072,92.2 116.7190082644628,92.2"
+        from="tintin23_44" to="tintin23_0" charid="tintin23_0" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,96.9C112.10655253837072,96.9 112.10655253837072,96 116.7190082644628,96"
+        from="tintin23_45" to="tintin23_0" charid="tintin23_1" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,104.9C112.10655253837072,104.9 112.10655253837072,99.8 116.7190082644628,99.8"
+        from="tintin23_46" to="tintin23_0" charid="tintin23_2" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,24.9C124.18093270365998,24.9 124.18093270365998,32.4 140.86776859504133,32.4"
+        from="tintin23_47" to="tintin23_1" charid="tintin23_3" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,32.9C124.18093270365998,32.9 124.18093270365998,36.199999999999996 140.86776859504133,36.199999999999996"
+        from="tintin23_48" to="tintin23_1" charid="tintin23_4" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,40.9C124.18093270365998,40.9 124.18093270365998,40 140.86776859504133,40"
+        from="tintin23_49" to="tintin23_1" charid="tintin23_5" class="link" style="stroke: rgb(36, 133, 36); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,48.9C124.18093270365998,48.9 124.18093270365998,43.8 140.86776859504133,43.8"
+        from="tintin23_50" to="tintin23_1" charid="tintin23_6" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,56.9C124.18093270365998,56.9 124.18093270365998,47.6 140.86776859504133,47.6"
+        from="tintin23_51" to="tintin23_1" charid="tintin23_7" class="link" style="stroke: rgb(179, 32, 33); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,112.9C137.98022432113342,112.9 137.98022432113342,128.6 168.4663518299882,128.6"
+        from="tintin23_52" to="tintin23_3" charid="tintin23_9" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,224.9C137.98022432113342,224.9 137.98022432113342,132.4 168.4663518299882,132.4"
+        from="tintin23_53" to="tintin23_3" charid="tintin23_10" class="link" style="stroke: rgb(25, 99, 150); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M107.49409681227863,120.9C193.17739079102716,120.9 193.17739079102716,115.8 278.8606847697757,115.8"
+        from="tintin23_54" to="tintin23_8" charid="tintin23_14" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M302.98406139315233,142.9C307.5965171192444,142.9 307.5965171192444,147.70000000000002 312.2089728453365,147.70000000000002"
+        from="tintin23_55" to="tintin23_10" charid="tintin23_15" class="link" style="stroke: rgb(106, 106, 106); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M319.0832349468713,284.9C323.6956906729634,284.9 323.6956906729634,285.9 328.3081463990555,285.9"
+        from="tintin23_56" to="tintin23_11" charid="tintin23_16" class="link" style="stroke: rgb(123, 86, 158); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M426.02774498229047,106.5C430.64020070838257,106.5 430.64020070838257,113.2 435.25265643447466,113.2"
+        from="tintin23_57" to="tintin23_19" charid="tintin23_17" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M453.6263282172373,112.9C458.2387839433294,112.9 458.2387839433294,123.4 462.8512396694215,123.4"
+        from="tintin23_58" to="tintin23_20" charid="tintin23_18" class="link" style="stroke: rgb(213, 106, 11); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M514.573199527745,135.75714285714287C519.1856552538371,135.75714285714287 519.1856552538371,142.45714285714288 523.7981109799292,142.45714285714288"
+        from="tintin23_59" to="tintin23_23" charid="tintin23_19" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M514.573199527745,143.75714285714287C519.1856552538371,143.75714285714287 519.1856552538371,146.25714285714287 523.7981109799292,146.25714285714287"
+        from="tintin23_60" to="tintin23_23" charid="tintin23_20" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M562.870720188902,145.9C567.4831759149941,145.9 567.4831759149941,158.3 572.0956316410862,158.3"
+        from="tintin23_61" to="tintin23_24" charid="tintin23_21" class="link" style="stroke: rgb(117, 71, 62); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M652.5661157024794,124.32857142857144C657.1785714285714,124.32857142857144 657.1785714285714,131.02857142857144 661.7910271546635,131.02857142857144"
+        from="tintin23_62" to="tintin23_29" charid="tintin23_22" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M652.5661157024794,132.32857142857145C657.1785714285714,132.32857142857145 657.1785714285714,134.82857142857145 661.7910271546635,134.82857142857145"
+        from="tintin23_63" to="tintin23_29" charid="tintin23_23" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M785.9592680047226,136.9C790.5717237308147,136.9 790.5717237308147,147.4 795.1841794569068,147.4"
+        from="tintin23_64" to="tintin23_33" charid="tintin23_24" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+    <path d="M785.9592680047226,144.9C790.5717237308147,144.9 790.5717237308147,151.20000000000002 795.1841794569068,151.20000000000002"
+        from="tintin23_65" to="tintin23_33" charid="tintin23_25" class="link" style="stroke: rgb(189, 99, 162); stroke-width: 1.8; stroke-opacity: 0.6; stroke-linecap: round; fill: none; opacity: 0;"></path>
+</g>
+<g data-v-7057edc8="">
+    <g transform="translate(114.99409681227863,91.3)" scene_id="0" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(139.14285714285714,31.5)" scene_id="1" class="node">
+        <rect width="3.449822904368359" height="17" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(143.7426210153483,91.3)" scene_id="2" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(166.74144037780403,116.3)" scene_id="3" class="node">
+        <rect width="3.449822904368359" height="17" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(228.8382526564345,91.3)" scene_id="4" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(247.23730814639907,133.96666666666667)" scene_id="5" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(249.53719008264463,96.63333333333333)" scene_id="6" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(262.1865407319953,121.4)" scene_id="7" class="node">
+        <rect width="3.449822904368359" height="13.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(277.1357733175915,107.3)" scene_id="8" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(305.88429752066116,107.3)" scene_id="9" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(310.48406139315233,135.4)" scene_id="10" class="node">
+        <rect width="3.449822904368359" height="13.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(326.5832349468713,281.2)" scene_id="11" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(332.33293978748526,103.1)" scene_id="12" class="node">
+        <rect width="3.449822904368359" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(339.23258559622195,103.1)" scene_id="13" class="node">
+        <rect width="3.449822904368359" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(343.8323494687131,281.2)" scene_id="14" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(351.8819362455726,144.63333333333335)" scene_id="15" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(393.27981109799293,165.2)" scene_id="16" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(404.7792207792208,93.4)" scene_id="17" class="node">
+        <rect width="3.449822904368359" height="13.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(426.6280991735537,281.2)" scene_id="18" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(433.52774498229047,97.1)" scene_id="19" class="node">
+        <rect width="3.449822904368359" height="17" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(461.1263282172373,99.7)" scene_id="20" class="node">
+        <rect width="3.449822904368359" height="24.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(494.47461629279815,98.7)" scene_id="21" class="node">
+        <rect width="3.449822904368359" height="17" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(517.4734356552539,121.2)" scene_id="22" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(522.073199527745,122.55714285714286)" scene_id="23" class="node">
+        <rect width="3.449822904368359" height="24.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(570.370720188902,130.8)" scene_id="24" class="node">
+        <rect width="3.449822904368359" height="28.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(584.1700118063754,133.98571428571427)" scene_id="25" class="node">
+        <rect width="3.449822904368359" height="24.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(610.6186540731995,98.7)" scene_id="26" class="node">
+        <rect width="3.449822904368359" height="17" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(612.9185360094451,281.2)" scene_id="27" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(615.2184179456907,98.7)" scene_id="28" class="node">
+        <rect width="3.449822904368359" height="17" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(660.0661157024794,111.12857142857143)" scene_id="29" class="node">
+        <rect width="3.449822904368359" height="24.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(776.2101534828807,241.2)" scene_id="30" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(779.6599763872491,23.1)" scene_id="31" class="node">
+        <rect width="3.449822904368359" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(787.7095631641087,23.1)" scene_id="32" class="node">
+        <rect width="3.449822904368359" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(793.4592680047226,119.9)" scene_id="33" class="node">
+        <rect width="3.449822904368359" height="32.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(861.305785123967,259.3)" scene_id="34" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(870.5053128689493,117.4)" scene_id="35" class="node">
+        <rect width="3.449822904368359" height="13.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(877.404958677686,117.4)" scene_id="36" class="node">
+        <rect width="3.449822904368359" height="13.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(879.7048406139315,121.41428571428573)" scene_id="37" class="node">
+        <rect width="3.449822904368359" height="24.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(937.2018890200709,241.2)" scene_id="38" class="node">
+        <rect width="3.449822904368359" height="5.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(940.6517119244393,99.3)" scene_id="39" class="node">
+        <rect width="3.449822904368359" height="9.4" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(948.7012987012987,113.1)" scene_id="40" class="node">
+        <rect width="3.449822904368359" height="17" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(956.7508854781582,86.12222222222223)" scene_id="41" class="node">
+        <rect width="3.449822904368359" height="32.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(969.4002361275088,124.84285714285714)" scene_id="42" class="node">
+        <rect width="3.449822904368359" height="24.6" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(979.749704840614,93.4)" scene_id="43" class="node">
+        <rect width="3.449822904368359" height="13.2" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8=""></title>
+        </rect>
+        <rect style="opacity: 0;"></rect>
+        <text style="font-size: 10px; font-family: sans-serif; opacity: 0;"></text>
+    </g>
+    <g transform="translate(104.99409681227863,88)" scene_id="44" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Tintin</title>
+        </rect>
+        <rect x="-40" y="-3" width="35" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Tintin</text>
+    </g>
+    <g transform="translate(104.99409681227863,96)" scene_id="45" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Snowy</title>
+        </rect>
+        <rect x="-35" y="-3" width="30" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Snowy</text>
+    </g>
+    <g transform="translate(104.99409681227863,104)" scene_id="46" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Captain Haddock</title>
+        </rect>
+        <rect x="-85" y="-3" width="80" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Captain Haddock</text>
+    </g>
+    <g transform="translate(104.99409681227863,24)" scene_id="47" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Bianca Castafiore</title>
+        </rect>
+        <rect x="-95" y="-3" width="90" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Bianca Castafiore</text>
+    </g>
+    <g transform="translate(104.99409681227863,32)" scene_id="48" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Irma</title>
+        </rect>
+        <rect x="-30" y="-3" width="25" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Irma</text>
+    </g>
+    <g transform="translate(104.99409681227863,40)" scene_id="49" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Igor Wagner</title>
+        </rect>
+        <rect x="-65" y="-3" width="60" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Igor Wagner</text>
+    </g>
+    <g transform="translate(104.99409681227863,48)" scene_id="50" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Thompson</title>
+        </rect>
+        <rect x="-50" y="-3" width="45" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Thompson</text>
+    </g>
+    <g transform="translate(104.99409681227863,56)" scene_id="51" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">And Thompson</title>
+        </rect>
+        <rect x="-70" y="-3" width="65" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">And Thompson</text>
+    </g>
+    <g transform="translate(104.99409681227863,112)" scene_id="52" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Professor Calculus</title>
+        </rect>
+        <rect x="-100" y="-3" width="95" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Professor Calculus</text>
+    </g>
+    <g transform="translate(104.99409681227863,224)" scene_id="53" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Nestor</title>
+        </rect>
+        <rect x="-40" y="-3" width="35" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Nestor</text>
+    </g>
+    <g transform="translate(104.99409681227863,120)" scene_id="54" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Colonel Alvarez</title>
+        </rect>
+        <rect x="-85" y="-3" width="80" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Colonel Alvarez</text>
+    </g>
+    <g transform="translate(300.48406139315233,142)" scene_id="55" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Manolo</title>
+        </rect>
+        <rect x="-40" y="-3" width="35" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Manolo</text>
+    </g>
+    <g transform="translate(316.5832349468713,284)" scene_id="56" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Colonel Esponja</title>
+        </rect>
+        <rect x="-85" y="-3" width="80" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Colonel Esponja</text>
+    </g>
+    <g transform="translate(423.52774498229047,105.6)" scene_id="57" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Pablo</title>
+        </rect>
+        <rect x="-35" y="-3" width="30" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Pablo</text>
+    </g>
+    <g transform="translate(451.1263282172373,112)" scene_id="58" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">General Alcazar</title>
+        </rect>
+        <rect x="-85" y="-3" width="80" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">General Alcazar</text>
+    </g>
+    <g transform="translate(512.073199527745,134.85714285714286)" scene_id="59" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Ridgewell</title>
+        </rect>
+        <rect x="-55" y="-3" width="50" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Ridgewell</text>
+    </g>
+    <g transform="translate(512.073199527745,142.85714285714286)" scene_id="60" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Arumbayans</title>
+        </rect>
+        <rect x="-60" y="-3" width="55" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Arumbayans</text>
+    </g>
+    <g transform="translate(560.370720188902,145)" scene_id="61" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Avakuki</title>
+        </rect>
+        <rect x="-45" y="-3" width="40" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Avakuki</text>
+    </g>
+    <g transform="translate(650.0661157024794,123.42857142857143)" scene_id="62" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Peggy</title>
+        </rect>
+        <rect x="-35" y="-3" width="30" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Peggy</text>
+    </g>
+    <g transform="translate(650.0661157024794,131.42857142857144)" scene_id="63" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">The Picaros</title>
+        </rect>
+        <rect x="-65" y="-3" width="60" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">The Picaros</text>
+    </g>
+    <g transform="translate(783.4592680047226,136)" scene_id="64" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Tourists</title>
+        </rect>
+        <rect x="-50" y="-3" width="45" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Tourists</text>
+    </g>
+    <g transform="translate(783.4592680047226,144)" scene_id="65" class="node">
+        <rect width="5" height="1.8" rx="20" ry="10" class="scene" style="fill-opacity: 0.15; color: rgb(120, 120, 120); shape-rendering: auto; opacity: 0;">
+            <title data-v-7057edc8="">Dr. Livingstone</title>
+        </rect>
+        <rect x="-85" y="-3" width="80" height="7.5" fill="#fff" style="opacity: 0;"></rect>
+        <text x="-6" y="0" dy=".35em" text-anchor="end" style="font-size: 10px; font-family: sans-serif; opacity: 0;">Dr. Livingstone</text>
+    </g>
+</g>
+<image x="568.7000323359327" y="-32.19999999999999" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xlink:href="http://csclub.uwaterloo.ca/~n2iskand/comics/narrative/tintin23_narrative/scene_images/scene33.png"
+    id="scene33" width="224.75923566878984" height="152.10000000000002" class="scene-image" style="position: relative; opacity: 0;"></image>
+</g>
+`;
 
 const ChordDiagramSVG = `
 <g transform="translate(585,396) scale(1.2) ">
@@ -1055,382 +2318,3 @@ const ParallelSetSVG =
         </g>
     </g>
 </g>`;
-
-function parallelSetAnimation(svg) {
-    const duration = 600;
-    const delta = 300;
-
-    document.getElementById("previewCanvas").innerHTML = ParallelSetSVG;
-
-    var defs = svg.append("defs");
-    var arrowMarker = defs.append("marker")
-        .attr("id", "arrow")
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", "12")
-        .attr("markerHeight", "12")
-        .attr("viewBox", "0 0 12 12") 
-        .attr("refX", "6")
-        .attr("refY", "6")
-        .attr("orient", "auto");
-    var arrow_path = "M2,2 L10,6 L2,10 L6,6 L2,2";
-    arrowMarker.append("path")
-        .attr("d", arrow_path)
-        .attr("fill", 'var(--color-blue-dark)');    
-
-    const animations = [];
-
-    animations.push([() => svg.selectAll("g.dimension")
-        .transition().duration(duration)
-        .delay((d, i) => i * duration)
-        .selectAll(".category")
-        .style("opacity", 1)
-    , duration * 4]);
-
-    animations.push([() => svg.selectAll("g.dimension")
-        .transition().duration(duration)
-        .delay((d, i) => i * duration + (i != 0) * duration * 6)
-        .select("text.dimension")
-        .style("opacity", 1)
-    , duration]);
-
-    animations.push([() => svg.append('line')
-            .style("opacity", 0)
-            .style('stroke', 'var(--color-blue-dark)')
-            .style('stroke-width', '2')
-            .attr('x1', 130)
-            .attr('y1', 260)
-            .attr('x2', 150)
-            .attr('y2', 150)
-            .style('fill', 'none')
-            .style('stroke-width', 2)
-            .attr("marker-end", "url(#arrow)")
-            .transition().duration(duration)
-            .style("opacity", 1)
-            .transition().duration(duration * 3)
-            .transition().duration(duration * 0.5)
-            .style("opacity", 0)
-            .remove()
-    , duration]);
-
-    animations.push([() => svg.append('text')
-        .style('opacity', 0)
-        .text("The length of 'Survived' means the percentage of survived people.")
-        .attr("transform", "translate(100, 270)")
-        .attr('font-family', 'Source Sans Pro')
-        .attr('font-size', 24)
-        .style('fill', 'var(--color-blue-dark)')
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration * 0.5)
-        .style('opacity', 0)
-        .remove()
-    , duration * 6]);
-
-    animations.push([() => svg.selectAll(".ribbon1")
-        .attr("transform", "translate(0, 45) scale(1, 0) ")
-        .style("opacity", 1)
-        .transition().duration(duration * 2)
-        .attr("transform", "translate(0, 0) scale(1, 1) ")
-    , duration]);
-
-    animations.push([() => svg.selectAll(".ribbon2")
-        .attr("transform", "translate(0, 229.3) scale(1, 0) ")
-        .style("opacity", 1)
-        .transition().duration(duration * 2)
-        .attr("transform", "translate(0, 0) scale(1, 1) ")
-    , duration]);
-
-    animations.push([() => svg.selectAll(".ribbon3")
-        .attr("transform", "translate(0, 413.6) scale(1, 0) ")
-        .style("opacity", 1)
-        .transition().duration(duration * 2)
-        .attr("transform", "translate(0, 0) scale(1, 1) ")
-    , duration]);
-
-    animations.push([() => svg.selectAll("#ribbon1saturateleft")
-        .select("feColorMatrix")
-        .transition().duration(duration)
-        .attr("values", 1)
-    , duration]);
-
-    animations.push([() => svg.append('line')
-        .style("opacity", 0)
-        .style('stroke', 'var(--color-blue-dark)')
-        .style('stroke-width', '2')
-        .attr('x1', 230)
-        .attr('y1', 30)
-        .attr('x2', 250)
-        .attr('y2', 130)
-        .style('fill', 'none')
-        .style('stroke-width', 2)
-        .attr("marker-end", "url(#arrow)")
-        .transition().duration(duration)
-        .style("opacity", 1)
-        .transition().duration(duration * 3)
-        .transition().duration(duration * 0.5)
-        .style("opacity", 0)
-        .remove()
-    , duration]);
-
-    animations.push([() => svg.append('text')
-        .style('opacity', 0)
-        .text("the color blue for survived people")
-        .attr("transform", "translate(200, 20)")
-        .attr('font-family', 'Source Sans Pro')
-        .attr('font-size', 24)
-        .style('fill', 'var(--color-blue-dark)')
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration * 0.5)
-        .style('opacity', 0)
-        .remove()
-    , duration * 3]);
-
-    animations.push([() => svg.selectAll("#ribbon2saturateleft")
-        .select("feColorMatrix")
-        .transition().duration(duration)
-        .attr("values", 1)
-    , duration]);
-
-    animations.push([() => svg.selectAll("#ribbon3saturateleft")
-        .select("feColorMatrix")
-        .transition().duration(duration)
-        .attr("values", 1)
-    , duration]);
-
-    animations.push([() => svg.selectAll("#ribbon1saturateright")
-        .select("feColorMatrix")
-        .transition().duration(duration)
-        .attr("values", 1)
-    , duration]);
-    
-    animations.push([() => svg.append('line')
-        .style("opacity", 0)
-        .style('stroke', 'var(--color-blue-dark)')
-        .style('stroke-width', '2')
-        .attr('x1', 530)
-        .attr('y1', 30)
-        .attr('x2', 550)
-        .attr('y2', 130)
-        .style('fill', 'none')
-        .style('stroke-width', 2)
-        .attr("marker-end", "url(#arrow)")
-        .transition().duration(duration)
-        .style("opacity", 1)
-        .transition().duration(duration * 3)
-        .transition().duration(duration * 0.5)
-        .style("opacity", 0)
-        .remove()
-    , duration]);
-
-    animations.push([() => svg.append('text')
-        .style('opacity', 0)
-        .text("the color orange for perished people")
-        .attr("transform", "translate(500, 20)")
-        .attr('font-family', 'Source Sans Pro')
-        .attr('font-size', 24)
-        .style('fill', 'var(--color-blue-dark)')
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration * 0.5)
-        .style('opacity', 0)
-        .remove()
-    , duration * 3]);
-
-    animations.push([() => svg.selectAll("#ribbon2saturateright")
-        .select("feColorMatrix")
-        .transition().duration(duration)
-        .attr("values", 1)
-    , duration]);
-
-    animations.push([() => svg.selectAll("#ribbon3saturateright")
-        .select("feColorMatrix")
-        .transition().duration(duration)
-        .attr("values", 1)
-    , duration]);
-
-    animations.push([() => svg.select(".ribbon1")
-        .selectAll(".male")
-        .transition().duration(duration)
-        .style("fill-opacity", 0.8)
-    , duration]);
-
-    animations.push([() => svg.append('line')
-        .style("opacity", 0)
-        .style('stroke', 'var(--color-blue-dark)')
-        .style('stroke-width', '2')
-        .attr('x1', 480)
-        .attr('y1', 200)
-        .attr('x2', 400)
-        .attr('y2', 300)
-        .style('fill', 'none')
-        .style('stroke-width', 2)
-        .attr("marker-end", "url(#arrow)")
-        .transition().duration(duration)
-        .style("opacity", 1)
-        .transition().duration(duration * 3)
-        .transition().duration(duration * 0.5)
-        .style("opacity", 0)
-        .remove()
-    , duration]);
-
-    animations.push([() => svg.append('text')
-        .style('opacity', 0)
-        .text("half of the survived people are male")
-        .attr("transform", "translate(490, 190)")
-        .attr('font-family', 'Source Sans Pro')
-        .attr('font-size', 24)
-        .style('fill', 'var(--color-blue-dark)')
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration * 0.5)
-        .style('opacity', 0)
-        .remove()
-    , duration * 3]);
-
-    animations.push([() => svg.select(".ribbon2")
-        .selectAll(".male")
-        .transition().duration(duration)
-        .style("fill-opacity", 0.8)
-    , duration]);
-
-    animations.push([() => svg.append('line')
-        .style("opacity", 0)
-        .style('stroke', 'var(--color-blue-dark)')
-        .style('stroke-width', '2')
-        .attr('x1', 480)
-        .attr('y1', 385)
-        .attr('x2', 400)
-        .attr('y2', 485)
-        .style('fill', 'none')
-        .style('stroke-width', 2)
-        .attr("marker-end", "url(#arrow)")
-        .transition().duration(duration)
-        .style("opacity", 1)
-        .transition().duration(duration * 3)
-        .transition().duration(duration * 0.5)
-        .style("opacity", 0)
-        .remove()
-    , duration]);
-
-    animations.push([() => svg.append('text')
-        .style('opacity', 0)
-        .text("most of them are adults")
-        .attr("transform", "translate(490, 375)")
-        .attr('font-family', 'Source Sans Pro')
-        .attr('font-size', 24)
-        .style('fill', 'var(--color-blue-dark)')
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration * 0.5)
-        .style('opacity', 0)
-        .remove()
-    , duration * 3]);
-
-    animations.push([() => svg.select(".ribbon3")
-        .selectAll(".male")
-        .transition().duration(duration)
-        .style("fill-opacity", 0.8)
-    , duration]);
-
-    animations.push([() => svg.append('line')
-        .style("opacity", 0)
-        .style('stroke', 'var(--color-blue-dark)')
-        .style('stroke-width', '2')
-        .attr('x1', 480)
-        .attr('y1', 750)
-        .attr('x2', 400)
-        .attr('y2', 670)
-        .style('fill', 'none')
-        .style('stroke-width', 2)
-        .attr("marker-end", "url(#arrow)")
-        .transition().duration(duration)
-        .style("opacity", 1)
-        .transition().duration(duration * 3)
-        .transition().duration(duration * 0.5)
-        .style("opacity", 0)
-        .remove()
-    , duration]);
-
-    animations.push([() => svg.append('text')
-        .style('opacity', 0)
-        .text("yet only a small part of male survived")
-        .attr("transform", "translate(490, 760)")
-        .attr('font-family', 'Source Sans Pro')
-        .attr('font-size', 24)
-        .style('fill', 'var(--color-blue-dark)')
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration)
-        .style('opacity', 1)
-        .transition().duration(duration * 0.5)
-        .style('opacity', 0)
-        .remove()
-    , duration * 3]);
-    
-    var play = (i) => {
-        if (i >= animations.length) return;
-        animations[i][0]();
-        setTimeout(() => play(i + 1), animations[i][1] + delta);
-    }
-
-    play(0);
-}
-
-
-function ChordAnimation(svg) {
-    const duration = 1000;
-    const delta = 300;
-
-    document.getElementById("previewCanvas").innerHTML = ChordDiagramSVG;
-
-    var defs = svg.append("defs");
-    var arrowMarker = defs.append("marker")
-        .attr("id", "arrow")
-        .attr("markerUnits", "strokeWidth")
-        .attr("markerWidth", "12")
-        .attr("markerHeight", "12")
-        .attr("viewBox", "0 0 12 12") 
-        .attr("refX", "6")
-        .attr("refY", "6")
-        .attr("orient", "auto");
-    var arrow_path = "M2,2 L10,6 L2,10 L6,6 L2,2";
-    arrowMarker.append("path")
-        .attr("d", arrow_path)
-        .attr("fill", 'var(--color-blue-dark)');    
-
-    const animations = [];
-
-    svg.selectAll(".group").style("opacity", 0);
-    svg.selectAll(".chord").style("opacity", 0);
-
-    animations.push([() => svg.selectAll("g.group")
-        .transition().duration(duration)
-        .delay((d, i) => i * duration)
-        .style("opacity", 1)
-    , duration * 10]);
-
-    animations.push([() => svg.selectAll(".chord")
-        .transition().duration(duration)
-        .delay((d, i) => i * duration)
-        .style("opacity", 0.7)
-    , duration * 10]);
-
-    var play = (i) => {
-        if (i >= animations.length) return;
-        animations[i][0]();
-        setTimeout(() => play(i + 1), animations[i][1] + delta);
-    }
-
-    play(0);
-}
