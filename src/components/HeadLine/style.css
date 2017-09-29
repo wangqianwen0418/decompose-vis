@@ -52,3 +52,51 @@ el-button {
     margin: 10px;
 }
 
+.item {
+    cursor: pointer;
+  }
+.bold {
+    font-weight: bold;
+}
+
+.treeview {
+    padding-top: 30px;
+    padding-left: 20px;
+    font-size: 1.5em;
+}
+
+img {
+    max-width: 70vw;
+    max-height: 70vh;
+}
+
+.treeview .fontawesome {
+    font-size: 44px;
+}
+
+.treeview div {
+    margin-top: 12px;
+}
+
+.treeview p {
+    padding-left: 1em;
+    line-height: 1.5em;
+    list-style-type: dot;
+    display:inline;
+}
+
+.treeview .root {
+    padding-left: 10px;
+}
+
+.treeview .node1 {
+    padding-left: 20px;
+}
+
+.treeview .node2 {
+    padding-left: 30px;
+}
+
+.treeview .node3 {
+    padding-left: 40px;
+}

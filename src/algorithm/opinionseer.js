@@ -201,9 +201,16 @@ export function opinionseer(svg, width, height, config = [{
         const filter = paint.append("filter")
             .attr("id", `gray-filter${i}`);
 
+        const a = (i / 30.0) * 0.4 + (i / 30.0) * (i / 30.0) * 0.4 + 0.3;
+        const b = (1 - a) * (1 - a) * 0.7;
         filter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', i / 30.0);
+            .attr('type', 'matrix')
+            .attr('values', `
+                ${a} 0 0 0 ${b}
+                0 ${a} 0 0 ${b}
+                0 0 ${a} 0 ${b}
+                0 0 0 1 0`
+            );
     }
 
     if (typeof config === "number") {
@@ -275,7 +282,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[3].ignore) {
 
         } else if (config[3].isBackground) {
-            drawparallelLinks(1, 1, 1, 1, 0, 0.1);
+            drawparallelLinks(1, 1, 1, 1, 0, 0.3);
         } else {
             drawparallelLinks(config[3].size,
                 config[3].position,
@@ -289,7 +296,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[4].ignore) {
 
         } else if (config[4].isBackground) {
-            drawOuterRing(1, 1, 1, 1, 0, 0.1);
+            drawOuterRing(1, 1, 1, 1, 0, 0.3);
         } else {
             drawOuterRing(config[4].size,
                 config[4].position,
@@ -303,7 +310,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[2].ignore) {
 
         } else if (config[2].isBackground) {
-            drawInnerRing(1, 1, 1, 1, 0, 0.1);
+            drawInnerRing(1, 1, 1, 1, 0, 0.3);
         } else {
             drawInnerRing(config[2].size,
                 config[2].position,
@@ -317,7 +324,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[1].ignore) {
 
         } else if (config[1].isBackground) {
-            drawInnerBar(1, 1, 1, 1, 0, 0.1);
+            drawInnerBar(1, 1, 1, 1, 0, 0.3);
         } else {
             drawInnerBar(config[1].size,
                 config[1].position,
@@ -331,7 +338,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[0].ignore) {
 
         } else if (config[0].isBackground) {
-            drawInnerCircle(1, 1, 1, 1, 0, 0.1);
+            drawInnerCircle(1, 1, 1, 1, 0, 0.3);
         } else {
             drawInnerCircle(config[0].size,
                 config[0].position,

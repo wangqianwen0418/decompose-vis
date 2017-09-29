@@ -14,7 +14,6 @@ Vue.use(ToggleButton)
 Vue.use(ElementUI, { locale });
 Vue.use(VueResource);
 
-
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

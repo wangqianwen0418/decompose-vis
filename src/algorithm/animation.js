@@ -48,7 +48,7 @@ export function shapeTransition(val, svg) {
 
     const prevStatus = val.status;
     const nextStatus = val.nextStatus;
-    console.log(prevStatus, nextStatus);
+    d3.selectAll(".annotation").remove();
     if (val.name == "high-light") {
         refreshIntervalId = setInterval(() => {
             if (++counter > maxCounter * 2) {

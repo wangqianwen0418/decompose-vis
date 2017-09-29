@@ -85,12 +85,6 @@ const mutations = {
                             if (channels[k].name === "color") {
                                 animations[len - 1].status[blkIndex].sat = 0;
                             }
-                            if (channels[k].name === "position") {
-                                animations[len - 1].status[blkIndex].position = 0.2;
-                            }
-                            if (channels[k].name === "size") {
-                                animations[len - 1].status[blkIndex].size = 0.2;
-                            }
                             break;
                         }
                     if (k == channels.length) {
@@ -127,7 +121,7 @@ const mutations = {
                             animations[j].status[blkIndex].highlight = true;
                             animations[j].duration = 3000;
                         } else if (animations[j].name == "anno") {
-                            animations[j].duration = 500;
+                            animations[j].duration = 1000;
                         }
                     }
                 }

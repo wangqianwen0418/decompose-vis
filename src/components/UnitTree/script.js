@@ -83,20 +83,6 @@ const myVue = {
             nodes = nodes.slice(1);
 
             if (!this.isSeriesView && links.length == 0) {
-                links.push({
-                    x1: nodes[0].x,
-                    y1: nodes[0].y,
-                    x2: nodes[1].x,
-                    y2: nodes[1].y,
-                    ratio: ratio[0][1],
-                });
-                links.push({
-                    x1: nodes[0].x,
-                    y1: nodes[0].y,
-                    x2: nodes[2].x,
-                    y2: nodes[2].y,
-                    ratio: ratio[0][2],
-                });
             }
         
             this.svg.selectAll('.svgGroup').remove();

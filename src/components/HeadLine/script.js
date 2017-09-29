@@ -3,6 +3,20 @@ import * as d3 from 'd3';
 import { shapeTransition, annoTransition, stopTransition } from "../../algorithm/animation.js";
 import { opinionseer } from "../../algorithm/opinionseer.js";
 
+const imgs = [
+    require('assets/op1.png'),
+    require('assets/op1.png'),
+    require('assets/op2.png'),
+    require('assets/op3.png'),
+    require('assets/op4.png'),
+    require('assets/op5.png'),
+    require('assets/op6.png'),
+    require('assets/op7.png'),
+    require('assets/op8.png'),
+    require('assets/op9.png'),
+    require('assets/op10.png'),
+];
+
 const stepDuration = 1000;
 
 export default {
@@ -10,18 +24,73 @@ export default {
         return {
             options: [{
                 value: '1',
-                label: 'case study 1',
+                label: 'OpinionSeer',
             }, {
                 value: '2',
-                label: 'case study 2',
+                label: 'ParallelSets',
             }],
             showForm: false,
             showView: false,
             isPlaying: false,
-            value: '',
+            value: null,
             svg: null,
             animations: [],
             playIndex: 0,
+            open: false,
+            currentImage: null,
+            treeData: {
+                name: 'OpinionSeer',
+                color: "black",
+                expanded: true,
+                img: imgs[0],
+                children: [
+                    { 
+                        name: 'class-triangle',
+                        color: "black",
+                        img: imgs[2],
+                        children: [
+                            {
+                                name: 'class-scatter',
+                                color: "black",
+                                img: imgs[4],
+                                children: ["circle", "circle", "..."],
+                            },
+                            {
+                                name: 'class-background',
+                                color: "black",
+                                img: imgs[9],
+                            }
+                        ],
+                    },
+                    {
+                        name: 'class-bar',
+                        color: "black",
+                        img: imgs[10],
+                    },
+                    {
+                        name: 'class-rings',
+                        color: "black",
+                        img: imgs[7],
+                        children: [
+                            {
+                                name: 'class-ring',
+                                color: "black",
+                                img: imgs[5],
+                            },
+                            {
+                                name: 'class-ring2',
+                                color: "black",
+                                img: imgs[6],
+                            }
+                        ]
+                    },
+                    {
+                        name: 'class-sankey',
+                        color: "black",
+                        img: imgs[8],
+                    },
+                ]
+            }
         };
     },
     computed: {
@@ -34,9 +103,27 @@ export default {
                     values = value.split('.');
                 })
             },
-        },
+        }
     },
     methods: {
+        mouseover(node) {
+            this.currentImage = node.img;
+        },
+        treeclick(node) {
+            const t = node._children;
+            node._children = node.children;
+            node.children = t;
+        },
+        treeselect(node) {
+            const t = node._children;
+            node._children = node.children;
+            node.children = t;
+            if (node.color == "red") {
+                node.color = "black";
+            } else {
+                node.color = "red";
+            }
+        },
         playing() {
             if (!this.showView || !this.isPlaying) {
                 return;
@@ -84,6 +171,14 @@ export default {
                     })
                 })
             })
+        },
+        importopen() {
+            this.showForm = true;
+            const dialogs = document.getElementsByClassName("el-dialog--middle");
+            for (var i = 0; i < dialogs.length; ++i) {
+                document.getElementsByClassName("el-dialog--middle")[i].style.top = "5%";
+                document.getElementsByClassName("el-dialog--middle")[i].style["margin-bottom"] = 0;
+            }
         },
         openPlayer() {
             this.showView = true;
