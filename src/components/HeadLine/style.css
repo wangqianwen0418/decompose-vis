@@ -1,52 +1,102 @@
-
 .headline {
-        height: 10vh;
-        /*border-radius: 6px;*/
-        font-size: 40px;
-        color: var(--color-white);
-        background-color: var(--color-blue);
-        box-shadow: 2px 2px 1px var(--color-gray);
-        margin-bottom: 5px;
-        /*font-family: var(--font-4);*/
-    }
+    height: 10vh;
+    /*border-radius: 6px;*/
+    font-size: 40px;
+    color: var(--color-white);
+    background-color: var(--color-blue);
+    box-shadow: 2px 2px 1px var(--color-gray);
+    margin-bottom: 5px;
+    /*font-family: var(--font-4);*/
+}
 
-    #name {
-        margin: 0;
-        margin-left: 30px;
-        position: absolute;
-        top: 50%;
-        left: 0%;
-        -ms-transform: translate(0%, -50%);
-        transform: translate(0%, -50%);
-        font-family: var(--font-5);
-        font-size: 70px;
-    }
+#name {
+    margin: 0;
+    margin-left: 30px;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    -ms-transform: translate(0%, -50%);
+    transform: translate(0%, -50%);
+    font-family: var(--font-5);
+    font-size: 70px;
+}
 
-    .iconGroup {
-        position: absolute;
-        top: 50%;
-        right: 0%;
-        margin-right: 20px;
-        -ms-transform: translate(0%, -50%);
-        transform: translate(0%, -50%);
-        font-size: 15px;
-        font-family: var(--font-2);
-        text-align: center;
-    }
+.iconGroup {
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    margin-right: 20px;
+    -ms-transform: translate(0%, -50%);
+    transform: translate(0%, -50%);
+    font-size: 15px;
+    font-family: var(--font-2);
+    text-align: center;
+}
 
-    .fa {
-        padding: 0px 12px;
-        font-size: 30px;
-    }
-    .selectImport{
-        font-family: var(--font-2);
-        font-size: 20px;
-    }
+.fa {
+    padding: 0px 12px;
+    font-size: 30px;
+}
 
-    .preview{
-        font-size: 20px;
-    }
+.selectImport {
+    font-family: var(--font-2);
+    font-size: 20px;
+}
 
-    el-button{
-        margin: 10px;
-    }
+.preview {
+    font-size: 20px;
+    font-family: "Source Sans Pro";
+}
+
+el-button {
+    margin: 10px;
+}
+
+.item {
+    cursor: pointer;
+  }
+.bold {
+    font-weight: bold;
+}
+
+.treeview {
+    padding-top: 30px;
+    padding-left: 20px;
+    font-size: 1.5em;
+}
+
+img {
+    max-width: 70vw;
+    max-height: 70vh;
+}
+
+.treeview .fontawesome {
+    font-size: 44px;
+}
+
+.treeview div {
+    margin-top: 12px;
+}
+
+.treeview p {
+    padding-left: 1em;
+    line-height: 1.5em;
+    list-style-type: dot;
+    display:inline;
+}
+
+.treeview .root {
+    padding-left: 10px;
+}
+
+.treeview .node1 {
+    padding-left: 20px;
+}
+
+.treeview .node2 {
+    padding-left: 30px;
+}
+
+.treeview .node3 {
+    padding-left: 40px;
+}

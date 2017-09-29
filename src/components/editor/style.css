@@ -26,27 +26,94 @@ textarea{
     box-shadow: 2px 2px 1px var(--color-gray);
     margin:1vh 1vw 0vh 0.5vw;
 }
+.editPanel{
+    border-radius:2px;
+    height:34vh;
+    width:15vw;
+    background-color: var(--color-blue);
+    box-shadow: 1px 1px 0.5px var(--color-gray);
+    opacity: 0.92;
+    z-index:1;
+}
+.editPanel .title {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left:13px;
+    margin-top: 5px;
+    width: 90%;
+}
+
+.symbolgroup {
+    border-radius:5px;
+    background-color:var(--color-white);
+    opacity: 0.95;
+    margin-left: 5px;
+    font-size: 30px;
+    text-align: center;
+    height: 4.1vh;
+    width: 14.2vw;
+}
+
+.questiongroup {
+    border-radius:5px;
+    background-color:var(--color-white);
+    opacity: 0.95;
+    margin-top:0.5vh;
+    margin-left: 5px;
+    text-align: center;
+    height: 13.5vh;
+    width: 14.2vw;
+}
+
+.symbol {
+    float:left;
+    width: 2.7vw;
+    height: 3.5vh;
+    margin-left: 0.1vw;
+}
 
 textarea:active,textarea:focus {
     outline: none;
 }
-textarea{
-    /*position: float;*/
-    margin:2px;
-    width:95%;
-    border-radius: 5px;
-    border:1px solid var(--color-gray);
+
+.annotext {
+    border-radius:5px;
+    margin-left:5px;
+    margin-right:5px;
+    height:6vh;
+    width:14vw;
+    border:0px;
     box-shadow: 1px 1px 0.5px var(--color-gray);
-    opacity: 0.92;
+    background-color:var(--color-white);
+    opacity: 0.95;
+    resize:none;
 }
+
+.simpletext  {
+    margin-top: 3px;
+    height:1.8vh;
+    width:11vw;
+    border:0px;
+    border-radius:3px;
+    resize:none;
+    box-shadow: 0px 0px 0px white;
+}
+
+.question  {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 3px;
+}
+.option {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 18px;
+}
+
+
 .el-select{
     width:95%;
     margin:2px;
-}
-
-textarea {
-    resize:none;
-    opacity: 0.85;
 }
 
 .editor-view {

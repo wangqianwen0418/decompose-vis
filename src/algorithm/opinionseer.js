@@ -193,6 +193,25 @@ export function opinionseer(svg, width, height, config = [{
             `translate(${width / 2},${height / 2})
             scale(${1.00 * Math.min(width, height) / Math.min(width0, height0)})`
         );
+    
+    paint.selectAll("filter").remove();
+    paint.selectAll(".description").remove();
+
+    for (var i = 0; i <= 30; ++i) {
+        const filter = paint.append("filter")
+            .attr("id", `gray-filter${i}`);
+
+        const a = (i / 30.0) * 0.4 + (i / 30.0) * (i / 30.0) * 0.4 + 0.3;
+        const b = (1 - a) * (1 - a) * 0.7;
+        filter.append("feColorMatrix")
+            .attr('type', 'matrix')
+            .attr('values', `
+                ${a} 0 0 0 ${b}
+                0 ${a} 0 0 ${b}
+                0 0 ${a} 0 ${b}
+                0 0 0 1 0`
+            );
+    }
 
     if (typeof config === "number") {
         const code = config;
@@ -263,7 +282,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[3].ignore) {
 
         } else if (config[3].isBackground) {
-            drawparallelLinks(1, 1, 1, 1, 0, 0.1);
+            drawparallelLinks(1, 1, 1, 1, 0, 0.3);
         } else {
             drawparallelLinks(config[3].size,
                 config[3].position,
@@ -277,7 +296,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[4].ignore) {
 
         } else if (config[4].isBackground) {
-            drawOuterRing(1, 1, 1, 1, 0, 0.1);
+            drawOuterRing(1, 1, 1, 1, 0, 0.3);
         } else {
             drawOuterRing(config[4].size,
                 config[4].position,
@@ -291,7 +310,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[2].ignore) {
 
         } else if (config[2].isBackground) {
-            drawInnerRing(1, 1, 1, 1, 0, 0.1);
+            drawInnerRing(1, 1, 1, 1, 0, 0.3);
         } else {
             drawInnerRing(config[2].size,
                 config[2].position,
@@ -305,7 +324,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[1].ignore) {
 
         } else if (config[1].isBackground) {
-            drawInnerBar(1, 1, 1, 1, 0, 0.1);
+            drawInnerBar(1, 1, 1, 1, 0, 0.3);
         } else {
             drawInnerBar(config[1].size,
                 config[1].position,
@@ -319,7 +338,7 @@ export function opinionseer(svg, width, height, config = [{
         if (config[0].ignore) {
 
         } else if (config[0].isBackground) {
-            drawInnerCircle(1, 1, 1, 1, 0, 0.1);
+            drawInnerCircle(1, 1, 1, 1, 0, 0.3);
         } else {
             drawInnerCircle(config[0].size,
                 config[0].position,
@@ -330,25 +349,13 @@ export function opinionseer(svg, width, height, config = [{
         }
     }
 
-    for (var i = 0; i <= 30; ++i) {
-        const filter = paint.append("filter")
-            .attr("id", `gray-filter${i}`);
-
-        filter.append("feColorMatrix")
-            .attr('type', 'saturate')
-            .attr('values', i / 30);
-    }
-
-    function drawOuterRing(size, position, length, hue, sat, opacity) {
-        if (hue !== 1 && length === 1) length = hue;
-
+    function drawparallelLinks(size, position, length, hue, sat, opacity) {
         paint.select(".outerRing").remove();
         var outerRing = paint.append("g")
             .attr("class", "outerRing");
 
         outerRing
             .attr("opacity", opacity)
-            .attr("transform", `scale(${size})`)
             .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var leftNum = Math.floor(length * outerElements.length);
@@ -366,7 +373,7 @@ export function opinionseer(svg, width, height, config = [{
             .attr("transform", (d, i) => `rotate(${i * 360 / 8 * position})`)
             .attr("d", (d) => {
                 var r0 = outerRingR;
-                var r1 = outerRingR + outerRingH;
+                var r1 = outerRingR + outerRingH * size;
                 var path =
                     `M ${0} ${-r0}
                     A ${r0} ${r0} 0 0 1 ${(sin45 * r0).toFixed(2)} ${(-cos45 * r0).toFixed(2)}
@@ -397,15 +404,12 @@ export function opinionseer(svg, width, height, config = [{
     }
 
     function drawInnerRing(size, position, length, hue, sat, opacity) {
-        if (hue !== 1 && length === 1) length = hue;
-
         paint.select(".innerRing").remove();
         var innerRing = paint.append("g")
             .attr("class", "innerRing");
 
         innerRing
             .attr("opacity", opacity)
-            .attr("transform", `scale(${size})`)
             .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var ringHeatMap = innerRing.append("g")
@@ -426,7 +430,7 @@ export function opinionseer(svg, width, height, config = [{
             .append("text")
             .attr("class", "legend1")
             .text((d) => d)
-            .attr("y", (d, i) => -(innerRingR + innerRingH / yearNum * i))
+            .attr("y", (d, i) => -(innerRingR + innerRingH / yearNum * i * size))
             .attr("fill", orange)
             .attr("font-size", "11px")
             .attr("text-anchor", "middle")
@@ -466,8 +470,8 @@ export function opinionseer(svg, width, height, config = [{
         rings
             .attr("transform", (d) => `rotate(${d[1] * 360 / monthName.length * position})`)
             .attr("d", (d) => {
-                var r0 = innerRingR + innerRingH / yearNum * (d[0] - startYear);
-                var r1 = innerRingR + innerRingH / yearNum * (d[0] - startYear + 1);
+                var r0 = innerRingR + innerRingH / yearNum * (d[0] - startYear) * size;
+                var r1 = innerRingR + innerRingH / yearNum * (d[0] - startYear + 1) * size;
                 var path =
                     `M ${0} ${-r0}
                     A ${r0} ${r0} 0 0 1 ${(sin30 * r0).toFixed(2)} ${(-cos30 * r0).toFixed(2)}
@@ -481,16 +485,13 @@ export function opinionseer(svg, width, height, config = [{
             .style("opacity", 0.9);
     }
 
-    function drawparallelLinks(size, position, length, hue, sat, opacity) {
-        if (hue !== 1 && length === 1) length = hue;
-
+    function drawOuterRing(size, position, length, hue, sat, opacity) {
         paint.select(".parallelLinks").remove();
         var parallelLinks = paint.append("g")
             .attr("class", "parallelLinks");
 
         parallelLinks
             .attr("opacity", opacity)
-            .attr("transform", `scale(${size})`)
             .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var leftNum = Math.floor(length * 12);
@@ -509,7 +510,7 @@ export function opinionseer(svg, width, height, config = [{
             link.append("path")
                 .attr("transform", `rotate(${angle0 * 360 / (Math.PI * 2)})`)
                 .attr("d", (d) => {
-                    var r0 = outerRingR - margin - h;
+                    var r0 = outerRingR - (margin + h) * size;
                     var r1 = outerRingR;
                     var sin0 = Math.sin(angle);
                     var cos0 = Math.cos(angle);
@@ -526,8 +527,8 @@ export function opinionseer(svg, width, height, config = [{
             link.append("path")
                 .attr("transform", `rotate(${angle0 * 360 / (Math.PI * 2)})`)
                 .attr("d", (d) => {
-                    var r0 = outerRingR - margin - h;
-                    var r1 = outerRingR - margin;
+                    var r0 = outerRingR - (margin + h) * size;
+                    var r1 = outerRingR - margin * size;;
                     var a = startAngle - angle0 + (leftLinks[i] + 1.5 + 0.05) / monthName.length * 2 * Math.PI;
                     var sin0 = Math.sin(a);
                     var cos0 = Math.cos(a);
@@ -544,8 +545,8 @@ export function opinionseer(svg, width, height, config = [{
             link.append("path")
                 .attr("transform", `rotate(${(leftLinks[i] + 0.5) * 360 / monthName.length})`)
                 .attr("d", (d) => {
-                    var r0 = innerRingR + innerRingH + 20;
-                    var r1 = outerRingR - margin - h + 1;
+                    var r0 = outerRingR - 80 * size;
+                    var r1 = outerRingR - (margin + h - 1) * size;
                     var sin0 = Math.sin(angle);
                     var cos0 = Math.cos(angle);
                     var path =
@@ -577,7 +578,7 @@ export function opinionseer(svg, width, height, config = [{
             link.append("path")
                 .attr("transform", `rotate(${(angle1 - angle) * 360 / (Math.PI * 2)})`)
                 .attr("d", (d) => {
-                    var r0 = outerRingR - margin - h;
+                    var r0 = outerRingR - (margin + h) * size;
                     var r1 = outerRingR;
                     var sin0 = Math.sin(angle);
                     var cos0 = Math.cos(angle);
@@ -594,8 +595,8 @@ export function opinionseer(svg, width, height, config = [{
             link.append("path")
                 .attr("transform", `rotate(${angle1 * 360 / (Math.PI * 2)})`)
                 .attr("d", (d) => {
-                    var r0 = outerRingR - margin - h;
-                    var r1 = outerRingR - margin;
+                    var r0 = outerRingR - (margin + h) * size;
+                    var r1 = outerRingR - margin * size;
                     var a = endAngle - angle1 + (rightLinks[i] + 1 - 0.05) / monthName.length * 2 * Math.PI + angle;
                     var sin0 = Math.sin(a);
                     var cos0 = Math.cos(a);
@@ -612,8 +613,8 @@ export function opinionseer(svg, width, height, config = [{
             link.append("path")
                 .attr("transform", `rotate(${(rightLinks[i] + 0.5) * 360 / monthName.length})`)
                 .attr("d", (d) => {
-                    var r0 = innerRingR + innerRingH + 20;
-                    var r1 = outerRingR - margin - h + 1;
+                    var r0 = outerRingR - 80 * size;
+                    var r1 = outerRingR - (margin + h - 1) * size;
                     var sin0 = Math.sin(angle);
                     var cos0 = Math.cos(angle);
                     var path =
@@ -632,15 +633,12 @@ export function opinionseer(svg, width, height, config = [{
     }
 
     function drawInnerCircle(size, position, length, hue, sat, opacity) {
-
         paint.select(".innerCircle").remove();
         var innerCircle = paint.append("g")
             .attr("class", "innerCircle");
 
         innerCircle
-            .attr("opacity", opacity)
-            .attr("transform", `scale(${size})`)
-            .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
+            .attr("opacity", opacity);
 
         var spokes = innerCircle.append("g")
             .attr("class", "spokes");
@@ -732,6 +730,17 @@ export function opinionseer(svg, width, height, config = [{
             .append("circle")
             .attr("class", "point");
 
+        var colorArray = [0, 1, 2, 3].map((i) => {
+            const colorSpec = d3.hsl(color(i));
+            colorSpec.h = colorSpec.h * hue;
+            if (sat * typeNumber < i) {
+                colorSpec.s = 0;
+            } else if (Math.floor(sat * typeNumber) == i) {
+                colorSpec.s = colorSpec.s * (sat * typeNumber % 1);
+            }
+            return colorSpec;
+        });
+
         circles
             .attr("transform", (d) => `rotate(${(180 + d[0])})`)
             .attr("cx", 0)
@@ -740,22 +749,20 @@ export function opinionseer(svg, width, height, config = [{
                 if (angle < 0) angle = -angle;
                 return d[1] * 0.5 / Math.cos(angle / 180 * Math.PI) * position;
             })
-            .attr("r", 4)
-            .style("stroke-width", 2)
+            .attr("r", 4 * size)
+            .style("stroke-width", 2 * size)
             .style("stroke", grey)
-            .style("fill", (d) => d[2] < hue * 4 ? color(d[2]) : "none")
-            .style("opacity", (d) => d[2] + 1 < hue * 4 ? 0.9 : 0.9 * (hue * 4 - d[2]));
+            .style("fill", (d) => colorArray[d[2]])
+            .style("opacity", (d) => 0.9);
     }
 
     function drawInnerBar(size, position, length, hue, sat, opacity) {
-
         paint.select(".innerBar").remove();
         var innerBar = paint.append("g")
             .attr("class", "innerBar");
 
         innerBar
             .attr("opacity", opacity)
-            .attr("transform", `scale(${size})`)
             .style('filter', `url(#gray-filter${Math.floor(sat * 30)}`);
 
         var windowSize = Math.floor(aggregatedData.length * 0.2);
@@ -767,7 +774,14 @@ export function opinionseer(svg, width, height, config = [{
 
         var cosTheta = Math.cos(2 * Math.PI / partitionNum);
         var sinTheta = Math.sin(2 * Math.PI / partitionNum);
-        for (var i = 0; i < typeNumber * hue; ++i) {
+        for (var i = 0; i < typeNumber; ++i) {
+            const colorSpec = d3.hsl(color(i));
+            colorSpec.h = colorSpec.h * hue;
+            if (sat * typeNumber < i) {
+                colorSpec.s = 0;
+            } else if (Math.floor(sat * typeNumber) == i) {
+                colorSpec.s = colorSpec.s * (sat * typeNumber % 1);
+            }
             bars.append("path")
                 .attr("transform", (d, n) => `rotate(${n * 360 / partitionNum * position})`)
                 .attr("d", (d, n) => {
@@ -777,8 +791,8 @@ export function opinionseer(svg, width, height, config = [{
                     } else if (n < leftNum + windowSize) {
                         ratio = (leftNum + windowSize - n) / windowSize;
                     } else ratio = 0;
-                    var r0 = barHeight(i ? d[i - 1] : 0) * ratio + innerCircleR;
-                    var r1 = barHeight(d[i]) * ratio + innerCircleR;
+                    var r0 = barHeight(i ? d[i - 1] : 0) * ratio * size + innerCircleR;
+                    var r1 = barHeight(d[i]) * ratio * size + innerCircleR;
                     var path =
                         `M ${0} ${-r0}
                     A ${r0} ${r0} 0 0 1 ${(sinTheta * r0).toFixed(2)} ${(-cosTheta * r0).toFixed(2)}
@@ -786,10 +800,10 @@ export function opinionseer(svg, width, height, config = [{
                     A ${r1} ${r1} 0 0 0 ${0} ${-r1} Z`;
                     return path;
                 })
-                .attr("fill", color(i))
+                .attr("fill", colorSpec)
                 .style("stroke-width", 0.75)
                 .style("stroke", midGrey)
-                .style("opacity", typeNumber * hue - i);
+                .style("opacity", 1);
         }
     }
 

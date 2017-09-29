@@ -26,7 +26,7 @@ const myVue = {
     data() {
         return {
             isSeriesView: false,
-            processed: false,
+            processed: true,
             svg: null,
         };
     },
@@ -36,6 +36,7 @@ const myVue = {
         }),
         ...mapGetters({
             bTree: 'bTree',
+            selectedBlock: 'selectedBlock',
         }),
     },
     methods: {
@@ -62,33 +63,26 @@ const myVue = {
             }
         },
         updateTree(nodes) {
-            var x = this.isSeriesView ? [50, 200, 350, 50, 200, 350] : [230, 233, 433, 40, 379, 140];
-            var y = this.isSeriesView ? [70, 70, 70, 200, 200, 200] : [180, 70, 120, 170, 268, 290];
-            var r = [0.69, 0.64, 0.8, 0.61, 0.69, 0.7, 0.81, 0.65, 0.7, 0.7];
+            var x = this.isSeriesView ? [0, 50, 200, 350, 50, 200, 350] : [280, 283, 483, 90, 429, 190];
+            var y = this.isSeriesView ? [0, 70, 70, 70, 200, 200, 200] : [180, 70, 120, 170, 268, 290];
+            var ratio = [
+                [0.7, 0.81, 0.66, 0.82, 0.83],
+                [0.7, 0.7, 0.81, 0.74, 0.79],
+                [0.7, 0.7, 0.7, 0.9, 0.7],
+                [0.7, 0.7, 0.7, 0.7, 0.7],
+            ];
             var self = this;
             var last = -1;
-            nodes = nodes.descendants();
-            nodes.forEach((d, i) => {
-                d.background = i;
-            });
-            
-            if (this.isSeriesView) {
-                nodes = nodes.slice(1);
-            }
 
+            nodes = nodes.descendants();
             nodes.forEach((d, i) => {
                 d.x = x[i];
                 d.y = y[i];
+                d.index = i;
             });
+            nodes = nodes.slice(1);
 
             if (!this.isSeriesView && links.length == 0) {
-                links = nodes.slice(1).map(d => ({
-                    x1: d.x,
-                    y1: d.y,
-                    x2: d.parent.x,
-                    y2: d.parent.y,
-                }));
-                links.forEach((l, i) => l.r = r[i]);
             }
         
             this.svg.selectAll('.svgGroup').remove();
@@ -135,7 +129,7 @@ const myVue = {
             const nodeLabel = node.append('g')
                 .attr('transform', 'translate(80, -20)')
                 .attr('class', 'nodelabel')
-                .style('opacity', this.processed ? 1 : 0);
+                .style('opacity', this.isSeriesView ? 1 : 0);
                 
             nodeLabel.append('circle')
                 .attr('class', 'label')
@@ -161,16 +155,30 @@ const myVue = {
                 .attr('y', -30)
                 .attr('rx', 3)
                 .attr('ry', 3)
-                .style('stroke', 'var(--color-blue-light)')
-                .style('stroke-width', 2)
+                .style('stroke', (d) => {
+                    if (this.selectedBlock) {
+                        return d.data.name == this.selectedBlock.name ? 
+                        'var(--color-blue-highlight)':
+                        'var(--color-blue-light)';
+                    } else {
+                        return 'var(--color-blue-light)';
+                    }
+                })
+                .style('stroke-width', (d) => {
+                    if (this.selectedBlock) {
+                        return d.data.name == this.selectedBlock.name ? 4 : 2
+                    } else {
+                        return 2;
+                    }
+                })
                 .style('fill', 'white');
         
             nodeRect.append('text')
                 .text(d => d.data.name)
-                .attr('dx', '30')
-                .attr('dy', '10')
+                .attr('dx', '50')
+                .attr('dy', '50')
                 .attr('text-anchor', 'middle')
-                .attr('font-size', '30px')
+                .attr('font-size', '20px')
                 .style('fill', 'var(--color-blue-light)')
                 .style('opacity', 0.9);
         
@@ -178,35 +186,19 @@ const myVue = {
                 .attr('class', 'thumb')
                 .attr('transform', 'translate(-30, -30)')
                 .style('opacity', function (d) {
-                    opinionseer(d3.select(this), 100, 60, d.background);
+                    opinionseer(d3.select(this), 100, 60, d.index);
                 });
         
             node.on("click", function(d, i){
                 if (d.data.name !== 'a vis') {
                     if (d3.event.altKey) {
-                        if (last == 1 && i == 2) {
+                        if (last != -1 && last < i) {
                             links.push({
-                                x1: x[1],
-                                y1: y[1],
-                                x2: x[2],
-                                y2: y[2],
-                                r: 0.81,
-                            });
-                        } else if (last == 1 && i == 3) {
-                            links.push({
-                                x1: x[1],
-                                y1: y[1],
-                                x2: x[3],
-                                y2: y[3],
-                                r: 0.65,
-                            });
-                        } else if (last == 3 && i == 5) {
-                            links.push({
-                                x1: x[3],
-                                y1: y[3],
-                                x2: x[5],
-                                y2: y[5],
-                                r: 0.7,
+                                x1: nodes[last].x,
+                                y1: nodes[last].y,
+                                x2: nodes[i].x,
+                                y2: nodes[i].y,
+                                ratio: ratio[last][i],
                             });
                         }
                         link = linkGroup
@@ -214,24 +206,18 @@ const myVue = {
                             .data(links)
                             .enter().append("g")
                             .attr("class", "link");
+
                         link.append('line')
                             .style('stroke', 'var(--color-blue-light)')
                             .style('stroke-width', '2')
                             .attr('x1', d => d.x1)
                             .attr('y1', d => d.y1)
-                            .attr('x2', d => (d.x2 - d.x1) * d.r + d.x1)
-                            .attr('y2', d => (d.y2 - d.y1) * d.r + d.y1)
+                            .attr('x2', d => (d.x2 - d.x1) * d.ratio + d.x1)
+                            .attr('y2', d => (d.y2 - d.y1) * d.ratio + d.y1)
                             .style('fill', 'none')
                             .style('stroke-width', 1.5)
                             .attr("marker-end", "url(#arrow)");
                     } else {
-                        d3.selectAll('.fgrect')
-                            .style('stroke', 'var(--color-blue-light)')
-                            .style('stroke-width', 2)
-                        d3.select(this)
-                            .select('.fgrect')
-                            .style('stroke', 'var(--color-blue-highlight)')
-                            .style('stroke-width', '4');
                         last = i;
                     }
 
@@ -242,7 +228,13 @@ const myVue = {
                             } else blk.selected = false;
                         });
                     } else {
-
+                        nodeRect
+                        .select("rect")
+                        .style('stroke', (d, k) => (last == k) ? 
+                                'var(--color-blue-highlight)':
+                                'var(--color-blue-light)'
+                        )
+                        .style('stroke-width',  (d, k) => (last == k) ? 4 : 2);
                     }
                 }
             });
@@ -252,8 +244,8 @@ const myVue = {
                 .style('stroke-width', '2')
                 .attr('x1', d => d.x1)
                 .attr('y1', d => d.y1)
-                .attr('x2', d => (d.x2 - d.x1) * d.r + d.x1)
-                .attr('y2', d => (d.y2 - d.y1) * d.r + d.y1)
+                .attr('x2', d => (d.x2 - d.x1) * d.ratio + d.x1)
+                .attr('y2', d => (d.y2 - d.y1) * d.ratio + d.y1)
                 .style('fill', 'none')
                 .style('stroke-width', 1.5)
                 .attr("marker-end", "url(#arrow)");

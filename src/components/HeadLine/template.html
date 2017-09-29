@@ -14,10 +14,9 @@
            </div>
 
            <div style='float:right'>
-           <i class="fa fa-play" @click="play"></i>
-           <br/>play
+           <i class="fa fa-play" @click="openPlayer()"></i>
+           <br/>player
            </div>
-
 
             <div data-step="1" data-intro="click here to import the visualization" data-position='bottom'
             style='float:right' @click="showForm = !showForm" >
@@ -27,22 +26,89 @@
        </span>
 
 
-    <el-dialog class='preview' v-model="showView" size='middle' title='Preview' @open='starttime=(new Date()).getTime()' @close='uploadlog()'>
-
+    <el-dialog class='preview' v-model="showView" size='middle' title='Player' @open='starttime=(new Date()).getTime()' @close='closePlayer()'>
+        <svg id="previewCanvas" width="1171.17" height="792.9" style="float: left;">
+        </svg>
+        <textarea id='previewComments' style="
+        margin-left:5px;
+        margin-top:7px;
+        height:97%;
+        width:20%;
+        border: solid 1px var(--color-gray);
+        border-radius:5px;
+        box-shadow: 1px 1px 0.5px var(--color-gray);
+        background-color: '#cccccc';
+        font-size: 17px;
+        resize:none;
+        opacity: 1;">Add your comments here.</textarea>
+        <div>
+            <div style='float:right' @click="onForward()">
+                <i class="fa fa-step-forward"></i>
+            </div>
+            <div style='float:right' @click="onPause()">
+                <i class="fa fa-pause"></i>
+            </div>
+            <div style='float:right' @click="onPlay()">
+                <i class="fa fa-play"></i>
+            </div>
+            <div style='float:right' @click="onBackward()">
+                <i class="fa fa-step-backward"></i>
+            </div>
+        </div>
     </el-dialog>
 
-    <el-dialog class='selectImport' v-model="showForm" size='tiny' title="Import">
-        <el-upload class="upload-demo" action="//jsonplaceholder.typicode.com/posts/">
-            <el-button size="small" :plain="true" type="info">upload a picture</el-button>
-        </el-upload>
-        <el-input type="textarea" :rows="6" :cols="40" placeholder="add the text description here" v-model="textDescription">
-        </el-input>
-        <el-button type="info" size="mini" @click='onImport'>import</el-button>
-        <br/> OR
-        <br/>
-        <el-select v-model="value" placeholder="choose an example">
-            <el-option v-for="item in options" :label="item.label" :value="item.value">
-            </el-option>
-        </el-select>
+    <el-dialog class='selectImport' v-model="showForm" @close="showForm = false" @open='importopen()' size='middle' title="Import">
+        <el-row :gutter="20">
+            <el-col :span="8" style="text-align:center">
+                <el-upload class="upload-demo" action="//jsonplaceholder.typicode.com/posts/">
+                    <el-button size="small" :plain="true" type="info">upload a svg file</el-button>
+                </el-upload>
+            </el-col>
+            <el-col :span="2" style="text-align:end;">
+                then
+            </el-col>
+            <el-col :span="2">
+                <el-button type="info" size="mini" @click='onImport'>import</el-button>
+            </el-col>
+            <el-col :span="4" style="text-align:end;padding-top:5px;">
+                or
+            </el-col>
+            <el-col :span="8">
+                <el-select v-model="value" placeholder="choose an example">
+                    <el-option v-for="item in options" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <div class="treeview">
+                    <div> Componenets Tree </div>
+                    <div class="root">
+                        <div>
+                            <span :style="{color: treeData.color}" @click.alt="treeselect(treeData)" @mouseover="mouseover(treeData)" @click="treeclick(treeData)">
+                                {{(treeData.children ? "[-] " : "[+]") + treeData.name}}
+                            </span>
+                        </div>
+                        <div class="node1" v-for="node1 in treeData.children">
+                            <span :style="{color: node1.color}" @click.alt="treeselect(node1)" @mouseover="mouseover(node1)" @click="treeclick(node1)">
+                                {{(node1.children ? "[-] " : "[+]") + node1.name}}
+                            </span>
+                            <div class="node2" v-for="node2 in node1.children">
+                                <span :style="{color: node2.color}" @click.alt="treeselect(node2)" @mouseover="mouseover(node2)" @click="treeclick(node2)">
+                                    {{(node2.children ? "[-] " : "[+]") + node2.name}}
+                                </span>
+                                <div class="node3" v-for="node3 in node2.children">
+                                    <span>{{node3}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="17">
+                <img :src="currentImage"></img>
+            </el-col>
+        </el-row>
     </el-dialog>
 </div>

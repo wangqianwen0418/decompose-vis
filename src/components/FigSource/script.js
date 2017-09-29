@@ -28,18 +28,18 @@ const defaultTemp = {
         name: 'point',
         removed: false,
         selected: false,
-        channels: [{
-            name: 'size',
-            selected: false,
-            animations: ["fade-in", "anno"],
-        }, {
+        channels: [ {
             name: 'position',
             selected: false,
-            animations: ["fade-in", "anno"],
+            animations: ["fade-in", "grow"],
+        }, {
+            name: 'size',
+            selected: false,
+            animations: ["change-size"],
         }, {
             name: 'color',
             selected: false,
-            animations: [],
+            animations: ["add-color"],
         }, {
             name: 'shape',
             selected: false,
@@ -50,7 +50,7 @@ const defaultTemp = {
 
 export default {
     data() {
-        const tabs = ['overview', 'scatter', 'bar', 'ring', 'para', 'ring2'].map((d, i) => ({
+        const tabs = ['overview', 'triangle', 'bar', 'ring', 'ring2', 'sankey'].map((d, i) => ({
             name: d,
             mask: i,
         }));
@@ -276,6 +276,10 @@ export default {
                 size: 0,
                 opacity: 0.2
             };
+            block.selected = true;
+            this.blocks.push(block);
+            block.name = this.tabs[i].name;
+
             block.marks.forEach((mark) => {
                 mark.parent = block;
                 mark.channels.forEach((channel) => {
@@ -283,13 +287,17 @@ export default {
                         'name': name,
                         'channel': channel.name,
                         'parent': channel,
+                        'annotation': name == 'anno' ? {
+                            text: 'Add text here',
+                            x: 70,
+                            y: 100,
+                        } : null,
                     }));
                     channel.parent = block;
                 });
                 this.updateChannel(mark.channels);
             });
-            block.name = this.tabs[i].name;
-            this.blocks.push(block);
+            block.selected = false;
         }
     }
 };

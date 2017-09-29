@@ -84,10 +84,6 @@ const mutations = {
                             animations[len - 1].status = JSON.parse(JSON.stringify(animations[len - 1].nextStatus));
                             if (channels[k].name === "color") {
                                 animations[len - 1].status[blkIndex].sat = 0;
-                            } else if (channels[k].name === "position") {
-                                animations[len - 1].status[blkIndex].length = 0;
-                            } else if (channels[k].name === "size") {
-                                animations[len - 1].status[blkIndex].size = 0;
                             }
                             break;
                         }
@@ -105,6 +101,7 @@ const mutations = {
                                 animations[j].status = JSON.parse(JSON.stringify(animations[j].nextStatus));
                             }
                         }
+                        animations[j].duration = 1500;
                         if (animations[j].name == "fade-in") {
                             animations[j].status[blkIndex].opacity = 0;
                             animations[j].nextStatus[blkIndex].opacity = 1;
@@ -113,18 +110,20 @@ const mutations = {
                             animations[j].nextStatus[blkIndex].opacity = 0;
                         } else if (animations[j].name == "add-color") {
                             animations[j].status[blkIndex].sat = 0;
-                            animations[j].nextStatus[blkIndex].sat = 1;
-                        } else if (animations[j].name == "grow" && channels[i].name == "position") {
-                            animations[j].status[blkIndex].position = 0;
-                            animations[j].nextStatus[blkIndex].position = 1;
-                        } else if (animations[j].name == "grow" && channels[i].name == "size") {
-                            animations[j].status[blkIndex].length = 0;
-                            animations[j].nextStatus[blkIndex].length = 1;
+                        } else if (animations[j].name == "change-size") {
+                            animations[j].status[blkIndex].size = 0.6;
+                        } else if (animations[j].name == "grow") {
+                            animations[j].status[blkIndex].length = 0.2;
                         } else if (animations[j].name == "high-light") {
                             animations[j].status[blkIndex].highlight = true;
+                            animations[j].duration = 3000;
+                        } else if (animations[j].name == "morphing") {
+                            animations[j].status[blkIndex].highlight = true;
+                            animations[j].duration = 3000;
+                        } else if (animations[j].name == "anno") {
+                            animations[j].duration = 1000;
                         }
                     }
-                    // console.log(i, animations);
                 }
                 blk.marks[0].channels = channels;
                 console.log(blk.marks[0].channels);

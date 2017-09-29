@@ -3,8 +3,51 @@
         <svg class='editor-svg'><svg>
     </div>
 
-    <div class='editPanel' v-if='editing' :style="styleObject" >
-        <textarea @keydown.enter='exit()' v-model="message" placeholder="edit the text here">
+    <div class='editPanel' v-if='editing' :style="styleObject">
+        <div class="title">Text</div>
+        <textarea class="annotext" @keydown.ctrl.enter='exit()' v-model="message" placeholder="edit the text here">
         </textarea>
+        <div class="title">Symbol</div>
+        <div class="symbolgroup">
+            <div class="symbol">
+                <img src="../../assets/symbol8.png" height="40" width="40"/>
+            </div>
+            <div class="symbol">                     
+                <img src="../../assets/symbol7.png" height="40" width="40"/>
+            </div>
+            <div class="symbol">                     
+                <img src="../../assets/symbol4.png" height="40" width="40"/>
+            </div>
+            <div class="symbol">
+                <img src="../../assets/symbol5.png" height="40" width="40"/>
+            </div>
+            <div class="symbol">
+                <img src="../../assets/symbol6.png" height="40" width="40"/>
+            </div>
+        </div>
+        <div class="title">Question</div>
+
+        <div class="questiongroup">
+            <div class="question">
+                <i class="fa fa-question"></i>
+                <textarea class="simpletext" placeholder="input your question here">
+                </textarea>
+            </div>
+            <div class="option">
+                <i class="fa fa-square-o"></i>
+                <textarea class="simpletext" placeholder="input your option here">
+                </textarea>
+            </div>
+            <div class="option">
+                <i class="fa fa-square-o"></i>
+                <textarea class="simpletext" placeholder="input your option here">
+                </textarea>
+            </div>
+            <div class="option">
+                <i class="fa fa-check-square-o"></i>
+                <textarea class="simpletext" placeholder="input your option here">
+                </textarea>
+        </div>
+    </div>
     </div>
 </div>

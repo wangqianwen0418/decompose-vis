@@ -4977,8 +4977,10 @@
 }
 .el-dialog {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 5%;
+    left: 5%;
+    width: 90vw;
+    height: 90vh;
     background: #fff;
     border-radius: 2px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -5025,8 +5027,9 @@
     color: rgb(31, 45, 61);
 }
 .el-dialog__body {
-    padding: 30px 20px;
+    padding: 10px 10px;
     color: rgb(72, 87, 106);
+    height: 77vh;
     font-size: 14px;
 }
 .el-dialog__headerbtn {
