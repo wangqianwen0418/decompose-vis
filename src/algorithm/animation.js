@@ -1,5 +1,5 @@
 const maxCounter = 15;
-const frame = 100;
+const frame = 200;
 const duration = 500;
 import { opinionseer } from "./opinionseer.js";
 import * as d3 from "d3";

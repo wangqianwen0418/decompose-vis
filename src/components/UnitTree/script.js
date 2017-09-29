@@ -63,7 +63,7 @@ const myVue = {
             }
         },
         updateTree(nodes) {
-            var x = this.isSeriesView ? [0, 50, 200, 350, 50, 200, 350] : [230, 233, 433, 40, 379, 140];
+            var x = this.isSeriesView ? [0, 50, 200, 350, 50, 200, 350] : [280, 283, 483, 90, 429, 190];
             var y = this.isSeriesView ? [0, 70, 70, 70, 200, 200, 200] : [180, 70, 120, 170, 268, 290];
             var ratio = [
                 [0.7, 0.81, 0.66, 0.82, 0.83],
